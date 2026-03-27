@@ -12,6 +12,8 @@ Prove that no $O(2) \times O(2)$-equivariant order-$\le 2$ seam metric on $S^2 \
 - `sn-mathphys-num.bst` — Bibliography style
 - `reference_material/jet-framework.tex` — Real seam framework paper (reference)
 - `reference_material/complex-jet-framework.tex` — Complex seam framework paper (reference)
+- `reference_material/seam_einstein.tex` — Real / complex seam framework applied to the Einstein Tensor (reference)
+- `reference_material/quaternion_seam_einstein.tex` — Quaternion seam framwork applied to Maxwell's equations (reference)
 
 ## What Is Done
 
