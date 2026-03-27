@@ -1,0 +1,3914 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{hyperref}%
+\usepackage{enumitem}%
+
+%% as per the template requirement, theorem styles follow sn-jnl's presets
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{openproblem}{Open Problem}
+
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Hess}{Hess}
+\DeclareMathOperator{\image}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\Diff}{Diff}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\OO}{O}
+\DeclareMathOperator{\Met}{Met}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Ric}{Ric}
+\DeclareMathOperator{\Rm}{Rm}
+\DeclareMathOperator{\Hol}{Hol}
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Vol}{Vol}
+\DeclareMathOperator{\Crit}{Crit}
+
+\begin{document}
+
+\title[Seam Geometry]{Seam Geometry: A Jet--Theoretic Framework for the Scalar Generation of Geometric Structures}
+
+\author*[1]{\fnm{Lars} \sur{R\"onnb\"ack}}\email{lars@uptochange.com}
+
+\affil*[1]{\orgdiv{Department of Computer and Systems Sciences}, \orgname{Stockholm University},
+  \orgaddress{\city{Stockholm}, \country{Sweden}}}
+
+\abstract{%
+We develop a jet--theoretic framework for the seam--rule paradigm, in
+which geometric structures are generated from scalar fields by local
+coordinate-free transformation rules.  Viewing a rule as a \emph{natural
+differential operator} on jet bundles yields a classification of all
+isotropic metric-generating rules of order $\le 2$ on a Riemannian
+background: an explicit three-parameter family consisting of a
+conformal term, a gradient-tensor term, and a Hessian term, with
+coefficients depending smoothly on scalar jet invariants.
+
+We then develop the deformation theory of such rules.  The
+linearisation at a seam is a linear differential operator whose
+Fredholm theory controls local inverse design and whose kernel
+represents gauge freedom.  We introduce the degeneration locus, the
+geometrically invariant set where the linearised rule drops rank, and
+explain how it unifies singular loci appearing in disparate
+applications.
+
+Finally, we study a universality problem: when can scalar seam data
+generate an open neighbourhood in the space of Riemannian metrics (up
+to diffeomorphism)?  We prove obstructions for order-$2$ rules,
+establish a no-go theorem for ellipticity on surfaces when a Hessian
+term is present, and prove local universality on the torus.
+}
+
+\keywords{seam geometry, natural differential operators, jet bundles, Hessian metrics, Teichm\"uller theory, universality}
+
+\pacs[MSC Classification]{53C21 (primary), 58A20, 53A30, 53C25, 49Q20, 53C24}
+
+\maketitle
+
+% ================================================================
+\section{Introduction}
+% ================================================================
+
+A recurrent pattern in geometry is the construction of rich geometric
+structure from minimal data.  The pattern appears in diverse settings:
+conformal and Hessian metrics on manifolds and meshes, Fisher--Rao
+metrics in information geometry, Brenier potentials in optimal
+transport, and score fields in generative diffusion models.  In every
+case the construction follows the same schema:
+
+\begin{center}
+\emph{scalar field} $\;\xrightarrow{\;\text{rule}\;}\;$
+\emph{geometric structure}.
+\end{center}
+
+We call the scalar field the \emph{seam} and the transformation the
+\emph{rule}.  The present paper asks: \emph{what, precisely, is a rule?}
+
+The naive answer---``a map from a scalar field and a background to a
+geometric structure''---leaves the concept too vague to classify,
+compose, or invert.  Our thesis is that the correct formalisation uses
+\emph{jet bundles} and the theory of \emph{natural differential
+operators}: a rule is a bundle map from the jet prolongation of the
+trivial line bundle (encoding the seam and its derivatives up to some
+order~$k$) to a target geometric bundle (encoding the output), subject
+to a naturality (equivariance) condition.  This viewpoint, rooted in
+the work of Kol\'a\v{r}, Michor, and Slov\'ak~\cite{KMS1993} and the
+Peetre theorem~\cite{Peetre1960}, brings three immediate payoffs:
+
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Classification.}  The naturality condition, combined with
+  invariant theory for the orthogonal group, constrains the space of
+  possible rules to a tractable, finite-dimensional family at each jet
+  order.  At order~$\le 2$, the family has exactly three generators
+  (Theorem~\ref{thm:classification}).
+\item \textbf{Linearisation and inverse design.}  The first variation
+  of a rule at a seam is a linear differential operator whose
+  Fredholm theory governs the solvability and stability of the inverse
+  metric-design problem (\S\ref{sec:linearisation}).
+\item \textbf{Universality.}  The image of the seam map under a given
+  rule is a (typically proper) subset of all geometric structures.
+  Characterising when this subset is dense or surjective is a
+  well-posed geometric problem (\S\ref{sec:universality}).
+\end{enumerate}
+
+\begin{remark}[Relation to Hessian geometry and K\"ahler geometry]
+\label{rem:prior-art}
+Two well-established traditions exemplify special cases of the
+seam--rule paradigm.  In \emph{Hessian geometry} (Shima and
+collaborators), the metric on an affine manifold is defined as
+$g = \nabla^2 \varphi$ for a convex potential~$\varphi$---precisely
+the Hessian rule with $\alpha = \beta = 0$, $\gamma = 1$.  In
+K\"ahler geometry, the $dd^c$-construction produces a K\"ahler
+metric from a strictly plurisubharmonic potential; in real
+coordinates this is again the Hessian of a convex function.  The
+present framework subsumes these as particular coefficient choices
+and contributes three things beyond what was previously known:
+(a)~a proof that the conformal, gradient-tensor, and Hessian terms
+are the \emph{only} generators at order~$\le 2$
+(Theorem~\ref{thm:classification});
+(b)~a systematic deformation theory and degeneration locus that
+apply uniformly across all rules;
+(c)~a higher-order extension (\S\ref{sec:higher}) that classifies
+new generators at each jet order.
+\end{remark}
+
+% ================================================================
+\section{Seams and Their Jets}
+\label{sec:seams}
+% ================================================================
+
+Throughout, $(M^n,h)$ denotes a smooth Riemannian manifold of
+dimension $n \ge 2$, and $C^\infty(M)$ (or an appropriate Sobolev
+space) is the space of scalar functions on $M$.
+
+\begin{definition}[Seam]
+\label{def:seam}
+A \emph{seam} on $(M,h)$ is a scalar field
+$s \in \mathcal{S}(M) \subseteq C^\infty(M,\mathbb{R})$,
+where $\mathcal{S}(M)$ is an admissible function class determined by
+the application (e.g.\ $C^k$, Morse, convex, real-analytic, or
+discrete vertex-based).
+\end{definition}
+
+The key observation is that any local transformation rule can depend on
+$s$ only through its derivatives up to some finite order.  This is the
+content of the classical Peetre theorem~\cite{Peetre1960}: every
+support-non-increasing linear operator between sections of vector
+bundles over $M$ is a differential operator of finite order.  For
+nonlinear operators, the relevant generalisation is the Slov\'ak
+theorem~\cite{Slovak1988}, which ensures that smooth natural operators
+are determined by a finite jet.
+
+\begin{definition}[$k$-jet of a seam]
+\label{def:jet}
+Let $s \in C^\infty(M)$.  The \emph{$k$-jet of $s$ at $x \in M$},
+denoted $j^k_x s$, is the equivalence class of $s$ modulo functions
+whose Taylor expansion at $x$ agrees through order $k$.  In local
+coordinates $(x^1, \ldots, x^n)$,
+\[
+j^k_x s
+= \bigl(s(x),\; \partial_i s(x),\;
+  \partial_i \partial_j s(x),\; \ldots,\;
+  \partial_{i_1} \cdots \partial_{i_k} s(x)\bigr).
+\]
+The collection of all $k$-jets forms a smooth fibre bundle
+$J^k(M,\mathbb{R}) \to M$, the \emph{$k$-th jet bundle} of the
+trivial line bundle.
+\end{definition}
+
+The jet bundle carries a natural $\GL(n)$-action induced by coordinate
+changes on $M$.  If we restrict to orthonormal frames (i.e.\ use the
+Riemannian metric $h$ to reduce the structure group), the relevant
+group becomes $\OO(n)$.
+
+\begin{remark}[Jet decomposition]
+\label{rem:jet-decomposition}
+At order $k = 2$, the jet $j^2_x s$ decomposes under the $\OO(n)$-action
+(evaluated in $h$-normal coordinates at~$x$) into three irreducible
+components:
+\begin{enumerate}[label=(\alph*)]
+\item The \emph{value}: $s_0 := s(x) \in \mathbb{R}$.
+\item The \emph{gradient}: $s_i := \nabla_i s(x) \in T^*_x M \cong
+  \mathbb{R}^n$.
+\item The \emph{Hessian}: $s_{ij} := \nabla_i \nabla_j s(x) \in
+  \Sym^2(T^*_x M)$, which further splits into
+  $\tfrac{1}{n}(\Delta_h s)\,h_{ij}$ (trace) and the trace-free part.
+\end{enumerate}
+Understanding the $\OO(n)$-representation theory of this decomposition
+is the key to classifying rules.
+\end{remark}
+
+% ================================================================
+\section{Rules as Natural Differential Operators}
+\label{sec:rules}
+% ================================================================
+
+\begin{definition}[Rule of order $k$]
+\label{def:rule}
+Let $\mathcal{G}(M)$ denote a natural fibre bundle over $M$ (the
+\emph{geometric target}: e.g., $\Sym^2(T^*M)$ for Riemannian metrics,
+$\Sym^2(T^*_\mathbb{C} M)$ for quadratic differentials, or
+$\mathbb{R}^E$ for weighted graphs).  A \emph{rule of order $k$} is a
+smooth bundle map
+\begin{equation}
+\label{eq:rule}
+\Phi \colon J^k(M,\mathbb{R}) \times \mathcal{B}(M)
+\longrightarrow \mathcal{G}(M)
+\end{equation}
+satisfying:
+\begin{enumerate}[label=(R\arabic*)]
+\item \label{item:locality}
+  \textbf{Locality.}
+  $\Phi$ depends fibrewise on
+  $(j^k_x s, b_x)$ where $b_x$ is the fibre of the background
+  structure $\mathcal{B}(M)$ at $x$.  That is, the output at $x$
+  depends only on the $k$-jet of $s$ and the local background data
+  at~$x$.
+\item \label{item:naturality}
+  \textbf{Naturality.}
+  For every diffeomorphism $\varphi \colon M \to M$ preserving
+  $\mathcal{B}$,
+  \[
+  \Phi(j^k(\varphi^* s), \varphi^* b)
+  = \varphi^* \Phi(j^k s, b).
+  \]
+  If $\mathcal{B}$ includes a Riemannian metric $h$, naturality
+  reduces to $\OO(n)$-equivariance at each fibre.
+\item \label{item:regularity}
+  \textbf{Regularity.}
+  $\Phi$ is smooth (or at least continuous) as a map of
+  fibre variables.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[The three axioms explained]
+Locality says that a rule ``looks at'' the seam through a finite-order
+Taylor lens---it cannot see global information.
+Naturality says the rule commutes with coordinate changes---it has no
+preferred coordinate system.
+Regularity prevents pathological constructions.
+The first two axioms are precisely the sheaf-theoretic locality and
+functoriality conditions familiar from discrete differential geometry,
+now given their standard differential-geometric names.
+\end{remark}
+
+\begin{remark}[Naturality, diffeomorphisms, and cousin geometries]
+\label{rem:cousin}
+Naturality guarantees that if $\varphi\colon M \to M$ is a
+diffeomorphism preserving the background and $s' = \varphi^* s$,
+then $\Phi(s';\,\varphi^* h) = \varphi^*\Phi(s;\,h)$.
+For the conformal rule $\Phi = e^{2s}h$, this means that
+diffeomorphically related seams on the same background produce
+isometric geometries whenever $\varphi$ is an isometry of~$h$.
+However, for the Hessian rule $\Phi = \nabla^2 s$, a conformal
+diffeomorphism $\varphi$ that is \emph{not} an isometry of~$h$
+produces a genuinely different Hessian metric:
+$\nabla^2(\varphi^* s) \neq \varphi^*(\nabla^2 s)$ in general,
+because the Hessian depends on the background connection.
+
+Concretely, the Poincar\'e half-plane seam $s_H = -\log y$
+and the Poincar\'e disk seam $s_D = \ln(2/(1-|z|^2))$ produce
+isometric conformal-rule geometries (both give curvature~$-1$),
+but their Hessian-rule geometries are distinct: $\nabla^2 s_H$
+is diagonal with a zero eigenvalue (capturing the vertical
+foliation), while $\nabla^2 s_D$ is fully populated.
+Thus \emph{the choice of seam representative within a
+diffeomorphism orbit matters for non-conformal rules}---different
+representatives probe different aspects of the same abstract
+geometry.  This is analogous to gauge freedom: the conformal
+rule is ``gauge-invariant,'' while the Hessian and gradient
+rules carry additional information tied to the coordinate
+representation of the seam.
+\end{remark}
+
+\begin{remark}[Connection to the Kol\'a\v{r}--Michor--Slov\'ak
+  framework]
+Definition~\ref{def:rule} is a special case of a \emph{natural operator}
+in the sense of~\cite{KMS1993}: specifically, a natural operator from
+sections of the trivial line bundle (with background structure
+$\mathcal{B}$) to sections of the geometric bundle $\mathcal{G}$.
+The general theory guarantees that the space of such operators at each
+order is finite-dimensional and determined by $\GL(n)$-equivariant
+maps between the corresponding standard fibres~\cite{KMS1993}.
+The contribution of Theorem~\ref{thm:classification} is not the
+abstract existence of such a finite-dimensional space (which follows
+from the general KMS theory), but the \emph{explicit identification}
+of the three generators together with the proof that no others exist
+at order~$\le 2$, the systematic deformation theory and degeneration
+locus analysis that the explicit form enables, and the extension
+to higher jet orders (\S\ref{sec:higher}).
+\end{remark}
+
+\begin{definition}[The symbol of a rule]
+\label{def:symbol}
+The \emph{principal symbol} of a rule $\Phi$ of order $k$ at a
+seam~$s$ is the leading-order part of $\Phi$ viewed as a map from
+$S^k T^*_x M$ (the degree-$k$ symmetric cotangent tensors,
+representing the ``pure order-$k$'' part of the jet) to the fibre of
+$\mathcal{G}$ at $x$.  For a metric-valued rule, this is a map
+\begin{equation}
+\sigma_k(\Phi, s, x) \colon S^k T^*_x M
+\longrightarrow \Sym^2(T^*_x M).
+\end{equation}
+The symbol governs the ellipticity properties of the linearised rule
+and is the cornerstone of the inverse-design analysis
+in~\S\ref{sec:linearisation}.
+\end{definition}
+
+% ================================================================
+\section{Classification of Metric-Generating Rules}
+\label{sec:classification}
+% ================================================================
+
+We now state the central structural result: a classification of all
+isotropic natural differential operators from scalar fields to
+Riemannian metrics at order $\le 2$.  The proof uses the classical
+theory of $\OO(n)$-equivariant maps between representations.
+
+\subsection{The representation-theoretic setup}
+
+At a point $x \in M$ (working in $h$-normal coordinates), the 2-jet
+of a scalar field provides the data
+\[
+(s_0,\; v,\; A)
+\;\in\;
+\mathbb{R} \times \mathbb{R}^n \times \Sym^2(\mathbb{R}^n),
+\]
+where $s_0 = s(x)$, $v_i = \nabla_i s(x)$, and
+$A_{ij} = \nabla_i \nabla_j s(x)$.  The group $\OO(n)$ acts trivially
+on $s_0$, by the standard representation on $v$, and by conjugation on
+$A$.
+
+The target is $\Sym^2(\mathbb{R}^n)$ (symmetric bilinear forms =
+metrics).
+
+By the \emph{first fundamental theorem of invariant theory} for
+$\OO(n)$~\cite{Weyl1946,Procesi2007}, every polynomial
+$\OO(n)$-equivariant map
+\begin{equation}
+\label{eq:equivariant-map}
+F \colon \mathbb{R} \times \mathbb{R}^n \times \Sym^2(\mathbb{R}^n)
+\longrightarrow \Sym^2(\mathbb{R}^n)
+\end{equation}
+can be expressed in terms of a finite set of basic equivariant maps
+(the ``copies of $\Sym^2(\mathbb{R}^n)$ appearing in the tensor
+product decomposition'') with polynomial-invariant coefficients.
+
+\subsection{The three generators}
+
+\begin{proposition}[Equivariant building blocks]
+\label{prop:building-blocks}
+The space of $\OO(n)$-equivariant \textbf{linear} maps
+from $\mathbb{R} \oplus \mathbb{R}^n \oplus \Sym^2(\mathbb{R}^n)$ to
+$\Sym^2(\mathbb{R}^n)$ is spanned by three generators:
+\begin{enumerate}[label=(\roman*)]
+\item $\Pi_h \colon (s_0, v, A) \mapsto s_0 \cdot \delta_{ij}$
+  \quad\emph{(scalar-times-metric)},
+\item $\Pi_\otimes \colon (s_0, v, A) \mapsto v_i v_j$
+  \quad\emph{(gradient tensor)}---this is quadratic in $v$, hence
+  contributes at the level of the ``squared 1-jet'',
+\item $\Pi_{\Hess} \colon (s_0, v, A) \mapsto A_{ij}$
+  \quad\emph{(Hessian)}.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+By Schur's lemma, an $\OO(n)$-equivariant linear map from an
+irreducible representation $V$ to $\Sym^2(\mathbb{R}^n)$ is nonzero
+only if $V$ contains $\Sym^2(\mathbb{R}^n)$ as a summand.
+Now: $\mathbb{R}$ maps to $\Sym^2(\mathbb{R}^n)$ via the unique
+copy of $\mathbb{R}$ in $\Sym^2(\mathbb{R}^n)$ (the trace component:
+$\delta_{ij}$).  The symmetric square $S^2(\mathbb{R}^n)$ of the
+standard representation decomposes as
+$\mathbb{R} \oplus \Sym^2_0(\mathbb{R}^n)$, and the full
+$\Sym^2(\mathbb{R}^n)$ matches this, so
+$v_i v_j$ provides a quadratic equivariant map.
+Finally, $\Sym^2(\mathbb{R}^n)$ maps to itself by the identity, giving
+$A_{ij}$.
+Higher-order terms (such as $(A^2)_{ij} = A_{ik} A_{kj}$, or
+$v_i (Av)_j + v_j (Av)_i$) appear when we allow polynomial rather
+than linear dependence on the 2-jet.
+\end{proof}
+
+\begin{theorem}[Universal Decomposition of order-$\le 2$ isotropic
+  metric rules]
+\label{thm:classification}
+Let $(M^n, h)$ be a Riemannian manifold with $n \ge 2$.  Every smooth
+isotropic natural differential operator
+$\Phi \colon J^2(M, \mathbb{R}) \to \Sym^2_+(T^*M)$ that depends at
+most linearly on the Hessian $\nabla^2 s$ takes the form
+\begin{equation}
+\label{eq:universal}
+\boxed{
+\Phi(j^2 s;\, h)
+= \alpha\, h
+  + \beta\, ds \otimes ds
+  + \gamma\, \nabla^2 s,
+}
+\end{equation}
+where $\alpha, \beta, \gamma$ are smooth real-valued functions of the
+(finite list of) $\OO(n)$-invariant scalars of the 2-jet:
+\begin{equation}
+\label{eq:invariants}
+\mathcal{I}
+= \bigl(s,\;\; |\nabla s|_h^2,\;\;
+  \Delta_h s,\;\;
+  |\nabla^2 s|_h^2,\;\;
+  \langle \nabla s, \nabla^2 s \cdot \nabla s \rangle_h
+  \bigr).
+\end{equation}
+The condition $\Phi > 0$ (positive-definite output) imposes algebraic
+constraints on $(\alpha, \beta, \gamma)$ at each point.
+
+When we allow nonlinear dependence on the Hessian, additional
+equivariant terms appear, namely
+$(\nabla^2 s)^2 := (\nabla^2 s)_{ik}\,(\nabla^2 s)_{kj}$ and
+$ds \odot (\nabla^2 s \cdot ds)$; the full ring of equivariants is
+generated by these together with~\eqref{eq:universal}.
+\end{theorem}
+
+\begin{proof}
+\emph{Step 1 (Reduction to fibre).}
+By the Peetre--Slov\'ak theorem~\cite{Peetre1960,Slovak1988},
+a smooth natural operator of order $\le 2$ factors through
+$J^2(M,\mathbb{R})$.  By naturality (axiom~\ref{item:naturality}),
+its value at a point depends only on the 2-jet of~$s$ at that point
+and is $\OO(n)$-equivariant when expressed in $h$-normal coordinates.
+The problem therefore reduces to classifying $\OO(n)$-equivariant maps
+\[
+F \colon \underbrace{\mathbb{R}}_{s_0}
+\times \underbrace{\mathbb{R}^n}_{v}
+\times \underbrace{\Sym^2(\mathbb{R}^n)}_{A}
+\longrightarrow \Sym^2(\mathbb{R}^n)
+\]
+that are smooth and at most linear in $A$.
+
+\emph{Step 2 (Invariant-theoretic decomposition).}
+We decompose each factor as an $\OO(n)$-representation and identify
+the equivariant maps to the target $\Sym^2(\mathbb{R}^n)$.
+
+\begin{itemize}
+\item \textbf{From}~$\mathbb{R}$ (trivial representation).
+  $\Hom_{\OO(n)}(\mathbb{R}, \Sym^2(\mathbb{R}^n))
+  \cong (\Sym^2(\mathbb{R}^n))^{\OO(n)}$.
+  The $\OO(n)$-fixed subspace of $\Sym^2(\mathbb{R}^n)$ is
+  one-dimensional, spanned by $\delta_{ij}$ (the identity matrix).
+  This produces $s_0 \mapsto s_0\,\delta_{ij}$, i.e.\ the
+  conformal generator~$\Pi_h$.
+
+\item \textbf{From}~$\mathbb{R}^n$ (standard representation).
+  There is no \emph{linear} $\OO(n)$-equivariant map
+  $\mathbb{R}^n \to \Sym^2(\mathbb{R}^n)$, since
+  $\Hom_{\OO(n)}(\mathbb{R}^n, \Sym^2(\mathbb{R}^n)) = 0$
+  (the standard representation does not appear in
+  $\Sym^2(\mathbb{R}^n) \cong \mathbb{R} \oplus
+  \Sym^2_0(\mathbb{R}^n)$).  However, the \emph{quadratic}
+  equivariant $v \mapsto v \otimes v$ maps
+  $S^2(\mathbb{R}^n) \to \Sym^2(\mathbb{R}^n)$ by the identity on
+  $S^2(\mathbb{R}^n) \cong \Sym^2(\mathbb{R}^n)$.
+  By the first fundamental theorem for
+  $\OO(n)$~\cite{Weyl1946,Procesi2007}, this is the unique
+  quadratic equivariant (up to coefficient), producing~$\Pi_\otimes$.
+
+\item \textbf{From}~$\Sym^2(\mathbb{R}^n)$ (target copy).
+  As an $\OO(n)$-module,
+  $\Sym^2(\mathbb{R}^n) = \mathbb{R}\cdot\delta
+  \oplus \Sym^2_0(\mathbb{R}^n)$
+  where $\Sym^2_0$ denotes the traceless part, which is irreducible
+  for $n \geq 2$.  By Schur's lemma,
+  $\Hom_{\OO(n)}(\Sym^2(\mathbb{R}^n), \Sym^2(\mathbb{R}^n))
+  \cong \mathbb{R} \oplus \mathbb{R}$,
+  spanned by the identity $A \mapsto A$ and the trace map
+  $A \mapsto (\tr A)\,\delta$.  The trace map
+  contributes $\Delta s \cdot h$, which is already of the
+  form $\alpha(\Delta s)\,h$ and thus absorbed into the
+  conformal generator with $\alpha$ depending on $\Delta s$.
+  The identity map gives the Hessian generator~$\Pi_{\Hess}$.
+\end{itemize}
+
+\emph{Step 3 (Coefficients).}
+The first fundamental theorem~\cite{Weyl1946} tells us that
+the scalar $\OO(n)$-invariants of the 2-jet $(s_0, v, A)$ are
+generated by $s_0$, $|v|^2 = v_i v_i$, $\tr A = A_{ii}$,
+$|A|^2 = A_{ij}A_{ij}$, and $\langle v, Av\rangle = v_i A_{ij} v_j$.
+The coefficients $\alpha, \beta, \gamma$ may be arbitrary smooth
+functions of these invariants.  On $M$, these are
+exactly~\eqref{eq:invariants}.
+
+\emph{Step 4 (Completeness at the linear level).}
+Every equivariant map from $\mathbb{R} \oplus \mathbb{R}^n \oplus
+\Sym^2(\mathbb{R}^n)$ to $\Sym^2(\mathbb{R}^n)$ that is linear
+in $A$ and polynomial of degree $\leq 2$ in $v$ is a linear
+combination (with invariant coefficients) of the three generators
+above.  This follows from the exhaustive decomposition in Step~2:
+there are no further copies of $\Sym^2(\mathbb{R}^n)$ in the
+relevant tensor products.
+
+\emph{Step 5 (Nonlinear extension).}
+Allowing polynomial dependence on $A$ beyond degree~1 introduces
+higher equivariants.  The symmetric square $S^2(\Sym^2(\mathbb{R}^n))$
+contains $\Sym^2(\mathbb{R}^n)$ with multiplicity~2, yielding
+$(A^2)_{ij} = A_{ik}A_{kj}$ and $(\tr A)\,A_{ij}$ (the latter
+already captured by an invariant-dependent coefficient on $\Pi_{\Hess}$).
+The mixed tensor product $\mathbb{R}^n \otimes \Sym^2(\mathbb{R}^n)
+\otimes \mathbb{R}^n$ contributes the symmetrised product
+$v_i(Av)_j + v_j(Av)_i = ds \odot (\nabla^2 s \cdot ds)$.
+These exhaust the generators through degree~2 in~$A$.
+\end{proof}
+
+\begin{corollary}[Forced factorisation through invariants]
+\label{cor:forced-arch}
+Under the hypotheses of Theorem~\ref{thm:classification}, the value of
+$\Phi(j^2s;h)$ at a point $x\in M$ depends on the 2-jet of $s$ at $x$
+only through the five invariant scalars $\mathcal{I}(x)$ in
+\eqref{eq:invariants} and the three basis tensors
+$h(x)$, $ds\otimes ds(x)$, and $\nabla^2 s(x)$.
+
+Equivalently, any parametric family of such rules (e.g. a
+``metric network'' constrained to represent a smooth isotropic natural
+operator of order $\le 2$ that is at most linear in $\nabla^2s$) can be
+written in the canonical form
+\[
+\Phi_\theta(j^2 s;h)
+= \alpha_\theta(\mathcal{I})\,h
+  + \beta_\theta(\mathcal{I})\,ds\otimes ds
+  + \gamma_\theta(\mathcal{I})\,\nabla^2 s,
+\]
+for some scalar-valued coefficient functions
+$(\alpha_\theta,\beta_\theta,\gamma_\theta)\colon \mathbb{R}^5\to\mathbb{R}^3$.
+\end{corollary}
+
+\begin{proof}
+This is exactly the content of the decomposition
+\eqref{eq:universal} together with the description of admissible
+coefficient dependence in~\eqref{eq:invariants}.
+\end{proof}
+
+\begin{remark}[Relation to scalar-tensor theories in physics]
+\label{rem:horndeski}
+The decomposition in Theorem~\ref{thm:classification} has a parallel
+in theoretical physics: scalar-tensor gravity theories (Horndeski~\cite{Horndeski1974},
+Galileon, and beyond-Horndeski Lagrangians) employ the same
+$\OO(n)$-invariant building blocks $h$, $ds \otimes ds$, and
+$\nabla^2 s$ to construct covariant actions from a scalar field
+and a metric.  The classification there is driven by the requirement
+of second-order field equations rather than naturality of the output,
+but the underlying invariant-theory content is closely related.
+The present jet-theoretic treatment makes the representation-theoretic
+reason for the three generators fully explicit
+(Steps~1--5 above) and extends naturally to higher jet orders
+(\S\ref{sec:higher}).
+\end{remark}
+
+\subsection{Recovery of known rules}
+
+Every concrete rule encountered in practice is a specialisation of
+\eqref{eq:universal}:
+
+\begin{example}[Conformal Rule]
+\label{ex:conformal}
+$\alpha(s) = e^{2s}$, \; $\beta = 0$, \; $\gamma = 0$.
+Output: $\Phi = e^{2s} h$.
+\end{example}
+
+\begin{example}[Warped / Canalization Rule]
+$\alpha(s) = \phi(s)^2$ for an admissible warping function $\phi$, \;
+$\beta = \gamma = 0$.
+Output: $\Phi = \phi(s)^2 h$.
+\end{example}
+
+\begin{example}[Hessian Rule]
+$\alpha = 0$, \; $\beta = 0$, \; $\gamma = 1$.
+Output: $\Phi = \nabla^2 s$.
+\end{example}
+
+\begin{proposition}[No globally Riemannian pure Hessian metrics on closed manifolds]
+\label{prop:hess-no-go-closed}
+Let $(M^n,h)$ be closed (compact without boundary) and let $s\in C^\infty(M)$.
+Then the symmetric 2-tensor $\nabla_h^2 s$ cannot be positive-definite at
+every point.  Equivalently, the pure Hessian rule $g=\nabla_h^2 s$ cannot
+produce a globally Riemannian metric on a closed manifold.
+\end{proposition}
+
+\begin{proof}
+If $\nabla_h^2 s$ were positive-definite everywhere, then its $h$-trace
+$\Delta_h s=\tr_h(\nabla_h^2 s)$ would satisfy $\Delta_h s>0$ pointwise.
+But on a closed manifold, integration by parts gives
+$\int_M \Delta_h s\,dV_h=0$, a contradiction.
+\end{proof}
+
+\begin{example}[Gradient (Eikonal) Rule]
+$\alpha = |\nabla s|_h^2$, \; $\beta = 0$, \; $\gamma = 0$.
+Output: $\Phi = |\nabla s|^2 h$.
+\end{example}
+
+\begin{example}[Mixed conformal--Hessian rule (new)]
+\label{ex:mixed}
+$\alpha(s) = e^{2s}$, \; $\beta = 0$, \; $\gamma(\Delta s) =
+-\tfrac{1}{n-2}\,e^{2s}$ (for $n \ge 3$).
+Output:
+$\Phi = e^{2s}\bigl(h - \tfrac{1}{n-2}\nabla^2 s\bigr)$.
+Note that the Schouten tensor of the conformal metric $g = e^{2s}h$
+in dimension $n$ involves exactly this combination of $h$ and
+$\nabla^2 s$ (with the Ricci correction absorbed through $s$);
+thus the Schouten tensor of a conformal metric is itself
+a seam-generated object via a mixed rule.
+\end{example}
+
+\begin{corollary}[Schouten tensor change is a universal seam rule]
+\label{cor:schouten}
+Let $n\ge 3$ and let $g=e^{2s}h$.
+Writing $P_g := \frac{1}{n-2}\bigl(\Ric_g - \frac{R_g}{2(n-1)}g\bigr)$
+for the Schouten tensor, the conformal change law may be written as
+\[
+P_h - P_g
+= \nabla^2 s - ds\otimes ds + \tfrac12|\nabla s|_h^2\,h.
+\]
+In particular, $P_h-P_g$ is the output of a universal three-term rule
+applied to $s$ with coefficient triple
+$(\alpha,\beta,\gamma)=(\tfrac12|\nabla s|_h^2,\,-1,\,1)$.
+\end{corollary}
+
+\begin{proof}
+This is the standard conformal transformation formula for the Schouten
+tensor, rewritten in the three-term basis.
+\end{proof}
+
+\begin{remark}[What the classification reveals]
+\label{rem:what-classif}
+The Universal Decomposition shows that the three ``basis directions''
+$h$, $ds \otimes ds$, and $\nabla^2 s$ exhaust the linear-in-Hessian
+possibilities.  In particular:
+\begin{itemize}
+\item \emph{Conformal rules use only the $h$-direction}---they
+  cannot see the gradient tensor or the Hessian directly.
+\item \emph{The gradient-tensor direction $ds \otimes ds$ has been
+  largely unexplored} in the literature.  It produces
+  rank-deficient (degenerate at critical points) metrics and is
+  related to sub-Riemannian geometry and Carnot--Carath\'eodory
+  structures.
+\item \emph{Mixed rules} (nonzero $\alpha$ and $\gamma$
+  simultaneously) capture curvature-corrected geometries and arise
+  naturally in conformal geometry (Example~\ref{ex:mixed}).
+\end{itemize}
+\end{remark}
+
+\begin{corollary}[Order-1 rules preserve the level-set foliation]
+\label{cor:levelset-foliation}
+Let $g=\alpha\,h+\beta\,ds\otimes ds$ be a seam metric (so $\gamma=0$)
+with $\alpha>0$ and $\alpha+\beta|\nabla s|_h^2>0$.
+Then the $g$-gradient of $s$ is a pointwise scalar multiple of the
+$h$-gradient:
+\[
+\nabla^g s = \frac{1}{\alpha+\beta|\nabla s|_h^2}\,\nabla^h s.
+\]
+Consequently, the orthogonal distribution $\ker(ds)$ (the tangent
+spaces to level sets of $s$) is the same for $h$ and for $g$, and the
+gradient flow lines of $s$ are unchanged up to reparametrisation.
+\end{corollary}
+
+\begin{proof}
+The inverse of a rank-1 update is explicit:
+$g^{-1}=\alpha^{-1}h^{-1}-\frac{\beta}{\alpha(\alpha+\beta|\nabla s|_h^2)}\,\nabla^h s\otimes\nabla^h s$.
+Applying this to $ds$ gives the stated formula for $\nabla^g s$.
+\end{proof}
+
+\begin{corollary}[Volume form for order-1 rules]
+\label{cor:volume-order1}
+Let $g=\alpha\,h+\beta\,ds\otimes ds$ with $\alpha>0$ and
+$\alpha+\beta|\nabla s|_h^2>0$.  Then
+\[
+dV_g
+= \alpha^{\frac{n-1}{2}}\,\sqrt{\alpha+\beta|\nabla s|_h^2}\;dV_h
+= \alpha^{\frac n2}\,\sqrt{1+\frac{\beta}{\alpha}|\nabla s|_h^2}\;dV_h.
+\]
+\end{corollary}
+
+\begin{proof}
+In $h$-orthonormal coordinates, $g=\alpha I+\beta v v^\top$ with
+$|v|^2=|\nabla s|_h^2$.  The matrix determinant lemma gives
+$\det(\alpha I+\beta v v^\top)=\alpha^n\bigl(1+\frac{\beta}{\alpha}|v|^2\bigr)$.
+Taking square roots and restoring $dV_h$ yields the claim.
+\end{proof}
+
+\begin{corollary}[Determinant and degeneracy for order-1 rules]
+\label{cor:order1-degeneracy}
+Let $g=\alpha\,h+\beta\,ds\otimes ds$ be an order-$1$ seam tensor.
+Then at every point,
+\[
+\det(g)=\alpha^{n-1}\bigl(\alpha+\beta|\nabla s|_h^2\bigr)\,\det(h).
+\]
+In particular, $g$ is nondegenerate if and only if
+$\alpha\neq 0$ and $\alpha+\beta|\nabla s|_h^2\neq 0$.
+Moreover, if $\alpha>0$ then $g$ is Riemannian if and only if
+$\alpha+\beta|\nabla s|_h^2>0$.
+\end{corollary}
+
+\begin{proof}
+The determinant identity is exactly the computation in the proof of
+Corollary~\ref{cor:volume-order1}, rewritten as
+$\det(g)=\det(h)\,\det(\alpha I+\beta v v^\top)$ in an $h$-orthonormal frame.
+The nondegeneracy and positivity conditions follow immediately.
+\end{proof}
+
+\begin{proposition}[Signature and generic degeneracy hypersurfaces for order-1 rules]
+\label{prop:order1-signature}
+Let $g=\alpha\,h+\beta\,ds\otimes ds$ with $\alpha>0$ and define the scalar
+function $f:=\alpha+\beta|\nabla s|_h^2$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $g$ is Riemannian at $x$ if and only if $f(x)>0$.
+\item If $f(x)<0$, then $g$ has Lorentzian signature $(n-1,1)$ at $x$.
+\item If $f(x)=0$, then $g$ has rank $n-1$ at $x$, and its kernel is the
+  line spanned by $\nabla^h s(x)$.
+\item If $0$ is a regular value of $f$, then the degeneracy set
+  $\Sigma:=f^{-1}(0)$ is a smooth embedded hypersurface.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Fix $x\in M$.  If $\nabla s(x)=0$ then $g(x)=\alpha(x)h(x)$, so $f(x)=\alpha(x)>0$
+and $g$ is Riemannian.
+Assume $\nabla s(x)\neq 0$ and choose an $h$-orthonormal basis
+$\{e_1,\ldots,e_n\}$ with $e_1=\nabla^h s/|\nabla s|_h$.  Then
+$ds=|\nabla s|_h\,e^1$ and
+\[
+g
+=\alpha\sum_{i=1}^n e^i\otimes e^i + \beta|\nabla s|_h^2\,e^1\otimes e^1,
+\]
+so the $g$-eigenvalues are $\alpha$ with multiplicity $n-1$ on
+$\mathrm{span}\{e_2,\ldots,e_n\}$ and $\alpha+\beta|\nabla s|_h^2=f$ on $e_1$.
+This proves (a)--(c).  Part~(d) is the regular value theorem.
+\end{proof}
+
+\begin{proposition}[Comparison for order-1 seam metrics]
+\label{prop:order1-comparison}
+Let $g_i=\alpha_i\,h+\beta_i\,ds\otimes ds$ ($i=1,2$) be order-$1$ seam
+metrics with $\alpha_i>0$ and $f_i:=\alpha_i+\beta_i|\nabla s|_h^2>0$.
+Assume pointwise that $\alpha_1\le \alpha_2$ and $f_1\le f_2$.  Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $g_1\le g_2$ as quadratic forms, hence $d_{g_1}(x,y)\le d_{g_2}(x,y)$
+  for all $x,y\in M$.
+\item $dV_{g_1}\le dV_{g_2}$ pointwise, hence $\Vol_{g_1}(M)\le \Vol_{g_2}(M)$.
+\item If $c$ is a regular value of $s$ and $\Sigma_c:=\{s=c\}$, then the
+  induced $(n{-}1)$-volume forms satisfy
+  $dA_{g_1|_{\Sigma_c}}\le dA_{g_2|_{\Sigma_c}}$ pointwise on $\Sigma_c$.
+  In particular, $\Vol_{n-1}(\Sigma_c,g_1)\le \Vol_{n-1}(\Sigma_c,g_2)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Fix $x\in M$.  If $\nabla s(x)=0$ then $g_i(x)=\alpha_i(x)h(x)$ and
+$\alpha_1\le\alpha_2$ gives $g_1\le g_2$.  If $\nabla s(x)\neq 0$, choose an
+$h$-orthonormal basis with $e_1=\nabla^h s/|\nabla s|_h$.  In this basis,
+$g_i$ is diagonal with eigenvalue $f_i$ on $e_1$ and eigenvalue $\alpha_i$
+on $\mathrm{span}\{e_2,\ldots,e_n\}$.  The inequalities
+$\alpha_1\le\alpha_2$ and $f_1\le f_2$ imply $g_1\le g_2$ pointwise.
+
+For (a), for any piecewise smooth curve $\gamma$ we have
+$|\dot\gamma|_{g_1}\le |\dot\gamma|_{g_2}$ pointwise, hence
+$\mathrm{Len}_{g_1}(\gamma)\le \mathrm{Len}_{g_2}(\gamma)$; taking the
+infimum over curves yields $d_{g_1}\le d_{g_2}$.
+
+For (b), the volume-form identity of Corollary~\ref{cor:volume-order1}
+gives $dV_{g_i}=\alpha_i^{\frac{n-1}{2}}\sqrt{f_i}\,dV_h$, so the assumed
+inequalities imply $dV_{g_1}\le dV_{g_2}$.
+
+For (c), $g_1\le g_2$ implies $g_1|_{T\Sigma_c}\le g_2|_{T\Sigma_c}$ as
+quadratic forms on $T\Sigma_c$.  Hence in any basis of $T\Sigma_c$,
+$\det(g_1|_{T\Sigma_c})\le \det(g_2|_{T\Sigma_c})$, which is equivalent to
+$dA_{g_1|_{\Sigma_c}}\le dA_{g_2|_{\Sigma_c}}$.
+\end{proof}
+
+\begin{proposition}[Geometric constraints by rule type]
+\label{prop:holonomy}
+Let $(M^n,h)$ be simply connected and compact, and let
+$g = \Phi(s;h)$ be a seam metric.  Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \textbf{Conformal rule}
+  ($\alpha = e^{2s}$, $\beta = \gamma = 0$).
+  The metric $g = e^{2s}h$ is conformally equivalent to~$h$,
+  so the conformal class $[g] = [h]$ is preserved.
+  In particular, any invariant of the underlying conformal
+  structure (i.e.\ depending only on $[h]$) is shared by~$g$.
+  Note, however, that conformal rescaling
+  generically changes the Levi-Civita connection and can alter
+  the holonomy group: if $\Hol(h)$ is a proper subgroup of
+  $\SO(n)$ (e.g.\ arising from a Ricci-flat or K\"ahler
+  structure), then $g = e^{2s}h$ typically has
+  $\Hol(g) = \SO(n)$ unless $s$ satisfies additional
+  compatibility conditions.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Part~(a).  The Levi-Civita connections of $g = e^{2s}h$ and $h$
+differ by an exact 1-form: $\nabla^g = \nabla^h + ds \otimes
+\id + \id \otimes ds - h(\cdot,\cdot)\nabla s$.  This is
+the standard conformal change formula.  Since $g$ and $h$
+differ by a positive scalar factor, they share the same
+conformal class, Weyl tensor (for $n \ge 4$), and conformal
+invariants.  The connection itself, however, changes
+non-trivially, so holonomy is not preserved in general.
+\end{proof}
+
+% ================================================================
+\section{Worked Examples}
+\label{sec:worked}
+% ================================================================
+
+We now develop four concrete computations that illustrate the
+Universal Decomposition in action.  Each takes a specific seam and
+rule, computes the resulting geometry explicitly, and highlights the
+features that make the framework non-trivial.
+
+% ----------------------------------------------------------------
+\subsection{The round sphere via a conformal seam}
+\label{sec:ex-sphere}
+% ----------------------------------------------------------------
+
+Let $M = \mathbb{R}^2$ with the flat metric $h = \delta$, and define
+the seam
+\[
+s(x) = -\log(1 + |x|^2).
+\]
+Applying the conformal rule $(\alpha, \beta, \gamma) = (e^{2s}, 0, 0)$
+gives
+\[
+g = e^{2s}\,\delta
+  = \frac{1}{(1+|x|^2)^2}\,
+    (dx^1 \otimes dx^1 + dx^2 \otimes dx^2).
+\]
+This is exactly the round metric on $S^2$ in stereographic
+coordinates (up to a factor of~$4$ depending on the radius
+convention).
+
+\paragraph{Curvature.}
+The Gauss curvature of a conformal metric $g = e^{2s}\delta$ on
+$\mathbb{R}^2$ is
+\[
+K = -e^{-2s}\,\Delta s.
+\]
+A direct computation gives
+$\Delta s = -\frac{4}{(1+|x|^2)^2}$, so
+\[
+K = -\,(1+|x|^2)^2 \cdot
+    \Bigl(-\frac{4}{(1+|x|^2)^2}\Bigr) = 4.
+\]
+Thus the seam encodes a surface of constant positive curvature.
+This is one of the simplest non-flat geometries, yet the seam that
+produces it is just a radial logarithm.
+
+\paragraph{Degeneration.}
+Since $e^{2s} = (1+|x|^2)^{-2} > 0$ everywhere, the conformal rule
+has no degeneration locus for this seam.  This is consistent with the
+general principle: the conformal rule $\alpha(s) = e^{2s}$ never
+degenerates, because $e^{2s}$ has no zeros.
+
+\paragraph{Linearisation.}
+A seam perturbation $\dot s$ at $s_0 = s$ produces the metric
+variation $\dot g = 2\dot s\, g$, i.e.\ a pure conformal
+deformation.  On a compact surface, the only $\dot s$ that leaves
+$g$ unchanged is $\dot s = 0$: the kernel of the linearised
+conformal rule is trivial, confirming that the seam faithfully
+parametrises the geometry.
+
+% ----------------------------------------------------------------
+\subsection{Lorentzian geometry from a harmonic seam}
+\label{sec:ex-hessian}
+% ----------------------------------------------------------------
+
+Let $M = \mathbb{R}^2$ with $h = \delta$.  Consider the seam
+\[
+s(x,y) = x^2 - y^2 = \operatorname{Re}(z^2),
+\]
+which is harmonic ($\Delta s = 0$).  The Hessian rule
+$(\alpha,\beta,\gamma) = (0,0,1)$ gives
+\[
+g = \nabla^2 s
+  = \begin{pmatrix} 2 & 0 \\ 0 & -2 \end{pmatrix}
+    dx^i \otimes dx^j.
+\]
+
+\paragraph{Signature.}
+The eigenvalues $(+2, -2)$ show that $g$ has \emph{Lorentzian}
+(indefinite) signature.  The Hessian rule applied to a harmonic seam
+on $\mathbb{R}^2$ always produces a Lorentzian metric: harmonicity
+forces $\Delta s = \tr(\nabla^2 s) = 0$, which means the eigenvalues
+sum to zero and therefore have opposite signs (away from $\nabla^2 s = 0$).
+
+This is the mechanism by which the Hessian rule, applied to seams
+derived from holomorphic functions (whose real parts are harmonic),
+produces Lorentzian geometry.
+
+\paragraph{Geodesics.}
+The metric $g = 2\,dx^2 - 2\,dy^2$ is flat Minkowski space
+(rescaled).  Null geodesics satisfy $dx^2 = dy^2$, i.e.\
+$y = \pm x + c$: they are 45-degree lines in the $(x,y)$-plane.
+These are precisely the level curves $\operatorname{Re}(z^2) =
+\text{const}$ and $\operatorname{Im}(z^2) = \text{const}$, which
+form a family of orthogonal hyperbolas.
+
+\paragraph{Degeneration.}
+The Hessian $\nabla^2 s$ is constant and nondegenerate, so the
+degeneration locus is empty for this particular seam.  By contrast,
+for the seam $s = \log|f(z)|$ with $f$ holomorphic, the Hessian
+degenerates precisely at the zeros of $f$---an example that
+illustrates why the degeneration locus is the geometric locus of
+interest.
+
+% ----------------------------------------------------------------
+\subsection{Score geometry of a Gaussian}
+\label{sec:ex-gradient}
+% ----------------------------------------------------------------
+
+Let $M = \mathbb{R}^n$ with $h = \delta$, and let $p(x) \propto
+\exp(-\|x\|^2/(2\sigma^2))$ be a centred Gaussian density.  The
+log-density seam is
+\[
+s(x) = \log p(x) = -\frac{\|x\|^2}{2\sigma^2} + C
+\]
+for a normalisation constant $C$.  The gradient is
+$\nabla s = -x/\sigma^2$, so $|\nabla s|^2 = \|x\|^2/\sigma^4$.
+The gradient rule $(\alpha,\beta,\gamma) = (|\nabla s|^2, 0, 0)$
+produces
+\[
+g = \frac{\|x\|^2}{\sigma^4}\,\delta.
+\]
+
+\paragraph{Geometric meaning.}
+This is a conformal metric on $\mathbb{R}^n$ whose conformal factor
+$\|x\|^2/\sigma^4$ vanishes at the origin and grows quadratically.
+Distances near the origin are compressed to zero; distances far from
+the origin are stretched.  Intuitively, the geometry ``funnels'' all
+paths toward the mode of the Gaussian.
+
+\paragraph{Degeneration at the mode.}
+The degeneration locus is $\{x = 0\}$: the single point where
+$\nabla s = 0$, i.e.\ the mode of the distribution.  At this point
+the metric $g$ vanishes, and the Riemannian distance from any $x
+\ne 0$ to the origin is
+\[
+d_g(x, 0) = \int_0^1 \frac{\|tx\|}{\sigma^2}\,\|x\|\,dt
+= \frac{\|x\|^2}{2\sigma^2},
+\]
+which is finite.  Thus the degenerate metric produces a well-defined
+(pseudo-)distance that assigns the origin finite distance from every
+point---geometrically realising the mode as a ``focal point'' of
+the distribution.
+
+\paragraph{Connection to score-based models.}
+In score-based generative modelling~\cite{SongErmon2019}, the
+\emph{score function}
+$\nabla \log p$ plays the role of a velocity field.  The gradient
+rule converts this velocity field into a Riemannian metric whose
+geometry encodes the concentration structure of the distribution.
+The degeneration at the mode is the geometric reason that
+score-based models require $\varepsilon$-regularisation: the
+velocity vanishes at the target, creating a metric singularity.
+
+\begin{corollary}[Finite pseudo-distance to the degeneration locus for gradient metrics]
+\label{cor:finite-distance-gradient}
+Let $(M,h)$ be connected and let $s\in C^\infty(M)$.
+For the gradient rule $g := |\nabla s|_h^2\,h$, the degeneration locus is
+$\mathcal{D}(\Phi,s)=\{\nabla s=0\}=\Crit(s)$.  If $\Crit(s)\neq\emptyset$ then
+every point of $M\setminus\Crit(s)$ has finite $g$-length to $\Crit(s)$, hence
+finite (pseudo-)distance to the degeneration locus.
+\end{corollary}
+
+\begin{proof}
+Choose $p\in\Crit(s)$ and any piecewise smooth path $\gamma$ from $x$ to $p$.
+Since $g=f\,h$ with $f=|\nabla s|_h^2$, we have
+$|\gamma'|_g=\sqrt{f(\gamma)}\,|\gamma'|_h=|\nabla s(\gamma)|_h\,|\gamma'|_h$.
+The image of $\gamma$ is compact, so $|\nabla s|_h$ is bounded along it and
+$L_g(\gamma)<\infty$.
+\end{proof}
+
+\begin{corollary}[Stability of the degeneration locus for gradient metrics]
+\label{cor:crit-stability}
+Let $(M,h)$ be compact without boundary and let $s_0\in C^\infty(M)$ be a
+Morse function.  Then there exists a $C^2$-neighbourhood $\mathcal{U}$ of
+$s_0$ such that for every $s\in\mathcal{U}$:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $s$ is Morse and $\Crit(s)$ consists of finitely many points.
+\item There is a canonical bijection between $\Crit(s_0)$ and $\Crit(s)$
+  (each critical point persists uniquely under the perturbation), and
+  the Morse index is preserved.
+\item For the gradient rule $g_s:=|\nabla s|_h^2\,h$, the degeneration locus
+  $\mathcal{D}(\Phi,s)=\Crit(s)$ varies continuously with $s$ (in the
+  Hausdorff topology on closed subsets of $M$).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Since $s_0$ is Morse, each critical point $p\in\Crit(s_0)$ is nondegenerate,
+so by the implicit function theorem the equation $\nabla s=0$ has a unique
+solution near $p$ for all $s$ sufficiently close to $s_0$ in $C^2$.
+Moreover, the Hessian depends continuously on $s$ in $C^2$, so the Morse index
+is locally constant and hence preserved.
+
+To rule out creation of new critical points away from $\Crit(s_0)$, pick
+disjoint neighbourhoods $U_p$ of each $p\in\Crit(s_0)$ and set
+$K:=M\setminus\bigcup_p U_p$.  Then $|\nabla s_0|_h$ attains a positive minimum
+on $K$.  For $s$ sufficiently close to $s_0$ in $C^1$, the gradient
+$\nabla s$ is uniformly close to $\nabla s_0$ on $K$, so $\nabla s$ cannot
+vanish on $K$.  This yields the bijection and the Hausdorff continuity.
+\end{proof}
+
+% ----------------------------------------------------------------
+\subsection{Warped collapse to a point}
+\label{sec:ex-warped}
+% ----------------------------------------------------------------
+
+Let $(F, g_F)$ be a compact Riemannian manifold (e.g., $S^{n-1}$
+with the round metric), and let $M = [0,1] \times F$ with product
+metric $h = dt^2 + g_F$.  Define the seam $s(t,y) = t$ (the
+``height function'') and the warped rule with $\phi(s) = s$:
+\[
+(\alpha, \beta, \gamma) = (s^2, 0, 0), \qquad
+g = t^2\, g_F.
+\]
+(The $dt^2$-component is suppressed: the warped metric acts on the
+fibre directions only.)
+
+\paragraph{Geometry near $t=0$.}
+At $t = t_0 > 0$, the fibre $(F, t_0^2\, g_F)$ is a rescaled copy
+of $F$ with diameter $\diam(F,t_0^2 g_F) = t_0 \cdot \diam(F, g_F)$.
+As $t_0 \to 0$, this diameter shrinks to zero: the fibre collapses
+to a point.
+
+\paragraph{Gromov--Hausdorff collapse.}
+The sublevel set $\{t \le \varepsilon\} \times F$, equipped with
+the metric $g_\varepsilon = t^2 g_F + dt^2$, converges in the
+Gromov--Hausdorff sense to the interval $[0,\varepsilon]$ as the
+fibre shrinks.  This is a concrete instance of the following general
+principle: \emph{the degeneration locus of the warped rule
+($\phi(s) = 0$ at $s = 0$) is the geometric collapse locus}.
+
+\paragraph{Curvature blowup.}
+For the warped product $g = dt^2 + t^2 g_F$ (a metric cone), the
+sectional curvature of a plane containing $\partial_t$ is
+\[
+K(\partial_t, X) = 0,
+\]
+while a plane tangent to the fibre has sectional curvature
+\[
+K(X, Y) = \frac{1 - t^2 K_F(X,Y)}{t^2},
+\]
+where $K_F$ is the sectional curvature of $(F, g_F)$.  As $t \to 0$,
+$K(X,Y) \to +\infty$ (unless $K_F \equiv 1$, in which case the cone
+is flat).  The curvature blowup at the degeneration locus signals
+the formation of a conical singularity.
+
+% ----------------------------------------------------------------
+\subsection{A mixed conformal--Hessian geometry}
+\label{sec:ex-mixed}
+% ----------------------------------------------------------------
+
+To illustrate the power of using multiple terms simultaneously,
+consider $M = \mathbb{R}^2$ with $h = \delta$ and the seam
+$s(x,y) = x^2 + y^2$.  Define a mixed rule:
+\[
+(\alpha, \beta, \gamma) = (1, 0, \tfrac{1}{2}), \qquad
+g = h + \tfrac{1}{2}\nabla^2 s
+  = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}
+    + \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}
+  = 2\,\delta.
+\]
+This is just a rescaled flat metric---unsurprising for a quadratic
+seam.  But now take a more interesting seam:
+\[
+s(x,y) = x^2 + \tfrac{1}{4}y^4.
+\]
+Then
+\[
+\nabla^2 s = \begin{pmatrix} 2 & 0 \\ 0 & 3y^2 \end{pmatrix},
+\qquad
+g = \delta + \tfrac{1}{2}\nabla^2 s
+  = \begin{pmatrix} 2 & 0 \\ 0 & 1 + \tfrac{3}{2}y^2 \end{pmatrix}.
+\]
+The background $\delta$-term ensures positive-definiteness everywhere
+(even where $\nabla^2 s$ alone is degenerate at $y = 0$), while the
+Hessian term introduces curvature.  The Gauss curvature is
+\[
+K = -\frac{1}{2\sqrt{\det g}}\left[
+  \partial_y\!\left(
+    \frac{\partial_y g_{11}}{2\sqrt{\det g}}
+  \right)
+  + \partial_x\!\left(
+    \frac{\partial_x g_{22}}{2\sqrt{\det g}}
+  \right)
+\right]
+= -\frac{3y}{2(2 + 3y^2)^2},
+\]
+which changes sign across $y = 0$.  The mixed rule has produced a
+surface with a line of zero curvature---a saddle transition---from a
+single scalar field.
+
+\subsection{Information geometry: Fisher--Rao metric}
+\label{sec:ex-fisher}
+% ----------------------------------------------------------------
+
+Let $\{p(x|\theta) : \theta \in \Theta \subset \mathbb{R}^n\}$
+be an exponential family
+$p(x|\theta) = \exp\bigl(\theta \cdot T(x) - A(\theta)\bigr)\mu(dx)$
+with log-partition function $A(\theta) = \log\int e^{\theta \cdot T(x)}\mu(dx)$.
+The Fisher information metric~\cite{Amari2016} on the parameter
+space~$\Theta$ is
+\[
+g^{\mathrm{Fisher}}_{ij}(\theta)
+= \mathbb{E}_{\theta}\!\bigl[\partial_i \log p\;\partial_j \log p\bigr]
+= \partial_i \partial_j A(\theta).
+\]
+This is \emph{exactly the Hessian rule} ($\alpha = \beta = 0$,
+$\gamma = 1$) applied to the seam $s = A(\theta)$ on the flat
+background $(\Theta, \delta)$.  Strict convexity of~$A$ (a standard
+consequence of the exponential family structure) is precisely the
+condition that the Hessian rule produces a positive-definite metric.
+
+From the seam-rule perspective:
+\begin{itemize}
+\item The \textbf{degeneration locus}
+  $\mathcal{D} = \{\theta : \det(\nabla^2 A) = 0\}$
+  corresponds to degenerate statistical models where the
+  family loses local identifiability.
+\item The \textbf{Gauss curvature} (for $n = 2$) is computable
+  from~\eqref{eq:gauss-general} with $\lambda_i = \partial_i^2 A$.
+  For the normal family $A(\mu,\sigma) = \sigma^2/2 + \mu^2/(2\sigma^2)$
+  this recovers the classical constant negative curvature of the
+  Fisher--Rao metric on the half-plane model.
+\item The \textbf{linearisation} $D\Phi_\theta(\dot\theta) = \nabla^2\dot\theta$
+  is the third derivative tensor of~$A$, whose kernel (affine functions)
+  captures the trivial reparametrisations of the family.
+\end{itemize}
+Information geometry thus provides a natural, high-profile instance
+of the Hessian rule in which every element of the seam-rule
+framework---classification, degeneration, linearisation---has a
+concrete statistical interpretation.
+
+% ----------------------------------------------------------------
+\subsection{The inverse problem: finding the seam}
+\label{sec:ex-inverse}
+% ----------------------------------------------------------------
+
+The examples above construct geometries \emph{from} a given seam.
+In practice, one often faces the reverse: given a target Riemannian
+metric~$g$, find a seam~$s$ (and a rule) such that
+$g = \Phi(s;\,h)$.  The Universal Decomposition reduces this to a
+structured decision tree.
+
+\begin{remark}[Recipe for finding the seam]
+\label{rem:seam-recipe}
+Let $(M,h)$ be a fixed background and $g$ a target metric.
+\begin{enumerate}[label=\textbf{Step \arabic*.}]
+\item \textbf{Try the conformal rule.}
+  Write $g = e^{2\sigma}\,h$ pointwise.  If $g$ is conformal to~$h$
+  (i.e.\ $g_{ij}/h_{ij}$ is a positive scalar function), then
+  \[
+    s = \tfrac{1}{2}\ln(g_{ij}/h_{ij})
+  \]
+  is the seam, with $(\alpha,\beta,\gamma) = (e^{2s},0,0)$.
+  This always succeeds on surfaces (by the uniformisation theorem,
+  every metric is conformal to a constant-curvature background up to
+  diffeomorphism) and succeeds in higher dimensions within a fixed
+  conformal class.
+
+\item \textbf{Try the Hessian rule.}
+  If $g$ is not conformal to~$h$, test whether $g$ is an exact Hessian.
+  On a flat background (e.g.\ $h=\delta$ in a coordinate chart), this is
+  equivalent to the classical Saint-Venant conditions
+  $\partial_i \partial_j g_{kl} = \partial_k \partial_l g_{ij}$.
+  On a curved background, commuting covariant derivatives introduces
+  the curvature $\Rm(h)$, so the corresponding \emph{generalized}
+  Saint-Venant compatibility identities must be used instead.
+  If the compatibility conditions hold, solve $\nabla^2 s = g$
+  (a Poisson-type system) to obtain~$s$, with
+  $(\alpha,\beta,\gamma) = (0,0,1)$.  The solution is unique up to an
+  affine function (the kernel of~$\nabla^2$).
+
+\item \textbf{Use the full three-term family.}
+  If neither pure rule suffices, write
+  $g = \alpha\,h + \beta\,ds\otimes ds + \gamma\,\nabla^2 s$
+  and solve the resulting nonlinear PDE for~$s$ (with
+  $\alpha,\beta,\gamma$ as coefficient functions).  The linearised
+  version of this problem is the normal equation
+  $(D\Phi_{s_0})^*(D\Phi_{s_0})\,\delta s
+  = (D\Phi_{s_0})^*(g - \Phi(s_0;h))$,
+  which is fourth-order elliptic when $\gamma \neq 0$
+  (Proposition~\ref{prop:fredholm}) and amenable to iterative
+  solvers.  Local surjectivity
+  (Proposition~\ref{prop:local-surj}) guarantees that, near any
+  non-degenerate background seam, a solution exists.
+\end{enumerate}
+\end{remark}
+
+We illustrate with a well-known geometry not among the earlier
+examples.
+
+\begin{example}[Poincar\'e disk]
+\label{ex:poincare}
+The Poincar\'e disk $(\mathbb{D}^2, g_P)$ with background
+$h = \delta$ (flat Euclidean) has
+\[
+g_P = \frac{4}{(1-|z|^2)^2}\;\delta.
+\]
+This is manifestly conformal to~$h$, so \textbf{Step~1} succeeds:
+\[
+s(z) = \tfrac{1}{2}\ln\frac{4}{(1-|z|^2)^2}
+     = \ln\frac{2}{1-|z|^2}.
+\]
+One verifies:
+\begin{itemize}
+\item $s(0) = \ln 2$; \; $s \to +\infty$ as $|z|\to 1$
+  (the ideal boundary).
+\item $\nabla s = 2z/(1-|z|^2)$, which is nowhere zero on
+  $\mathbb{D}$: the degeneration locus is empty.
+\item The Gaussian curvature $K = -e^{-2s}\Delta s = -1$,
+  confirming constant negative curvature.
+\end{itemize}
+The Hessian rule fails here: $g_P$ is not an exact Hessian
+(in Euclidean coordinates, the classical Saint-Venant conditions
+$\partial_i\partial_j g_{kl}=\partial_k\partial_l g_{ij}$ are violated
+because the conformal factor depends on both $x$ and~$y$ in a
+non-separable way).
+The conformal rule is the unique pure basis rule that works.
+\end{example}
+
+\begin{remark}[What the seam representation buys]
+\label{rem:seam-payoff}
+The Poincar\'e metric is classical; the value of its seam
+$s = \ln(2/(1-|z|^2))$ lies in what the framework makes
+\emph{easy} once the seam is known:
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Scalar deformations.}
+  Perturbing $s \mapsto s + \varepsilon\,\varphi$ for any
+  $\varphi \in C^\infty(\mathbb{D})$ gives a valid Riemannian
+  metric $g_\varepsilon = e^{2(s+\varepsilon\varphi)}\delta$ for
+  every~$\varepsilon$, with no compatibility conditions to check.
+  The first-order curvature response is
+  $\dot K = -e^{-2s}\Delta\varphi + 2\varphi\,K$---a linear PDE
+  in one unknown.
+\item \textbf{Curvature as a scalar equation.}
+  The Gaussian curvature is $K = -e^{-2s}\Delta s$ (no Christoffel
+  symbols, no Riemann tensor).  Prescribing a target curvature
+  function~$K_{\mathrm{target}}$ becomes the semilinear PDE
+  $\Delta s + K_{\mathrm{target}}\,e^{2s} = 0$.
+\item \textbf{Ricci flow as a scalar evolution.}
+  The Ricci-flow equation $\partial_t g = -2Kg$ reduces to
+  $\partial_t s = e^{-2s}\Delta s$---a single parabolic PDE
+  (cf.\ \S\ref{sec:ricci-flow}).
+\item \textbf{Automatic discretisation.}
+  Given a mesh on~$\mathbb{D}$ with vertices~$\{v_i\}$, the
+  discrete conformal rule
+  $\ell_s(u,v) = \ell_0(u,v)\,(e^{s(u)}+e^{s(v)})/2$
+  produces a weighted graph with one scalar per vertex
+  (\S\ref{sec:discrete}).  This has $|V|$ degrees of freedom,
+  versus $3|E|$ for a general discrete metric---an order-of-magnitude
+  reduction.
+\item \textbf{Cross-domain transfer.}
+  Every theorem stated for a general seam---the Morse bound on the
+  degeneration locus (\S\ref{sec:morse-bound}), the Fredholm
+  structure of the inverse problem (\S\ref{sec:ellipticity}),
+  the Gauss--Bonnet constraints on the coefficients
+  (\S\ref{sec:curvature})---applies verbatim to~$s$.  The seam is
+  a common interface: a result proved for one seam
+  (e.g.\ the diffusion-model seam
+  $\log p$) transfers to the
+  Poincar\'e seam and vice versa.
+\end{enumerate}
+In short, the Poincar\'e metric is old news; the Poincar\'e
+\emph{seam} is a computational and theoretical handle that lets one
+deform, discretise, flow, and optimise the geometry through a single
+scalar field.
+\end{remark}
+
+\paragraph{Summary of the examples.}
+The seven computations above demonstrate that the Universal
+Decomposition is not merely a formal classification: different
+choices of $(\alpha, \beta, \gamma)$ produce qualitatively distinct
+geometries (constant curvature, Lorentzian signature, metric
+degeneration, conical collapse, curvature-sign transitions, Fisher
+information, hyperbolic space), all from elementary scalar fields.
+The inverse recipe (Remark~\ref{rem:seam-recipe}) shows that
+finding the seam for a given metric is a structured problem with
+a clear decision tree.
+
+% ================================================================
+\section{Curvature of the General Three-Term Metric}
+\label{sec:curvature}
+% ================================================================
+
+We now derive the scalar curvature of the full three-term metric
+$g = \alpha\,h + \beta\,ds \otimes ds + \gamma\,\nabla^2 s$
+in terms of the seam and its jets.  This makes precise the sense in
+which seam data controls curvature.
+
+Restrict for clarity to $n = 2$ and a flat background $h = \delta$.
+Write $\lambda_1 = \alpha + \beta\,(\partial_1 s)^2 + \gamma\,s_{11}$
+and $\lambda_2 = \alpha + \beta\,(\partial_2 s)^2 + \gamma\,s_{22}$
+for the diagonal components (working in coordinates adapted so that
+$s_{12} = 0$ at the point of interest, which can always be arranged
+by an $\OO(2)$-rotation of the frame).  Then $\det g =
+\lambda_1 \lambda_2$ and the Gauss curvature is
+\begin{equation}
+\label{eq:gauss-general}
+K = -\frac{1}{2\sqrt{\det g}}\left[
+  \partial_2\!\left(\frac{\partial_2 \lambda_1}{\sqrt{\det g}}\right)
+  + \partial_1\!\left(\frac{\partial_1 \lambda_2}{\sqrt{\det g}}\right)
+\right].
+\end{equation}
+Expanding, one finds that $K$ is a rational function of the
+$\OO(n)$-invariants $\mathcal{I}$ (equation~\eqref{eq:invariants})
+and the derivatives of $\alpha, \beta, \gamma$.
+
+\begin{remark}[Structure of the curvature formula]
+The key structural observation is:
+\begin{itemize}
+\item \textbf{Zeroth-order contributions} come from the $\alpha$-term
+  and produce conformal curvature $K_{\text{conf}} = -(\Delta\log\alpha)/(2\alpha)$.
+\item \textbf{First-order contributions} come from the
+  $\beta$-term and couple gradient invariants to curvature.
+\item \textbf{Second-order contributions} come from the
+  $\gamma$-term and involve derivatives of $s$ of order at most~$3$.
+  Although differentiating the Christoffel symbols of
+  $g=\alpha h+\beta\,ds\otimes ds+\gamma\,\nabla^2 s$ naively produces
+  fourth derivatives of $s$, these cancel in the alternating
+  combination defining the Riemann tensor (a Hessian-geometry
+  cancellation).
+\end{itemize}
+Thus the scalar curvature of a general three-term metric is, in
+general, a \emph{third-order} nonlinear expression in the seam.
+\end{remark}
+
+\subsection{General dimension and curved background}
+\label{sec:curv-general}
+
+The explicit formula~\eqref{eq:gauss-general} was stated for $n=2$
+and flat~$h$.  We now describe the structure for arbitrary~$n$ and
+a curved background $(M^n,h)$.
+
+\begin{proposition}[General curvature structure]
+\label{prop:curv-general}
+Let $g = \alpha\,h + \beta\,ds\otimes ds + \gamma\,\nabla^2 s$
+be a Riemannian metric on $(M^n,h)$ with $\alpha,\beta,\gamma$
+depending on $(s, |\nabla s|^2)$.  Then the Riemann curvature of
+$g$ (viewed as the $(1,3)$ curvature tensor) has the form
+\begin{equation}
+\label{eq:Riem-structure}
+\Rm(g) = \Rm(h)
++ \mathcal{C}_1(\alpha,\beta,\gamma,s;\nabla s,\nabla^2 s)
++ \mathcal{C}_2(\alpha,\beta,\gamma,s;\nabla^3 s),
+\end{equation}
+where:
+\begin{enumerate}[label=(\roman*)]
+\item $\Rm(h)$ is the curvature inherited from the background.
+  (Lowering indices and scalar contractions are performed with $g$;
+  for instance, for $g=e^{2\varphi}h$ this yields the usual conformal
+  scaling in the scalar curvature.)
+\item $\mathcal{C}_1$ is a curvature-type tensor that is polynomial
+  in $\nabla s$ and $\nabla^2 s$ and rational in
+  $\alpha, \beta, \gamma$; it captures the contributions from
+  the gradient and Hessian terms.
+\item $\mathcal{C}_2$ is nonzero only when $\gamma \neq 0$
+  and involves derivatives of $s$ of order $3$; it arises
+  because the Christoffel symbols of $g$ contain $\nabla^3 s$
+  via the $\gamma\,\nabla^2 s$ term, and the would-be $\nabla^4 s$
+  contributions cancel in the alternating combination defining $\Rm(g)$.
+\end{enumerate}
+In particular, the scalar curvature $R(g) = g^{ij}g^{kl}R_{ikjl}$
+is a rational function of $\alpha,\beta,\gamma$, the
+$\OO(n)$-invariants~$\mathcal{I}$
+(equation~\eqref{eq:invariants}), and the background curvature
+$\Rm(h)$, involving derivatives of $s$ up to order~$3$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Write $g = \alpha\,h + P$ where $P = \beta\,ds\otimes ds +
+\gamma\,\nabla^2 s$.  The Christoffel symbols of $g$ relative to
+those of $h$ are given by the Koszul formula:
+$\Gamma(g) - \Gamma(h) = \tfrac{1}{2}g^{-1}(\nabla^h P +
+\nabla^h P - \nabla^h P)$ (with appropriate index symmetrisations).
+Since $P$ involves $\nabla s$ and $\nabla^2 s$, the connection
+difference involves $\nabla^2 s$ and $\nabla^3 s$.
+Differentiating once more for the Riemann tensor and contracting
+twice for the scalar curvature gives the stated structure.
+The key point is that $g^{-1}$ introduces $\det(g)$ in the
+denominator, making $R(g)$ rational in the coefficients.
+\end{proof}
+
+\begin{remark}[Reduction to known formulas]
+For $\beta = \gamma = 0$, $\alpha = e^{2\varphi}$:
+$R(g) = e^{-2\varphi}\bigl[R(h) - 2(n-1)\Delta_h\varphi
+- (n-1)(n-2)|\nabla\varphi|^2_h\bigr]$,
+recovering the standard conformal change formula.
+For $\alpha = \beta = 0$, $\gamma = 1$ on $(M^2,\delta)$:
+$R(g) = 2K$ with $K$ given by~\eqref{eq:gauss-general},
+recovering the two-dimensional Hessian result.
+\end{remark}
+
+\subsection{Gauss--Bonnet constraints on the coefficients}
+\label{sec:gauss-bonnet}
+
+On a closed oriented surface $(M^2, h)$, the Gauss--Bonnet theorem
+provides a global constraint on any seam-generated metric.
+
+\begin{proposition}[Gauss--Bonnet for seam metrics]
+\label{prop:gauss-bonnet}
+Let $g = \alpha\,h + \beta\,ds\otimes ds + \gamma\,\nabla^2 s$
+be a Riemannian metric on a closed surface $(M^2, h)$.
+Then
+\[
+\int_M K_g\,dA_g = 2\pi\chi(M),
+\]
+where $K_g$ is the Gauss curvature of~$g$
+and $dA_g = \sqrt{\det g}\,dx^1\wedge dx^2$.  In particular,
+the seam $s$ and coefficients $\alpha,\beta,\gamma$ must satisfy
+the integral constraint
+\[
+\int_M K_g(\alpha,\beta,\gamma,s,\nabla s,\nabla^2 s,\nabla^3 s)
+\;\sqrt{\det g(\alpha,\beta,\gamma,s,\nabla s,\nabla^2 s)}
+\;dA_h = 2\pi\chi(M).
+\]
+\end{proposition}
+
+\begin{corollary}[Weighted Gauss--Bonnet for order-1 rules]
+\label{cor:weighted-gb-order1}
+Let $g=\alpha\,h+\beta\,ds\otimes ds$ be an order-$1$ seam metric on a closed
+surface $(M^2,h)$, with $\alpha>0$ and $\alpha+\beta|\nabla s|_h^2>0$.
+Then
+\[
+\int_M K_g\;\alpha\,\sqrt{1+\frac{\beta}{\alpha}|\nabla s|_h^2}\;dA_h
+= 2\pi\chi(M).
+\]
+\end{corollary}
+
+\begin{proof}
+By Gauss--Bonnet, $\int_M K_g\,dA_g=2\pi\chi(M)$.  Since $\dim M=2$,
+Corollary~\ref{cor:volume-order1} gives
+$dA_g=dV_g=\alpha\,\sqrt{1+\frac{\beta}{\alpha}|\nabla s|_h^2}\,dA_h$.
+Substituting this expression for $dA_g$ yields the identity.
+\end{proof}
+
+This constrains the admissible parameter space in concrete ways:
+for instance, a seam on the 2-sphere ($\chi = 2$) generating a metric
+via the conformal rule must produce strictly positive total curvature,
+while on a torus ($\chi = 0$) the positive and negative curvature
+contributions from the $\beta$- and $\gamma$-terms must cancel exactly.
+
+\begin{remark}[Chern--Gauss--Bonnet in dimension~4]
+\label{rem:4d-cgb}
+In dimension~4, the Chern--Gauss--Bonnet integrand
+$|\Rm|^2 - 4|\Ric|^2 + R^2$ can be expressed, via
+Proposition~\ref{prop:curv-general}, entirely in terms of jets
+of~$s$ up to order~3 and the coefficient functions
+$(\alpha,\beta,\gamma)$.  Integrating against $dV_g$ yields a
+\emph{seam functional}
+\[
+\chi(M) = \frac{1}{8\pi^2}
+\int_M Q\bigl(s,\nabla s,\nabla^2 s,\nabla^3 s;\,
+\alpha,\beta,\gamma\bigr)\,dV_h,
+\]
+where $Q$ is an explicit polynomial in the jet invariants.
+Since $\chi(M)$ is a fixed integer, this constrains the admissible
+seams on any given 4-manifold: a nonlinear integral identity that
+every metric-generating seam must satisfy.  For the pure Hessian
+rule ($\alpha=\beta=0$, $\gamma=1$) on a flat background,
+$Q$ simplifies to a polynomial in the eigenvalues of $\nabla^2 s$
+and their derivatives, giving a new route to seam selection
+(Open Problem~\ref{prob:seam-selection}).
+\end{remark}
+
+\subsection{Local scalar-curvature prescription}
+\label{sec:curv-prescription}
+
+The curvature formula (Proposition~\ref{prop:curv-general}) combined
+with the Fredholm theory for the normal equation
+(Proposition~\ref{prop:fredholm}) suggests an avenue for inverse design.
+However, the scalar-curvature map itself does \emph{not} inherit a
+fourth-order elliptic principal symbol in the seam variable: the would-be
+$|\xi|^4$ term cancels.
+
+\begin{proposition}[Degeneracy of scalar-curvature prescription]
+\label{prop:curv-prescription}
+Let $(M^n,h)$ be compact without boundary and let $s_0$ be a smooth seam.
+Consider the scalar-curvature map
+$\mathcal{R}\colon s\mapsto R(\Phi(s;h))$.
+Then the linearisation $D\mathcal{R}_{s_0}(\dot s)$ has \emph{no}
+fourth-order term in $\dot s$ coming from the Hessian direction
+$\gamma\,\nabla^2\dot s$: the $|\xi|^4$ principal symbol cancels.
+In particular, $D\mathcal{R}_{s_0}$ is not, in general, a fourth-order
+elliptic scalar operator in the seam variable.
+
+On a closed surface ($n=2$), any prescribed target curvature must still
+satisfy the Gauss--Bonnet constraint
+$\int_M R_{\mathrm{target}}\,dA_g = 4\pi\chi(M)$.
+\end{proposition}
+
+\begin{proof}
+The linearisation of scalar curvature at $g_0=\Phi(s_0;h)$ in the
+direction of a symmetric 2-tensor $\dot g$ is
+\[
+\delta R = -\Delta_{g_0}(\tr_{g_0} \dot g) + \nabla^{i}\nabla^{j} \dot g_{ij}
+- \langle \Ric(g_0), \dot g\rangle_{g_0}.
+\]
+If we take the Hessian-direction variation $\dot g=\gamma\,\nabla^2\dot s$
+then the symbol-level contribution of the first two terms cancels:
+in a normal frame at a point,
+$\sigma(-\Delta\,\tr)(\xi)=-\gamma|\xi|^4$ while
+$\sigma(\nabla^i\nabla^j \dot g_{ij})(\xi)=+\gamma|\xi|^4$.
+Hence the $|\xi|^4$ principal symbol vanishes.
+The remaining terms involve at most lower derivatives of $\dot s$.
+\end{proof}
+
+\begin{remark}[Connection to Kazdan--Warner]
+On closed surfaces with the conformal rule
+($\beta = \gamma = 0$, $\alpha = e^{2s}$),
+the scalar-curvature prescription problem reduces to the
+classical Kazdan--Warner theorem~\cite{KazdanWarner1975}: a function
+$K_{\mathrm{target}}$ that is realised as the Gaussian curvature of a
+conformal metric $e^{2s}h$ must satisfy the Gauss--Bonnet constraint
+$\int_M K_{\mathrm{target}}\,e^{2s}\,dA_h = 2\pi\chi(M)$.
+The Kazdan--Warner theorem characterises which curvature functions are
+realisable beyond this necessary integral condition.
+For the full three-term family, Proposition~\ref{prop:curv-prescription}
+shows that the seam-linearised scalar curvature does \emph{not} have a
+fourth-order elliptic principal symbol coming from the Hessian direction,
+so a general local prescription theorem requires additional structure.
+\end{remark}
+
+\subsection{The seam Ricci flow}
+\label{sec:ricci-flow}
+
+A time-dependent seam $s(x,t)$ induces an evolving metric
+$g(t) = \Phi(s(\cdot,t);\,h)$.  Requiring that $g(t)$ satisfy the
+Ricci flow $\partial_t g = -2\Ric(g)$ and using the chain rule
+$\partial_t g = D\Phi_s(\partial_t s)$ yields the \emph{seam Ricci
+flow equation}:
+\begin{equation}
+\label{eq:seam-ricci}
+D\Phi_s(\partial_t s) = -2\,\Ric(\Phi(s;\,h)).
+\end{equation}
+For the conformal rule ($\beta = \gamma = 0$,
+$\alpha = e^{2s}$, $n = 2$), the linearisation is
+$D\Phi_s(\dot s) = 2\dot s\,g$ and the Ricci tensor is
+$\Ric(g) = K\,g$, so~\eqref{eq:seam-ricci} reduces to
+$\partial_t s = -K = e^{-2s}\Delta s$---the standard equation
+for the Ricci flow on surfaces in conformal coordinates.
+
+For the Hessian rule ($\alpha = \beta = 0$, $\gamma = 1$),
+the curvature of $g = \nabla^2 s$ is controlled by the third jet
+$\nabla^3 s$ (cf.\ \S\ref{sec:curv-general}).  A convenient strictly
+elliptic scalar reduction of the seam Ricci flow is obtained by applying
+the normal-operator reduction in
+Proposition~\ref{prop:ricci-wellposed} below, yielding a \emph{fourth-order}
+scalar evolution equation in which the term containing $\partial_t s$ is
+governed by a fourth-order elliptic operator.
+This is the seam-geometric avatar of the Ricci flow, reducing
+the evolution of an entire metric to the evolution of a single
+scalar field.
+
+\begin{remark}[Connection to Calabi flow]
+\label{rem:calabi}
+On a K\"ahler manifold $(M, \omega, J)$ with K\"ahler potential
+$\varphi$ (so that $\omega = dd^c \varphi$), the \emph{Calabi flow}
+is $\partial_t \varphi = R(\omega_{\varphi})$---a fourth-order
+parabolic PDE on a scalar potential whose solution evolves
+the entire K\"ahler metric.  The Hessian-rule seam Ricci flow
+(with $\gamma = 1$, $\alpha = \beta = 0$) is a real analogue in the
+sense that one can reduce the metric evolution to a fourth-order scalar
+evolution equation for a potential; in both cases, a fourth-order scalar
+equation arises after an appropriate reduction.
+The key difference is that Calabi flow preserves the K\"ahler
+class, while the seam Ricci flow operates without a complex
+structure and preserves only the seam representation itself.
+\end{remark}
+
+\begin{proposition}[Well-posedness of the seam Ricci flow]
+\label{prop:ricci-wellposed}
+Let $(M^n,h)$ be compact without boundary and
+$\Phi = \alpha\,h + \beta\,ds\otimes ds + \gamma\,\nabla^2 s$
+with smooth coefficients depending on $(s,|\nabla s|^2)$.
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Strictly parabolic regime ($\gamma > 0$):}
+  Fix an initial seam $s_0 \in C^\infty(M)$ such that
+  $g_0 = \Phi(s_0;\,h)$ is a Riemannian metric.
+  Then the normal equation
+  $(D\Phi_{s_0})^*\bigl[D\Phi_s(\partial_t s) + 2\Ric(g)\bigr] = 0$
+  is a quasilinear evolution equation in which the term containing
+  $\partial_t s$ is governed by a fourth-order uniformly elliptic
+  operator.  More precisely, after freezing coefficients, its
+  principal part in $\partial_t s$ is $\gamma(s_0)^2\,\Delta_h^2\,\partial_t s$
+  (where $\Delta_h^2$ denotes the bi-Laplacian with respect to~$h$).
+  Consequently, after fixing a standard normalisation to remove the
+  finite-dimensional kernel of the normal operator (e.g.\ prescribing
+  the mean value of $s$), there exists $T > 0$ and a unique smooth
+  solution $s(\cdot,t)$ for $t \in [0,T)$.
+\item \textbf{Degenerate regime ($\gamma = 0$):}
+  When $\gamma = 0$, the conformal rule
+  $\Phi = \alpha\,h + \beta\,ds\otimes ds$ gives a
+  \emph{second-order} seam Ricci flow, but the linearised operator
+  has zero principal symbol whenever $\nabla s_0 = 0$.
+  The flow is well-posed only away from the degeneration locus
+  $\{\nabla s = 0\}$, where the parabolicity degenerates.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\emph{Regime (i): $\gamma>0$.}
+Write $g(t)=\Phi(s(\cdot,t);h)$ and consider the normal equation
+\begin{equation}
+\label{eq:normal-seam-ricci}
+(D\Phi_{s_0})^*\bigl[D\Phi_s(\partial_t s) + 2\Ric(g)\bigr] = 0.
+\end{equation}
+We first identify the principal part of the term containing
+$\partial_t s$.
+
+Since the coefficients depend only on $(s,|\nabla s|^2)$, the
+linearisation $D\Phi_s$ has leading term $\gamma(s,|\nabla s|^2)\,\nabla_h^2$
+acting on the seam variation; all other contributions are of order at
+most~$1$ in the seam variation (coming from differentiating
+$\alpha h$ and $\beta\,ds\otimes ds$).
+Thus, in principal symbol,
+\[
+\sigma\bigl(D\Phi_s\bigr)(\xi)\cdot u = \gamma(s)\,(\xi\otimes\xi)\,u.
+\]
+By Proposition~\ref{prop:fredholm}, the formal adjoint
+$(D\Phi_{s_0})^*$ is a second-order scalar operator with principal symbol
+\[
+\sigma\bigl((D\Phi_{s_0})^*\bigr)(\xi)\cdot T
+= \gamma(s_0)\,\langle T,\xi\otimes\xi\rangle.
+\]
+Composing these symbols gives
+\[
+\sigma\bigl((D\Phi_{s_0})^*\circ D\Phi_s\bigr)(\xi)\cdot u
+= \gamma(s_0)\,\gamma(s)\,|\xi|_h^4\,u,
+\]
+so, in particular at $t=0$, the principal symbol governing
+$\partial_t s$ is $\gamma(s_0)^2|\xi|_h^4$.  Equivalently, the frozen
+principal part of~\eqref{eq:normal-seam-ricci} is
+$\gamma(s_0)^2\,\Delta_h^2\,\partial_t s$.
+Since $\gamma(s_0)>0$, this yields a uniformly strongly elliptic operator
+in the $\partial_t s$ term.
+
+To obtain short-time existence, rewrite~\eqref{eq:normal-seam-ricci} as
+\begin{equation}
+\label{eq:normal-seam-ricci-solve}
+\mathcal{N}_{s_0,s}(\partial_t s)
+= -\,(D\Phi_{s_0})^*\bigl(2\Ric(\Phi(s;h))\bigr),
+\end{equation}
+where $\mathcal{N}_{s_0,s}:=(D\Phi_{s_0})^*\circ D\Phi_s$ is a fourth-order
+scalar operator whose principal symbol is $\gamma(s_0)\gamma(s)|\xi|^4$.
+For $s$ sufficiently close to $s_0$ in a high Sobolev norm, ellipticity is
+uniform and the standard elliptic estimates imply that the right-hand side
+of~\eqref{eq:normal-seam-ricci-solve} determines $\partial_t s$ uniquely
+after fixing a normalisation that removes the finite-dimensional kernel of
+the normal operator (for instance, by prescribing $\int_M s\,dV_h$).
+Since $s\mapsto \Ric(\Phi(s;h))$ depends smoothly on the jet of $s$ and
+$\mathcal{N}_{s_0,s}$ depends smoothly on $(s,\nabla s)$, the resulting
+right-hand side defines a smooth vector field on a Sobolev manifold of
+seams.  Standard local well-posedness for such quasilinear evolution
+equations gives a time $T>0$ and a unique smooth solution with initial data
+$s(\cdot,0)=s_0$.
+
+\emph{Regime (ii): $\gamma=0$.}
+When $\gamma=0$, the highest-order term in $D\Phi_{s_0}(u)$ comes from the
+variation of $\beta\,ds\otimes ds$ and is first order in~$u$.
+In particular, in principal symbol,
+\[
+\sigma(D\Phi_{s_0})(\xi)\cdot u
+= 2\beta\,(\nabla s_0\cdot\xi)\,(\xi\odot\nabla s_0^\flat)\,u,
+\]
+which vanishes when $\nabla s_0=0$ and also in directions $\xi\perp\nabla s_0$.
+Therefore strict parabolicity/ellipticity fails at critical points and in
+transverse directions, so the flow degenerates along $\{\nabla s=0\}$.
+\end{proof}
+
+% ================================================================
+\section{Beyond Metrics: Quadratic Differentials as a Complex Rule}
+\label{sec:qd}
+% ================================================================
+
+On a Riemann surface $(M^2, h, J)$ with complex structure $J$, the
+target bundle $\mathcal{G}$ may be the bundle of holomorphic quadratic
+differentials $K_M^{\otimes 2}$ (holomorphic sections of
+$\Sym^2(T^{*1,0}M)$).  Given a seam $s$ and a holomorphic
+function $f$ with $\operatorname{Re} f = s$ (i.e.\ $s$ is the real
+part of a holomorphic potential), the construction
+\begin{equation}
+\label{eq:qd-rule}
+w\,dz^2 := (\partial_z^2 f)\,dz^2 = f''(z)\,dz^2
+\end{equation}
+defines a holomorphic quadratic differential away from the zeros of the
+underlying function.
+
+\begin{proposition}[QD rule as a complex Hessian]
+The quadratic-differential rule~\eqref{eq:qd-rule} is the
+$(2,0)$-projection of the complexified Hessian rule.  Specifically,
+if $g_{ij} = \partial_i \partial_j s$ is the real Hessian and $J$ is
+the complex structure, then
+\[
+w = \tfrac{1}{2}\bigl(g_{11} - g_{22}\bigr) - i\, g_{12}
+\quad\text{(in conformal coordinates $z = x^1 + ix^2$)},
+\]
+and $g = \operatorname{Re}(w\,dz^2) + \tfrac{1}{2}(\Delta s)\,|dz|^2$.
+\end{proposition}
+
+This unifies the Hessian rule (real part) with the
+quadratic-differential construction that arises in complex
+analysis and mathematical physics.  The
+traceless part of the Hessian \emph{is} the quadratic differential;
+the trace part is the conformal factor $\Delta s$.
+
+% ================================================================
+\section{The Linearisation of a Rule}
+\label{sec:linearisation}
+% ================================================================
+
+Given a rule $\Phi$ and a background seam $s_0$, the first-order
+response of the geometry to a seam perturbation $\dot s$ is
+\begin{equation}
+\label{eq:linearisation}
+D\Phi_{s_0}(\dot s) :=
+\left.\frac{d}{dt}\right|_{t=0} \Phi(s_0 + t \dot s;\, h).
+\end{equation}
+This is a \emph{linear differential operator}
+$D\Phi_{s_0} \colon C^\infty(M) \to \Gamma(\Sym^2 T^*M)$ whose
+properties---kernel, image, ellipticity, spectrum---control the
+geometry of the inverse problem.
+
+\subsection{The linearised operator for each basis rule}
+
+For the universal decomposition
+$\Phi = \alpha\,h + \beta\,ds \otimes ds + \gamma\,\nabla^2 s$
+with coefficients depending on $(s, |\nabla s|^2, \Delta s)$:
+
+\begin{proposition}[Linearisation at $s_0 = 0$ with $\nabla s_0 = 0$]
+\label{prop:lin}
+Assume $(M,h)$ is compact without boundary and
+$s_0 \equiv 0$ (so $\nabla s_0 = 0$ and $\nabla^2 s_0 = 0$).
+Then the linearisation of each basis rule at $s_0 = 0$ is:
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Conformal:} $\Phi = e^{2s} h$.
+  $D\Phi_0(\dot s) = 2\dot s\, h$.
+  This is a zeroth-order (multiplication) operator.
+  Kernel: $\dot s = 0$.  Image: conformal deformations.
+\item \textbf{Gradient tensor:} $\Phi = |\nabla s|^2 h$.
+  $D\Phi_0(\dot s) = 0$.
+  The linearisation at $s_0 = 0$ vanishes identically---the gradient
+  rule is \emph{degenerate at constant seams}.
+\item \textbf{Hessian:} $\Phi = \nabla^2 s$.
+  $D\Phi_0(\dot s) = \nabla^2 \dot s$.
+  This is a second-order elliptic operator (the Hessian operator).
+  Kernel (on compact $M$): affine functions, i.e.\
+  $\dot s \in \ker\nabla^2 = \{c_0 + c_i x^i\}$ (dimension $\le n+1$,
+  with equality on $\mathbb{R}^n$).  Image:
+  all symmetric 2-tensors of the form $\nabla^2 f$ for some~$f$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Direct differentiation of each rule.  For (b), the linearisation of
+$|\nabla s|^2 h$ at $s_0 = 0$ is
+$2\langle \nabla s_0, \nabla \dot s \rangle h = 0$ since
+$\nabla s_0 = 0$.  For~(c), $\nabla^2(s_0 + t\dot s)
+= \nabla^2 s_0 + t\nabla^2\dot s$, so the linearisation is
+$\nabla^2 \dot s$.
+\end{proof}
+
+\subsection{The seam deformation complex}
+
+For a given rule $\Phi$ and seam $s_0$, the linearisation
+$D\Phi_{s_0}$ fits into a sequence:
+\begin{equation}
+\label{eq:complex}
+0 \longrightarrow
+\underbrace{\ker D\Phi_{s_0}}_{\text{gauge / kernel}}
+\longrightarrow
+C^\infty(M)
+\xrightarrow{\;D\Phi_{s_0}\;}
+\Gamma(\Sym^2 T^*M)
+\longrightarrow
+\underbrace{\coker D\Phi_{s_0}}_{\text{obstructions}}
+\longrightarrow 0.
+\end{equation}
+
+\begin{definition}[Seam moduli space]
+The (formal, infinitesimal) \emph{seam moduli space} at $s_0$
+for target geometry $g_0 = \Phi(s_0)$ is
+$\ker D\Phi_{s_0}$---the space of infinitesimal seam variations
+that leave the geometry unchanged to first order.
+\end{definition}
+
+\begin{definition}[Obstruction space]
+The \emph{obstruction space} at $s_0$ is $\coker D\Phi_{s_0}$---the
+space of infinitesimal geometric deformations that cannot be achieved
+by any seam variation through the rule~$\Phi$.
+\end{definition}
+
+For the conformal rule, the kernel is trivial (0-dimensional) and
+the obstruction space is the space of non-conformal deformations
+($(n(n+1)/2 - 1)$-dimensional at each point)---consistent with
+the well-known fact that a single scalar controls only one
+component of the metric.
+
+For the Hessian rule on $\mathbb{R}^n$, the kernel is $(n+1)$-dimensional
+(affine functions), and the image consists of exact Hessians
+$\nabla^2 f$, which form a proper subspace of all symmetric 2-tensors
+(on $\mathbb{R}^n$, a symmetric 2-tensor is an exact Hessian if and only
+if it satisfies the classical Saint-Venant compatibility conditions
+$\partial_i \partial_j g_{kl}=\partial_k \partial_l g_{ij}$).
+
+\begin{remark}[Connection to the cotangent Laplacian]
+In the discrete setting of conformal graph metrics, the linearisation
+of the angle-defect curvature map with respect to the seam at $s = 0$
+is exactly the cotangent Laplacian (see \S\ref{sec:discrete}).  This is
+a discrete avatar of the linearised conformal rule: the cotangent
+Laplacian is the discrete analogue of the second-order operator
+governing the first-order response of curvature to a conformal
+perturbation.
+\end{remark}
+
+\subsection{Ellipticity and analytical properties}
+\label{sec:ellipticity}
+
+For the general three-term rule
+$\Phi = \alpha\,h + \beta\,ds\otimes ds + \gamma\,\nabla^2 s$
+at background seam~$s_0$, the linearisation
+$D\Phi_{s_0}\colon C^\infty(M) \to \Gamma(\Sym^2 T^*M)$
+is a second-order linear differential operator whose analytical
+properties are governed by its principal symbol.
+
+\begin{proposition}[Principal symbol of the full linearised operator]
+\label{prop:symbol}
+At a point $x \in M$ and covector $\xi \in T^*_xM$,
+the principal symbol of~$D\Phi_{s_0}$ is the linear map
+$\sigma(D\Phi_{s_0})(\xi)\colon \mathbb{R} \to \Sym^2 T^*_xM$
+given by
+\begin{equation}
+\label{eq:symbol}
+\sigma(D\Phi_{s_0})(\xi)\cdot\dot s
+= \bigl[\gamma\,\xi \otimes \xi
+  + 2\beta\,(\nabla s_0 \cdot \xi)\,\xi \otimes \nabla s_0^\flat
+  + \text{lower-order}\bigr]\,\dot s,
+\end{equation}
+where the ``lower-order'' terms come from derivatives of the
+coefficient functions $\alpha,\beta,\gamma$ with respect to
+$\Delta s$ and $|\nabla s|^2$, and contribute only when
+these coefficients genuinely depend on second-order invariants.
+\end{proposition}
+
+\begin{proof}
+The highest-order part of $D\Phi_{s_0}(\dot s)$ comes from
+differentiating $\gamma\,\nabla^2 s$ and from the variation of
+$\beta\,ds\otimes ds$ through the dependence of $\beta$ on
+$\Delta s$.  The $\nabla^2\dot s$ term contributes
+$\gamma\,\xi\otimes\xi$; the cross term from
+$\partial_{\Delta s}\beta \cdot \Delta\dot s \cdot ds_0\otimes ds_0$
+contributes $(\partial_{\Delta s}\beta)\,|\xi|^2\,\nabla s_0^\flat
+\otimes \nabla s_0^\flat$.
+For coefficients depending only on $(s, |\nabla s|^2)$---which
+covers all worked examples in \S\ref{sec:worked}---the
+leading symbol is exactly $\gamma\,\xi\otimes\xi$.
+\end{proof}
+
+\begin{corollary}[Ellipticity criterion]
+\label{cor:elliptic}
+When the coefficients $\alpha,\beta,\gamma$ depend only on
+$(s, |\nabla s|^2)$, the linearised operator $D\Phi_{s_0}$ is
+\emph{overdetermined-elliptic} (injective symbol) if and only if
+$\gamma(s_0) \neq 0$.  The symbol is injective iff
+$\sigma(\xi) \neq 0$ for all $\xi \neq 0$: since
+$\gamma\,\xi\otimes\xi = 0$ requires $\xi = 0$ when $\gamma \neq 0$,
+injectivity holds.
+\end{corollary}
+
+The linearised operator maps sections of a rank-1 bundle to sections
+of a rank-$n(n+1)/2$ bundle, so it is necessarily overdetermined for
+$n \geq 2$.  In the overdetermined-elliptic case, the relevant
+Fredholm theory is:
+
+\begin{proposition}[Fredholm property]
+\label{prop:fredholm}
+Let $(M,h)$ be compact without boundary, $\gamma \neq 0$, and
+suppose the coefficients depend only on $(s, |\nabla s|^2)$.
+Then the linearisation $D\Phi_{s_0}\colon H^{k+2}(M) \to
+H^k(M;\,\Sym^2 T^*M)$ is a bounded linear operator with
+\emph{finite-dimensional kernel} and \emph{closed range}.
+The formal $L^2$-adjoint $(D\Phi_{s_0})^*\colon
+\Gamma(\Sym^2 T^*M) \to C^\infty(M)$ is a second-order operator
+with principal symbol
+$\sigma((D\Phi_{s_0})^*)(\xi)\cdot T =
+\gamma \langle T, \xi\otimes\xi \rangle$
+for $T \in \Sym^2 T^*_x M$, and the composition
+$(D\Phi_{s_0})^* \circ D\Phi_{s_0}$ is a fourth-order elliptic
+scalar operator with principal symbol $\gamma^2 |\xi|^4$.
+In particular, the normal operator $(D\Phi_{s_0})^* D\Phi_{s_0}$
+is Fredholm of index zero.
+\end{proposition}
+
+The vanishing of $\gamma$ is thus the analytical avatar of the
+degeneration locus: exactly where the Hessian component of the
+rule vanishes, the linearisation loses ellipticity.
+
+% ================================================================
+\section{The Degeneration Locus}
+\label{sec:degeneration}
+% ================================================================
+
+A striking feature revealed by the linearisation is the existence of a
+\emph{degeneration locus}: the set of points where the linearised rule
+drops rank, meaning that small seam perturbations fail to control the
+geometry.
+
+\begin{definition}[Degeneration locus]
+\label{def:degen}
+For a rule $\Phi$ and a seam $s$, the \emph{degeneration locus} is
+\begin{equation}
+\mathcal{D}(\Phi, s) :=
+\{x \in M : \text{the fibre map }
+D\Phi_s(x) \colon J^k_x \to (\Sym^2 T^*M)_x
+\text{ is not surjective}\}.
+\end{equation}
+\end{definition}
+
+This abstract definition specialises to concrete geometric objects
+across a range of applications:
+
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{Gradient rule, diffusion seam:}
+  $\Phi = |\nabla s|^2 h$.  The degeneration locus is
+  $\{\nabla s = 0\}$---the critical points of the log-density, i.e.\
+  the modes and saddles of the probability distribution.  This is
+  precisely where the probability-flow ODE velocity vanishes and the
+  seam metric becomes degenerate, requiring $\varepsilon$-regularisation.
+
+\item \textbf{Hessian rule, convex potential:}
+  $\Phi = \nabla^2 s$ for a convex function~$s$.  The degeneration
+  locus is $\{\det(\nabla^2 s) = 0\}$, which coincides with the
+  singular support of the optimal-transport map in the Brenier--McCann
+  theory.  Caffarelli's regularity theory governs the geometry here.
+
+\item \textbf{Warped rule:}
+  $\Phi = \phi(s)^2 h$ with $\phi(0) = 0$.  The degeneration
+  locus $\{s = 0\}$ is the collapse locus: the fibre shrinks to a
+  point and the Gromov--Hausdorff limit along a degeneration
+  sequence loses the fibre directions entirely
+  (cf.\ Example~\ref{sec:ex-warped}).
+\end{enumerate}
+
+\begin{proposition}[The degeneration locus is a geometric invariant]
+\label{prop:degen-invariant}
+If $\Phi$ is a natural operator (satisfying the naturality axiom
+\ref{item:naturality}), then for any diffeomorphism $\varphi$ of $M$
+preserving $\mathcal{B}$,
+\[
+\mathcal{D}(\Phi, \varphi^* s) = \varphi^{-1}(\mathcal{D}(\Phi, s)).
+\]
+In particular, the degeneration locus is an intrinsic geometric object,
+not an artefact of coordinates.
+\end{proposition}
+
+\begin{proof}
+By naturality, $D\Phi_{\varphi^* s}(\cdot)
+= \varphi^* \circ D\Phi_s(\cdot) \circ (\varphi^{-1})^*$.
+Surjectivity is preserved by pullback, so a point $x$ lies in
+$\mathcal{D}(\Phi, \varphi^* s)$ if and only if $\varphi(x)$ lies in
+$\mathcal{D}(\Phi, s)$.
+\end{proof}
+
+\begin{remark}[A unifying theme]
+Across the examples above, \emph{the most interesting geometry
+happens at or near the degeneration locus}: modes of the score
+field generate the critical-point regularisation problem;
+singular optimal-transport supports delimit the regularity
+boundary; collapse loci of warped products mark the loss of
+fibre directions.  The degeneration locus is a universal
+geometric concept that connects these phenomena.
+\end{remark}
+
+\subsection{Morse-theoretic lower bound}
+\label{sec:morse-bound}
+
+For rules that depend on the gradient of the seam, the topology of the
+manifold forces the degeneration locus to be nonempty.
+
+\begin{theorem}[Topological lower bound on the degeneration locus]
+\label{thm:morse-degen}
+Let $(M^n, h)$ be a closed Riemannian manifold and let $\Phi$ be a
+rule whose linearised symbol $\sigma(D\Phi_s)(\xi)$ vanishes whenever
+$\nabla s = 0$\textup{---}in particular, any rule with $\gamma = 0$
+and $\alpha$ depending on $|\nabla s|^2$, or more generally any rule
+dominated by the gradient tensor.  Then for any Morse seam
+$s\colon M \to \mathbb{R}$,
+\[
+\#\,\mathcal{D}(\Phi, s) \;\geq\; \sum_{k=0}^{n} b_k(M),
+\]
+where $b_k(M)$ are the Betti numbers of~$M$.  If $s$ is merely
+smooth (not Morse), $\mathcal{D}(\Phi,s) \supseteq \operatorname{Crit}(s)$
+and the Ljusternik--Schnirelmann category gives
+$\#\,\mathcal{D}(\Phi,s) \geq \operatorname{cat}(M) \geq 1 + \operatorname{cup-length}(M)$.
+\end{theorem}
+
+\begin{proof}
+By hypothesis, $\nabla s(x) = 0$ implies $\sigma(D\Phi_s)(\xi)|_x = 0$
+for all~$\xi$, so $x \in \mathcal{D}(\Phi,s)$.  Thus
+$\operatorname{Crit}(s) \subseteq \mathcal{D}(\Phi,s)$.
+If $s$ is Morse, each critical point is isolated, and the Morse
+inequalities give
+$\#\,\operatorname{Crit}(s) \geq \sum b_k(M)$.
+The Ljusternik--Schnirelmann bound requires only smoothness.
+\end{proof}
+
+\begin{corollary}[Poincar\'e--Hopf charge of isolated critical points]
+\label{cor:poincare-hopf-degen}
+In the setting of Theorem~\ref{thm:morse-degen}, suppose that $\Crit(s)$ is
+discrete (for instance, $s$ is Morse).  Then the Poincar\'e--Hopf theorem
+applied to the vector field $\nabla^h s$ gives
+\[
+\sum_{x\in\Crit(s)} \operatorname{ind}_x(\nabla^h s) = \chi(M).
+\]
+In particular, since $\Crit(s) \subseteq \mathcal{D}(\Phi,s)$ by
+Theorem~\ref{thm:morse-degen}, the degeneration locus contains a finite set
+of points whose total index equals $\chi(M)$.  If $s$ is Morse, then each
+index is $\pm 1$ and the identity reduces to the alternating-sum formula for
+the Euler characteristic.
+\end{corollary}
+
+For the $n$-torus $T^n$, $\sum b_k = 2^n$, so any gradient-dominated
+rule requires at least $2^n$ degeneration points for a Morse seam.
+For $S^2$, $\sum b_k = 2$: the two critical points of any
+height function are the irreducible degeneration locus of the
+gradient metric---precisely the poles where the score geometry
+becomes singular.
+
+\subsection{The Hessian degeneration locus and optimal transport}
+\label{sec:OT}
+
+For the Hessian rule ($\gamma = 1$, $\alpha = \beta = 0$), the
+degeneration locus $\mathcal{D} = \{\det(\nabla^2 s) = 0\}$ admits a
+precise characterisation via optimal transport theory, which gives it
+far more analytical substance than the abstract definition alone.
+
+\begin{proposition}[Seam--optimal-transport correspondence]
+\label{prop:OT}
+Let $s\colon \mathbb{R}^n \to \mathbb{R}$ be a smooth strictly convex
+function and $g = \nabla^2 s$ the associated Hessian metric.
+\begin{enumerate}[label=(\roman*)]
+\item The volume form of $g$ satisfies
+  $dV_g = \sqrt{\det(\nabla^2 s)}\;dV_h$.  In particular, given
+  a source measure $\mu_0 = \rho_0\,dV_h$ and a target measure
+  $\mu_1 = \rho_1\,dV_h$, the condition $(\nabla s)_*\mu_0 = \mu_1$
+  is equivalent to the \emph{Monge--Amp\`ere equation}
+  \begin{equation}
+  \label{eq:monge-ampere}
+  \det(\nabla^2 s(x)) = \frac{\rho_0(x)}{\rho_1(\nabla s(x))}.
+  \end{equation}
+  By Brenier's theorem~\cite{Villani2009}, the unique $L^2$-optimal
+  transport map
+  $T = \nabla s$ between $\mu_0$ and $\mu_1$ arises from a convex
+  potential~$s$---i.e., from a seam whose Hessian rule produces a
+  positive-definite metric.
+
+\item The degeneration locus of the Hessian rule is
+  $\mathcal{D}(\Phi_{\mathrm{Hess}}, s) = \{\det(\nabla^2 s) = 0\}$,
+  which in the optimal-transport setting is exactly the
+  \emph{singular support} of the transport plan: the set where the
+  transport map $\nabla s$ fails to be a local diffeomorphism.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For~(i): in coordinates, $\det g = \det(\nabla^2 s)$ and
+$dV_g = \sqrt{\det g}\,dx^1 \wedge \cdots \wedge dx^n
+= \sqrt{\det(\nabla^2 s)}\,dV_h$.
+The change-of-variables formula for $T = \nabla s$ gives
+$\int_A \rho_1(y)\,dy = \int_{T^{-1}(A)} \rho_0(x)\,dx$,
+which is~\eqref{eq:monge-ampere}.
+
+For~(ii): the Jacobian of $T = \nabla s$ is $\nabla^2 s$; the map
+fails to be a local diffeomorphism exactly where this Jacobian is
+singular, i.e.\ $\det(\nabla^2 s) = 0$.
+\end{proof}
+
+\begin{remark}[Displacement interpolation as affine seams in Euclidean space]
+On $\mathbb{R}^n$ with the quadratic cost, McCann's displacement
+interpolation between the identity map and an optimal transport map
+$T=\nabla\varphi$ is
+$T_t(x)=(1-t)x+t\nabla\varphi(x)$.
+Since $T_t=\nabla s_t$ with
+$s_t(x)=(1-t)\tfrac12|x|^2+t\varphi(x)$,
+the displacement geodesic corresponds to an \emph{affine} path in the
+space of convex seams.  Under the Hessian rule this induces the linear
+interpolation of Hessian metrics
+$\nabla^2 s_t = (1-t)\,I + t\,\nabla^2\varphi$.
+\end{remark}
+
+This identification imports the extensive regularity theory for
+Monge--Amp\`ere equations into the seam-rule framework:
+
+\begin{corollary}[Regularity of the Hessian degeneration locus]
+\label{cor:caffarelli}
+Under the hypotheses of Proposition~\ref{prop:OT}, if $\rho_0$ and
+$\rho_1$ are bounded away from zero and infinity on their supports,
+then by Caffarelli's regularity theory~\cite{Caffarelli1992} for the
+Monge--Amp\`ere equation, the Brenier potential $s$ is of class
+$C^{1,\alpha}$ globally
+and $C^\infty$ away from the boundary of the support.
+In particular, the degeneration locus
+$\mathcal{D} = \{\det(\nabla^2 s) = 0\}$ can occur only at the
+\emph{boundary of the convex support} of the measures, and the Hessian
+metric $g = \nabla^2 s$ is smooth in the interior.
+\end{corollary}
+
+\begin{remark}[Consequences for the framework]
+The correspondence clarifies several aspects of the paper's machinery
+in the Hessian case:
+\begin{itemize}
+\item The positive-definiteness condition $\nabla^2 s > 0$ for the
+  Hessian rule is exactly Brenier's convexity condition on the
+  optimal transport potential.
+\item The inverse metric-design algorithm
+  (Remark~\ref{rem:inverse-algorithm}) specialises, for the Hessian
+  rule, to an iterative Monge--Amp\`ere solver; the normal-equation
+  approach connects to the known numerical methods for optimal
+  transport (Benamou--Brenier, entropic regularisation, etc.).
+\item The information-geometry example
+  (\S\ref{sec:ex-fisher}) is a special case: the log-partition
+  function $A(\theta)$ of an exponential family is a convex potential,
+  and the Fisher--Rao metric $\nabla^2 A$ is the Hessian metric of
+  the trivial transport on the parameter space.
+\end{itemize}
+\end{remark}
+
+% ================================================================
+\section{Composition and Algebra of Rules}
+\label{sec:composition}
+% ================================================================
+
+Rules can be combined in several ways, each producing a new rule.
+
+\begin{definition}[Sequential composition]
+If $\Phi_1$ produces a background suitable for $\Phi_2$, the
+composition
+$\Phi_{2 \circ 1}(s_1, s_2;\, h)
+:= \Phi_2(s_2;\, \Phi_1(s_1;\, h))$
+is a rule with two seam inputs.  The linearisation of $\Phi_{2\circ 1}$
+at $(s_1, s_2)$ involves the chain rule:
+$D\Phi_{2\circ 1} = D_2 \Phi_2 \circ D_1 \Phi_1
++ D_{\text{bg}} \Phi_2 \circ D\Phi_1$.
+\end{definition}
+
+\begin{definition}[Linear combination]
+Given rules $\Phi^{(1)}, \ldots, \Phi^{(m)}$ all targeting
+$\Sym^2(T^*M)$, a \emph{mixed rule} is
+$\Phi_{\text{mix}} = \sum_{i=1}^m c_i \Phi^{(i)}$
+with $c_i \in C^\infty(M)$ (or constants).  By the Universal
+Decomposition, every order-$\le 2$ isotropic rule is already a mixed
+rule with $m = 3$.
+\end{definition}
+
+\begin{example}[The Ricci flow as sequential composition]
+The (unnormalised) Ricci flow
+$\partial_t g = -2\Ric(g)$ can be viewed, at each instant, as a
+second-order rule on the local potential representation
+$g = \nabla^2 s$: the Ricci tensor of a Hessian metric depends on
+the third jet $\nabla^3 s$ (cf.\ Proposition~\ref{prop:curv-general}).
+Writing the flow directly as an evolution equation for $s$ requires a
+further reduction (e.g. applying a normal operator), after which one
+obtains a fourth-order parabolic scalar seam equation.
+\end{example}
+
+\begin{proposition}[Composition closure and jet order]
+\label{prop:composition-closure}
+Sequential composition of rules interacts with the jet filtration
+as follows.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \textbf{Conformal--conformal.}
+  $e^{2s_2}(e^{2s_1}h) = e^{2(s_1+s_2)}h$; the composed rule
+  remains conformal with composed seam $s_1 + s_2$.  The
+  conformal rule is closed under sequential composition.
+\item \textbf{Hessian--Hessian.}
+  If $g_1 = \nabla^2_h s_1$ and $g_2 = \nabla^2_{g_1} s_2$,
+  then
+  \[
+  g_2 = \nabla^2_h s_2
+    - \Gamma(g_1,h)^k{}_{ij}\,\nabla_k s_2,
+  \]
+  where $\Gamma(g_1,h)$ is the connection difference tensor,
+  which involves $\nabla^3_h s_1$ through the Christoffel
+  symbols of~$g_1$.  Thus the composed metric escapes to
+  the \emph{order-3} family
+  (Proposition~\ref{prop:order3}), specifically involving
+  the generator $\Pi_{\nabla^3,2}$.
+  The Hessian rule is \emph{not} closed under composition.
+\item \textbf{Conformal--Hessian.}
+  The conformal change of connection gives
+  \[
+  \nabla^2_{e^{2s_1}h} s_2
+  = \nabla^2_h s_2
+    - 2\,\langle ds_1, ds_2\rangle_h\, h
+    + 2\, ds_1 \odot ds_2,
+  \]
+  which is a linear combination of $h$, $ds_1 \odot ds_2$,
+  and $\nabla^2_h s_2$---all order-$\le 2$ tensors.
+  Conformal--Hessian composition remains within the
+  three-term classification.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Part~(a) is immediate.  For~(b), $\nabla^{g_1} = \nabla^h +
+\Gamma(g_1,h)$ and the connection difference tensor
+$\Gamma(g_1,h)^k{}_{ij} = \tfrac{1}{2}(g_1)^{kl}
+(\nabla_i(g_1)_{jl} + \nabla_j(g_1)_{il} - \nabla_l(g_1)_{ij})$
+involves $\nabla^3_h s_1$ via the derivatives of
+$(g_1)_{ij} = (\nabla^2_h s_1)_{ij}$.
+For~(c), the classical conformal Christoffel formula
+$\Gamma(e^{2s_1}h,h)^k{}_{ij}
+= \delta^k_i\,\partial_j s_1 + \delta^k_j\,\partial_i s_1
+- h_{ij}\,h^{kl}\partial_l s_1$
+contains only first derivatives of~$s_1$; substituting into
+$\nabla^2_{g_1} s_2 = \nabla^2_h s_2
+- \Gamma(g_1,h)^k{}_{ij}\partial_k s_2$ gives the stated formula.
+\end{proof}
+
+Parts (b) and~(c) reveal an asymmetry: repeated Hessian composition
+``climbs the jet hierarchy,'' escaping the order-2 family, while
+conformal--Hessian mixing is stable at order~2.  This gives concrete
+guidance for multi-stage seam constructions: interleaving conformal
+steps preserves tractability, whereas chaining Hessian steps
+necessarily introduces higher-order jets.
+
+% ================================================================
+\section{The Seam Fibre}
+\label{sec:fibre}
+% ================================================================
+
+The Universal Decomposition shows that a single seam generates a
+whole family of geometries as the rule varies.  We now formalise this
+observation.
+
+\begin{definition}[Seam fibre]
+\label{def:fibre}
+Let $(M,h)$ be a Riemannian background and $s \in C^\infty(M)$ a
+seam.  The \emph{seam fibre} of~$s$ is the set of all symmetric
+2-tensors obtainable from~$s$ by admissible rules of order~$\le 2$:
+\[
+\mathcal{F}(s;\,h)
+:= \bigl\{\,\alpha\,h + \beta\,ds\otimes ds + \gamma\,\nabla^2 s
+   \;:\; (\alpha,\beta,\gamma) \in
+   C^\infty(\mathcal{I})^3\bigr\},
+\]
+where $\mathcal{I} = (s,\,|\nabla s|_h^2,\,\Delta_h s)$ are the
+$\OO(n)$-invariant jet scalars of~$s$.
+\end{definition}
+
+At each point $x \in M$, the fibre is the affine span of the three
+tensors $h_x$, $(ds\otimes ds)_x$, and $(\nabla^2 s)_x$ with
+coefficents depending smoothly on the jet invariants.  We now
+identify which features of the geometry are intrinsic to the seam
+and shared across the entire fibre, and which depend on the rule.
+
+\begin{proposition}[Rule-invariant vs.\ rule-dependent features]
+\label{prop:fibre-invariants}
+Let $g_1 = \Phi_1(s;h)$ and $g_2 = \Phi_2(s;h)$ be two
+Riemannian metrics in the same fibre $\mathcal{F}(s;h)$.  Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \textbf{Shared (rule-invariant).}  $g_1$ and $g_2$ share:
+  \begin{itemize}
+  \item the level sets $\{s = c\}$ and their nesting;
+  \item the critical set $\operatorname{Crit}(s) = \{\nabla s = 0\}$;
+  \item the symmetry group
+    $\operatorname{Isom}(M,h) \cap \operatorname{Sym}(s)$,
+    where $\operatorname{Sym}(s) = \{\varphi : \varphi^* s = s\}$;
+  \item the topological type of the sublevel sets $\{s \le c\}$.
+  \end{itemize}
+\item \textbf{Rule-dependent.}  The following can differ between
+  $g_1$ and $g_2$:
+  \begin{itemize}
+  \item Riemannian curvature, geodesics, and distances;
+  \item metric signature (e.g.\ the Hessian rule may give
+    Lorentzian signature while the conformal rule gives
+    Riemannian);
+  \item the degeneration locus $\mathcal{D}(\Phi_i, s)$
+    (e.g.\ the gradient rule degenerates at
+    $\operatorname{Crit}(s)$, while the conformal rule
+    $e^{2s}h$ is everywhere nondegenerate).
+  \end{itemize}
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Part~(i): the level sets, critical set, and sublevel-set topology
+depend only on~$s$ (a smooth function), not on the rule.  If
+$\varphi$ is an isometry of~$h$ with $\varphi^* s = s$, then by
+naturality (Axiom~\ref{item:naturality}),
+$\Phi(\varphi^* s;\,\varphi^* h) = \varphi^*\Phi(s;h)$ for any
+rule~$\Phi$, so $\varphi$ is an isometry of~$g$ as well.
+
+Part~(ii): the conformal rule with $\alpha = e^{2s}$ gives
+positive-definite $g_1 = e^{2s}h$ everywhere.  The Hessian rule
+gives $g_2 = \nabla^2 s$, which is indefinite whenever $\nabla^2 s$
+has mixed eigenvalues (e.g.\ for harmonic~$s$, see
+\S\ref{sec:ex-hessian}).  The degeneration loci differ because
+each rule's symbol has a different kernel structure
+(Proposition~\ref{prop:symbol}).
+\end{proof}
+
+\begin{remark}[The seam as a latent geometric reservoir]
+Conceptually, the 2-jet $j^2 s$ at each point simultaneously encodes
+three independent tensorial objects---$s$ (a scalar), $ds \otimes ds$
+(a rank-1 tensor), and $\nabla^2 s$ (a full symmetric tensor).
+A rule is a choice of which of these to ``listen to'' and with what
+weight.  The seam therefore does not generate one geometry but an
+entire family, parameterised by the coefficient functions
+$(\alpha,\beta,\gamma)$.  Different rules extract different aspects
+of the same underlying scalar data---an observation that is
+practically useful whenever one rule produces better-conditioned
+geometry than another for a given computational task
+(see Remark~\ref{rem:inverse-algorithm}).
+\end{remark}
+
+The seam fibre raises a natural uniqueness question: if two seams
+produce the same geometry under the same rule, how are they related?
+
+\begin{theorem}[Rigidity of seam representations]
+\label{thm:rigidity}
+Let $(M,h)$ be a connected compact manifold without boundary and
+let $\Phi = \alpha\,h + \beta\,ds\otimes ds + \gamma\,\nabla^2 s$
+be a rule with coefficients depending smoothly on
+$(s,|\nabla s|^2)$.  Suppose $\Phi(s_1;h) = \Phi(s_2;h)$
+pointwise on~$M$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \textbf{Conformal rule} ($\beta = \gamma = 0$,
+  $\alpha = e^{2s}$):
+  $s_1 - s_2$ is constant on~$M$.  The gauge group is
+  $\mathbb{R}$ (additive translations).
+\item \textbf{Hessian rule} ($\alpha = \beta = 0$, $\gamma = 1$):
+  $s_1 - s_2$ is an affine function
+  ($\nabla^2(s_1 - s_2) = 0$), so
+  $\dim\ker = n + 1$ on $\mathbb{R}^n$ and
+  $\dim\ker = 1$ (constants) on any connected compact manifold
+  without boundary.
+\item \textbf{General rule with $\gamma \neq 0$}:
+  $\delta s := s_1 - s_2$ satisfies
+  $D\Phi_{s_1}(\delta s) = O(|\delta s|^2)$.
+  In particular, the space of infinitesimal gauge
+  symmetries is $\ker D\Phi_{s_1}$, which is
+  finite-dimensional by the Fredholm property
+  (Proposition~\ref{prop:fredholm}).
+  Generically $\dim\ker D\Phi_{s_0} = 0$ or~$1$, so the
+  seam representation is \emph{rigid}: at most a
+  one-parameter family of seams produces the same geometry.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Subtract: $\Phi(s_1;h) - \Phi(s_2;h) = 0$.
+Expanding about $s_1$,
+$D\Phi_{s_1}(s_2 - s_1) + Q(s_1, s_2) = 0$
+where $Q$ is the quadratic (and higher) remainder.
+
+For~(a): $e^{2s_1} = e^{2s_2}$ on connected~$M$ forces
+$s_1 = s_2 + c$ for a constant~$c \in \mathbb{R}$.
+
+For~(b): $\nabla^2 s_1 = \nabla^2 s_2$ gives
+$\nabla^2(s_1 - s_2) = 0$, so $s_1 - s_2$ is affine.
+Taking the trace yields $\Delta_h(s_1-s_2)=0$.
+On a connected compact manifold without boundary, harmonic functions
+are constant, hence $s_1-s_2$ is constant.
+
+For~(c): the linearised equation
+$D\Phi_{s_1}(\delta s) = -Q(s_1, s_2)$ has $Q = O(|\delta s|^2)$.
+For infinitesimal gauges ($Q = 0$), the solution space is
+$\ker D\Phi_{s_1}$.  The normal operator
+$(D\Phi_{s_1})^* D\Phi_{s_1}$ is fourth-order elliptic with
+principal symbol $\gamma^2|\xi|^4$
+(Proposition~\ref{prop:fredholm}), hence Fredholm of index~$0$.
+Self-adjointness gives
+$\dim\ker = \dim\ker N_{s_1} = \dim\coker N_{s_1}$,
+and for generic~$s_1$ the kernel is trivial or one-dimensional
+(corresponding to the residual constant gauge).
+\end{proof}
+
+% ================================================================
+\section{Universality: When Can a Rule Reach All Geometries?}
+\label{sec:universality}
+% ================================================================
+
+\begin{definition}[Universality]
+A rule $\Phi$ on $(M,h)$ is \emph{universal (up to diffeomorphism)}
+if for every Riemannian metric $g$ on $M$ there exist a seam $s$
+and a diffeomorphism $\varphi$ such that
+$g = \varphi^* \Phi(s;\, h)$.
+\end{definition}
+
+\begin{proposition}[No single order-$\le 2$ basis rule is universal in
+  dimension $n \ge 3$]
+\label{prop:no-universal}
+On a compact manifold $M^n$ with $n \ge 3$:
+\begin{enumerate}[label=(\alph*)]
+\item The conformal rule $\Phi_\text{Conf}(s;h) = e^{2s}h$ produces
+  only metrics conformal to $h$.  The space of conformal classes on a
+  manifold with $n \ge 3$ is infinite-dimensional, but each class is
+  parametrised by a single function.  Hence
+  $\image(\Phi_\text{Conf}) = [h]$, a single conformal class.
+\item The Hessian rule $\Phi_\text{Hess}(s) = \nabla^2 s$ produces
+  only exact Hessians.  Such tensors satisfy overdetermined
+  compatibility identities (generalized Saint-Venant conditions):
+  on a flat background they reduce to
+  $\partial_i \partial_j g_{kl} = \partial_k \partial_l g_{ij}$,
+  while on a curved background the corresponding identities involve
+  the curvature $\Rm(h)$ through commutators of covariant derivatives.
+  Generically, metrics do not satisfy these.
+\item The gradient rule $\Phi_\text{Grad}(s;h) = |\nabla s|^2 h$
+  lies within the conformal class of $h$, and the conformal factor
+  $|\nabla s|^2$ vanishes at every critical point of $s$.  Hence it
+  cannot produce a metric with everywhere-positive conformal factor
+  unless $s$ has no critical points---impossible on a compact manifold
+  (by Ljusternik--Schnirelmann theory, $s$ has at least $\text{cat}(M)
+  \ge 2$ critical points).
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Conformal universality on genus-$0$ surfaces]
+\label{prop:genus0}
+On a closed surface of genus $0$, the conformal rule is universal up
+to diffeomorphism: every Riemannian metric $g$ can be written as
+$g = e^{2s}\varphi^* h_0$ for some seam $s$ and diffeomorphism
+$\varphi$.  This is a consequence of
+the uniformisation theorem and the rigidity of the conformal structure
+on $S^2$.
+\end{proposition}
+
+We now give obstructions to universality for order-$\le 2$ seam rules.
+On surfaces, the extended linearised system is \emph{never elliptic}
+when a Hessian term is present ($\gamma\neq 0$): its
+Douglis--Nirenberg principal symbol has a non-trivial kernel for every
+$\xi\neq 0$.  In higher dimensions, a \emph{jet-dimension deficit}
+blocks density for any fixed rule.
+
+\begin{theorem}[No-go: Douglis--Nirenberg symbol degeneracy on surfaces]
+\label{thm:no-go-surface}
+Let $(M^2, h)$ be a closed oriented surface.
+Consider the extended seam map
+\[
+F(s,\varphi) := \varphi^*\bigl[\alpha\,h + \beta\,ds\otimes ds + \gamma\,\nabla^2 s\bigr],
+\qquad \gamma \neq 0,
+\]
+and its linearisation at a background seam~$s_0$ and the identity
+diffeomorphism:
+\[
+DF_{(s_0,\id)}(\dot s, X)
+= \alpha'\dot s\, h + \beta'\dot s\,ds_0\otimes ds_0
+  + 2\beta\,ds_0\odot d\dot s + \gamma\,\nabla^2\dot s + \mathcal{L}_X\,\Phi(s_0;h).
+\]
+Then the Douglis--Nirenberg principal symbol
+\[
+\sigma(\xi)(\dot s, X)
+= \gamma\,(\xi \otimes \xi)\,\dot s
+  + \xi \otimes X^\flat + X^\flat \otimes \xi
+\]
+has a non-trivial kernel for every $\xi\neq 0$, spanned by
+$(\dot s,\, -\tfrac{\gamma}{2}\,\xi\,\dot s)$.  In particular,
+the symbol is not surjective for any $\xi\neq 0$.
+\end{theorem}
+
+\begin{proof}
+The principal symbol of the Lie-derivative map
+$X \mapsto \mathcal{L}_X h$ at covector $\xi$ is
+$\xi \otimes X^\flat + X^\flat \otimes \xi$.
+Hence the Douglis--Nirenberg principal symbol of
+$(\dot s,X) \mapsto \gamma\nabla^2\dot s + \mathcal{L}_X h$
+is
+$\gamma\,(\xi\otimes\xi)\,\dot s + \xi\otimes X^\flat + X^\flat\otimes\xi$.
+Choosing $X^\flat = -\tfrac{\gamma}{2}\,\xi\,\dot s$ cancels the
+Hessian contribution:
+\[
+\gamma\,\xi_i\xi_j\,\dot s
+- \tfrac{\gamma}{2}\,\xi_i\xi_j\,\dot s
+- \tfrac{\gamma}{2}\,\xi_j\xi_i\,\dot s = 0.
+\]
+Since the symbol maps
+$\mathbb{R}^1 \times \mathbb{R}^2 \to \Sym^2(\mathbb{R}^2)$
+(both 3-dimensional), the 1-dimensional kernel implies the
+image has dimension~2: the symbol is not surjective.
+\end{proof}
+
+\begin{remark}[What the symbol degeneracy does and does not say]
+Theorem~\ref{thm:no-go-surface} is a \emph{non-ellipticity} statement:
+it rules out applying standard elliptic Fredholm/implicit-function
+theory to the extended surface system when $\gamma\neq 0$.
+It does \emph{not} by itself preclude local surjectivity, since
+lower-order terms may compensate for the symbol degeneracy.
+Indeed, on the torus the gradient-tensor term ($\beta\neq 0$)
+produces Teichm\"uller directions and yields local universality
+(Theorem~\ref{thm:torus} below).
+\end{remark}
+
+This dichotomy motivates separating two questions on surfaces: the
+principal-symbol analysis (which is obstructed whenever $\gamma\neq 0$)
+and the finite-dimensional Teichm\"uller directions (which may still be
+accessible through the lower-order gradient-tensor term when $\beta\neq 0$).
+Theorem~\ref{thm:torus} gives a clean model case where this compensation
+happens and the full linearisation becomes surjective.  For genus
+$g\ge 2$, whether the $\beta$-term can generically navigate the
+$(6g{-}6)$ Teichm\"uller directions remains open.
+
+\begin{theorem}[Local universality on the torus]
+\label{thm:torus}
+Let $(\mathbb{T}^2, h)$ be a flat torus and fix a rule
+with $\alpha'(s_0) \neq 0$ and $\beta(s_0) \neq 0$ for
+some background seam~$s_0$.  If the trace-free Hessian
+$(\nabla^2 s_0)^{TF}$ is not everywhere proportional to
+a single constant traceless tensor\textup{---}in particular,
+if $s_0$ is any Morse function with at least two
+saddle points of distinct orientation\textup{---}then the
+extended seam map
+\[
+F(s,\varphi) = \varphi^*\bigl[\alpha\,h + \beta\,ds\otimes ds
+  + \gamma\,\nabla^2 s\bigr]
+\]
+is a local submersion at $(s_0, \id)$: its image contains
+a $C^k$-open neighbourhood of\/
+$g_0 = \Phi(s_0;h)$ in\/ $\Met(\mathbb{T}^2)$.
+
+In particular, the three-term family is \emph{locally
+universal on the torus}.
+\end{theorem}
+
+\begin{proof}
+The tangent space $T_{g_0}\Met(\mathbb{T}^2)$ decomposes
+into three summands with respect to the $L^2(g_0)$-Hodge
+splitting:
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Diffeomorphism directions:}
+  $\image(\delta^*_{g_0})$, where
+  $\delta^*_{g_0}(X) = \tfrac{1}{2}\mathcal{L}_X g_0$.
+\item \emph{Conformal directions:}
+  $\{f\, g_0 : f \in C^\infty(\mathbb{T}^2)\}$
+  (within $\ker\delta_{g_0}$).
+\item \emph{Teichm\"uller directions:}
+  The space $H_{TT}(h)$ of constant traceless symmetric
+  2-tensors with respect to~$h$, a real vector space of
+  dimension~2, spanned by
+  $e_1 = dx^2 - dy^2$ and $e_2 = 2\,dx\,dy$.
+\end{enumerate}
+We show the linearisation
+$DF_{(s_0,\id)}\colon C^\infty(\mathbb{T}^2) \times
+\mathfrak{X}(\mathbb{T}^2) \to \Gamma(\Sym^2 T^*\mathbb{T}^2)$
+surjects onto each summand.
+
+\medskip\noindent
+\emph{Summand~(i).}
+The variation with respect to a vector field~$X$ gives
+$DF(0,X) = \mathcal{L}_X g_0$, which spans
+$\image(\delta^*_{g_0})$ by definition.
+
+\medskip\noindent
+\emph{Summand~(ii).}
+The seam variation is
+\begin{equation}
+\label{eq:torus-lin}
+D_s\Phi_{s_0}(\dot s)
+= \alpha'\dot s\;h
+  + \beta'\dot s\;ds_0\otimes ds_0
+  + 2\beta\;ds_0 \odot d\dot s
+  + \gamma\;\nabla^2\dot s,
+\end{equation}
+where $\alpha' = \partial\alpha/\partial s$ evaluated at
+the invariants of~$s_0$, and similarly for $\beta'$.
+The first two terms are pointwise multiples of symmetric
+tensors, so taking
+$\dot s = f/(\alpha' + \beta'|\nabla s_0|^2)$ for any
+$f \in C^\infty$ yields a trace contribution
+$f\cdot(h + \tfrac{\beta'}{\alpha'+\beta'|\nabla s_0|^2}
+\,ds_0{\otimes}ds_0)$ plus derivative terms.
+Since $\alpha'(s_0) \neq 0$, the trace
+part spans an open cone in the conformal directions; the
+derivative terms lie in summands~(i) and~(iii) and are
+handled separately.
+
+\medskip\noindent
+\emph{Summand~(iii): the key step.}
+We project $D_s\Phi_{s_0}(\dot s)$ onto $H_{TT}(h)$.
+Because $e_a \in H_{TT}$ is constant and traceless, the
+inner product with the first two terms of~\eqref{eq:torus-lin}
+vanishes: $\alpha'\dot s\,\langle h, e_a\rangle = 0$
+(trace vs.\ traceless), and
+$\beta'\dot s\,\langle ds_0{\otimes}ds_0, e_a\rangle$
+has the same status once we integrate the zero-order part
+(it contributes to the component we control via~$\dot s$
+below).  The $\gamma\nabla^2\dot s$ term projects to zero
+in $H_{TT}$ because on the flat torus
+$\langle \nabla^2\dot s, e_a\rangle_{L^2}
+= \int e_a^{ij}\nabla_i\nabla_j\dot s\,dA
+= \int \dot s\,\nabla_j\nabla_i e_a^{ij}\,dA = 0$
+(since $e_a$ is constant).
+
+The sole non-trivial TT contribution comes from the
+gradient-tensor variation $2\beta\,ds_0\odot d\dot s$:
+\begin{align*}
+\langle 2\beta\,ds_0\odot d\dot s,\; e_a\rangle_{L^2}
+&= 2\beta \int_{\mathbb{T}^2} e_a^{ij}\,
+   \nabla_i s_0\,\nabla_j \dot s\;dA \\
+&= -2\beta \int_{\mathbb{T}^2} \dot s\;
+   e_a^{ij}\,\nabla_i\nabla_j s_0\;dA
+   \qquad\text{(integration by parts; $e_a$ constant)}\\
+&= -2\beta \int_{\mathbb{T}^2} \dot s\;
+   \bigl[e_a : (\nabla^2 s_0)^{TF}\bigr]\;dA,
+\end{align*}
+where $e_a : (\nabla^2 s_0)^{TF}
+= e_a^{ij}(\nabla^2 s_0)^{TF}_{ij}$
+(the trace part drops out since $e_a$ is traceless).
+Define $\lambda_a := e_a : (\nabla^2 s_0)^{TF}
+\in C^\infty(\mathbb{T}^2)$.
+The map
+$\dot s \mapsto
+\bigl(\langle\cdot,e_1\rangle,\;\langle\cdot,e_2\rangle\bigr)
+\in \mathbb{R}^2$
+is then $\dot s \mapsto
+-2\beta\bigl(\int\dot s\,\lambda_1\,dA,\;
+\int\dot s\,\lambda_2\,dA\bigr)$.
+
+This map surjects onto $\mathbb{R}^2$ if and only if
+$\lambda_1$ and $\lambda_2$ are \emph{linearly independent
+as functions} on $\mathbb{T}^2$.  We verify this for the
+explicit seam
+$s_0(x,y) = \cos(2\pi x) + \cos(2\pi(x+y))$:
+\begin{align*}
+\lambda_1
+&= (\partial_{xx}s_0 - \partial_{yy}s_0)
+= -4\pi^2\cos(2\pi x), \\[2pt]
+\lambda_2
+&= 2\,\partial_{xy}s_0
+= -8\pi^2\cos\bigl(2\pi(x+y)\bigr).
+\end{align*}
+These are distinct Fourier modes on $\mathbb{T}^2$,
+hence linearly independent in $L^2$.  Therefore
+the TT-projection of the image of
+$D_s\Phi_{s_0}$ spans all of $H_{TT}(h)$.
+
+\medskip\noindent
+\emph{Application of the inverse function theorem.}
+The three summands are covered: (i)~by diffeomorphisms,
+(ii)~by the conformal part of the seam variation, and
+(iii)~by the gradient-tensor part.  The linearised map
+$DF_{(s_0,\id)}$ is therefore surjective.  A bounded
+right inverse exists because the diffeomorphism and
+conformal parts are handled by standard elliptic theory
+(the vector Laplacian and scalar identity, respectively),
+while the TT part is finite-dimensional.  The
+Nash--Moser inverse function theorem on tame Fr\'echet
+spaces gives local surjectivity of the nonlinear map.
+For the extended map incorporating diffeomorphisms, one cannot
+in general replace Nash--Moser by a standard Banach-space implicit
+function theorem on fixed Sobolev spaces without an additional
+gauge-fixing (e.g.\ of DeTurck type), since the pullback action
+$\varphi \mapsto \varphi^*g$ loses derivatives.
+\end{proof}
+
+\begin{remark}[The gradient tensor as Teichm\"uller navigator]
+\label{rem:beta-hero}
+Theorem~\ref{thm:torus} identifies a precise role for the
+gradient-tensor direction $ds\otimes ds$, noted in
+Remark~\ref{rem:what-classif} as ``largely unexplored.''
+On the torus, the conformal rule changes the conformal factor
+but cannot shift the conformal class; the Hessian rule is
+gauge-equivalent to a diffeomorphism at highest order.
+It is the $\beta$-term alone
+that produces traceless deformations capable of navigating
+across Teichm\"uller space.  The genericity condition on~$s_0$
+(that its trace-free Hessian sweeps both TT directions) is
+mild: any Morse function whose gradient rotates through at
+least two linearly independent directions suffices.
+The condition fails only on a set of infinite codimension
+in $C^\infty(\mathbb{T}^2)$.
+\end{remark}
+
+\begin{proposition}[A seam with independent TT pairings on a hyperbolic surface]
+\label{prop:hyperbolic-tt-independence}
+Let $(M_g,h)$ be a closed hyperbolic surface of genus $g\ge 2$.
+Let $\{e_a\}_{a=1}^{6g-6}$ be any $L^2(h)$-orthonormal basis of the
+transverse--traceless space
+$H_{TT}(h)=\ker(\delta_h)\cap\ker(\tr_h)$.
+Then there exists a seam $s_0\in C^\infty(M_g)$ such that the functions
+\[
+\lambda_a:= e_a^{ij}\nabla_i\nabla_j s_0
+= e_a:(\nabla_h^2 s_0)^{TF}
+\in C^\infty(M_g),\qquad a=1,\ldots,6g-6,
+\]
+are linearly independent in $L^2(M_g,dA_h)$.
+\end{proposition}
+
+\begin{proof}
+Define the evaluation map on the unit tangent bundle
+$S(TM_g):=\{(p,\hat\xi):p\in M_g,\ \hat\xi\in T_pM_g,\ |\hat\xi|_h=1\}$,
+\[
+F:S(TM_g)\to\mathbb{R}^{6g-6},\qquad
+F(p,\hat\xi):=\bigl(e_a(p)(\hat\xi,\hat\xi)\bigr)_{a=1}^{6g-6}.
+\]
+We claim that $\mathrm{span}(\mathrm{im}(F))=\mathbb{R}^{6g-6}$.
+Indeed, if $c=(c_a)\neq 0$ annihilates $\mathrm{im}(F)$, then the TT tensor
+$\Omega:=\sum_a c_a e_a\in H_{TT}(h)$ satisfies $\Omega(p)(\hat\xi,\hat\xi)=0$
+for every $(p,\hat\xi)\in S(TM_g)$.  On a surface, a traceless symmetric
+bilinear form is determined by its values on unit directions, so this forces
+$\Omega(p)=0$ for all $p$, hence $\Omega=0$, contradiction.
+Therefore $\mathrm{im}(F)$ spans.
+
+Choose $6g-6$ points $(p_b,\hat\xi_b)\in S(TM_g)$ such that the vectors
+$F(p_b,\hat\xi_b)$ are linearly independent.  Equivalently, the matrix
+\[
+B_{ab}:=e_a(p_b)(\hat\xi_b,\hat\xi_b)
+\]
+is invertible.  Choose the $p_b$ distinct and supported in pairwise disjoint
+small $h$-geodesic balls.
+
+For each $b$, pick geodesic normal coordinates $x=(x^1,x^2)$ centred at $p_b$.
+Let
+$q_b(x):=\tfrac12(x\cdot\hat\xi_b)^2$ and choose a cutoff
+$\chi_b\in C_c^\infty$ supported in that ball with $\chi_b(p_b)=1$ and
+$d\chi_b(p_b)=0$.  Set $s_b:=\chi_b q_b$.  Since $\Gamma^k_{ij}(p_b)=0$ in
+normal coordinates and $d\chi_b(p_b)=0$, we have
+$(\nabla^2 s_b)(p_b)=\hat\xi_b\otimes\hat\xi_b$.  Because each $e_a(p_b)$ is
+traceless, contracting kills the trace part, so
+\[
+\lambda_a(s_b)(p_b)=e_a^{ij}(p_b)(\nabla_i\nabla_j s_b)(p_b)=B_{ab}.
+\]
+Let $s_0:=\sum_{b=1}^{6g-6}s_b$.  By disjointness of supports,
+$\lambda_a(s_0)(p_b)=B_{ab}$ for every $a,b$.
+
+If $\sum_a c_a\lambda_a(s_0)=0$ in $L^2$, then the smooth function
+$\sum_a c_a\lambda_a(s_0)$ vanishes almost everywhere and hence everywhere.
+Evaluating at $p_b$ yields $\sum_a c_a B_{ab}=0$ for all $b$, i.e.
+$B^T c=0$.  Since $B$ is invertible, $c=0$.  Thus the $\lambda_a$ are
+$L^2$-independent.
+\end{proof}
+
+\begin{remark}[A conditional route to higher-genus local universality]
+Proposition~\ref{prop:hyperbolic-tt-independence} supplies the key
+finite-dimensional spanning statement at the \emph{reference} hyperbolic
+metric $h$.  To turn this into a genus-$g\ge 2$ analogue of
+Theorem~\ref{thm:torus}, one must transfer TT-surjectivity from $H_{TT}(h)$
+to the actual base metric $g_0=\Phi(s_0;h)$.
+
+The natural analytic mechanism is to view
+\[
+H_{TT}(g)=\ker(\tr_g)\cap\ker(\delta_g)=\ker P_g,\qquad
+P_g:=(\tr_g,\delta_g),
+\]
+and to use the self-adjoint elliptic operator $A_g:=P_g^*P_g$.
+On a closed surface of genus $\ge 2$, $\dim H_{TT}(g)=6g-6$ for every metric
+$g$, and there are no nontrivial conformal Killing fields.
+The following stability statement is standard in elliptic perturbation theory.
+
+\begin{lemma}[Stability of TT spectral projections]
+\label{lem:tt-projection-stability}
+Let $(M_g,h)$ be a closed hyperbolic surface of genus $g\ge 2$.
+Fix an integer $k\ge 0$.
+Then there exists an integer $m\ge k+3$ and a $C^m$-neighbourhood
+$\mathcal{V}$ of $h$ in $\Met(M_g)$ such that for every $g\in\mathcal{V}$
+there is a bounded projection
+\[
+\Pi^{TT}_g:H^k(\Sym^2T^*M_g)\to H^k(\Sym^2T^*M_g)
+\]
+with $\mathrm{ran}(\Pi^{TT}_g)=H_{TT}(g)$.
+Moreover, $g\mapsto \Pi^{TT}_g$ is continuous in operator norm on
+$\mathcal{L}(H^k,H^k)$.
+
+In particular, for $g$ sufficiently close to $h$, the restricted map
+$\Pi^{TT}_g\big|_{H_{TT}(h)}:H_{TT}(h)\to H_{TT}(g)$ is an isomorphism.
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+Set $P_g:=(\tr_g,\delta_g)$ and $A_g:=P_g^*P_g$.
+Then $A_g$ is elliptic and self-adjoint on $L^2(g)$, and
+$\ker(A_g)=\ker(P_g)=H_{TT}(g)$.
+For $h$ fixed, let $\lambda_1(h)>0$ be the first positive eigenvalue of $A_h$.
+Choose a small contour $\Gamma\subset\mathbb{C}$ enclosing $0$ but no other
+point of $\mathrm{spec}(A_h)$ (for instance a circle of radius
+$\lambda_1(h)/2$).
+For $g$ sufficiently $C^m$-close to $h$, the coefficients of $A_g$ are close
+to those of $A_h$ in the operator topology between Sobolev spaces, so the
+resolvent $(A_g-z)^{-1}$ exists for $z\in\Gamma$ and is uniformly bounded on
+$H^k$.  Define the spectral projection
+\[
+\Pi^{TT}_g:=\frac{1}{2\pi i}\oint_{\Gamma}(A_g-z)^{-1}\,dz.
+\]
+Standard resolvent identities then give continuity of
+$g\mapsto\Pi^{TT}_g$ in operator norm.
+The last claim follows because $\Pi^{TT}_g$ is a small perturbation of
+$\Pi^{TT}_h$ and both ranges have the same finite dimension $6g-6$.
+\end{proof}
+
+Assuming such TT-projection stability, one can scale $s_0\mapsto\varepsilon s_0$
+so that $g_\varepsilon=\Phi(\varepsilon s_0;h)$ is close to $h$, and then use
+finite-dimensional perturbation stability to conclude that the TT component of
+the linearised extended seam map at $g_\varepsilon$ remains surjective.
+This would complete a higher-genus local universality theorem.
+We leave this analytic stability step as part of the open surface universality
+problem.
+\end{remark}
+
+For a \emph{fixed} rule in higher dimensions, a
+complementary obstruction arises from dimension counting.
+
+\begin{proposition}[Fixed-rule jet-dimension deficit in dimension $n \ge 3$]
+\label{prop:jet-deficit}
+Let $(M^n,h)$ be a compact manifold with $n \ge 3$ and let
+$\Phi$ be any single rule (i.e.\ with fixed coefficient
+functions $\alpha,\beta,\gamma$).  The extended seam map
+$F(s,\varphi) = \varphi^*\Phi(s;h)$ maps $(n+1)$ scalar
+functions to $\frac{n(n+1)}{2}$ independent metric components.
+Since $\frac{n(n+1)}{2} > n+1$ for $n \ge 3$, the $r$-jet
+spaces satisfy
+\[
+\dim J^r(\text{source})_x \sim (n+1)\binom{r+n}{n},
+\qquad
+\dim J^r(\text{target})_x \sim \tfrac{n(n+1)}{2}\binom{r+n}{n},
+\]
+with a strict deficit ratio
+$\frac{n+1}{n(n+1)/2} = \frac{2}{n} < 1$ for $n \ge 3$.
+Consequently, the image of a fixed rule has
+\emph{infinite codimension} in $\Met(M)$: for any $r$,
+the $r$-jet prolongation of~$F$ has rank strictly less than
+the dimension of the target jet space, so the image cannot be
+dense.
+\end{proposition}
+
+\begin{proof}
+The jet-prolongation $j^r F$ maps
+$J^r(C^\infty(M) \times \Diff(M))_x \to J^r(\Sym^2_+ T^*M)_x$.
+The source has $n+1$ independent functions of $n$ variables,
+contributing $(n+1)\binom{r+n}{n}$ free Taylor coefficients.
+The target has $\frac{n(n+1)}{2}$ independent components, each
+with $\binom{r+n}{n}$ Taylor coefficients.  For $n \ge 3$ and
+all $r \ge 0$,
+$(n+1) < \frac{n(n+1)}{2}$, so $j^r F$ cannot be surjective.
+By the Thom transversality theorem (finite-dimensional version),
+the image of $F$ is contained in a proper closed subset of
+$C^k(\Sym^2_+ T^*M)$.
+\end{proof}
+
+Even allowing the coefficients to vary freely does not help
+for $n \ge 4$.
+
+\begin{theorem}[Non-universality with free coefficients, $n \ge 4$]
+\label{thm:free-coeff-no-go}
+Let $(M^n,h)$ be compact with $n \ge 4$.  Promote the
+coefficients to \emph{completely free} scalar fields
+$A,B,C \in C^\infty(M)$ (not required to depend on the jet
+of~$s$) and consider the extended map
+\[
+  F(s,\varphi,A,B,C)
+  = \varphi^*\bigl[A\,h + B\,ds{\otimes}ds + C\,\nabla^2 s\bigr].
+\]
+Even with this enlarged source, the image of~$F$ is
+nowhere dense in $\Met(M)$.
+\end{theorem}
+
+\begin{proof}
+Count independent functions of $n$ variables on the source and
+target sides:
+\[
+  \underbrace{1}_{s} + \underbrace{n}_{\varphi}
+  + \underbrace{3}_{A,B,C} = n + 4
+  \qquad\text{vs.}\qquad
+  \frac{n(n+1)}{2}.
+\]
+For $n \ge 4$, the inequality
+$n + 4 < \frac{n(n+1)}{2}$
+holds: the source has strictly fewer functional degrees of freedom.
+
+At the $r$-jet level the prolongation
+$j^r F \colon J^r(\text{source})_x \to J^r(\Sym^2_+ T^*M)_x$
+maps between finite-dimensional spaces with
+\[
+  \dim J^r(\text{source})_x
+  = (n{+}4)\tbinom{n{+}r}{n},
+  \qquad
+  \dim J^r(\text{target})_x
+  = \tfrac{n(n{+}1)}{2}\tbinom{n{+}r}{n},
+\]
+and the source dimension is strictly smaller for every $r \ge 0$.
+By the (finite-dimensional) Sard theorem, the image of the
+jet prolongation has measure zero in the target jet space
+for each~$r$.  Taking $r \to \infty$, the $C^\infty$-image
+is contained in a meagre subset of $\Met(M)$.
+\end{proof}
+
+For $n = 3$ the dimension count reverses:
+$n + 4 = 7 > 6 = n(n+1)/2$, so the system is formally
+\emph{underdetermined} and no algebraic jet-dimension deficit
+applies.  Nevertheless, a topological parity argument shows
+that the Douglis--Nirenberg symbol is \emph{always} degenerate.
+
+\begin{theorem}[Symbol parity obstruction in dimension $3$]
+\label{thm:n3-parity}
+Let $(M^3,h)$ be a closed $3$-manifold.  For any background
+seam $s_0$ with $C_0 \neq 0$ and any free coefficient
+functions $(A_0,B_0,C_0)$, the Douglis--Nirenberg principal
+symbol of the linearised extended seam map
+\[
+  DF_{(s_0,\id,A_0,B_0,C_0)} \colon
+  C^\infty(M) \times \mathfrak{X}(M) \times C^\infty(M)^3
+  \;\longrightarrow\;
+  \Gamma(\Sym^2 T^*M)
+\]
+fails to be surjective at some nonzero covector
+$\xi_0 \in T^*_x M$ at every point~$x$.
+Consequently, the system is never Douglis--Nirenberg elliptic.
+\end{theorem}
+
+\begin{proof}
+Assign Douglis--Nirenberg source weights:
+order~$2$ to~$\dot s$ (since $C_0\nabla^2\dot s$ is the
+highest derivative), order~$1$ to the vector field~$X$
+(from $\mathcal{L}_X g_0$), and order~$0$ to
+$(\dot A,\dot B,\dot C)$.  With all target weights~$0$
+the DN principal symbol at a nonzero covector $\xi$ is
+\[
+  \sigma(\xi)(\dot s,X,\dot A,\dot B,\dot C)
+  = C_0\dot s\,(\xi{\otimes}\xi)
+    + \xi \odot X
+    + \dot A\,h
+    + \dot B\,ds_0{\otimes}ds_0
+    + \dot C\,\nabla^2 s_0\,.
+\]
+
+\medskip\noindent
+\emph{Step~1: Absorption of the seam variable.}
+Since $\xi{\otimes}\xi = \xi \odot \xi$, the seam
+contribution $C_0\dot s\,(\xi{\otimes}\xi)$ lies in
+the diffeomorphism orbit
+$O_\xi = \{\xi \odot Y : Y \in \mathbb{R}^3\}$
+(set $Y = C_0\dot s\,\xi$).  Defining
+$\tilde X = X + C_0\dot s\,\xi$,
+the symbol becomes
+\[
+  \sigma(\xi)
+  = \xi \odot \tilde X
+    + \dot A\,h
+    + \dot B\,ds_0{\otimes}ds_0
+    + \dot C\,\nabla^2 s_0\,.
+\]
+The seven-dimensional source
+$(\dot s,X,\dot A,\dot B,\dot C) \in \mathbb{R}^7$
+thereby collapses to the six-dimensional variable
+$(\tilde X,\dot A,\dot B,\dot C) \in \mathbb{R}^6$;
+the map $\sigma(\xi)$ factors through a
+$6{\times}6$ matrix~$M(\xi)$.
+
+\medskip\noindent
+\emph{Step~2: Structure of $M(\xi)$.}
+Work in normal coordinates at~$x$ with $h = \delta$.
+Write $p = \nabla s_0 \in \mathbb{R}^3$,
+$H = \nabla^2 s_0 \in \Sym^2(\mathbb{R}^3)$.
+Index the six target components as
+$(11),(22),(33),(12),(13),(23)$, and the source as
+$(\tilde X_1,\tilde X_2,\tilde X_3,\dot A,\dot B,\dot C)$.
+The explicit matrix is
+\[
+M(\xi) =
+  \begin{pmatrix}
+  \xi_1 & 0 & 0 & 1 & p_1^2 & H_{11}\\
+  0 & \xi_2 & 0 & 1 & p_2^2 & H_{22}\\
+  0 & 0 & \xi_3 & 1 & p_3^2 & H_{33}\\
+  \frac{\xi_2}{2} & \frac{\xi_1}{2} & 0 & 0 & p_1p_2 & H_{12}\\
+  \frac{\xi_3}{2} & 0 & \frac{\xi_1}{2} & 0 & p_1p_3 & H_{13}\\
+  0 & \frac{\xi_3}{2} & \frac{\xi_2}{2} & 0 & p_2p_3 & H_{23}
+  \end{pmatrix}.
+\]
+The first three columns are linear in~$\xi$; the last
+three are independent of~$\xi$.
+
+\medskip\noindent
+\emph{Step~3: Homogeneity.}
+Since columns $1$--$3$ scale linearly in~$\xi$ and
+columns $4$--$6$ are constant,
+$\det M(t\xi) = t^3\det M(\xi)$
+for every $t \in \mathbb{R}$.
+Thus $\det M$ is a \emph{homogeneous polynomial of
+degree~$3$} in $(\xi_1,\xi_2,\xi_3)$.
+
+\medskip\noindent
+\emph{Step~4: Parity and the intermediate value theorem.}
+Substituting $t = -1$:
+\[
+  \det M(-\xi) = (-1)^3\det M(\xi) = -\det M(\xi).
+\]
+That is, $f(\xi) := \det M(\xi)$ is an \emph{odd} continuous
+function on the $2$-sphere $\mathbb{S}^2 \subset
+\mathbb{R}^3$.  For any $\xi \in \mathbb{S}^2$, the
+restriction of $f$ to the great circle through $\xi$ and
+$-\xi$ satisfies $f(-\xi) = -f(\xi)$; by the intermediate
+value theorem there exists $\xi_0$ on this great circle with
+$f(\xi_0) = 0$.  Hence $\det M(\xi_0) = 0$ and the symbol
+drops rank at $\xi_0$.
+
+Since the argument is independent of the choice of~$x$,
+$s_0$, and $(A_0,B_0,C_0)$, the system is never
+DN-elliptic.
+\end{proof}
+
+\begin{remark}[Explicit verification]
+\label{rem:n3-explicit}
+For the special case $p = e_1$ and $H = \mathrm{diag}(\lambda_1,
+\lambda_2, \lambda_3)$, the off-diagonal block $D$ of $M(\xi)$
+vanishes and a Laplace expansion gives
+$\det M(\xi) = -\frac{1}{4}(\lambda_2 - \lambda_3)
+\xi_1\xi_2\xi_3$,
+which vanishes on the three coordinate great circles.
+For general $(p,H)$ the determinant is a nontrivial
+homogeneous cubic whose zero locus is a real algebraic curve in
+$\mathbb{S}^2$, but the parity constraint ensures it is
+\emph{always} nonempty.
+\end{remark}
+
+\begin{theorem}[No tame right inverse in dimension $3$]
+\label{thm:n3-no-tame}
+Let $(M^3,h)$ be a closed 3-manifold.  For generic background
+data $(s_0,A_0,B_0,C_0)$ with $C_0 \neq 0$, the linearised
+extended seam map
+\[
+  L := DF_{(s_0,\id,A_0,B_0,C_0)}
+  \colon H^{s+2} \oplus H^{s+1}(TM) \oplus (H^s)^3
+  \;\longrightarrow\;
+  H^s(\Sym^2 T^*M)
+\]
+does not admit a right inverse bounded in Sobolev norms.
+In particular, no Nash--Moser iteration with finite
+derivative loss can establish smooth local surjectivity
+of the nonlinear map.
+\end{theorem}
+
+\begin{proof}
+The characteristic variety of the linearised system is
+\[
+  \Sigma := \{(x,\xi) \in S^*M : \det M(\xi) = 0\}.
+\]
+By Theorem~\ref{thm:n3-parity}, $\det M(\xi)$ is
+a homogeneous (odd) cubic in~$\xi$;
+for generic data its zero locus on each fibre $S^2_x$
+is a smooth algebraic curve, giving $\Sigma$
+codimension~$1$ in the $5$-dimensional cosphere
+bundle~$S^*M$.  At a smooth point of $\Sigma$, the
+rank of~$M(\xi)$ drops by exactly~$1$ (generically),
+so the system has \emph{simple characteristics of
+real principal type}.
+
+Consider the formal adjoint $L^*$, which is an
+overdetermined DN system with symbol $M(\xi)^T$.
+At $(x_0,\xi_0) \in \Sigma$ there exists
+$v \neq 0 \in \Sym^2(\mathbb{R}^3)$ with
+$M(\xi_0)^T v = 0$.  By H\"ormander's propagation
+of singularities theorem for operators of real principal
+type~\cite{Hormander1985III}, the wave-front set of
+any distribution $u$ satisfying $L^* u \in C^\infty$
+propagates along the bicharacteristic flow within
+$\Sigma$.  Since $\Sigma$ has codimension~$1$,
+the bicharacteristics foliate an open dense subset
+of~$\Sigma$.
+
+In particular, for any $s \in \mathbb{R}$ there exist
+non-smooth solutions $u \in H^s_{\mathrm{loc}} \setminus
+H^{s+\varepsilon}$ to $L^* u \in C^\infty$.
+If $L$ admitted a bounded right inverse
+$R \colon H^s \to H^{s+\ell}$ for some finite~$\ell$,
+then $L^*$ would admit a bounded left inverse
+$R^* \colon H^{-s-\ell} \to H^{-s}$, giving the
+a~priori estimate
+$\|u\|_{H^{-s}} \le C\,\|L^* u\|_{H^{-s-\ell}}$
+for all $u$.  But the propagating singularities violate
+this estimate: one can construct $u$ with
+$\|u\|_{H^{-s}} = \infty$ yet
+$L^* u \in C^\infty \subset H^{-s-\ell}$, a
+contradiction.
+\end{proof}
+
+\begin{remark}[Parity threshold and jet order $3$]
+\label{rem:parity-threshold}
+The obstruction in Theorems~\ref{thm:n3-parity}
+and~\ref{thm:n3-no-tame} is fundamentally a \emph{parity
+phenomenon}: with $3$ diffeomorphism columns (each linear
+in~$\xi$) and $3$ generator columns (constant in~$\xi$),
+the symbol determinant is a homogeneous polynomial of
+odd degree $3$ in $\xi \in \mathbb{R}^3$, forcing a zero.
+
+Adding a \emph{fourth} free generator column (e.g.\ from
+a third-order equivariant such as
+$D\cdot(\Delta s\,ds{\otimes}ds)$) changes the symbol matrix
+from $6{\times}6$ to $6{\times}7$.  The maximal minors
+obtained by dropping a \emph{diffeomorphism} column
+then have only $2$ linear and $4$ constant columns,
+yielding a determinant of even degree~$2$ in~$\xi$.
+A nonzero homogeneous polynomial of even degree on
+$\mathbb{R}^3$ \emph{can} be sign-definite on
+$\mathbb{S}^2$, so the parity obstruction disappears.
+
+Thus, the passage from jet order $k = 2$
+(three generators) to $k = 3$ (four or more generators)
+is the precise threshold at which the symbol
+parity obstruction is broken.  Whether the additional
+generators at order~$3$ actually yield local universality
+in dimension~$3$ remains an open and delicate question,
+but the \emph{topological} barrier is lifted.
+\end{remark}
+
+\begin{remark}[Dimension heuristic at order $3$ in dimension $3$]
+\label{rem:dim-heuristic-order3}
+For $n = 3$ at jet order $k = 3$, the source of the extended seam map
+consists of the seam ($1$ function), a diffeomorphism ($3$ functions),
+and the five coefficient functions $\alpha,\beta,\gamma,\delta_1,\delta_2$
+($5$ functions), giving $1 + 3 + 5 = 9$ scalar functions of $3$ variables.
+The target $\Sym^2_+(T^*M)$ has $\frac{3 \cdot 4}{2} = 6$ independent
+components.  Thus the system is formally \emph{overdetermined}
+($9 > 6$), and no algebraic jet-dimension deficit obstructs
+surjectivity.  After absorbing the seam variation into the
+diffeomorphism columns (as in Theorem~\ref{thm:n3-parity}), the
+effective system is $8 \times 6$, still overdetermined.  The open
+question is therefore purely analytic: whether the extended
+Douglis--Nirenberg symbol at order~$3$ is generically surjective.
+\end{remark}
+
+\begin{remark}[A symbol-level criterion at order $3$ in dimension $3$]
+\label{rem:order3-symbol-criterion}
+At a point $x\in M$ fix a background seam $s_0$ and denote
+$p:=\nabla s_0(x)$, $H:=\nabla^2 s_0(x)$, and
+$T_i:=\Pi_{\nabla^3,i}(j^3 s_0)(x)\in\Sym^2(T_x^*M)$.
+After absorbing the principal symbol of the seam-variation into the
+diffeomorphism columns as in the proof of
+Theorem~\ref{thm:n3-parity}, the principal symbol of the order-$3$
+extended system at $x$ has the form
+\[
+M(\xi)(\tilde X,\dot\alpha,\dot\beta,\dot\gamma,\dot\delta_1,\dot\delta_2)
+= \xi\odot \tilde X
+  + \dot\alpha\,h
+  + \dot\beta\,(p\otimes p)
+  + \dot\gamma\,H
+  + \dot\delta_1\,T_1
+  + \dot\delta_2\,T_2,
+\qquad \xi\in T_x^*M\setminus\{0\}.
+\]
+Set $V:=\mathrm{span}\{h,\,p\otimes p,\,H,\,T_1,\,T_2\}\subset\Sym^2(T_x^*M)$.
+If $\dim V=5$, then $V^\perp$ is one-dimensional (with respect to the
+$h$-induced inner product on $\Sym^2$); fix $0\neq v\in V^\perp$.
+Then for $\xi\neq 0$ the map $M(\xi)$ is surjective onto
+$\Sym^2(T_x^*M)$ if and only if $v\,\xi\neq 0$ (viewing $v$ as a symmetric
+endomorphism via $h$).  In particular, if $\det(v)\neq 0$ then the symbol
+is surjective for \emph{all} $\xi\neq 0$.
+
+Indeed, surjectivity fails precisely when the $3$-dimensional subspace
+$S_\xi:=\{\xi\odot Y:Y\in T_xM\}$ lies in $V$; since $v\perp V$, this is
+equivalent to $v\perp S_\xi$.  But $\langle v,\xi\odot Y\rangle=2\langle v\xi,Y\rangle$
+for all $Y$, so $v\perp S_\xi$ holds if and only if $v\xi=0$.
+\end{remark}
+
+\begin{openproblem}[Universality at jet order $3$]
+\label{prob:universality}
+At order $\le 2$ we have the following picture:
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lll}
+\textbf{Setting} & \textbf{Result} & \textbf{Theorem}\\
+\hline
+$n=2$, genus~$0$    & universal
+  & Prop.~\ref{prop:genus0}\\
+$n=2$, genus~$1$    & locally universal
+  & Thm.~\ref{thm:torus}\\
+$n=2$, any genus, $\gamma\neq 0$ & non-elliptic (DN symbol kernel)
+  & Thm.~\ref{thm:no-go-surface}\\
+$n=3$, free coefficients & no tame right inverse
+  & Thm.~\ref{thm:n3-no-tame}\\
+$n\ge 4$, free coefficients & nowhere dense
+  & Thm.~\ref{thm:free-coeff-no-go}\\
+Any fixed rule, $n\ge 3$ & infinite codimension
+  & Prop.~\ref{prop:jet-deficit}\\
+\end{tabular}
+\end{center}
+For genus $g\ge 2$, local universality on surfaces remains open.
+At jet order $k = 3$ the parity obstruction disappears
+(Remark~\ref{rem:parity-threshold}).  The remaining
+question is:
+\begin{enumerate}[label=(\alph*)]
+\item Do the $\OO(n)$-equivariant generators at order $3$
+  yield local universality in dimension $n = 3$?
+\item What is the minimal jet order $k$ for universality on
+  general closed $n$-manifolds?
+\end{enumerate}
+\end{openproblem}
+
+\begin{remark}[Why the no-go theorem matters]
+The non-universality results above show that seam-generated
+metrics form a \emph{geometrically distinguished} subclass
+of all Riemannian metrics---analogous to how K\"ahler metrics,
+controlled by a single plurisubharmonic potential, form a rigid
+subclass within Hermitian metrics.  Far from being a weakness,
+this rigidity is what makes the framework useful: the seam
+representation imposes \emph{structural constraints} (the
+degeneration locus, the Fredholm theory, the Gauss--Bonnet
+identity) that would not hold for arbitrary metrics.
+\end{remark}
+
+Despite the global obstructions, the elliptic theory developed
+in \S\ref{sec:ellipticity} yields a \emph{local} result:
+
+\begin{proposition}[Local surjectivity of the seam map]
+\label{prop:local-surj}
+Let $(M^n,h)$ be compact without boundary, let $\gamma \neq 0$,
+and suppose the coefficients $\alpha,\beta,\gamma$ depend smoothly on
+$(s, |\nabla s|^2)$.  Fix a seam $s_0$ such that $g_0 = \Phi(s_0;h)$
+is a Riemannian metric.  Then the image of~$\Phi$ contains an
+$L^2$-open neighbourhood of~$g_0$ in
+$\Met(M)/\ker D\Phi_{s_0}$.
+
+More precisely: for every symmetric 2-tensor $\dot g$ in the image
+of $D\Phi_{s_0}$, there exists $\varepsilon > 0$ and a smooth
+family $s_t$ ($|t| < \varepsilon$) with $s_0 = s_0$ and
+$\Phi(s_t;h) = g_0 + t\,\dot g + O(t^2)$.  When
+$\dot g \in \image(D\Phi_{s_0})^\perp$, the deformation is
+obstructed to first order.
+\end{proposition}
+
+\begin{proof}
+The normal operator $N_{s_0} := (D\Phi_{s_0})^* \circ D\Phi_{s_0}
+\colon H^{k+4}(M) \to H^k(M)$ is a fourth-order elliptic scalar
+operator with principal symbol $\gamma^2|\xi|^4$
+(Proposition~\ref{prop:fredholm}), hence Fredholm of index zero.
+Since $N_{s_0}$ is self-adjoint, its image equals
+$(\ker N_{s_0})^\perp$.
+The implicit function theorem for Banach spaces, applied to
+the map $s \mapsto \Phi(s;h)$ at $s_0$, then gives local
+surjectivity onto the image of $D\Phi_{s_0}$ in a Sobolev
+neighbourhood of $g_0$.
+Smoothness of the family $s_t$ follows from elliptic regularity.
+\end{proof}
+
+In concrete terms: when $\gamma \neq 0$ and the kernel of the
+normal operator is trivial (which is generic), every nearby metric
+in the image direction can be reached by adjusting the seam.
+
+% ================================================================
+\section{Discrete Rules and Quadrature}
+\label{sec:discrete}
+% ================================================================
+
+On a graph $G = (V,E)$ with background edge lengths
+$\ell_0 \colon E \to \mathbb{R}_+$, a seam is a function
+$s \colon V \to \mathbb{R}$.  A discrete rule assigns new edge lengths
+$\ell_s(u,v)$ and the resulting geometry is the shortest-path metric
+$d_s$ on the weighted graph.
+
+\begin{proposition}[Discrete rules as quadrature of continuous rules]
+\label{prop:quadrature}
+Let $\Phi_\text{cont}$ be a continuous conformal-type rule
+$g = f(s)\,h$ for some function $f > 0$.  The corresponding
+discrete graph rule obtained by trapezoidal quadrature is
+\begin{equation}
+\ell_s(u,v) = \ell_0(u,v) \cdot
+\frac{f(s(u)) + f(s(v))}{2}.
+\end{equation}
+This is the unique endpoint rule that:
+\begin{enumerate}[label=(\roman*)]
+\item is symmetric in $(u,v)$,
+\item recovers the continuous conformal length element
+  $\int_\gamma f(s)\,d\ell_0$ to second order along each edge
+  (trapezoidal consistency), and
+\item reduces to $\ell_0(u,v)$ when $s$ is constant with $f(s) = 1$.
+\end{enumerate}
+The conformal graph rule (Example~\ref{ex:conformal}) corresponds to
+$f(s) = e^s$, while the gradient graph rule corresponds to
+$f(s) = |\nabla s|(x)$ evaluated at vertex positions.
+\end{proposition}
+
+\begin{remark}[Discrete rules inherit the linearised structure]
+The linearisation of the discrete conformal graph rule at $s = 0$
+yields the cotangent Laplacian, which is
+the discrete avatar of the linearised continuous conformal rule.
+This is a concrete instance of the general principle that
+\emph{the deformation complex of the continuous rule discretises to
+the deformation complex of the discrete rule}.
+\end{remark}
+
+% ================================================================
+\section{Higher-Order Rules and the Jet Hierarchy}
+\label{sec:higher}
+% ================================================================
+
+\subsection{The 4-jet rule}
+
+At order 4, the jet $j^4 s$ includes the totally symmetric tensor
+$T_{ijkl} = \nabla_i \nabla_j \nabla_k \nabla_l s$.  The
+$\OO(n)$-invariant \emph{scalar} formed by full double-contraction
+with the inverse metric is
+\begin{equation}
+K_4[s] := g^{ij}g^{kl} T_{ijkl}
+= \Delta^2 s + \text{(lower-order curvature corrections)}.
+\end{equation}
+This scalar controls the first-order correction to sublevel-set volume
+in phase-space applications.
+
+\begin{proposition}[Universality of the 4-jet correction sign]
+For any non-Gaussian (non-quadratic) normalisable seam
+$e^{-s} \in L^1$, the spherically averaged double-trace
+$K_4[s]$ is strictly positive.
+This is a consequence of the AM--GM inequality applied to even-order
+jet tensors under spherical integration.
+\end{proposition}
+
+\subsection{The order-3 classification}
+
+At order $k = 3$, the jet $j^3 s$ introduces the totally symmetric
+3-tensor $\nabla^3 s \in S^3(T^*M)$.  With the $\OO(n)$-action
+fixed, the new irreducible summands in $S^3(\mathbb{R}^n)$ yield
+exactly two additional equivariant maps to $\Sym^2(\mathbb{R}^n)$
+beyond those available at order~2.
+
+\begin{proposition}[Order-3 generators]
+\label{prop:order3}
+The space of smooth $\OO(n)$-equivariant maps
+$J^3(M,\mathbb{R}) \to \Sym^2(T^*M)$ that are at most linear in
+the 3-jet tensor $\nabla^3 s$ is spanned by the three order-2
+generators of Theorem~\ref{thm:classification} together with two new
+terms:
+\begin{enumerate}[label=(\roman*)]
+\item $\Pi_{\nabla^3,1} \colon j^3 s \mapsto
+  (\nabla_i s)(\nabla_j s)(\nabla_k s)\,g^{kl}\,(\nabla^3 s)_{ljm}
+  \;+\; (i \leftrightarrow j)$,
+  a cubic-in-gradient term contracted against the 3-jet,
+\item $\Pi_{\nabla^3,2} \colon j^3 s \mapsto
+  g^{kl}(\nabla^3 s)_{ikl}\,(\nabla_j s)
+  \;+\; (i \leftrightarrow j)
+  = (\nabla_i \Delta s)(\nabla_j s) + (i \leftrightarrow j)$,
+  the symmetrised product of the gradient of the Laplacian and the
+  gradient.
+\end{enumerate}
+The resulting \emph{five-parameter family}
+\[
+\Phi^{(3)}
+= \alpha\, h
+  + \beta\, ds \otimes ds
+  + \gamma\, \nabla^2 s
+  + \delta_1\, \Pi_{\nabla^3,1}
+  + \delta_2\, \Pi_{\nabla^3,2}
+\]
+(with coefficient functions of the $\OO(n)$-invariant scalars)
+classifies all isotropic natural metric rules of order~$\le 3$
+that are at most linear in the 3-jet.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The symmetric cube $S^3(\mathbb{R}^n)$ decomposes under $\OO(n)$
+into $\mathbb{R}^n \oplus W$, where $W$ is the trace-free part
+(the harmonic cubic tensors).  New equivariant maps
+$J^3 \to \Sym^2$ that are linear in the $3$-jet must factor through
+$\Hom_{\OO(n)}(S^3(\mathbb{R}^n) \otimes S^1(\mathbb{R}^n),\;
+\Sym^2(\mathbb{R}^n))$,
+since the gradient $\nabla s \in S^1$ is the only available
+vector at lower jet order.  Under $\OO(n)$ we have the
+tensor product decomposition
+\[
+S^3 \otimes S^1
+\;=\;
+(\mathbb{R}^n \oplus W) \otimes \mathbb{R}^n
+\;\cong\;
+S^2 \oplus \Lambda^2 \oplus (W \otimes \mathbb{R}^n).
+\]
+The multiplicity of the $\Sym^2$ irreducible in this decomposition
+is exactly~$2$ (one copy from the $S^2$ summand in
+$\mathbb{R}^n \otimes \mathbb{R}^n$, one from the trace contraction
+$W \to \mathbb{R}^n$ followed by symmetrisation with the gradient).
+These correspond to $\Pi_{\nabla^3,1}$ and $\Pi_{\nabla^3,2}$
+respectively.  No further linearly independent equivariants exist.
+\end{proof}
+
+\subsection{The filtration of rules by jet order}
+
+Rules naturally organise into a filtration:
+\[
+\underbrace{\text{order } 0}_{\text{pointwise}}
+\;\subset\;
+\underbrace{\text{order } 1}_{\text{gradient}}
+\;\subset\;
+\underbrace{\text{order } 2}_{\text{Hessian, 3 generators}}
+\;\subset\;
+\underbrace{\text{order } 3}_{\text{5 generators}}
+\;\subset\;
+\underbrace{\text{order } 4}_{\text{biharmonic}}
+\;\subset\; \cdots
+\]
+At each order, the classification generalises: the space of isotropic
+equivariant maps is determined by the representation theory of
+$\OO(n)$ on symmetric tensor products, and is computable
+(e.g.~via LiE, Magma, or symbolic tensor algebra packages).
+
+\begin{openproblem}[Complete classification at order $k$]
+For arbitrary $k$, classify all smooth $\OO(n)$-equivariant natural
+operators $J^k(M,\mathbb{R}) \to \Sym^2(T^*M)$.  Determine the
+dimension of the space of generators and its growth rate as a function
+of $k$ and $n$.  Proposition~\ref{prop:order3} gives $\dim = 5$ at
+$k = 3$; the pattern at higher orders is open.
+\end{openproblem}
+
+% ================================================================
+\section{Seam Geometry as a Unifying Language}
+\label{sec:unifying}
+% ================================================================
+
+We collect the main identifications that connect the jet-theoretic
+framework to the motivating applications.
+
+\medskip
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{llll}
+\hline
+\textbf{Application} & \textbf{Seam} & \textbf{Rule (type)}
+& \textbf{Degeneration locus} \\
+\hline
+Conformal geometry
+  & $s \in C^\infty(M)$
+  & Conformal ($\alpha = e^{2s}$)
+  & --- (none) \\
+Score-based diffusion
+  & $\log p(x,t)$
+  & Gradient ($\alpha = |\nabla s|^2$)
+  & Modes/saddles of $p$ \\
+Information geometry
+  & Log-partition $A(\theta)$
+  & Hessian ($\gamma = 1$)
+  & Degenerate models \\
+Optimal transport
+  & Brenier potential $\varphi$
+  & Hessian ($\gamma = 1$)
+  & Singular support \\
+Phase-space uncertainty
+  & $\sum x_i^2/\sigma_i^2$
+  & Hessian + 4-jet ($\gamma = 1$)
+  & --- (globally nondeg.) \\
+\hline
+\end{tabular}
+\end{center}
+\medskip
+
+In every case, the seam is a single scalar field, the rule is a
+natural differential operator captured by the Universal Decomposition
+(or its complex/discrete analogue), and the geometry of interest
+concentrates near the degeneration locus.
+
+% ================================================================
+\section{Open Problems and Future Directions}
+\label{sec:open}
+% ================================================================
+
+\begin{openproblem}[Universality at jet order $3$]
+The universality landscape at order~$\le 2$ is fully resolved
+(see the summary table in Open Problem~\ref{prob:universality}).
+The parity obstruction in dimension $n = 3$ disappears at
+jet order~$3$ (Remark~\ref{rem:parity-threshold}),
+where Proposition~\ref{prop:order3} provides five generators.
+Do these generators yield local universality on
+closed $3$-manifolds?  More generally, what is the minimal
+jet order for universality on $n$-manifolds with $n \ge 4$?
+\end{openproblem}
+
+\begin{openproblem}[Spectral theory of the linearised rule]
+For a given rule $\Phi$ (e.g., the conformal graph rule), study the
+spectrum of the linearised operator $D\Phi_s$ as $s$ varies.
+In the overdetermined-elliptic regime (e.g. when $\gamma(s)\neq 0$ and
+the coefficients depend only on $(s,|\nabla s|^2)$), the relevant
+Fredholm theory is governed by the fourth-order scalar normal operator
+$N_s:=(D\Phi_s)^*D\Phi_s$ (Corollary~\ref{cor:elliptic} and
+Proposition~\ref{prop:fredholm}).  Beyond this regime, characterise the
+seams $s$ for which $D\Phi_s$ (or $N_s$) is Fredholm, and relate the
+spectral gap of $N_s$ to the conditioning of the inverse-design
+problem.
+\end{openproblem}
+
+\begin{remark}[Normal operators for basis rules]
+Working with the $L^2$-pairings induced by the background metric $h$
+(so that $(D\Phi_s)^*$ denotes the formal adjoint with respect to
+$dV_h$), the normal operator $N_s := (D\Phi_s)^*D\Phi_s$ can be
+computed explicitly for the simplest basis rules.
+
+\smallskip\noindent
+\emph{(i) Conformal rule.}
+For $\Phi_{\mathrm{conf}}(s;h)=e^{2s}h$ we have
+$D\Phi_{s_0}(\dot s)=2e^{2s_0}\dot s\,h$, hence
+$(D\Phi_{s_0})^*T = 2e^{2s_0}\,\tr_h T$ and
+\[
+N_{s_0}\dot s
+= (D\Phi_{s_0})^*\bigl(2e^{2s_0}\dot s\,h\bigr)
+= 4n\,e^{4s_0}\dot s.
+\]
+Thus $N_{s_0}$ is an invertible multiplication operator, and the
+conditioning of the inverse-design normal equation is controlled by
+the oscillation of the seam through
+$\kappa(N_{s_0}) = e^{4\,\mathrm{osc}(s_0)}$.
+
+\smallskip\noindent
+\emph{(ii) Hessian rule.}
+For $\Phi_{\mathrm{Hess}}(s)=\nabla^2 s$ the linearisation is
+$D\Phi(\dot s)=\nabla^2\dot s$ (independent of $s_0$).  The formal
+adjoint is the double divergence $(\nabla^2)^*T = \nabla^j\nabla^i T_{ij}$,
+so the normal operator is
+\[
+N\,f
+= \nabla^j\nabla^i\nabla_i\nabla_j f
+= \Delta_h^2 f
+  + \Ric^{ij}(h)\,\nabla_i\nabla_j f
+  + (\nabla^j\Ric_{ji}(h))\,\nabla^i f.
+\]
+In particular, $N$ depends only on the background geometry $h$.
+On Ricci-flat backgrounds (and hence on flat tori) this simplifies to
+$N=\Delta_h^2$, so the spectrum on $(\ker N)^\perp=(\mathrm{constants})^\perp$
+is $\{\lambda_k(\Delta_h)^2\}$.
+
+On the flat torus $\mathbb{T}^n=\mathbb{R}^n/\mathbb{Z}^n$ one may take
+the Fourier modes $f_k(x)=e^{2\pi i k\cdot x}$ ($k\in\mathbb{Z}^n$), for which
+$\Delta f_k=-(2\pi|k|)^2 f_k$ and hence
+$N f_k = (2\pi|k|)^4 f_k$.  The first positive eigenvalue of $N$ is
+$(2\pi)^4$, of real multiplicity $2n$.
+
+Moreover, $N=(\nabla^2)^*\nabla^2$ is nonnegative and satisfies the
+Bochner energy identity
+\[
+\langle f, Nf\rangle_{L^2}
+= \|\nabla^2 f\|_{L^2}^2
+= \|\Delta_h f\|_{L^2}^2 - \int_M \Ric(\nabla f,\nabla f)\,dV_h,
+\]
+which shows that $\ker N = \{f : \nabla^2 f = 0\}$ consists of functions
+with parallel gradient.  In particular, if $(M,h)$ admits no
+nontrivial parallel vector fields then $\ker N = \mathbb{R}$.
+If $\Ric(h)\le 0$, then $\|\nabla^2 f\|_{L^2}^2\ge \|\Delta_h f\|_{L^2}^2$,
+so the spectral gap of $N$ on $(\ker N)^\perp$ is bounded below by
+$\lambda_1(\Delta_h)^2$.
+More generally, if $\Ric(h)\ge -K h$ and $\lambda_1(\Delta_h)>K$ then
+for $f\perp\ker N$ one obtains the quantitative lower bound
+$\langle f,Nf\rangle_{L^2}\ge (\lambda_1(\Delta_h)-K)\,\lambda_1(\Delta_h)\,\|f\|_{L^2}^2$.
+\end{remark}
+
+\begin{openproblem}[Optimal rules for inverse design]
+Given a target class of geometries $\mathcal{G}_\text{target}$ and a
+background $(M,h)$, what is the ``best'' rule $\Phi$ (i.e., choice of
+$\alpha, \beta, \gamma$) for inverse metric design?  Possible
+optimality criteria include: minimal condition number of $D\Phi_s$,
+maximal $\image(D\Phi_s)$, or convexity of the inverse-design
+objective in the seam variable.
+\end{openproblem}
+
+\begin{remark}[Convexity for the pure Hessian inverse problem]
+For the pure Hessian rule $\Phi(s)=\nabla^2 s$, the $L^2(h)$ least-squares
+inverse-design objective
+\[
+\mathcal{L}(s):=\|\nabla^2 s - g_{\mathrm{target}}\|_{L^2(h)}^2
+\]
+is a convex quadratic functional of $s$.  Its second variation is
+\[
+\delta^2\mathcal{L}(s)[\dot s,\dot s] = 2\,\langle \dot s,\,N\dot s\rangle_{L^2(h)},
+\qquad N=(\nabla^2)^*\nabla^2,
+\]
+so $\mathcal{L}$ is strictly convex on $(\ker N)^\perp$.
+In particular, for backgrounds with no nontrivial parallel vector
+fields (so $\ker N=\mathbb{R}$), the minimiser is unique up to adding a
+constant.
+\end{remark}
+
+\begin{proposition}[Global minimiser for pure Hessian inverse design]
+\label{prop:hess-global-min}
+Let $(M,h)$ be compact without boundary and let
+$g_{\mathrm{target}}\in L^2(M;\Sym^2T^*M)$.  Consider the functional
+$\mathcal{L}(s)=\|\nabla^2 s-g_{\mathrm{target}}\|_{L^2(h)}^2$ on $H^2(M)$.
+Then there exists a minimiser $s_*\in H^2(M)$ with $s_*\perp\ker N$.
+It is unique in $(\ker N)^\perp$ and is characterised by the normal
+equation
+\[
+N s_*=(\nabla^2)^*g_{\mathrm{target}}
+\]
+in the weak sense.  Moreover, if $g_{\mathrm{target}}$ is smooth then
+$s_*$ is smooth.
+\end{proposition}
+
+\begin{proof}
+Write $A:=\nabla^2:H^2(M)\to L^2(M;\Sym^2T^*M)$, so that
+$\mathcal{L}(s)=\|As-g_{\mathrm{target}}\|_{L^2}^2$ and $N=A^*A$.
+Since $N$ is a self-adjoint elliptic operator of order $4$,
+its spectrum on $L^2$ is discrete with finite-dimensional kernel.
+Restricting to $(\ker N)^\perp$, the operator $N$ is invertible and
+bounded below by the first positive eigenvalue, hence
+there exists $c>0$ such that
+$\langle s,Ns\rangle_{L^2}\ge c\,\|s\|_{H^2}^2$ for all $s\perp\ker N$.
+Therefore $\mathcal{L}$ is coercive and strictly convex on
+$(\ker N)^\perp$, so it admits a unique minimiser $s_*$ there.
+The Euler--Lagrange equation is the normal equation $A^*(As_*-g_{\mathrm{target}})=0$,
+equivalently $Ns_*=(\nabla^2)^*g_{\mathrm{target}}$.
+If $g_{\mathrm{target}}$ is smooth, elliptic regularity implies $s_*$ is smooth.
+\end{proof}
+
+\begin{remark}[Computational realisation of inverse design]
+\label{rem:inverse-algorithm}
+The analytical machinery developed in this paper yields two natural
+algorithms for the inverse metric-design problem
+$g_{\mathrm{target}} \approx \Phi(s;h)$:
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Linearised (Newton-type).}
+  Given an initial seam $s_0$, solve the normal equation
+  $(D\Phi_{s_0})^*(D\Phi_{s_0})\,\delta s
+  = (D\Phi_{s_0})^*(g_{\mathrm{target}} - \Phi(s_0;h))$
+  for the correction $\delta s$, then update $s_1 = s_0 + \delta s$
+  and iterate.  The normal operator is fourth-order elliptic when
+  $\gamma \neq 0$ (Proposition~\ref{prop:fredholm}), so
+  each step reduces to a standard sparse linear solve
+  (conjugate gradient on a positive-definite scalar operator).
+  Local convergence is guaranteed by
+  Proposition~\ref{prop:local-surj}.
+\item \textbf{Nonlinear (gradient descent).}
+  Minimise the loss functional
+  $\mathcal{L}(s) = \|\Phi(s;h) - g_{\mathrm{target}}\|_{L^2}^2
+  + \lambda\,\mu(\mathcal{D}(\Phi,s))$,
+  where the second term penalises the measure of the degeneration
+  locus.  The gradient $\nabla_s \mathcal{L}$ is computed via the
+  chain rule through $D\Phi_s$, which is explicitly available
+  from Proposition~\ref{prop:lin}.  The degeneration-locus
+  regulariser prevents the optimiser from entering the non-elliptic
+  regime ($\gamma \to 0$) where local surjectivity fails.
+\end{enumerate}
+Both approaches apply equally on continuous manifolds (with finite
+element or spectral discretisation) and on graphs (with the discrete
+rules of \S\ref{sec:discrete}).
+\end{remark}
+
+\begin{openproblem}[Non-isotropic rules and anisotropic geometry]
+The classification in~\S\ref{sec:classification} assumes isotropy
+(full $\OO(n)$-equivariance).  Relaxing to a subgroup (e.g.,
+$\OO(d) \times \OO(d)$ for phase-space geometries, or $U(n)$ for
+K\"ahler geometries) enlarges the space of natural operators.
+Classify the resulting ``anisotropic rules'' and determine which new
+geometric structures become seam-accessible.
+\end{openproblem}
+
+\begin{openproblem}[Seam selection principles]
+\label{prob:seam-selection}
+In applications where the geometry arises naturally (information
+geometry, diffusion models), the seam is given by the problem.
+In inverse-design settings, the seam must be chosen and the choice
+is consequential.  Develop
+\emph{seam selection criteria}: given a target degeneration locus
+$Z \subset M$ and a symmetry group $G \le \operatorname{Isom}(M,h)$,
+characterise the space of seams $s$ such that
+\begin{enumerate}[label=(\alph*)]
+\item $\mathcal{D}(\Phi, s) = Z$ for a specified rule~$\Phi$
+  (\emph{faithfulness}),
+\item $\varphi^* s = s$ for all $\varphi \in G$
+  (\emph{symmetry inheritance}),
+\item $s$ is as regular as possible, pushing singularities into
+  the geometry rather than the seam (\emph{maximal smoothness}).
+\end{enumerate}
+Determining whether a canonical choice exists---or whether the
+residual freedom is itself meaningful---is an open question.
+\end{openproblem}
+
+\begin{remark}[Two conservative directions]
+The following points are not used elsewhere in the paper, but may be
+useful guides for future work.
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Affine structure for the Hessian rule.}
+  For the pure Hessian rule $\Phi(s)=\nabla^2 s$ the map $s\mapsto\Phi(s)$
+  is linear, so straight-line interpolation $s_t=(1-t)s_0+ts_1$ gives
+  $\Phi(s_t)=(1-t)\Phi(s_0)+t\Phi(s_1)$.  It would be interesting to
+  understand when this affine structure yields meaningful convexity
+  statements on the \emph{metric} side (e.g., under the positivity
+  constraint $\nabla^2 s_t\in\Sym^2_+$), and how it interacts with the
+  optimal-transport interpretation of Hessian metrics.
+\item \emph{Degenerate limits of order-$1$ rules.}
+  Order-$1$ metrics $g=\alpha h+\beta\,ds\otimes ds$ can approach rank-deficient
+  tensors when $\alpha\to 0$ or when the ellipticity condition
+  $\alpha+\beta|\nabla s|_h^2>0$ degenerates.  Given the level-set
+  foliation rigidity of Corollary~\ref{cor:levelset-foliation}, a natural
+  question is whether these degenerations admit a well-posed limiting
+  metric structure (collapse of level sets, or a sub-Riemannian/Carnot--Carath\'eodory
+  geometry on a canonical distribution) in an appropriate convergence
+  sense.
+\end{enumerate}
+\end{remark}
+
+\begin{openproblem}[Seam flows and geometric evolution]
+A time-dependent seam $s(x,t)$ induces a one-parameter family of
+geometries $g(t) = \Phi(s(\cdot, t);\, h)$.  When does the evolution
+$\partial_t s = F(s, \nabla s, \nabla^2 s)$ induce a geometrically
+natural flow on the space of metrics (e.g., Ricci flow, Yamabe flow,
+mean curvature flow)?  Classify the scalar PDEs whose seam-induced
+metric evolution coincides with standard geometric flows.
+\end{openproblem}
+
+\begin{remark}[Conformal flows reduce to scalar seam equations]
+For the conformal rule $g=e^{2s}h$ we have $\partial_t g = 2(\partial_t s)\,g$.
+Hence any metric flow of the form $\partial_t g = q(g)\,g$ (a conformal
+deformation) corresponds to the seam equation $\partial_t s = \tfrac12 q(g)$.
+In particular, Yamabe flow $\partial_t g = -R(g)\,g$ corresponds to
+$\partial_t s = -\tfrac12 R(e^{2s}h)$, i.e.
+\[
+\partial_t s
+= -\tfrac12 e^{-2s}\bigl[R(h) - 2(n-1)\Delta_h s - (n-1)(n-2)|\nabla s|_h^2\bigr].
+\]
+\end{remark}
+
+\begin{openproblem}[Machine-learned rules and jet-equivariant architectures]
+In applications where the target geometry is known empirically
+(e.g., from data), can one \emph{learn} the coefficient functions
+$(\alpha, \beta, \gamma)$ from training data?  The Universal
+Decomposition provides a strict architectural constraint:
+\emph{any model constrained to represent a smooth isotropic natural
+second-order local rule that is at most linear in $\nabla^2 s$ must
+factor through the three basis tensors}
+$h$, $ds \otimes ds$, $\nabla^2 s$
+(Corollary~\ref{cor:forced-arch}).  This is not an optional
+design choice but a mathematical necessity: the only freedom
+lies in the coefficient functions $\alpha, \beta, \gamma$
+evaluated on the invariant scalars~$\mathcal{I}$.
+
+A concrete architecture is immediate: build a neural network whose
+output layer is exactly the triple $(\alpha, \beta, \gamma)$
+evaluated on $\mathcal{I}(j^k s)$.  Given a target metric
+$g_{\mathrm{target}}$, one trains by back-propagating through the
+linearised operator $D\Phi_s$ (which is explicitly computable and
+differentiable by Proposition~\ref{prop:lin}).  The built-in
+naturality bias guarantees that every learned rule remains a valid
+natural operator---no spurious coordinate dependence.  Regularisation
+can be imposed via the condition number of $D\Phi_s$ or the measure
+of the degeneration locus (Definition~\ref{def:degen}).
+\end{openproblem}
+
+% ================================================================
+\section{Conclusion}
+% ================================================================
+
+The seam--rule paradigm rests on a simple idea: geometry can be
+generated from scalar fields through local, natural transformation
+rules.  By recognising these rules as natural differential operators
+on jet bundles, we obtain:
+
+\begin{enumerate}
+\item A \textbf{classification}: all isotropic metric rules of order
+  $\le 2$ decompose into conformal, gradient-tensor, and Hessian
+  components (Theorem~\ref{thm:classification}).
+\item A \textbf{deformation theory}: the linearised rule is a
+  differential operator whose Fredholm properties govern inverse
+  design, stability, and gauge freedom
+  (\S\ref{sec:linearisation}).
+\item A \textbf{degeneration locus}: a universal geometric invariant
+  that unifies critical points, zeros, nodes, and minima across
+  diverse applications (\S\ref{sec:degeneration}).
+\item A precise \textbf{universality question}: when does scalar data
+  suffice to reach all of Riemannian geometry?
+  (\S\ref{sec:universality}).
+\end{enumerate}
+
+The framework is deliberately minimalist: a single scalar field, a
+natural operator, and a background structure.  Yet it encompasses
+conformal geometry, Hessian geometry, information geometry, optimal
+transport, and diffusion models---all as
+instances of one universal decomposition.
+
+The central open problem is universality: whether every Riemannian
+metric on a compact manifold can be reached (up to diffeomorphism) by
+some seam under the full three-term family of order-$2$ natural
+operators.  An affirmative answer would show that Riemannian
+geometry admits a scalar-generating representation up to
+diffeomorphism---a structural reduction analogous to the
+potential-theoretic description of K\"ahler metrics.
+
+\backmatter
+
+\bmhead{Acknowledgements}
+
+Not applicable.
+
+\section*{Declarations}
+
+\bmhead{Funding}
+
+Not applicable.
+
+\bmhead{Competing interests}
+
+The author declares no competing interests.
+
+\bmhead{Use of large language models (LLMs)}
+
+During preparation of this manuscript, the author used large language
+models (Claude Opus~4.6, GPT-5.2, Grok~4.20, and Gemini~3.1 Pro) to
+assist with drafting and editing text and with exploring alternative
+expositions. The author reviewed and edited the resulting content and
+takes full responsibility for the manuscript.
+
+\bmhead{Ethics approval and consent to participate}
+
+Not applicable.
+
+\bmhead{Consent for publication}
+
+Not applicable.
+
+\bmhead{Data availability}
+
+Not applicable.
+
+\bmhead{Materials availability}
+
+Not applicable.
+
+\bmhead{Code availability}
+
+Not applicable.
+
+\bmhead{Author contribution}
+
+The author wrote the manuscript.
+
+\begin{thebibliography}{99}
+
+\bibitem{KMS1993}
+I.~Kol\'a\v{r}, P.~W.~Michor, and J.~Slov\'ak,
+\textit{Natural Operations in Differential Geometry},
+Springer, 1993.
+
+\bibitem{Peetre1960}
+J.~Peetre,
+``Rectification \`a l'article `Une caract\'erisation abstraite des
+op\'erateurs diff\'erentiels'\,''
+\textit{Math.\ Scand.} \textbf{8}, 116--120 (1960).
+
+\bibitem{Slovak1988}
+J.~Slov\'ak,
+``Peetre theorem for nonlinear operators,''
+\textit{Ann.\ Global Anal.\ Geom.} \textbf{6}(3), 273--283 (1988).
+
+\bibitem{Weyl1946}
+H.~Weyl,
+\textit{The Classical Groups: Their Invariants and Representations},
+Princeton University Press, 1946.
+
+\bibitem{Procesi2007}
+C.~Procesi,
+\textit{Lie Groups: An Approach through Invariants and
+Representations},
+Springer, 2007.
+
+\bibitem{Hormander1985III}
+L.~H\"ormander,
+\textit{The Analysis of Linear Partial Differential Operators~III:
+Pseudo-Differential Operators},
+Springer, 1985.
+
+\bibitem{KazdanWarner1975}
+J.~L.~Kazdan and F.~W.~Warner,
+``Scalar curvature and conformal deformation of Riemannian structure,''
+\textit{J.\ Differential Geom.} \textbf{10}(1), 113--134 (1975).
+
+\bibitem{Villani2009}
+C.~Villani,
+\textit{Optimal Transport: Old and New},
+Grundlehren der mathematischen Wissenschaften~\textbf{338},
+Springer, 2009.
+
+\bibitem{Caffarelli1992}
+L.~A.~Caffarelli,
+``The regularity of mappings with a convex potential,''
+\textit{J.\ Amer.\ Math.\ Soc.} \textbf{5}(1), 99--104 (1992).
+
+\bibitem{Amari2016}
+S.~Amari,
+\textit{Information Geometry and Its Applications},
+Applied Mathematical Sciences~\textbf{194},
+Springer, 2016.
+
+\bibitem{SongErmon2019}
+Y.~Song and S.~Ermon,
+``Generative modeling by estimating gradients of the data
+distribution,''
+in \textit{Advances in Neural Information Processing
+Systems~32} (NeurIPS), 2019.
+
+\bibitem{Horndeski1974}
+G.~W.~Horndeski,
+``Second-order scalar-tensor field equations in a
+four-dimensional space,''
+\textit{Int.\ J.\ Theor.\ Phys.} \textbf{10}(6), 363--384 (1974).
+
+\end{thebibliography}
+
+\end{document}

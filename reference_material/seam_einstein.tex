@@ -1,0 +1,3077 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathtools}%
+\usepackage{enumitem}%
+
+\hbadness=10000
+\vbadness=10000
+
+%% Theorem environments
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}[theorem]{Definition}
+
+%% Math operators
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Hess}{Hess}
+\DeclareMathOperator{\Ric}{Ric}
+\DeclareMathOperator{\OO}{O}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Hom}{Hom}
+
+%% Shorthand
+\newcommand{\pa}{\partial}
+\newcommand{\nn}{\nabla}
+\newcommand{\del}{\delta}
+\newcommand{\half}{\tfrac{1}{2}}
+
+\numberwithin{equation}{section}
+
+% ================================================================
+\begin{document}
+% ================================================================
+
+\title[The Einstein Tensor in Seam Geometry]{The Einstein Tensor in Seam Geometry:
+  Generator Closure, Emergent Signature, and Null-Convexity}
+
+\author*[1]{\fnm{Lars} \sur{R\"{o}nnb\"{a}ck}}\email{lars@uptochange.com}
+
+\affil*[1]{\orgdiv{Department of Computer and Systems Sciences},
+  \orgname{Stockholm University},
+  \orgaddress{\city{Stockholm}, \country{Sweden}}}
+
+\abstract{We introduce \emph{seam geometry}, a framework in which a
+(pseudo-)Riemannian metric is generated from a single scalar field
+through four equivariant tensor operations---conformal scaling,
+gradient tensor, Hessian, and Hessian square.  For three maximally
+symmetric ansatz classes (conformally flat, spherically symmetric, and
+Lorentz-invariant), we compute the Einstein tensor explicitly and show
+that it lies in the generator span; in each case the vacuum condition
+forces flatness, and metric signature emerges as an output of the
+construction.
+
+Identifying the seam scalar with the log-amplitude of a Klein--Gordon
+field connects the framework to quantum mechanics: the vacuum condition
+becomes the eikonal equation for the phase, and requiring the field to
+propagate self-consistently on the metric it generates yields a
+nonlinear eigenvalue problem.  A cube-power substitution linearises the
+massless case into a Helmholtz equation whose ground-state
+positivity constraint uniquely quantises the frequency; the massive
+generalisation exhibits a charge-dependent fold producing discrete
+weakly and strongly gravitating branches.
+
+Promoting the seam to a complex-valued field with six generators
+resolves each structural limitation of the real framework---single
+degree of freedom, vanishing vorticity, and vacuum flatness
+rigidity---and the Taub plane-symmetric vacuum is realised as an
+explicit complex seam metric.  Setting the two real components equal to
+the amplitude and phase of a wavefunction defines a self-consistent
+system in which a quantum field generates the curved spacetime it
+propagates on; the conformal limit recovers the spectrally quantised
+system.}
+
+\keywords{seam geometry, Einstein tensor, wavefunction metric,
+spectral quantisation, complex seam, vacuum rigidity}
+
+\pacs[MSC Classification]{83C05, 53C50, 53B30, 83C57, 53C21}
+
+\maketitle
+
+% ================================================================
+\section{Introduction}
+% ================================================================
+
+Suppose one wishes to build a symmetric $(0,2)$-tensor
+(a candidate metric) from a scalar field $s$ and a background metric~$h$,
+using at most second-order derivatives of $s$ and respecting the isotropy
+of~$h$.  On dimensional and symmetry grounds the available building
+blocks are:
+\begin{itemize}[noitemsep]
+\item $h_{ij}$ itself (conformal rescaling),
+\item $\pa_i s\,\pa_j s$ (gradient tensor),
+\item $\nn^2_{ij} s$ (Hessian),
+\item $(\nn^2 s)^2_{ij}:=(\pa_i\pa_k s)\,h^{kl}(\pa_l\pa_j s)$
+  (Hessian square).
+\end{itemize}
+The first three are linear in the derivatives of~$s$ of each order;
+the fourth is the simplest \emph{nonlinear} (quadratic-in-Hessian)
+building block.  Together they form a four-generator decomposition:
+\begin{equation}
+  \label{eq:ud}
+  g_{ij}
+  = \alpha\,h_{ij}
+    + \beta\,\pa_i s\,\pa_j s
+    + \gamma\,\nn^2_{ij} s
+    + \delta\,(\nn^2 s)^2_{ij},
+\end{equation}
+where $\alpha,\beta,\gamma,\delta$ are smooth functions of $s$ and its
+lower-order invariants (e.g.\ $|\nn s|^2_h$, $\Delta_h s$).  We call
+this the \emph{four-generator seam decomposition} and refer to the four
+terms as the \emph{conformal ($\alpha$),
+gradient-tensor ($\beta$), Hessian ($\gamma$), and
+Hessian-square ($\delta$) generators}
+respectively.  We call~$s$ the \emph{seam}.
+
+\begin{definition}[Four-generator seam decomposition]
+\label{def:seam-decomposition}
+Let $(M^n,h)$ be a (pseudo-)Riemannian manifold with $n\ge 2$ and
+$s\colon M\to\mathbb{R}$ a smooth scalar field.  The
+\emph{seam-generated metric} is
+\begin{equation}
+\label{eq:seam-metric}
+g = \alpha\,h + \beta\,ds\otimes ds + \gamma\,\nabla^2 s
+    + \delta\,(\nabla^2 s)^2,
+\end{equation}
+where $\alpha,\beta,\gamma,\delta\colon M\to\mathbb{R}$ are smooth scalar
+coefficients and $(\nabla^2 s)^2_{\mu\nu}:=(\nabla_\mu\nabla_\alpha s)\,
+h^{\alpha\beta}(\nabla_\beta\nabla_\nu s)$.  By standard invariant theory
+for symmetric bilinear forms~\cite{KMS1993}, the five $O(n)$-invariant
+scalars of the 2-jet of $s$,
+\begin{equation}
+  \label{eq:UD-invariants}
+  \bigl(s,\; |\nabla s|_h^2,\; \Delta_h s,\; |\nabla^2 s|_h^2,\;
+  \langle\nabla s,\nabla^2 s\cdot\nabla s\rangle_h\bigr),
+\end{equation}
+are available as arguments for $\alpha,\beta,\gamma,\delta$.
+\end{definition}
+
+\begin{remark}[Generator collapse in symmetric families]
+\label{rem:generator-collapse}
+When the Hessian $\nabla^2 s$ is proportional to the background metric
+($\nabla^2 s=\lambda\,h$), the Hessian-square generator reduces to
+$(\nabla^2 s)^2=\lambda^2 h$, which is absorbed into the conformal
+generator~$\alpha$.  This occurs in all three symmetric families studied
+in this paper:
+\begin{itemize}[noitemsep]
+\item \emph{Conformal family} (Result~1): the metric $g=e^{2s}\eta$ uses
+  only $\alpha$ (pure conformal rule; $\delta=0$).
+\item \emph{$O(n)$-invariant family} (Result~2):
+  $\nabla^2 s=\delta_{ij}$ for $s=\tfrac{1}{2}r^2$, so
+  $(\nabla^2 s)^2=\delta$.
+\item \emph{Lorentz-invariant family} (Result~3):
+  $\nabla^2 s=\eta_{\mu\nu}$ for
+  $s=\tfrac{1}{2}\eta_{\alpha\beta}x^\alpha x^\beta$, so
+  $(\nabla^2 s)^2=\eta$.
+\end{itemize}
+In these settings the decomposition reduces to three effective generators,
+and all computations in Sections~\ref{sec:conformal}--\ref{sec:lorentz}
+are carried out in this three-generator form.
+
+Conversely, whenever $\nabla^2 s$ has three or more distinct eigenvalues,
+the fourth generator is independent and cannot be absorbed
+(Theorem~\ref{thm:closure-fails}).
+
+We note that~\eqref{eq:seam-metric} can also be motivated via the
+invariant theory of $O(n)$-representations: the four generators
+correspond to the irreducible equivariant maps from $2$-jet data to
+symmetric $(0,2)$-tensors (the first three are linear in the Hessian;
+the fourth is the simplest quadratic contribution).  This
+invariant-theoretic perspective is not needed for any result in this
+paper; we mention it only to note that the four-generator span is
+natural and not ad hoc.
+\end{remark}
+
+\noindent\textbf{Physical motivation.}\enspace
+Why study metrics generated entirely by a single scalar?  Three reasons.
+First, many physically important spacetimes are conformally flat or have
+high symmetry, and in those cases the metric \emph{is} determined by a
+scalar to a very good approximation (FLRW, isotropic Schwarzschild
+coordinates, cosmological perturbation theory in the Newtonian gauge).
+Second, the seam framework provides an ``effective matter'' dictionary
+(Section~\ref{sec:discussion}): each generator maps to a specific
+stress-energy component (conformal $\to$ isotropic pressure, gradient
+$\to$ momentum flux, Hessian $\to$ tidal stress), making the origin of
+effective matter transparent.  Third, the self-consistent wavefunction
+seam (Section~\ref{subsec:self-consistent}) naturally connects to semiclassical
+gravity and Bohmian mechanics, producing spectral quantisation from
+geometric self-consistency alone.  The approach is of course
+limited---a single scalar cannot encode the full two radiative degrees of
+freedom of vacuum GR---but the structural results (closure, rigidity,
+quantisation) it delivers are sharp.
+
+\medskip
+This paper asks: if the spacetime metric is itself generated by a seam,
+what is the Einstein tensor $G_{\mu\nu}$ in terms of these generators?
+The individual curvature computations that follow are largely classical
+(conformal transformation formulas, warped-product identities, FLRW
+dynamics); the contribution here is their systematic organisation within
+the seam-generator language and the structural consequences that emerge
+from it---closure, rigidity, and the effective-matter dictionary.
+We give complete answers for two natural families.
+
+In Section~\ref{sec:conformal} we treat the conformally flat family
+$g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$ (pure $\alpha$-rule) and prove that
+$G_{\mu\nu}$ is an exact linear combination of all three generators,
+with the vacuum condition equivalent to harmonicity of $e^s$.
+
+In Section~\ref{sec:on} we treat the seam decomposition metric generated
+from the Euclidean seam $s=\tfrac{1}{2}r^2$, which is the $O(n)$-invariant
+family $g_{ij}=A(r)\delta_{ij}+B(r)x_ix_j$.  This family encompasses all
+spherically symmetric spatial metrics, including the Schwarzschild and
+FLRW 3-slices.  We show that $G_{ij}$ again lies exactly within the span
+of the seam generators (now collapsed from four to two by the
+degeneracy of the Euclidean Hessian), and that the vacuum condition
+forces the metric to be flat within this family---a no-go consequence
+of the high symmetry of the scalar seam.
+
+In Section~\ref{sec:lorentz} we treat the Lorentz-invariant seam
+$s=\half\eta_{\mu\nu}x^\mu x^\nu$ on Minkowski background.  The resulting
+two-function family $g_{\mu\nu}=A(s)\eta_{\mu\nu}+B(s)x_\mu x_\nu$ is
+equivalent (inside the light cone) to the general open ($k=-1$) FLRW ansatz.
+We compute $G_{\mu\nu}$ explicitly and show that, as in the standard open
+($k=-1$) FLRW vacuum setting, vacuum forces flatness within this family.
+
+Section~\ref{sec:signature} discusses the signature-change and a
+sphericity consequence of equivariance.
+
+In Section~\ref{sec:wavefunction} we apply the conformal seam framework to
+a complex scalar field $\psi=|\psi|\,e^{i\theta}$ by setting
+$s=\log|\psi|$.  The seam-geometric vacuum condition acquires a sharp
+quantum-mechanical meaning: it is equivalent to the eikonal equation for
+the phase when $\psi$ satisfies the Klein--Gordon equation.
+
+In Section~\ref{sec:complex} we promote the seam to a complex-valued
+field $\varphi=u+iv$ and show that all three structural
+limitations of the real ansatz---vacuum flatness rigidity, a single
+degree of freedom, and irrotationality---are resolved by the complex
+extension.  Vacuum flatness persists in the conformal-plus-gradient
+subfamily, but the full six-generator span admits genuinely curved
+vacua (Theorem~\ref{thm:complex-vacuum}).  Setting
+$u = \log|\psi|$ and $v = \theta$ connects the complex seam to the
+wavefunction framework, defining a self-consistent system in which a
+quantum field generates the curved spacetime it propagates on.
+
+\medskip
+\noindent\textbf{A no-go / rigidity viewpoint.}
+In both symmetry-reduced seam-generated families where a vacuum theorem is
+available (Sections~\ref{sec:on} and~\ref{sec:lorentz}), the Einstein equations
+do not merely \emph{select} a distinguished metric within the ansatz; they
+\emph{collapse} the ansatz to flatness (up to diffeomorphism and scale).
+We view this as a no-go statement about these symmetry-reduced ansatz classes:
+once the seam rule reduces the geometry to the spherically symmetric spatial
+or open-FLRW forms studied here, the remaining vacuum equations leave no room
+for nontrivial vacuum curvature within the class.
+
+At the same time, because the metric is generated from a single scalar seam,
+the present framework is not expected to encode the full two local radiative
+degrees of freedom of vacuum general relativity.  The focus of this paper is
+therefore structural: closure, rigidity, signature, and effective-matter
+translations within a deliberately restrictive class of scalar-generated
+metrics.
+
+\subsection*{Relation to prior work}
+
+The conformally flat Einstein tensor is classical~\cite{Wald1984}.
+The $O(n)$-invariant spatial metric and its curvature are also
+well-known~\cite{MisnerThorneWheeler1973}.
+The contribution of the present paper is the organisation:
+in the two explicit seam-generated families computed here, the Einstein
+tensor remains in the span of the seam generators that built the metric.
+In the $O(n)$-invariant Euclidean seam case, this ``closure'' is symmetry-forced
+(every $O(n)$-invariant symmetric 2-tensor is a linear combination of
+$\delta_{ij}$ and $x_ix_j$).  In the conformal seam case, it reflects the
+rigidity of natural second-order operators on metrics.  Extending this
+perspective beyond highly symmetric settings is an open direction.
+
+% ================================================================
+\section{Result 1: The Conformal Seam}
+\label{sec:conformal}
+% ================================================================
+
+Let $\eta_{\mu\nu}$ denote the flat Minkowski (or Euclidean) metric in
+$n$ dimensions.  Let $s\in C^\infty$ and set
+$g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$.
+
+\begin{proposition}[Ricci tensor, conformal seam]
+\label{prop:ricci}
+\begin{equation}
+  \label{eq:ricci}
+  R_{\mu\nu}
+  = -(n-2)\bigl[\pa_\mu\pa_\nu s - (\pa_\mu s)(\pa_\nu s)\bigr]
+    - \eta_{\mu\nu}\bigl[\Box_\eta s + (n-2)|\nn s|^2_\eta\bigr].
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Standard conformal transformation formula on a flat background;
+see~\cite{Wald1984}, Appendix~D.
+\end{proof}
+
+\begin{proposition}[Ricci scalar, conformal seam]
+\label{prop:ricciscalar}
+\begin{equation}
+  \label{eq:ricciscalar}
+  R = -e^{-2s}(n-1)\bigl[2\,\Box_\eta s + (n-2)|\nn s|^2_\eta\bigr].
+\end{equation}
+In $n=4$: $R=-6\,e^{-2s}(\Box_\eta s+|\nn s|^2_\eta)$.
+\end{proposition}
+
+\begin{proof}
+Contract~\eqref{eq:ricci} with $g^{\mu\nu}=e^{-2s}\eta^{\mu\nu}$ and
+collect terms.
+\end{proof}
+
+\begin{theorem}[Seam decomposition, conformal seam]
+\label{thm:conformal}
+In $n=4$,
+\begin{equation}
+  \label{eq:main}
+  \boxed{
+  G_{\mu\nu}
+  = \underbrace{-2\,\pa_\mu\pa_\nu s}_{\gamma\text{-generator}}
+    + \underbrace{2\,(\pa_\mu s)(\pa_\nu s)}_{\beta\text{-generator}}
+    + \underbrace{e^{-2s}(2\,\Box_\eta s + |\nn s|^2_\eta)\,g_{\mu\nu}}_{\alpha\text{-generator}}.
+  }
+\end{equation}
+The coefficients $\pm 2=\pm(n-2)|_{n=4}$ are exact.
+\end{theorem}
+
+\begin{proof}
+$G_{\mu\nu}=R_{\mu\nu}-\half R g_{\mu\nu}$.  Substituting
+Propositions~\ref{prop:ricci}--\ref{prop:ricciscalar} with $n=4$:
+\begin{align*}
+  G_{\mu\nu}
+  &= -2\bigl[\pa_\mu\pa_\nu s-(\pa_\mu s)(\pa_\nu s)\bigr]
+     - \eta_{\mu\nu}(\Box_\eta s+2|\nn s|^2)
+     +3\,\eta_{\mu\nu}(\Box_\eta s+|\nn s|^2).
+\end{align*}
+Collecting and writing $\eta_{\mu\nu}=e^{-2s}g_{\mu\nu}$
+gives~\eqref{eq:main}.
+The identification with the three generators of
+Definition~\ref{def:seam-decomposition} is immediate:
+$\pa_\mu\pa_\nu s$ is the Hessian
+generator ($\gamma=1$), $(\pa_\mu s)(\pa_\nu s)$ is the gradient-tensor
+generator ($\beta=1$), and $g_{\mu\nu}$ is the conformal generator
+($\alpha=1$).
+\end{proof}
+
+\begin{remark}[Trace check]
+$g^{\mu\nu}G_{\mu\nu}=6e^{-2s}(\Box_\eta s+|\nn s|^2)=-R$.~\checkmark
+\end{remark}
+
+\begin{remark}[Dimension dependence]
+The coefficients $\pm(n-2)$ vanish at $n=2$, consistent with
+$G_{\mu\nu}\equiv 0$ in two dimensions.
+\end{remark}
+
+\begin{proposition}[Verification on $H^4$]
+\label{prop:h4}
+For $s=-\log x_4$ (Poincar\'{e} upper half-space model), $G_{\mu\nu}=3g_{\mu\nu}$,
+consistent with $\Ric=-(n-1)g$ at constant curvature $\kappa=-1$.
+\end{proposition}
+
+\begin{proof}
+$\pa_4 s=-1/x_4$, all other partials zero; $\Box_\eta s=|\nn s|^2=1/x_4^2$.
+Direct substitution into~\eqref{eq:main} gives $G_{\mu\nu}=3g_{\mu\nu}$.
+\end{proof}
+
+\subsection{Physical interpretation of the three generators}
+\label{subsec:physical}
+
+Via $8\pi T_{\mu\nu}=G_{\mu\nu}$, each generator corresponds to a
+distinct mode of stress-energy.
+
+\medskip\noindent
+\textbf{$\gamma$-generator} $(-2\,\pa_\mu\pa_\nu s)$:~
+Anisotropic tidal and viscous stress.  This term is a trace-free symmetric
+tensor that distinguishes directions; it vanishes iff $s$ is affine.
+It has no counterpart in a perfect fluid.  Geometrically, it measures
+how the level sets of $s$ curve in different directions and is nonzero
+precisely on the degeneration locus of the seam rule (see Theorem~\ref{thm:signature}).
+
+\medskip\noindent
+\textbf{$\beta$-generator} $(+2\,(\pa_\mu s)(\pa_\nu s))$:~
+Kinetic momentum flux.  This rank-one tensor has the same structure as
+the kinetic stress-energy of a scalar field $\phi$: $T^{(\mathrm{kin})}_{\mu\nu}
+=\pa_\mu\phi\,\pa_\nu\phi-\half(\pa_\lambda\phi\,\pa^\lambda\phi)g_{\mu\nu}$
+(the trace part is absorbed into the $\alpha$-generator).
+For pressureless dust with 4-velocity $u_\mu\propto\pa_\mu s$, the
+stress-energy is purely of $\beta$-type.
+
+\medskip\noindent
+\textbf{$\alpha$-generator} $(e^{-2s}(2\Box_\eta s+|\nn s|^2)\,g_{\mu\nu})$:~
+Isotropic pressure and effective cosmological term.  Stress-energy
+proportional to $g_{\mu\nu}$ represents a perfect fluid at rest or a
+cosmological constant.  Here the coefficient is dynamical: it depends
+on $\Box_\eta s$ and $|\nn s|^2$, so the effective cosmological term is
+generated by the seam configuration rather than being fixed input.
+
+\begin{remark}[Information hierarchy]
+The three generators carry information at ascending derivative order:
+the $\alpha$-generator depends on $s$ and its first derivatives through
+$|\nn s|^2$ and $\Box s$; the $\beta$-generator on the gradient $\nn s$;
+the $\gamma$-generator on the full Hessian $\pa_\mu\pa_\nu s$.  The richer
+the second-order structure of the seam, the more of the stress-energy
+is carried by the Hessian generator.
+\end{remark}
+
+\begin{corollary}[No light deflection for conformal seams]
+\label{cor:no-lensing}
+For any conformal seam metric $g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$, the
+unparameterised null geodesics of $g$ coincide with those of the flat background
+$\eta$.  In particular, in background inertial coordinates the light-ray
+trajectories are straight lines (zero deflection angle), although affine
+parameterisation and focusing properties may change.
+\end{corollary}
+
+\begin{proof}
+Conformal transformations preserve the null cone and map null geodesics to null
+geodesics as unparameterised curves; see, e.g.,~\cite{Wald1984,Carroll2004}.
+\end{proof}
+
+\begin{remark}[Limitation: no gravitational lensing]
+\label{rem:no-lensing}
+Corollary~\ref{cor:no-lensing} implies that the conformally flat family
+cannot describe gravitational lensing, since the standard Schwarzschild
+spacetime is not globally conformally flat.  Lensing requires the full
+$g_{ij}=A\delta_{ij}+B x_ix_j$ form with a non-trivial gradient-tensor
+generator (as can be verified from the isotropic Schwarzschild
+decomposition, where the gradient-tensor coefficient vanishes and the
+metric lies in the conformal-plus-Hessian span).
+\end{remark}
+
+\subsection{Vacuum condition}
+\label{subsec:vacuum}
+
+\begin{theorem}[Seam-geometric vacuum condition, conformal case]
+\label{thm:vacuum}
+$G_{\mu\nu}=0$ if and only if:
+\begin{enumerate}[label=(\roman*)]
+\item $e^s$ is harmonic in the flat background:~$\Box_\eta e^s=0$;
+\item $\pa_\mu\pa_\nu s = (\pa_\mu s)(\pa_\nu s)
+  -\half|\nn s|^2\eta_{\mu\nu}$ for all $\mu,\nu$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Taking the trace of~\eqref{eq:main}: $G=0$ gives
+$\Box_\eta s+|\nn s|^2=0$.  Since
+$\Box_\eta(e^s)=e^s(\Box_\eta s+|\nn s|^2)$,
+this is equivalent to~(i).  Given~(i), the
+$\alpha$-generator evaluates to $-|\nn s|^2\eta_{\mu\nu}$,
+and setting the full expression to zero gives~(ii).
+\end{proof}
+
+\begin{remark}
+By Liouville's theorem, a positive harmonic function on a complete
+flat manifold is constant.  Condition~(i) therefore forces $e^s=\mathrm{const}$
+(i.e., $g_{\mu\nu}=\mathrm{const}\cdot\eta_{\mu\nu}$) unless the domain
+is non-compact or has boundary.
+\end{remark}
+
+\begin{corollary}[A harmonic hierarchy in the conformal family]
+\label{cor:harmonic-hierarchy}
+In the conformal seam family $g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$ in $n=4$:
+\begin{enumerate}[label=(\roman*),noitemsep]
+\item The scalar curvature vanishes ($R=0$) if and only if $e^s$ is harmonic in
+  the flat background: $\Box_\eta(e^s)=0$.
+\item The isotropic (conformal) generator in~\eqref{eq:main} vanishes, i.e.
+  $(2\Box_\eta s+|\nabla s|_\eta^2)=0$, if and only if $e^{s/2}$ is harmonic:
+  $\Box_\eta(e^{s/2})=0$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+In $n=4$, Proposition~\ref{prop:ricciscalar} gives
+$R=-6e^{-2s}(\Box_\eta s+|\nabla s|_\eta^2)$, hence $R=0\iff \Box_\eta s+|\nabla s|_\eta^2=0$.
+Since $\Box_\eta(e^{s})=e^{s}(\Box_\eta s+|\nabla s|_\eta^2)$ and $e^{s}>0$,
+this is equivalent to $\Box_\eta(e^{s})=0$.
+
+For (ii), expand $\Box_\eta(e^{s/2})=\tfrac12 e^{s/2}(\Box_\eta s+\tfrac12|\nabla s|_\eta^2)$.
+Since $e^{s/2}>0$, $\Box_\eta(e^{s/2})=0$ is equivalent to
+$\Box_\eta s+\tfrac12|\nabla s|_\eta^2=0$, i.e.
+$2\Box_\eta s+|\nabla s|_\eta^2=0$.
+\end{proof}
+
+\begin{proposition}[Harmonic ladder exclusivity]
+\label{prop:harmonic-ladder}
+Let $s\in C^\infty(\mathbb{R}^{1,3})$.  Fix two distinct constants
+$k_1\neq k_2$.  If
+\begin{equation}
+  \label{eq:harmonic-ladder}
+  \Box_\eta(e^{k_1 s})=0
+  \qquad\text{and}\qquad
+  \Box_\eta(e^{k_2 s})=0,
+\end{equation}
+then $|\nabla s|_\eta^2\equiv 0$ (and hence $\Box_\eta s\equiv 0$).
+\end{proposition}
+
+\begin{proof}
+For any constant $k$, one has
+$\Box_\eta(e^{ks})=k e^{ks}(\Box_\eta s+k|\nabla s|_\eta^2)$.  Since
+$e^{ks}\neq 0$, the conditions~\eqref{eq:harmonic-ladder} imply
+$\Box_\eta s=-k_1|\nabla s|_\eta^2=-k_2|\nabla s|_\eta^2$.  Subtracting gives
+$(k_1-k_2)|\nabla s|_\eta^2=0$, hence $|\nabla s|_\eta^2=0$ and then
+$\Box_\eta s=0$.
+\end{proof}
+
+\begin{remark}
+Proposition~\ref{prop:harmonic-ladder} subsumes the ``dual wave'' observation
+of Proposition~\ref{prop:dual-wave} as the special case $(k_1,k_2)=(1,-1)$.
+It also shows, for example, that simultaneously requiring
+$\Box_\eta(e^{s})=0$ (scalar-flatness in Corollary~\ref{cor:harmonic-hierarchy})
+and $\Box_\eta(e^{s/2})=0$ (vanishing isotropic generator) forces a null seam.
+\end{remark}
+
+% ================================================================
+\section{Result 2: The Full \texorpdfstring{$O(n)$}{O(n)}-Invariant Family}
+\label{sec:on}
+% ================================================================
+
+We now apply the seam decomposition (with collapsed fourth generator) to the
+Euclidean seam $s=\tfrac{1}{2}r^2=\tfrac{1}{2}|x|^2$ on $\mathbb{R}^n$
+with flat background $h=\delta$.
+
+\subsection{Metric and generator collapse}
+
+\begin{proposition}[$O(n)$-invariant output from the Euclidean seam]
+\label{prop:on}
+The five $O(n)$-invariant jet scalars of $s=\half r^2$ are:
+$(s,\,|\nn s|^2,\,\Delta s,\,|\nn^2 s|^2,\,\langle\nn s,\nn^2 s\cdot\nn s\rangle)
+= (\half r^2,\,r^2,\,n,\,n,\,r^2)$.
+Since $\nn^2_{ij}s=\delta_{ij}=h_{ij}$, the Hessian and conformal
+generators produce the same tensor; the seam decomposition
+reduces to
+\begin{equation}
+  \label{eq:onmetric}
+  g_{ij} = A(r)\,\delta_{ij} + B(r)\,x_ix_j,
+\end{equation}
+where $A(r):=\alpha(r)+\gamma(r)>0$ and $B(r)=\beta(r)$.  Here $A$ and $B$
+may vary with $r$ because $\alpha,\beta,\gamma$ are allowed to depend on the
+jet invariants of $s$, and for $s=\half r^2$ these invariants reduce to
+functions of $r^2$.
+\end{proposition}
+
+In spherical coordinates, writing $P(r):=A(r)+B(r)r^2$,
+\begin{equation}
+  \label{eq:spherical}
+  \mathrm{d}s^2 = P(r)\,\mathrm{d}r^2 + A(r)\,r^2\,\mathrm{d}\Omega^2_{n-1}.
+\end{equation}
+Equivalently, any $O(n)$-invariant Riemannian metric can be written as
+$\mathrm{d}s^2=U(r)\,\mathrm{d}r^2+V(r)\,r^2\,\mathrm{d}\Omega^2_{n-1}$; this
+corresponds to~\eqref{eq:spherical} by taking $V=A$ and $U=P$, i.e.
+$B=(U-V)/r^2$.  In particular,~\eqref{eq:onmetric} encompasses all rotationally
+symmetric metrics in this coordinate chart (sphere, hyperbolic space, and
+standard spatial slices such as Schwarzschild and FLRW).
+
+\subsection{Einstein tensor of the \texorpdfstring{$O(n)$}{O(n)}-invariant family}
+
+Introduce the geodesic radial coordinate $\rho$ by
+$\mathrm{d}\rho=\sqrt{P(r)}\,\mathrm{d}r$ and the warp factor
+\begin{equation}
+  \label{eq:warp}
+  f(r):=r\,\sqrt{A(r)}.
+\end{equation}
+Then~\eqref{eq:spherical} takes the warped-product form
+$\mathrm{d}s^2=\mathrm{d}\rho^2+f(\rho)^2\,\mathrm{d}\Omega^2_{n-1}$.
+The curvature follows by standard warped-product formulae.
+
+\begin{proposition}[Sectional curvatures]
+\label{prop:sect}
+\begin{align}
+  \label{eq:Kra}
+  K(r,a) &= -\frac{1}{f}\,\frac{\mathrm{d}^2 f}{\mathrm{d}\rho^2},
+  \\[4pt]
+  \label{eq:Kab}
+  K(a,b) &= \frac{1-\left(\frac{\mathrm{d} f}{\mathrm{d}\rho}\right)^{\!2}}{f^2},
+\end{align}
+where $a,b$ denote tangential directions.
+\end{proposition}
+
+\begin{proof}
+Standard warped-product curvature identities.
+\end{proof}
+
+\begin{remark}[Flat space check]
+If $A\equiv \mathrm{const}$ and $B\equiv 0$ then $P\equiv A$ and $f(\rho)=\sqrt{A}\,\rho$,
+so $K(r,a)=0$, $K(a,b)=0$, $G_{ij}=0$.~\checkmark
+\end{remark}
+
+\begin{theorem}[Einstein tensor of the $O(n)$-invariant family]
+\label{thm:on}
+In $n=4$ (three angular directions), the mixed Einstein tensor
+components of~\eqref{eq:onmetric} are
+\begin{align}
+  \label{eq:Grr}
+  G^r{}_r &= -3\,\frac{1-\left(\frac{\mathrm{d} f}{\mathrm{d}\rho}\right)^{\!2}}{f^2},
+  \\[6pt]
+  \label{eq:Gaa}
+  G^a{}_a &= 2\,\frac{1}{f}\,\frac{\mathrm{d}^2 f}{\mathrm{d}\rho^2}
+  -\frac{1-\left(\frac{\mathrm{d} f}{\mathrm{d}\rho}\right)^{\!2}}{f^2}.
+\end{align}
+In Cartesian form, $G_{ij}=C_1(r)\,\delta_{ij}+C_2(r)\,x_ix_j$,
+where
+\begin{equation}
+  \label{eq:C1C2}
+  C_1 = G^a{}_a\cdot A(r),\qquad
+  C_2 = \frac{G^r{}_r\cdot P(r) - G^a{}_a\cdot A(r)}{r^2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For the warped product $\mathrm{d}\rho^2+f(\rho)^2\,\mathrm{d}\Omega^2_3$,
+the Ricci tensor satisfies $R^r{}_r=-3f_{\rho\rho}/f$ and
+$R^a{}_a=2(1-f_{\rho}^2)/f^2-f_{\rho\rho}/f$.  Substituting into
+$G=R-\half Rg$ yields~\eqref{eq:Grr}--\eqref{eq:Gaa}.
+For the Cartesian form: the radial direction $\hat x$ has covariant eigenvalue
+$G^r{}_r\cdot P$ and each tangential direction has covariant eigenvalue
+$G^a{}_a\cdot A$, yielding~\eqref{eq:C1C2}.
+\end{proof}
+
+\begin{remark}[Closure under the seam decomposition]
+\label{rem:closure}
+$G_{ij}=C_1\delta_{ij}+C_2 x_ix_j$ involves exactly the two tensors
+$\delta_{ij}=\nn^2_{ij}s$ (Hessian generator of $s$) and
+$x_ix_j=\pa_is\,\pa_js$ (gradient-tensor generator of $s$).
+No new tensor structure appears beyond the three seam
+generators.  The Einstein tensor of any $O(n)$-invariant seam metric
+lies in the span of the seam's own generators.
+In this $O(n)$-invariant setting this is also the only possibility by
+invariant theory: there are no other independent $O(n)$-invariant
+symmetric rank-2 tensors built from $x$.
+
+Equivalently, since for the Euclidean seam $s=\half|x|^2$ one has
+$\nabla^2 s=\delta$ and $ds\otimes ds=x\otimes x$, the Cartesian closure can be
+read invariantly as
+\[
+G = C_1(r)\,\nabla^2 s + C_2(r)\,ds\otimes ds.
+\]
+\end{remark}
+
+\begin{corollary}[Radial scalar curvature]
+\label{cor:scalar-radial}
+For an $O(n)$-invariant seam metric of the form~\eqref{eq:spherical}, the scalar
+curvature $R$ depends only on the radius (equivalently, only on $\rho$ or $r$).
+In particular, in the warped-product variables one has
+\begin{equation}
+  \label{eq:scalar-warp}
+  R = -6\,\frac{f_{\rho\rho}}{f} + 6\,\frac{1-f_{\rho}^2}{f^2}
+  \qquad (n=4).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+This follows from the warped-product form $\mathrm{d}\rho^2+f(\rho)^2\mathrm{d}\Omega_3^2$.
+\end{proof}
+
+\subsection{Vacuum condition}
+
+\begin{theorem}[Vacuum condition, $O(n)$-invariant family]
+\label{thm:vacuumon}
+$G_{ij}=0$ if and only if the metric~\eqref{eq:spherical} is flat.  That is,
+within this $O(n)$-invariant seam-generated ansatz class, vacuum forces flatness.
+\end{theorem}
+
+\begin{proof}
+From~\eqref{eq:Grr}, $G^r{}_r=0$ implies $\mathrm{d}f/\mathrm{d}\rho=\pm 1$.
+Then~\eqref{eq:Gaa} gives $\mathrm{d}^2 f/\mathrm{d}\rho^2=0$.  Hence
+$f(\rho)=c_1\rho+c_0$ with $c_1^2=1$, so after shifting $\rho$ one has
+$f(\rho)=\rho$ up to an overall constant scale.  Proposition~\ref{prop:sect} then
+gives $K(r,a)=0$ and $K(a,b)=0$, so the metric is flat.
+\end{proof}
+
+\begin{corollary}[$\Lambda$-vacuum forces constant curvature in the $O(n)$ family]
+\label{cor:lambda-on}
+In the setting of Theorem~\ref{thm:on} (so $n=4$), suppose the metric
+\eqref{eq:onmetric} satisfies the Einstein-space condition
+\begin{equation}
+  \label{eq:einstein-space-on}
+  G_{ij}=-\Lambda\,g_{ij}
+\end{equation}
+for a constant $\Lambda\in\mathbb{R}$.  Then the metric has constant sectional
+curvature $\kappa=\Lambda/3$.
+Equivalently, in warped-product variables it satisfies
+\begin{equation}
+  \label{eq:f-lambda-ode}
+  f_{\rho\rho}=-\frac{\Lambda}{3}f,
+  \qquad
+  f_{\rho}^2=1-\frac{\Lambda}{3}f^2.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Equation~\eqref{eq:einstein-space-on} is equivalent to $G^r{}_r=G^a{}_a=-\Lambda$.
+From~\eqref{eq:Grr} we obtain
+$1-f_\rho^2=\tfrac{\Lambda}{3}f^2$, which is the second identity in
+\eqref{eq:f-lambda-ode}.
+Substituting this into~\eqref{eq:Gaa} and setting $G^a{}_a=-\Lambda$ yields
+$2f_{\rho\rho}/f-\Lambda/3=-\Lambda$, hence $f_{\rho\rho}=-(\Lambda/3)f$.
+Finally, Proposition~\ref{prop:sect} implies
+$K(a,b)=(1-f_\rho^2)/f^2=\Lambda/3$ and $K(r,a)=-f_{\rho\rho}/f=\Lambda/3$.
+\end{proof}
+
+\begin{remark}[Schwarzschild slice: $n=3$ versus the $n=4$ computation]
+Theorem~\ref{thm:on} computes the Einstein tensor of~\eqref{eq:onmetric}
+for $n=4$ (three angular directions).  By contrast, a standard spatial
+slice of the Schwarzschild \emph{spacetime} is 3-dimensional ($n=3$,
+one radial and two angular directions).  One should therefore not insert
+3D Schwarzschild data into the $n=4$ formulas~\eqref{eq:Grr}--\eqref{eq:Gaa}.
+
+For the Schwarzschild spatial 3-metric written in areal radius,
+\[
+\mathrm{d}s^2 = \frac{r}{r-2M}\,\mathrm{d}r^2 + r^2\,\mathrm{d}\Omega_2^2,
+\]
+one has $A(r)=1$, $P(r)=\frac{r}{r-2M}$ and $B(r)=\frac{P-A}{r^2}=\frac{2M}{r^2(r-2M)}$.
+The $n=3$ warped-product formulae then give
+\[
+G^r{}_r = -\frac{B(r)}{A(r)\,P(r)}=-\frac{2M}{r^3},
+\qquad
+G^a{}_a = -\frac{P'(r)}{2r\,P(r)^2}=\frac{M}{r^3}.
+\]
+Thus the Schwarzschild spatial 3-geometry is not vacuum in the intrinsic
+3D sense ($G^{(3)}_{ij}\neq 0$), even though it arises as Cauchy data for a
+vacuum 4D spacetime.  In fact this slice is time-symmetric ($K_{ij}=0$), so
+the vacuum Hamiltonian constraint yields $R^{(3)}=0$
+(see, e.g.,~\cite{Wald1984}, Chapter~10); consequently
+$G^{(3)}_{ij}=R^{(3)}_{ij}$ is nonzero because the 3-geometry is scalar-flat
+but not Ricci-flat.  Theorem~\ref{thm:vacuumon} is therefore a statement about
+vacuum \emph{Riemannian} geometry within the seam family: in the $O(n)$-invariant
+seam-generated class, the vacuum condition forces the metric to be flat.
+\end{remark}
+
+% ================================================================
+\section{Result 3: The Lorentz-Invariant Family}
+\label{sec:lorentz}
+% ================================================================
+
+We now switch from the Euclidean seam $s=\half r^2$ to the Lorentz-invariant
+interval seam on Minkowski background.
+
+\subsection{Metric ansatz and FLRW normal form}
+
+Let $\eta_{\mu\nu}=\mathrm{diag}(-1,1,1,1)$ and define
+\begin{equation}
+  \label{eq:lorentz-seam-main}
+  s=\half\,\eta_{\mu\nu}x^\mu x^\nu=\half(-t^2+r^2).
+\end{equation}
+Then $\pa_\mu\pa_\nu s=\eta_{\mu\nu}$, so the conformal and Hessian generators
+collapse.  Any $SO(1,3)$-invariant seam output therefore has the two-function
+form
+\begin{equation}
+  \label{eq:lorentz-inv-metric-main}
+  g_{\mu\nu}=A(s)\,\eta_{\mu\nu}+B(s)\,x_\mu x_\nu,
+\end{equation}
+where $x_\mu:=\eta_{\mu\nu}x^\nu$.
+
+Inside the future light cone $t^2>r^2$, introduce hyperbolic coordinates
+$t=\tau\cosh\chi$, $r=\tau\sinh\chi$ (so $\tau>0$ and $s=-\half\tau^2$).  Then
+$\eta=-\mathrm{d}\tau^2+\tau^2\mathrm{d}H_3^2$ and
+$x_\mu\mathrm{d}x^\mu=-\tau\,\mathrm{d}\tau$, hence
+\begin{equation}
+  \label{eq:open-flrw-form-main}
+  \mathrm{d}s^2
+  =-N(\tau)^2\,\mathrm{d}\tau^2+a(\tau)^2\,\mathrm{d}H_3^2,
+\end{equation}
+with
+\begin{equation}
+  \label{eq:A-B-to-a-N-main}
+  a(\tau)^2=A(\tau)\,\tau^2,\qquad
+  N(\tau)^2=A(\tau)-B(\tau)\,\tau^2.
+\end{equation}
+Thus the Lorentz-invariant seam parameterises the general open ($k=-1$)
+FLRW ansatz class.
+
+\subsection{Einstein tensor and vacuum}
+
+\begin{theorem}[Einstein tensor of the Lorentz-invariant family]
+\label{thm:lorentz}
+In $n=4$, for the metric~\eqref{eq:open-flrw-form-main} with $k=-1$, the mixed
+Einstein tensor components are
+\begin{align}
+  \label{eq:lorentz-G00}
+  G^{\tau}{}_{\tau}
+  &= -3\left[\left(\frac{1}{N}\frac{a'}{a}\right)^{\!2}-\frac{1}{a^2}\right],
+  \\
+  \label{eq:lorentz-Gaa}
+  G^{a}{}_{a}
+  &= -\left[\frac{2}{N}\frac{\mathrm{d}}{\mathrm{d}\tau}\left(\frac{1}{N}\frac{a'}{a}\right)
+    +3\left(\frac{1}{N}\frac{a'}{a}\right)^{\!2}-\frac{1}{a^2}\right],
+\end{align}
+where $a$ is any tangential (hyperbolic) direction and $'$ denotes
+$\mathrm{d}/\mathrm{d}\tau$.
+
+Moreover, $G_{\mu\nu}$ is $SO(1,3)$-invariant and therefore has Cartesian form
+$G_{\mu\nu}=C_1(s)\,\eta_{\mu\nu}+C_2(s)\,x_\mu x_\nu$ for scalar functions
+$C_1,C_2$.
+
+In terms of the FLRW mixed components, these coefficients can be recovered as
+\begin{equation}
+  \label{eq:lorentz-C1C2}
+  C_1 = A\,G^{a}{}_{a},
+  \qquad
+  C_2 = \frac{-N^2\,G^{\tau}{}_{\tau}+A\,G^{a}{}_{a}}{\tau^2}
+  = \frac{-N^2\,G^{\tau}{}_{\tau}+A\,G^{a}{}_{a}}{-2s},
+\end{equation}
+where $a$ denotes any tangential hyperbolic direction.
+\end{theorem}
+
+\begin{proof}
+The metric~\eqref{eq:open-flrw-form-main} is a standard FLRW form with spatial
+curvature $k=-1$.  Equations~\eqref{eq:lorentz-G00}--\eqref{eq:lorentz-Gaa} are
+the classical Einstein tensor identities for FLRW in lapse form; see, e.g.,~\cite{Weinberg1972,Carroll2004}.
+The final statement follows because the only $SO(1,3)$-invariant covariant
+rank-2 tensors built from $x$ and $\eta$ are $\eta_{\mu\nu}$ and $x_\mu x_\nu$.
+\end{proof}
+
+\begin{corollary}[Vacuum structure of the Lorentz-invariant family]
+\label{cor:lorentz-vacuum}
+If $G_{\mu\nu}=0$ for a Lorentz-invariant seam metric
+\eqref{eq:lorentz-inv-metric-main} in a region inside the light cone, then the
+metric is flat (isometric to a constant multiple of Minkowski space).  In other
+words, within this Lorentz-invariant seam-generated ansatz class, vacuum forces
+flatness.
+\end{corollary}
+
+\begin{proof}
+In cosmic time gauge $N\equiv 1$, the vacuum equation $G^{\tau}{}_{\tau}=0$ gives
+$(\dot a/a)^2=1/a^2$, i.e., $\dot a=\pm 1$.  Hence $a(t)=t+c$ (up to time
+reversal), which is the \emph{Milne universe}: an open ($k=-1$) FLRW chart on
+flat Minkowski spacetime (the interior of a light cone).
+Allowing an arbitrary lapse corresponds only to reparameterisation of time.
+Finally, an overall constant scale factor multiplies $\eta$ and preserves
+flatness.
+\end{proof}
+
+\begin{corollary}[$\Lambda$-vacuum in the Lorentz-invariant family]
+\label{cor:lorentz-lambda}
+In the Lorentz-invariant seam family, the Einstein-space condition
+\begin{equation}
+  \label{eq:lorentz-einstein-space}
+  G_{\mu\nu}=-\Lambda\,g_{\mu\nu}
+\end{equation}
+is equivalent (inside the light cone) to the standard open ($k=-1$) FLRW
+$\Lambda$-vacuum equations for the scale factor $a$ in
+\eqref{eq:open-flrw-form-main}.  In particular, in cosmic time gauge $N\equiv 1$
+these reduce to
+\begin{equation}
+  \label{eq:lorentz-lambda-friedmann}
+  \left(\frac{\dot a}{a}\right)^{\!2}=\frac{1}{a^2}+\frac{\Lambda}{3},
+  \qquad
+  \frac{\ddot a}{a}=\frac{\Lambda}{3}.
+\end{equation}
+For $\Lambda=0$ this recovers the Milne solution of
+Corollary~\ref{cor:lorentz-vacuum}; for $\Lambda\neq 0$ the solutions are the
+usual constant-curvature ($\Ric=\Lambda g$) FLRW spacetimes in open slicing.
+\end{corollary}
+
+\begin{proof}
+Equation~\eqref{eq:lorentz-einstein-space} is equivalent to the two conditions
+$G^{\tau}{}_{\tau}=G^{a}{}_{a}=-\Lambda$.  Using
+\eqref{eq:lorentz-G00}--\eqref{eq:lorentz-Gaa} with $k=-1$ yields the standard
+Friedmann--acceleration system; in cosmic time gauge $N\equiv 1$ this is exactly
+\eqref{eq:lorentz-lambda-friedmann}.
+\end{proof}
+
+\begin{theorem}[Signature and degeneration (Lorentz-invariant family)]
+\label{thm:lorentz-signature}
+Inside the light cone ($s<0$), the Lorentz-invariant metric
+\eqref{eq:lorentz-inv-metric-main} has the FLRW form~\eqref{eq:open-flrw-form-main}
+with $a(\tau)^2=A(\tau)\tau^2$ and $N(\tau)^2=A(\tau)-B(\tau)\tau^2$.
+Assuming $A>0$ (so the spatial part is positive-definite), the metric is:
+\begin{enumerate}[label=(\roman*)]
+\item Lorentzian iff $N(\tau)^2>0$, equivalently $A(s)+2s\,B(s)>0$;
+\item degenerate iff $N(\tau)^2=0$, equivalently $A(s)+2s\,B(s)=0$;
+\item Riemannian iff $N(\tau)^2<0$.
+\end{enumerate}
+The degeneration locus $\{N=0\}$ is a level set of $s$, hence a two-sheeted
+hyperboloid $t^2-r^2=\tau_0^2$ (or, equivalently, $s=s_0=-\half\tau_0^2$).
+\end{theorem}
+
+\begin{proof}
+In~\eqref{eq:open-flrw-form-main} one has $g_{\tau\tau}=-N(\tau)^2$ and spatial
+metric $a(\tau)^2\,\mathrm{d}H_3^2$.  With $A>0$, the spatial part is positive.
+The sign of $N^2$ therefore determines whether the $\tau$-direction is timelike
+(Lorentzian), null (degenerate), or spacelike (Riemannian).  Since
+$s=-\half\tau^2$, the condition $N(\tau)^2=0$ is equivalent to
+$A(s)+2sB(s)=0$, and the level set $\{\tau=\tau_0\}$ is the hyperboloid
+$t^2-r^2=\tau_0^2$.
+\end{proof}
+
+\begin{remark}[Physical meaning of the Lorentz seam: Weyl's Postulate]
+\label{rem:weyl-postulate}
+Inside the future light cone, $s=-\half\tau^2$ where
+$\tau=\sqrt{t^2-r^2}$ is the proper time along radial geodesics from the
+origin.  The gradient $\nabla_\mu s=x_\mu$ is timelike, and the normalised
+4-velocity $U_\mu=x_\mu/\tau$ is exactly the comoving Hubble-flow velocity of
+the open FLRW model.  By Corollary~\ref{cor:irrotational}, this flow is
+irrotational and hypersurface-orthogonal, with the constant-$\tau$ hyperboloids
+as spatial slices.  The Lorentz-invariant seam therefore realises
+\emph{Weyl's Postulate}---the assumption that the cosmic substratum consists of
+a congruence of non-intersecting, irrotational geodesic observers diverging
+from a single past event---as a consequence of $SO(1,3)$-equivariance of the
+scalar seam, rather than as an independent axiom.
+\end{remark}
+
+% ================================================================
+\section{Signature as Output and a Sphericity Corollary}
+\label{sec:signature}
+% ================================================================
+
+\subsection{Signature change at the degeneration sphere}
+
+\begin{theorem}[Signature change]
+\label{thm:signature}
+The metric~\eqref{eq:onmetric} is:
+\begin{enumerate}[label=(\roman*)]
+\item positive-definite (Riemannian) at $x$ iff
+  $A(r)>0$ and $P(r)=A(r)+B(r)r^2>0$;
+\item degenerate at radius $r_0$ iff $A(r_0)=0$ or $P(r_0)=0$; in particular,
+  if $A(r)>0$ for all $r$ then the degeneration locus is the sphere $|x|=r_0$
+  where $P(r_0)=0$;
+\item Lorentzian (signature $(1,n-1)$) at $x$ iff $P(r)<0$.
+\end{enumerate}
+Metric signature is an output of $(A,B)$, not an independent postulate.
+\end{theorem}
+
+\begin{proof}
+The eigenvalues of $g_{ij}=A\delta_{ij}+Bx_ix_j$ are
+$A$ (on $x^\perp$, multiplicity $n-1$) and $P=A+Br^2$ (on $\hat x$).
+The degeneracy locus $\{P=0\}$ is a sphere by the $O(n)$-invariance of $P(r)$.
+\end{proof}
+
+\subsection{Sphericity from equivariance}
+
+\begin{corollary}[Sphericity via seam equivariance]
+\label{cor:birkhoff}
+For any metric generated from the Euclidean seam via the
+seam decomposition, every degeneration locus is a sphere.
+In particular, every horizon and every signature-change surface
+in this family is spherical.
+\end{corollary}
+
+\begin{proof}
+$P(r)$ depends only on $r=|x|$ by $O(n)$-invariance of the seam
+rule.  Any locus $\{P=0\}$ is therefore $O(n)$-invariant, hence a sphere.
+\end{proof}
+
+\begin{remark}[Relation to the classical Birkhoff theorem]
+The classical Birkhoff theorem states that every spherically symmetric
+vacuum solution of the Einstein equations is isometric to a portion of
+the Schwarzschild solution~\cite{Birkhoff1923}.  Corollary~\ref{cor:birkhoff}
+establishes only the \emph{sphericity} of the relevant loci by $O(n)$-equivariance
+of the seam rule, without invoking the Einstein equations.  It does not assert
+the dynamical/staticity content of the classical theorem, nor the Schwarzschild
+uniqueness conclusion.  Rather, it isolates the prior structural statement that
+any degeneration locus in this $O(n)$-generated family must be spherical.
+\end{remark}
+
+% ================================================================
+\section{Discussion}
+\label{sec:discussion}
+% ================================================================
+
+\subsection{Generator closure under \texorpdfstring{$G_{\mu\nu}$}{Gmunu}}
+
+The seam decomposition (Definition~\ref{def:seam-decomposition}) employs
+four generators.  In each of Results~1--3, the Hessian-square generator
+collapses into the span of the other three
+(Remark~\ref{rem:generator-collapse}), and the Einstein tensor of the
+resulting metric is again expressible in seam variables.
+In the $O(n)$-invariant Euclidean seam case this collapse is
+symmetry-forced; in the conformal seam case, only the $\alpha$-generator
+contributes, so the fourth generator is absent entirely.
+
+For a general seam, however, the Hessian-square generator is
+independent once $\nn^2 s$ has three or more distinct eigenvalues.
+Below we show that with all four generators present, first-order
+closure holds, while any attempt to close with only three generators
+fails in general.
+
+\subsubsection*{Perturbative analysis: the Hessian-squared obstruction}
+
+To test closure beyond symmetry we compute the linearised Einstein tensor
+of a general seam perturbation on flat background.  Write
+$g_{\mu\nu}(\varepsilon)=\eta_{\mu\nu}+\varepsilon h_{\mu\nu}$ with
+$h_{\mu\nu}=\alpha_1\,\eta_{\mu\nu}+\beta_1\,\pa_\mu s\,\pa_\nu s
++\gamma_1\,\pa_\mu\pa_\nu s$
+(constants $\alpha_1,\beta_1,\gamma_1$).  Each generator contributes
+independently at first order.
+
+\begin{lemma}[Linearised $G$ for the gradient-tensor generator]
+\label{lem:lin-beta}
+On flat $(\mathbb{R}^n,\eta)$, the linearised Ricci tensor of the
+perturbation $h_{\mu\nu}=\pa_\mu s\,\pa_\nu s$ is
+\begin{equation}\label{eq:lin-ricci-beta}
+  R^{(1)}_{\mu\nu}
+  = (\Box_\eta s)\,\pa_\mu\pa_\nu s
+    - (\nn^2_\eta s)^2_{\mu\nu},
+\end{equation}
+where $(\nn^2_\eta s)^2_{\mu\nu}
+:=(\pa_\mu\pa_\alpha s)\,\eta^{\alpha\beta}(\pa_\beta\pa_\nu s)$
+is the Hessian square---the fourth seam generator
+(Definition~\ref{def:seam-decomposition}).
+The linearised Einstein tensor is
+\begin{equation}\label{eq:lin-einstein-beta}
+  \boxed{
+  G^{(1)}_{\mu\nu}
+  = (\Box_\eta s)\,\pa_\mu\pa_\nu s
+    - (\nn^2_\eta s)^2_{\mu\nu}
+    - \tfrac{1}{2}\bigl[(\Box_\eta s)^2 - |\nn^2_\eta s|^2\bigr]\,
+      \eta_{\mu\nu}.
+  }
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The standard linearised Ricci formula on flat background reads
+$2R^{(1)}_{\mu\nu}
+=\pa_\alpha\pa_\mu h^{\alpha}{}_\nu
++\pa_\alpha\pa_\nu h^{\alpha}{}_\mu
+-\Box_\eta h_{\mu\nu}
+-\pa_\mu\pa_\nu h$,
+where indices are raised and $h:=\eta^{\mu\nu}h_{\mu\nu}$.
+For $h_{\mu\nu}=\pa_\mu s\,\pa_\nu s$ one computes
+$\pa_\alpha h^{\alpha}{}_\nu
+=(\Box_\eta s)\,\pa_\nu s+(\nn^2_\eta s\cdot\nn_\eta s)_\nu$.
+Taking one more derivative:
+\begin{align*}
+  \pa_\mu\pa_\alpha h^{\alpha}{}_\nu
+  &= (\pa_\mu\Box_\eta s)\,\pa_\nu s
+     + (\Box_\eta s)\,\pa_\mu\pa_\nu s
+     + (\nn^2_\eta s)^2_{\mu\nu}
+     + (\pa^\alpha s)\,\pa_\mu\pa_\alpha\pa_\nu s.
+\end{align*}
+Likewise,
+$\Box_\eta h_{\mu\nu}
+= (\pa_\mu\Box_\eta s)\,\pa_\nu s
+  + \pa_\mu s\,(\pa_\nu\Box_\eta s)
+  + 2(\nn^2_\eta s)^2_{\mu\nu}$
+and
+$\pa_\mu\pa_\nu h
+= \pa_\mu\pa_\nu|\nn_\eta s|^2
+= 2(\nn^2_\eta s)^2_{\mu\nu}
+  + 2(\pa^\alpha s)\,\pa_\mu\pa_\nu\pa_\alpha s$.
+All third-derivative and $\pa\Box s$ terms cancel, leaving
+$2R^{(1)}_{\mu\nu}
+= 2(\Box_\eta s)\,\pa_\mu\pa_\nu s - 2(\nn^2_\eta s)^2_{\mu\nu}$.
+Tracing gives $R^{(1)}=(\Box_\eta s)^2-|\nn^2_\eta s|^2$, and
+$G^{(1)}=R^{(1)}-\half R^{(1)}\eta$ yields~\eqref{eq:lin-einstein-beta}.
+\end{proof}
+
+\begin{lemma}[Linearised $G$ for the conformal and Hessian generators]
+\label{lem:lin-alpha-gamma}
+On flat background:
+\begin{enumerate}[label=(\roman*)]
+\item For $h_{\mu\nu}=a(s)\,\eta_{\mu\nu}$ (conformal generator with
+  $a$ depending on $s$),
+\begin{equation}\label{eq:lin-conformal}
+  G^{(1)}_{\mu\nu}
+  = \tfrac{n{-}2}{2}\bigl[a''|\nn_\eta s|^2+a'\Box_\eta s\bigr]\eta_{\mu\nu}
+    + \tfrac{2{-}n}{2}a''\,\pa_\mu s\,\pa_\nu s
+    + \tfrac{2{-}n}{2}a'\,\pa_\mu\pa_\nu s.
+\end{equation}
+Only the three original generators appear.
+\item For $h_{\mu\nu}=\gamma_1\,\pa_\mu\pa_\nu s$ (constant $\gamma_1$),
+  $G^{(1)}_{\mu\nu}\equiv 0$.  (This perturbation is a pure flat-background
+  diffeomorphism gauge mode: $\pa_\mu\pa_\nu s=\half\mathcal{L}_{\nn s}\eta_{\mu\nu}$.)
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Part~(i) follows by direct substitution into the linearised Ricci formula;
+the chain-rule derivatives of $a(s)$ introduce only $\pa_\mu s$ and
+$\pa_\mu\pa_\nu s$ factors.
+Part~(ii): on flat background, partial derivatives commute, so
+$\pa_\alpha\pa_\mu h^{\alpha}{}_\nu
+=\gamma_1\,\pa_\mu\pa_\nu(\Box_\eta s)
+=\gamma_1\,\Box_\eta(\pa_\mu\pa_\nu s)
+=\Box_\eta h_{\mu\nu}$, and all terms in $R^{(1)}_{\mu\nu}$ cancel.
+\end{proof}
+
+\begin{theorem}[Necessity of the fourth generator]
+\label{thm:closure-fails}
+Let $n\ge 3$, $\eta$ the flat metric on $\mathbb{R}^n$, and
+$s\in C^\infty(\mathbb{R}^n)$.  Consider the seam-generated metric
+$g_{\mu\nu}(\varepsilon)=\eta_{\mu\nu}+\varepsilon\,\pa_\mu s\,\pa_\nu s$
+for small $\varepsilon>0$.  If
+$\nn^2_\eta s$ has at least three distinct eigenvalues at a point $x_0$
+where $\nn_\eta s(x_0)=0$, then the first-order Einstein tensor
+$G^{(1)}_{\mu\nu}$ does not lie in
+$\mathrm{span}\{\eta_{\mu\nu},\,\pa_\mu s\,\pa_\nu s,\,\pa_\mu\pa_\nu s\}$
+near $x_0$; the Hessian-square generator is
+essential.
+\end{theorem}
+
+\begin{proof}
+At any point where $\nn s=0$, the gradient-tensor generator vanishes, so the
+three-generator span reduces to
+$\mathrm{span}\{\eta_{\mu\nu},\,\pa_\mu\pa_\nu s\}$.
+By~\eqref{eq:lin-einstein-beta}, membership requires
+\[
+(\nn^2_\eta s)^2_{\mu\nu}
+= c_1\,\eta_{\mu\nu}+c_2\,\pa_\mu\pa_\nu s
+\]
+for some scalars $c_1,c_2$.  In a basis that diagonalises $\nn^2_\eta s$
+with eigenvalues $\lambda_1,\ldots,\lambda_n$, this reads
+$\lambda_i^2=c_1+c_2\lambda_i$ for every $i$.  This is a single quadratic
+in $\lambda_i$, hence admits at most two solutions.  Three or more distinct
+eigenvalues overdetermine $(c_1,c_2)$.
+
+Concretely, take $s=x_1^2+2x_2^2$ on $\mathbb{R}^3$ with $x_0=0$.
+Then $\nn^2 s=\mathrm{diag}(2,4,0)$,
+$(\nn^2 s)^2=\mathrm{diag}(4,16,0)$,
+$\Box s=6$, $|\nn^2 s|^2=20$, and~\eqref{eq:lin-einstein-beta} gives
+$G^{(1)}|_0=\mathrm{diag}(0,0,-8)$.
+Requiring $\mathrm{diag}(0,0,-8)=c_1\,\mathrm{diag}(1,1,1)+c_2\,\mathrm{diag}(2,4,0)$
+gives $c_1+2c_2=0$, $c_1+4c_2=0$, $c_1=-8$:
+the first two equations force $c_2=0$ and $c_1=0$, contradicting $c_1=-8$.
+\end{proof}
+
+\begin{remark}[Why three generators suffice in Results~1--3]
+\label{rem:why-closure-held}
+In each of the three computed families, a structural feature renders
+the fourth generator redundant:
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Conformal family} (Result~1):
+  $g=e^{2s}\eta$ is a pure $\alpha$-rule.
+  By Lemma~\ref{lem:lin-alpha-gamma}(i), only three-generator terms appear
+  (the $\beta$-coefficient is zero, so the Hessian-squared obstruction in
+  Lemma~\ref{lem:lin-beta} is absent).
+\item \emph{$O(n)$-invariant family} (Result~2):
+  $\nn^2_\eta s=\delta_{ij}$ for $s=\half r^2$,
+  so $(\nn^2 s)^2=\delta$, which is already in the conformal generator span.
+\item \emph{Lorentz-invariant family} (Result~3):
+  $\nn^2_\eta s=\eta_{\mu\nu}$ for $s=\half\eta_{\alpha\beta}x^\alpha x^\beta$,
+  so $(\nn^2 s)^2=\eta$, again collapsing into the span.
+\end{enumerate}
+In cases~(ii)--(iii) the Hessian has a single eigenvalue (it is
+proportional to the background), so $(\nn^2 s)^2$ collapses into
+the three-generator span and the fourth generator is automatically
+absorbed.
+\end{remark}
+
+\begin{theorem}[First-order closure of the seam decomposition]
+\label{thm:extended-closure}
+At first order in $\varepsilon$, the Einstein tensor of any seam perturbation
+$g(\varepsilon)=\eta+\varepsilon(\alpha_1\,\eta+\beta_1\,ds\otimes ds
++\gamma_1\,\nn^2 s)$ (with constant coefficients) lies in the span of
+the four seam generators:
+\begin{equation}\label{eq:extended-closure}
+  G^{(1)}_{\mu\nu}
+  \in\mathrm{span}\bigl\{
+    \eta_{\mu\nu},\;\;
+    \pa_\mu s\,\pa_\nu s,\;\;
+    \pa_\mu\pa_\nu s,\;\;
+    (\nn^2_\eta s)^2_{\mu\nu}
+  \bigr\},
+\end{equation}
+with scalar coefficients that are jet invariants of $s$.  The fourth
+generator $(\nn^2_\eta s)^2$ arises solely from the gradient-tensor
+generator (coefficient $\beta_1$) and enters with coefficient $-\beta_1$.
+For $\beta_1=0$ or whenever $\nn^2_\eta s\propto\eta$,
+the span reduces to the first three generators.
+\end{theorem}
+
+\begin{proof}
+Combine Lemmas~\ref{lem:lin-beta} and~\ref{lem:lin-alpha-gamma}.
+The conformal generator contributes only three-generator
+terms~\eqref{eq:lin-conformal}.  The Hessian generator contributes
+nothing (gauge mode).  The gradient-tensor generator contributes
+$\beta_1$ times~\eqref{eq:lin-einstein-beta}, which introduces
+$(\nn^2 s)^2$ with coefficient $-\beta_1$.  The fourth generator is
+absent precisely when $\beta_1=0$ or when $\nn^2 s=\lambda\,\eta$ for some
+scalar $\lambda$ (in which case
+$(\nn^2 s)^2=\lambda^2\eta\in\mathrm{span}\{\eta\}$).
+\end{proof}
+
+\noindent\textbf{The closure picture.}\enspace
+Theorem~\ref{thm:closure-fails} shows that dropping the fourth
+generator breaks closure once the Hessian of the seam has three or more
+distinct eigenvalues.
+Theorem~\ref{thm:extended-closure} confirms that retaining all four
+generators of the seam decomposition
+(Definition~\ref{def:seam-decomposition}) restores first-order closure.
+The fourth generator $(\nn^2 s)^2$ is the simplest quadratic
+$O(n)$-equivariant built from the Hessian; a full classification of the
+nonlinear equivariant ring---including the mixed equivariant
+$ds\odot(\nn^2 s\cdot ds)$---and the question of whether closure at
+the nonlinear level holds within such an extended ring, remain open.
+
+\begin{conjecture}[Nonlinear closure for the conformal--gradient sub-family]
+\label{conj:nonlinear-closure}
+Let $g=\alpha(s)\,\eta+\beta(s)\,ds\otimes ds$ be a seam metric with
+$\gamma=\delta=0$ on flat background $(\mathbb{R}^n,\eta)$.  Then the
+full (non-perturbative) Einstein tensor $G_{\mu\nu}(g)$ lies in the
+four-generator span
+\[
+  G_{\mu\nu}
+  \in\mathrm{span}\bigl\{
+    \eta_{\mu\nu},\;
+    \pa_\mu s\,\pa_\nu s,\;
+    \pa_\mu\pa_\nu s,\;
+    (\nn^2_\eta s)^2_{\mu\nu}
+  \bigr\}
+\]
+with coefficients that are smooth functions of the $2$-jet invariants
+of~$s$.
+\end{conjecture}
+
+\noindent
+\emph{Evidence.}  Theorem~\ref{thm:extended-closure} establishes the
+conjecture at first order.  Results~1--3 verify it nonlinearly in three
+symmetric sub-families (where the fourth generator collapses).  The
+general nonlinear computation for the conformal--gradient family
+$g=\alpha\,\eta+\beta\,ds\otimes ds$ involves Christoffel symbols that
+are quadratic in the $2$-jet of~$s$; a direct (if lengthy) calculation
+should settle the conjecture in this case.
+
+\begin{proposition}[Symmetric closure as an invariant-span statement]
+\label{prop:symmetric-closure}
+Let $g$ be an $O(n)$-invariant metric on $\mathbb{R}^n$ generated from the
+Euclidean seam, so that $g$ has the form~\eqref{eq:onmetric} with radial
+coefficients.  Then any $O(n)$-invariant symmetric rank-2 tensor field (in
+particular $G(g)$) is necessarily of the form
+\[
+T_{ij}=C_1(r)\,\delta_{ij}+C_2(r)\,x_ix_j.
+\]
+\end{proposition}
+
+\noindent\emph{Interpretation:} in this symmetric sector, the Einstein operator acts
+as an endomorphism of the two-generator $O(n)$-invariant module spanned by
+$\delta$ and $x\otimes x$.
+
+\begin{proof}
+At each point with $r\neq 0$, the stabiliser of $x$ is $O(n-1)$, and the space
+of $O(n-1)$-invariant symmetric bilinear forms on $\mathbb{R}^n$ is two-dimensional:
+one component on $x^\perp$ (proportional to $\delta$) and one on $\mathrm{span}\{x\}$
+(proportional to $x\otimes x$).  The coefficients must be radial by $O(n)$-invariance.
+\end{proof}
+
+\begin{remark}[Boundary of the symmetric closure]
+The span in Proposition~\ref{prop:symmetric-closure} is a symmetry statement: it
+captures exactly the tensor structures allowed by $O(n)$-invariance.  For a
+generic anisotropic perturbation, additional tensor structures appear.  For
+example, the weakly anisotropic conformal metric
+\[
+g_{ij}=\bigl(1+\varepsilon x_1^2\bigr)\,\delta_{ij}
+\]
+is not rotationally invariant, and neither is its Einstein tensor.  In
+particular, it cannot in general be written as
+$C_1(r)\,\delta_{ij}+C_2(r)\,x_ix_j$ with radial coefficients.
+\end{remark}
+
+\noindent Results~1--3 provide evidence in three maximally symmetric settings
+that the seam-generator viewpoint organises both the Einstein tensor and
+the vacuum conditions within scalar-generated ansatz classes.
+
+\subsection{Matter content from generators}
+
+Theorems~\ref{thm:conformal} and~\ref{thm:on} together say that
+in seam language, all matter content is one of three things:
+anisotropic tidal stress (Hessian generator), kinetic scalar-field
+momentum flux (gradient-tensor generator), or isotropic pressure
+(conformal generator).  A theory of matter written in seam variables
+has a natural three-way decomposition of $T_{\mu\nu}$ built in from
+the start.
+
+\begin{remark}[Effective seam matter]
+One may regard a seam-generated metric $g=g(s)$ as defining an \emph{effective}
+stress--energy tensor by
+\begin{equation}
+  \label{eq:Teff}
+  8\pi\,T^{\mathrm{eff}}_{\mu\nu} := G_{\mu\nu}(g(s)).
+\end{equation}
+This viewpoint turns seam rules into a constrained ansatz class for
+stress--energy models (``seam fluids'') whose algebraic structure is locked to
+the jet data of $s$.  It is an effective description: it does not, by itself,
+specify a fundamental matter Lagrangian, nor does it imply that any generator
+subterm is separately conserved.
+
+Nevertheless, $T^{\mathrm{eff}}$ is \emph{automatically} covariantly conserved
+with respect to $g$:
+\begin{equation}
+  \label{eq:Teff-conserved}
+  \nabla^{\mu}T^{\mathrm{eff}}_{\mu\nu}\equiv 0,
+\end{equation}
+by the contracted Bianchi identity $\nabla^{\mu}G_{\mu\nu}\equiv 0$.
+This should be read as a differential identity constraining the seam-generator
+coefficients once $G_{\mu\nu}$ is expressed in generator form; it does not
+promote any individual generator contribution to a separately conserved fluid.
+\end{remark}
+
+\begin{remark}[Imperfect-fluid form (algebraic decomposition)]
+Whenever $T^{\mathrm{eff}}_{\mu\nu}$ is evaluated in a region where a preferred
+unit timelike vector field $u$ is specified (for example, if $\nabla s$ is
+timelike and one sets $u_\mu\propto\pa_\mu s$), one may decompose
+$T^{\mathrm{eff}}$ algebraically into energy density, isotropic pressure, and
+anisotropic stress in the standard way:
+$T^{\mathrm{eff}}_{\mu\nu}=\rho\,u_\mu u_\nu + p\,h_{\mu\nu}+\pi_{\mu\nu}$ with
+$h_{\mu\nu}=g_{\mu\nu}+u_\mu u_\nu$ and $\pi$ trace-free and spatial.
+This decomposition is kinematical; in general it does not split
+$T^{\mathrm{eff}}$ into separately conserved components.
+\end{remark}
+
+Energy conditions admit a particularly clean reformulation in seam variables
+for the conformal family; see Section~\ref{sec:energy}.
+
+\begin{corollary}[No anisotropic stress without the Hessian generator]
+\label{cor:no-anisotropy-no-hess}
+Let $g=g(s)$ be a seam-generated metric and define
+$T^{\mathrm{eff}}_{\mu\nu}:=G_{\mu\nu}(g)/(8\pi)$.  In any region where
+$\nabla s$ is timelike and one chooses the unit 4-velocity
+$U_\mu:=\nabla_\mu s/|\nabla s|_g$, if the seam rule has no Hessian term
+($\gamma\equiv 0$, so $g=\alpha h+\beta\,ds\otimes ds$), then the effective
+stress--energy has vanishing anisotropic stress in the standard imperfect-fluid
+decomposition relative to $U$.
+\end{corollary}
+
+\begin{proof}
+When $\gamma\equiv 0$, the only generator contributions to $T^{\mathrm{eff}}$ are
+the $\alpha$-term (proportional to $g$, hence isotropic) and the $\beta$-term
+(proportional to $ds\otimes ds\propto U\otimes U$ when $\nabla s$ is timelike).
+Both have zero trace-free spatial projection with respect to $U$, hence the
+anisotropic stress $\pi_{\mu\nu}$ vanishes.
+\end{proof}
+
+\begin{corollary}[Irrotationality of the seam 4-velocity]
+\label{cor:irrotational}
+In any region where $\nabla s$ is timelike and one chooses the unit 4-velocity
+$U_\mu:=\nabla_\mu s/|\nabla s|_g$, the associated flow is hypersurface-orthogonal
+and has identically vanishing vorticity tensor.
+\end{corollary}
+
+\begin{proof}
+Since $U$ is proportional to the exact 1-form $ds$, one has $U\wedge dU=0$.
+By Frobenius' theorem, $U$ is hypersurface-orthogonal, which is equivalent to
+vanishing vorticity.
+\end{proof}
+
+\smallskip
+\noindent\textbf{Relation to disformal-type ans\"atze.}
+If the Hessian generator is absent ($\gamma\equiv 0$), the seam rule reduces to a
+conformal-plus-gradient form $g=\alpha\,h+\beta\,ds\otimes ds$, which is
+structurally the same tensorial ansatz that appears in the disformal-metric
+literature of scalar-tensor gravity; see, e.g.,~\cite{Bekenstein1993,CliftonFerreiraPadillaSkordis2012}.  The seam decomposition differs in two ways:
+first, the coefficient functions are allowed to depend on the full list of
+2-jet invariants~\eqref{eq:UD-invariants} (not only on $s$ and
+$|\nabla s|^2$); and second, the additional Hessian generator provides an
+extra direction in the space of natural order-$\le 2$ metric rules.
+
+\smallskip
+\noindent\textbf{Degrees of freedom and gravitational radiation (open question).}
+Because the metric is generated from a scalar seam, seam-generated vacuum
+metrics can be highly constrained: in the maximally symmetric families computed
+here, the vacuum condition forces flatness.  Whether less symmetric seam
+metrics (with genuinely nontrivial Hessian structure) can support nontrivial
+vacuum Weyl curvature, or accommodate tensor gravitational radiation when viewed
+as exact solutions rather than as perturbations around a seam-generated
+background, remains to be investigated.
+
+\subsection{Vacuum structure and the uniqueness of flat space}
+
+Theorem~\ref{thm:vacuumon} shows that within the $O(n)$-invariant
+Euclidean seam family, the unique vacuum solution is flat space.
+This is a strong constraint: no nontrivial spherically symmetric
+vacuum Riemannian 3-manifold exists in this family.  The Schwarzschild
+geometry enters only as a vacuum spacetime (4D), where the time
+direction provides the missing degree of freedom that allows a
+non-trivial vacuum structure.
+
+The conformal-seam vacuum condition (Theorem~\ref{thm:vacuum})
+is similarly restrictive: $e^s$ must be harmonic, which by Liouville's
+theorem forces $e^s$ to be constant on complete flat spaces.
+
+Both results suggest a general principle: seam-generated metrics are
+\emph{overdetermined} by their generators.  The generators encode so
+much information that the vacuum condition eliminates almost all
+non-trivial solutions, leaving only the geometrically simplest ones.
+This is best read as evidence that the present scalar-generated ansatz classes
+are highly restrictive.  That restriction is useful when the goal is to obtain
+sharp no-go theorems or explicit effective-matter dictionaries, but it also
+marks the boundary of what these families can represent.
+
+\begin{remark}[Limitations of the real scalar seam]
+\label{rem:complex-seam}
+Three structural limitations of the real scalar seam are visible in the
+results above:
+\emph{(i)}~vacuum overdetermination (flatness rigidity in all symmetric
+families),
+\emph{(ii)}~a single functional degree of freedom versus the two
+polarisation modes of gravitational radiation, and
+\emph{(iii)}~identically vanishing vorticity
+(Corollary~\ref{cor:irrotational}).
+All three are traceable to the seam being a single real-valued function.
+In Section~\ref{sec:complex} we show that promoting the seam to a
+complex-valued field $\varphi=u+iv$ resolves each limitation:
+limitation~(ii) via an independent phase degree of freedom,
+limitation~(iii) via the cross-gradient $du\wedge dv$, and
+limitation~(i) via the full six-generator span, which admits
+genuinely curved Ricci-flat metrics
+(Theorem~\ref{thm:complex-vacuum}).
+\end{remark}
+
+\subsection{Signature and the pre-geometric picture}
+
+Theorem~\ref{thm:signature} shows that Lorentzian signature is not fixed
+independently of the seam rule within the $O(n)$-invariant seam family.
+Riemannian and Lorentzian
+geometry are two regions of the same pointwise sign structure of $(A,P)$,
+separated by the degeneration sphere where $P(r_0)=0$.  The
+physical interpretation of this transition --- the radial direction
+becoming timelike inside $r_0$ --- is not imposed but derived.
+
+In the conformal family, the Weyl tensor vanishes identically; in the other two
+symmetric families studied here, the vacuum condition forces flatness and hence
+Weyl curvature does not arise in vacuum within these ansatz classes.
+
+In this sense the seam scalar plays a role loosely analogous to Wheeler's
+\emph{it from bit} idea~\cite{Wheeler1990}: metric signature is determined by
+the seam rather than prescribed independently.
+
+% ================================================================
+\section{Energy Conditions as Seam Convexity (Conformal Family)}
+\label{sec:energy}
+% ================================================================
+
+This section expands the ``effective seam matter'' viewpoint
+\eqref{eq:Teff} by translating energy conditions into explicit inequalities on
+the seam for the conformal family $g=e^{2s}\eta$ (cf.~\cite{HawkingEllis1973,Wald1984}).
+
+\begin{proposition}[NEC as a seam convexity inequality (conformal family)]
+\label{prop:nec}
+For the conformal seam metric $g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$ in $n=4$, and any
+null vector $k$ (null with respect to $g$, equivalently to $\eta$), one has
+\begin{equation}
+  \label{eq:nec-ineq}
+  T^{\mathrm{eff}}_{\mu\nu}k^\mu k^\nu \ge 0
+  \quad\Longleftrightarrow\quad
+  (k^\mu\pa_\mu s)^2 \ge k^\mu k^\nu\pa_\mu\pa_\nu s.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Using~\eqref{eq:main} and $g_{\mu\nu}k^\mu k^\nu=0$ (conformal metrics preserve
+the null cone), the $\alpha$-generator drops out and
+\[
+G_{\mu\nu}k^\mu k^\nu
+=-2\,k^\mu k^\nu\pa_\mu\pa_\nu s + 2\,(k^\mu\pa_\mu s)^2.
+\]
+Dividing by $8\pi$ gives~\eqref{eq:nec-ineq}.
+\end{proof}
+
+\begin{lemma}[Reciprocal conformal factor identity]
+\label{lem:reciprocal-hess}
+Let $u:=e^{-s}$.  Then for any vector $k^\mu$,
+\begin{equation}
+  \label{eq:reciprocal-hess}
+  k^\mu k^\nu\pa_\mu\pa_\nu u
+  = u\bigl[(k^\mu\pa_\mu s)^2-k^\mu k^\nu\pa_\mu\pa_\nu s\bigr].
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+$\pa_\mu u=-u\,\pa_\mu s$, hence
+$\pa_\mu\pa_\nu u=u\,\pa_\mu s\,\pa_\nu s-u\,\pa_\mu\pa_\nu s$.
+Contracting with $k^\mu k^\nu$ gives~\eqref{eq:reciprocal-hess}.
+\end{proof}
+
+\begin{corollary}[NEC as null-convexity of $u=e^{-s}$]
+\label{cor:null-convex}
+In the conformal family, the NEC inequality~\eqref{eq:nec-ineq} is equivalent to
+\begin{equation}
+  \label{eq:nullconvex}
+  k^\mu k^\nu\pa_\mu\pa_\nu u \ge 0\quad\text{for all null }k.
+\end{equation}
+Equivalently, $u$ is convex when restricted to every affinely parametrised null
+line in the flat background.
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:reciprocal-hess} gives
+$k^\mu k^\nu\pa_\mu\pa_\nu u\ge 0\iff (k^\mu\pa_\mu s)^2\ge k^\mu k^\nu\pa_\mu\pa_\nu s$
+since $u=e^{-s}>0$.
+\end{proof}
+
+\begin{lemma}[Reciprocal-Hessian decomposition]
+\label{lem:recip-decomp}
+For $g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$ in $n=4$, set $u:=e^{-s}$ and
+$H_{\mu\nu}:=\pa_\mu\pa_\nu u$.  Then
+\begin{align}
+  \label{eq:G-recip}
+  G_{\mu\nu} &= \tfrac{2}{u}\,H_{\mu\nu}
+    + \bigl(2\,\Box_\eta s+|\nn s|_\eta^2\bigr)\,\eta_{\mu\nu},\\
+  \label{eq:R-recip}
+  R_{\mu\nu} &= \tfrac{2}{u}\,H_{\mu\nu}
+    - \bigl(\Box_\eta s+2\,|\nn s|_\eta^2\bigr)\,\eta_{\mu\nu}.
+\end{align}
+In particular, for null~$k$ both decompositions give the same contraction:
+$G_{\mu\nu}k^\mu k^\nu=R_{\mu\nu}k^\mu k^\nu=\frac{2}{u}\,H_{\mu\nu}k^\mu k^\nu$.
+\end{lemma}
+
+\begin{proof}
+In~\eqref{eq:main}, the $\gamma$- and $\beta$-generators combine via
+Lemma~\ref{lem:reciprocal-hess}:
+$-2\,\pa_\mu\pa_\nu s+2\,(\pa_\mu s)(\pa_\nu s)=\frac{2}{u}\,H_{\mu\nu}$.
+The $\alpha$-generator satisfies $e^{-2s}g_{\mu\nu}=\eta_{\mu\nu}$,
+giving~\eqref{eq:G-recip}.  For~\eqref{eq:R-recip}, substitute
+Proposition~\ref{prop:ricci} with $n=4$ and apply the same identity.
+For null~$k$, $\eta_{\mu\nu}k^\mu k^\nu=0$ kills both flat-metric terms.
+\end{proof}
+
+\begin{corollary}[Constant curvature from an affine reciprocal seam]
+\label{cor:affine-u-cc}
+Let $g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$ and set $u:=e^{-s}$.  If on a domain
+$\Omega\subset\mathbb{R}^{1,3}$ with $u>0$ one has an affine reciprocal factor
+$u(x)=k_\mu x^\mu+c$ for a constant covector $k$ and constant $c$, then
+\begin{equation}
+  \label{eq:affine-u-einstein}
+  G_{\mu\nu}=3\,|k|_\eta^2\,g_{\mu\nu}\qquad\text{on }\Omega.
+\end{equation}
+Equivalently, $g$ is an Einstein metric with cosmological constant
+$\Lambda=-3|k|_\eta^2$ on $\Omega$ (de~Sitter type if $k$ is timelike and
+anti--de~Sitter type if $k$ is spacelike).  Moreover, the NEC
+inequality~\eqref{eq:nec-ineq} is saturated for all null vectors.
+\end{corollary}
+
+\begin{proof}
+If $u$ is affine then $\pa_\mu u=k_\mu$ and $\pa_\mu\pa_\nu u=0$.  Since
+$s=-\log u$, one has $\pa_\mu s=-k_\mu/u$ and $\pa_\mu\pa_\nu s=k_\mu k_\nu/u^2$,
+so the $\gamma$- and $\beta$-generators in~\eqref{eq:main} cancel:
+$-2\,\pa_\mu\pa_\nu s+2(\pa_\mu s)(\pa_\nu s)=0$.
+Also $\Box_\eta s=|k|_\eta^2/u^2$ and $|\nabla s|_\eta^2=|k|_\eta^2/u^2$.
+Since $e^{-2s}=u^2$, the $\alpha$-generator becomes
+$u^2\,(3|k|_\eta^2/u^2)g_{\mu\nu}=3|k|_\eta^2 g_{\mu\nu}$.
+Finally, by Lemma~\ref{lem:reciprocal-hess} one has
+$(k^\mu\pa_\mu s)^2-k^\mu k^\nu\pa_\mu\pa_\nu s=(k^\mu k^\nu\pa_\mu\pa_\nu u)/u$;
+for affine $u$ the Hessian vanishes, hence~\eqref{eq:nec-ineq} holds with equality.
+\end{proof}
+
+\begin{proposition}[Averaged NEC inequality (necessary condition)]
+\label{prop:anec}
+If $u=e^{-s}$ is null-convex (equivalently, if the NEC holds), then
+\begin{equation}
+  \label{eq:anec}
+  3\,\pa^2_t u + \Delta_x u \ge 0,
+\end{equation}
+where $\Delta_x$ is the spatial Laplacian in the flat background.
+The converse fails in general: \eqref{eq:anec} is necessary but not sufficient
+for the NEC.
+\end{proposition}
+
+\begin{proof}
+For each unit $\mathbf{v}\in S^2$, the vector $k_{\mathbf{v}}=(1,\mathbf{v})$ is
+null.  Null-convexity gives
+$k_{\mathbf{v}}^\mu k_{\mathbf{v}}^\nu\pa_\mu\pa_\nu u\ge 0$, i.e.
+$\pa^2_t u + 2\mathbf{v}\cdot\nabla\pa_t u + \mathbf{v}^i\mathbf{v}^j\pa_i\pa_j u\ge 0$.
+Averaging over $\mathbf{v}\in S^2$ and using
+$\langle v^i\rangle=0$, $\langle v^iv^j\rangle=\tfrac{1}{3}\delta^{ij}$ yields
+$\pa^2_t u+\tfrac{1}{3}\Delta_x u\ge 0$, hence~\eqref{eq:anec}.
+Non-sufficiency follows by a pointwise counterexample at the level of Hessians.
+\end{proof}
+
+\begin{theorem}[Rigidity under a dynamical assumption]
+\label{thm:rigid}
+Let $g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$ and $u=e^{-s}$.  Suppose:
+\begin{enumerate}[label=(\roman*),noitemsep]
+\item the NEC holds (equivalently, $u$ is null-convex);
+\item \emph{(additional dynamical assumption)} $u$ satisfies the wave equation
+  $\Box_\eta u=0$;
+\item $u$ is bounded on all of $\mathbb{R}^{1,3}$.
+\end{enumerate}
+Then $u=\mathrm{const}$ and $g=\mathrm{const}\cdot\eta$.
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{prop:anec} gives $\pa_t^2 u+\tfrac{1}{3}\Delta_x u\ge 0$.
+From $\Box_\eta u=0$ one has $\Delta_x u=\pa_t^2 u$.  Hence
+$\tfrac{4}{3}\pa_t^2 u\ge 0$, so $\pa_t^2 u\ge 0$ and thus $\Delta_x u\ge 0$.
+For each fixed $t$, $u(\cdot,t)$ is a bounded subharmonic function on
+$\mathbb{R}^3$, hence constant.  The wave equation then forces $u$ to be affine
+in $t$, and boundedness forces it to be constant.
+\end{proof}
+
+\noindent The assumption $\Box_\eta u=0$ is the free massless wave equation on
+the flat background.  It is logically independent of the conformal-seam vacuum
+condition $\Box_\eta(e^{s})=0$ from Theorem~\ref{thm:vacuum}.  Expanding
+$\Box_\eta(e^{-s})=0$ yields the equivalent scalar relation
+$\Box_\eta s = |\nabla s|_\eta^2$.
+
+\smallskip
+\noindent\textbf{Compatibility note.}
+While neither wave equation implies the other, requiring both
+$\Box_\eta(e^{s})=0$ and $\Box_\eta(e^{-s})=0$ is highly restrictive: it forces
+the seam to have null gradient, hence places the conformal factor on a
+null-propagating constraint surface (Proposition~\ref{prop:dual-wave}).
+
+\begin{proposition}[Dual wave equations force a null seam]
+\label{prop:dual-wave}
+Let $s\in C^\infty(\mathbb{R}^{1,3})$.  If both
+\begin{equation}
+  \label{eq:dual-wave-assumptions}
+  \Box_\eta(e^{s})=0
+  \quad\text{and}\quad
+  \Box_\eta(e^{-s})=0,
+\end{equation}
+then $|\nabla s|_\eta^2\equiv 0$ and $\Box_\eta s\equiv 0$.
+\end{proposition}
+
+\begin{proof}
+Expanding $\Box_\eta(e^{s})=e^{s}(\Box_\eta s+|\nabla s|_\eta^2)$ gives
+$\Box_\eta s=-|\nabla s|_\eta^2$.  Also
+$\Box_\eta(e^{-s})=e^{-s}(|\nabla s|_\eta^2-\Box_\eta s)$.
+Substituting yields $\Box_\eta(e^{-s})=2e^{-s}|\nabla s|_\eta^2$; hence
+$|\nabla s|_\eta^2=0$, and then $\Box_\eta s=0$.
+\end{proof}
+
+\begin{remark}
+One large class of examples satisfying~\eqref{eq:dual-wave-assumptions} is given
+by seams of the form $s=f(\phi)$ where $\phi$ is a null coordinate on Minkowski
+space (so $|\nabla \phi|_\eta^2=0$), for instance $\phi=k_\mu x^\mu$ with a
+constant null covector $k$.  Then both $e^{\pm s}$ depend on a single null
+variable and automatically solve the flat wave equation.
+\end{remark}
+
+\begin{proposition}[Energy conditions via the reciprocal Hessian]
+\label{prop:ec-dictionary}
+For $g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$ in $n=4$, let $u:=e^{-s}$,
+$H_{\mu\nu}:=\pa_\mu\pa_\nu u$, and define the scalars
+\[
+  P:=2\,\Box_\eta s+|\nn s|^2_\eta,
+  \qquad
+  Q:=\Box_\eta s+2\,|\nn s|^2_\eta.
+\]
+The pointwise energy conditions, stated for every $\eta$-unit timelike vector
+$n^\mu$ ($\eta_{\mu\nu}n^\mu n^\nu=-1$), are:
+\begin{enumerate}[label=\textup{(\roman*)},noitemsep]
+\item \textup{NEC} $\;\iff\; H_{\mu\nu}k^\mu k^\nu\ge 0$ for all null~$k$
+  \;\textup{(null-convexity of $u$)};
+\item \textup{WEC} $\;\iff$ NEC and\;
+  $\dfrac{2}{u}\,H_{\mu\nu}n^\mu n^\nu \ge P$ for all such~$n$;
+\item \textup{SEC} $\;\iff\;
+  \dfrac{2}{u}\,H_{\mu\nu}n^\mu n^\nu \ge -Q$ for all such~$n$
+  \;\textup{(implies NEC)};
+\item \textup{DEC} $\;\iff$ WEC and\;
+  $\dfrac{2}{u}\,H_{\mu\nu}k^\mu \ell^\nu
+    +P\,\eta_{\mu\nu}k^\mu\ell^\nu\ge 0$
+  for all future-directed null~$k,\ell$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:recip-decomp},
+$G_{\mu\nu}=\frac{2}{u}H_{\mu\nu}+P\eta_{\mu\nu}$ and
+$R_{\mu\nu}=\frac{2}{u}H_{\mu\nu}-Q\eta_{\mu\nu}$.
+
+(i) For null~$k$, $G_{\mu\nu}k^\mu k^\nu=\frac{2}{u}H_{\mu\nu}k^\mu k^\nu$
+since $\eta_{\mu\nu}k^\mu k^\nu=0$.  With $u>0$, NEC is null-convexity of~$u$.
+
+(ii) WEC requires $G_{\mu\nu}v^\mu v^\nu\ge 0$ for all $g$-timelike~$v$.
+A $g$-unit timelike vector satisfies $g_{\mu\nu}v^\mu v^\nu
+=e^{2s}\eta_{\mu\nu}v^\mu v^\nu=-1$, so $v=u\,n$ with
+$\eta(n,n)=-1$ parametrises all such vectors.  Hence
+$G_{\mu\nu}v^\mu v^\nu
+  =u^2\bigl[\tfrac{2}{u}H(n,n)-P\bigr]$,
+and since $u^2>0$, WEC reduces to
+$\tfrac{2}{u}H(n,n)\ge P$ for every $\eta$-unit timelike~$n$.
+The left-hand side is minimised when $n$ is aligned with the
+$\eta$-timelike eigenvector of~$H_{\mu\nu}$
+(the unique direction that minimises $H(n,n)$ over the unit
+hyperboloid), so the binding constraint is the stated inequality
+evaluated at that eigenvector.
+
+(iii) SEC requires $R_{\mu\nu}v^\mu v^\nu\ge 0$ for all timelike~$v$.
+With $v=u\,n$:
+$R_{\mu\nu}v^\mu v^\nu=u^2[\tfrac{2}{u}H(n,n)+Q]$, giving~(iii).
+Null vectors are limits of unit timelike vectors, and
+$H(k,k)\ge 0$ follows from the limit, so SEC implies NEC.
+
+(iv) DEC is equivalent to $G_{\mu\nu}v^\mu w^\nu\ge 0$ for all future-directed
+causal $v,w$~\cite[Prop.~4.3.1]{HawkingEllis1973}.  Every future-directed
+causal vector is a non-negative linear combination of future-directed null
+vectors.  Hence $G_{\mu\nu}v^\mu w^\nu\ge 0$ for all causal pairs iff it holds
+for all null pairs $k,\ell$.  The timelike--timelike case (WEC) then follows by
+restriction, and the null--null condition is as stated.
+\end{proof}
+
+\begin{corollary}[Energy condition dictionary for temporal seams]
+\label{cor:ec-temporal}
+For a purely temporal seam $s=g(t)$, set $u:=e^{-g(t)}$.
+Primes denote derivatives with respect to~$t$.  Then:
+\begin{align}
+  \textup{NEC}\;(=\textup{WEC})\;
+    &\iff g''\le (g')^2
+    \iff u''\ge 0,
+    \label{eq:nec-wec-temporal}\\
+  \textup{SEC}\;
+    &\iff g''\le 0
+    \iff u''\ge (u')^2/u,
+    \label{eq:sec-temporal}\\
+  \textup{DEC}\;
+    &\iff {-2(g')^2}\le g''\le (g')^2
+    \iff 0\le u''\le 3(u')^2/u.
+    \label{eq:dec-temporal}
+\end{align}
+NEC and WEC coincide because the energy density
+$\rho=3(g')^2 e^{-2g}/(8\pi)$ is automatically non-negative.
+SEC requires seam concavity ($g''\le 0$) and is strictly stronger than NEC.
+DEC adds a lower bound on~$g''$, constraining the deceleration rate.
+\end{corollary}
+
+\begin{proof}
+For $s=g(t)$: $H_{00}=u''=(g'^2-g'')u$, all other $H_{\mu\nu}=0$;
+$P=-2g''-(g')^2$; $Q=-g''-2(g')^2$; $|\nn u|^2_\eta=-(g')^2u^2$.
+
+(i--ii) NEC: $H(k,k)=(k^0)^2 u''\ge 0$ for null $k=(1,\hat{v})$, giving
+$u''\ge 0$, i.e.\ $g''\le(g')^2$.
+WEC adds $\frac{2}{u}H(n,n)\ge P$ for $\eta$-unit timelike~$n$.
+At the rest frame $n=(1,0,0,0)$: $\frac{2}{u}u''=2(g'^2-g'')$ and
+$P=-2g''-(g')^2$; the bound reads $2(g'^2-g'')\ge -2g''-(g')^2$, i.e.\
+$3(g')^2\ge 0$---always satisfied.  Boosted observers give a weaker constraint
+(controlled by NEC), so WEC $\iff$ NEC.
+
+(iii) SEC adds $\frac{2}{u}H(n,n)\ge -Q$.  At the rest frame:
+$2(g'^2-g'')\ge g''+2(g')^2$, i.e.\ $-3g''\ge 0$.  Hence SEC $\iff g''\le 0$.
+In $u$-variables: $g''\le 0\iff u''\ge (u')^2/u$.
+
+(iv) DEC adds the null--null condition for $k=(1,\hat{m})$,
+$\ell=(1,\hat{n})$ future-null:
+$\frac{2u''}{u}+P(-1+\hat{m}\cdot\hat{n})\ge 0$.
+The most constraining case is $\hat{m}\cdot\hat{n}=-1$ (antiparallel), giving
+$2(g'^2-g'')+2(2g''+(g')^2)\ge 0$, i.e.\
+$4(g')^2+2g''\ge 0$, so $g''\ge -2(g')^2$.
+Combined with NEC: $-2(g')^2\le g''\le (g')^2$.
+\end{proof}
+
+\begin{corollary}[Past vanishing scale factor under NEC for temporal seams]
+\label{cor:temporal-past}
+Let $s=g(t)$ be a temporal seam defined on $(-\infty,t_0]$ and set
+$a(t):=e^{g(t)}$ and $u(t):=e^{-g(t)}=1/a(t)$.  If the NEC holds and the seam is
+expanding at some time $t_0$ (i.e. $g'(t_0)>0$, equivalently $u'(t_0)<0$), then
+\begin{equation}
+  \label{eq:temporal-past-limit}
+  \lim_{t\to-\infty}u(t)=+\infty
+  \qquad\text{and hence}\qquad
+  \lim_{t\to-\infty}a(t)=0.
+\end{equation}
+In particular, $g(t)\to-\infty$ as $t\to-\infty$.
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:ec-temporal}, NEC is equivalent to $u''\ge 0$, so $u$
+is convex.  Convexity implies that for all $t\le t_0$,
+$u(t)\ge u(t_0)+u'(t_0)(t-t_0)$.  Since $u'(t_0)<0$, the right-hand side tends
+to $+\infty$ as $t\to-\infty$, hence $u(t)\to+\infty$ and $a(t)=1/u(t)\to 0$.
+\end{proof}
+
+\begin{remark}
+Corollary~\ref{cor:temporal-past} is a one-dimensional convexity consequence in
+the seam time coordinate $t$.  By itself it does not assert curvature blow-up
+or geodesic incompleteness; such conclusions require additional hypotheses on
+the spacetime interpretation of $t$ and on the behaviour of curvature
+invariants.
+\end{remark}
+
+% ================================================================
+\section{Result 4: Wavefunction Seam and Klein--Gordon Compatibility}
+\label{sec:wavefunction}
+% ================================================================
+
+The conformal seam framework admits a natural quantum-mechanical
+interpretation when the conformal factor is identified with the modulus
+of a complex scalar field.
+
+Let $\psi=|\psi|\,e^{i\theta}$ be a complex scalar field on Minkowski background
+$(\mathbb{R}^{1,3},\eta)$, with $|\psi|>0$ and $\theta$ real-valued.
+Define the \emph{wavefunction seam} by
+\begin{equation}
+  \label{eq:wf-seam}
+  s:=\log|\psi|,
+  \qquad\text{so that}\qquad
+  g_{\mu\nu}=|\psi|^2\,\eta_{\mu\nu}.
+\end{equation}
+This is the conformal family of Result~1 with $e^{2s}=|\psi|^2$.
+The reciprocal factor of Section~\ref{sec:energy} becomes $u=1/|\psi|$.
+
+\begin{proposition}[Seam dictionary in wavefunction variables]
+\label{prop:wf-dictionary}
+For the wavefunction seam~\eqref{eq:wf-seam}:
+\begin{enumerate}[label=\textup{(\roman*)},noitemsep]
+\item \textup{Vacuum} \textup{(Theorem~\ref{thm:vacuum})}: $G_{\mu\nu}=0$
+  if and only if $|\psi|$ is harmonic in the flat
+  background: $\Box_\eta|\psi|=0$.
+\item \textup{NEC} \textup{(Corollary~\ref{cor:null-convex})}: the null
+  energy condition holds if and only if $1/|\psi|$ is convex along every
+  null line:
+  \begin{equation}
+    \label{eq:wf-nec}
+    k^\mu k^\nu\,\pa_\mu\pa_\nu(1/|\psi|)\ge 0
+    \quad\text{for all null }k.
+  \end{equation}
+\item \textup{Harmonic ladder} \textup{(Corollary~\ref{cor:harmonic-hierarchy})}:
+  the scalar curvature vanishes if and only if $|\psi|$ is harmonic;
+  the isotropic generator vanishes if and only if $|\psi|^{1/2}$ is harmonic.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Direct substitution of $s=\log|\psi|$ into the cited results.
+\end{proof}
+
+The vacuum condition acquires a sharp physical meaning when $\psi$
+satisfies a field equation.
+
+\begin{theorem}[Klein--Gordon compatibility]
+\label{thm:kg-compat}
+Let $\psi=|\psi|\,e^{i\theta}$ satisfy the Klein--Gordon equation
+$(\Box_\eta+m^2)\psi=0$ on a region where $|\psi|>0$.
+Then the seam-geometric vacuum condition $G_{\mu\nu}=0$
+for the wavefunction metric $g=|\psi|^2\eta$ holds if and only if
+the phase gradient satisfies the eikonal equation:
+\begin{equation}
+  \label{eq:eikonal}
+  |\nn\theta|^2_\eta = m^2.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substituting $\psi=|\psi|\,e^{i\theta}$ into the Klein--Gordon equation
+and separating real parts gives
+\begin{equation}
+  \label{eq:kg-real}
+  \Box_\eta|\psi| = |\psi|\,(|\nn\theta|^2_\eta-m^2).
+\end{equation}
+(The imaginary part gives the continuity equation
+$\pa_\mu(|\psi|^2\,\nn^\mu\theta)=0$.)
+By Proposition~\ref{prop:wf-dictionary}(i), the vacuum condition is
+$\Box_\eta|\psi|=0$.  Since $|\psi|>0$,
+\eqref{eq:kg-real} then gives~\eqref{eq:eikonal}.
+Conversely, \eqref{eq:eikonal} substituted into~\eqref{eq:kg-real}
+yields $\Box_\eta|\psi|=0$.
+\end{proof}
+
+\begin{remark}[Eikonal regime and the classical limit]
+\label{rem:eikonal}
+The eikonal equation $|\nn\theta|^2_\eta=m^2$ is precisely the condition
+defining the WKB (geometric-optics) limit of the Klein--Gordon field.
+In this regime the phase surfaces propagate as classical wavefronts with
+4-momentum $p_\mu=\pa_\mu\theta$ satisfying the mass-shell relation
+$p^\mu p_\mu=-m^2$.
+For the massless case $m=0$, the eikonal condition forces
+$\nn\theta$ to be null, corresponding to light-like propagation.
+Theorem~\ref{thm:kg-compat} therefore identifies the seam-geometric vacuum
+as the classical-propagation limit of the underlying quantum field:
+the wavefunction metric is vacuum-Einstein precisely when the
+field enters the WKB regime.
+\end{remark}
+
+\begin{remark}[Quantum potential]
+\label{rem:quantum-potential}
+In the Bohmian/Madelung formulation of relativistic quantum mechanics,
+the quantity $\Box_\eta|\psi|/|\psi|$ plays the role of a quantum
+potential~\cite{ShojaiShojai1998}.
+From~\eqref{eq:kg-real}, the Klein--Gordon real part is the
+relativistic quantum Hamilton--Jacobi equation
+\[
+  |\nn\theta|^2_\eta = m^2 + \frac{\Box_\eta|\psi|}{|\psi|}.
+\]
+The seam-geometric vacuum condition $\Box_\eta|\psi|=0$ is therefore
+equivalent to the vanishing of the quantum potential, and the eikonal
+equation~\eqref{eq:eikonal} emerges as the zero--quantum-potential limit.
+\end{remark}
+
+\begin{remark}[Relation to prior work]
+\label{rem:bohmian-prior}
+The idea that $|\psi|$ (or a quantum potential derived from it) sources or
+modifies spacetime geometry has appeared in the Bohmian gravity
+literature---notably in the Shojai--Shojai programme on geometrisation of
+Bohmian mechanics~\cite{ShojaiShojai1998} and in Chowdhury et al., who couple
+$|\Phi|$ to the Ricci scalar via disformal
+transformations~\cite{Chowdhury2021}.
+The contribution here is the structural
+observation that (i)~the Einstein tensor of the wavefunction metric
+decomposes into the three seam generators with
+$\psi$-dependent coefficients, (ii)~the vacuum condition has a sharp
+characterisation as the eikonal equation for the phase
+(equivalently, the vanishing of the quantum potential), and (iii)~the
+energy conditions reduce to null-convexity of $1/|\psi|$.
+\end{remark}
+
+\subsection{Physical corollaries of the wavefunction seam}
+\label{subsec:wf-physics}
+
+Combining the results of Sections~\ref{sec:conformal},
+\ref{sec:energy}, and the present section yields several physical
+observations that are immediate consequences of the established
+formalism.
+
+\begin{corollary}[Scalar curvature as quantum potential]
+\label{cor:R-quantum}
+For the wavefunction metric $g_{\mu\nu}=|\psi|^2\,\eta_{\mu\nu}$ in $n=4$,
+the scalar curvature satisfies
+\begin{equation}
+  \label{eq:R-Q}
+  R = -\frac{6}{|\psi|^2}\,Q,
+  \qquad
+  Q := \frac{\Box_\eta|\psi|}{|\psi|},
+\end{equation}
+where $Q$ is the relativistic quantum potential of
+Remark~\ref{rem:quantum-potential}.
+In particular, $R=0$ if and only if the quantum potential vanishes,
+and signed deviations of $R$ correspond directly to signed deviations
+of $Q$ from the classical (WKB) limit.
+\end{corollary}
+
+\begin{proof}
+From Corollary~\ref{cor:harmonic-hierarchy}(i), $R=0$ iff
+$\Box_\eta(e^s)=0$, i.e.\ $\Box_\eta|\psi|=0$.
+More explicitly, Proposition~\ref{prop:ricciscalar} with $s=\log|\psi|$ gives
+$R=-6e^{-2s}(\Box_\eta s+|\nn s|^2_\eta)=-6|\psi|^{-2}\cdot
+\Box_\eta|\psi|/|\psi|$,
+using $\Box_\eta(e^s)=e^s(\Box_\eta s+|\nn s|^2)$.
+\end{proof}
+
+\begin{corollary}[Metric degeneration at wavefunction nodes]
+\label{cor:nodes}
+Let $\psi=|\psi|\,e^{i\theta}$ with $|\psi|\ge 0$.  At any node
+$x_0$ where $|\psi(x_0)|=0$, the wavefunction metric
+$g_{\mu\nu}=|\psi|^2\,\eta_{\mu\nu}$ degenerates: all distances measured
+by $g$ shrink to zero and the reciprocal factor $u=1/|\psi|$ diverges.
+In the temporal reduction $|\psi|=a(t)$, this coincides with the
+$a\to 0$ singularity of Corollary~\ref{cor:temporal-past}.  Every
+zero of the amplitude thus corresponds to a conformal singularity of
+the effective spacetime.
+\end{corollary}
+
+\begin{proof}
+$g_{\mu\nu}(x_0)=|\psi(x_0)|^2\eta_{\mu\nu}=0$.  In the temporal case,
+$a(t)=|\psi(t)|$, and the FLRW-type metric $g=-\mathrm{d}t^2\cdot a^2+\cdots$
+degenerates at $a=0$.
+\end{proof}
+
+\begin{corollary}[No event horizons in the wavefunction metric]
+\label{cor:no-horizons}
+The wavefunction metric $g=|\psi|^2\eta$ cannot admit an event horizon.
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:no-lensing}, the unparameterised null geodesics of $g$
+are the straight null lines of $\eta$.  An event horizon requires the existence
+of a trapped region from which no future-directed null geodesic can escape to
+infinity.  Since every null ray of $g$ traces a straight line in the background,
+no such trapping is possible.
+\end{proof}
+
+\begin{remark}[NEC violation near classical turning points]
+\label{rem:turning-points}
+By Proposition~\ref{prop:wf-dictionary}(ii), the NEC holds iff $1/|\psi|$ is
+convex along every null line.  For a Klein--Gordon field tunnelling through a
+classically forbidden region, the WKB amplitude decays as
+$|\psi|\sim e^{-\kappa x}$, giving $1/|\psi|\sim e^{\kappa x}$, which is
+convex; the NEC is satisfied inside the barrier.  At classical turning points,
+however, the amplitude changes character from oscillatory to evanescent and may
+develop inflection points in $1/|\psi|$, violating the NEC locally.  Since NEC
+violation is the necessary ingredient for exotic phenomena such as traversable
+wormhole throats in classical GR~\cite{MorrisThorne1988}, the transition
+region of a tunnelling wavefunction carries a direct geometric signature within
+this framework.
+\end{remark}
+
+\begin{remark}[Quantum interference breaks the vacuum condition]
+\label{rem:interference}
+The vacuum condition $\Box_\eta|\psi|=0$ is nonlinear in $\psi$ through
+the modulus map.  If $\psi_1$ and $\psi_2$ each satisfy the vacuum condition
+($\Box_\eta|\psi_1|=\Box_\eta|\psi_2|=0$), their quantum superposition
+$\psi=\psi_1+\psi_2$ generically does not: $|\psi_1+\psi_2|$ involves the
+interference term $\mathrm{Re}(\psi_1\bar\psi_2)$, and the resulting
+amplitude is not harmonic.  By Corollary~\ref{cor:R-quantum}, the non-vanishing
+$\Box_\eta|\psi|/|\psi|$ produces scalar curvature $R\neq 0$ localised at
+the interference fringes.  In this sense, quantum superposition of
+individually vacuum (WKB-limit) states generates effective stress-energy
+and curvature in the wavefunction metric.
+\end{remark}
+
+\begin{corollary}[Bound states are never vacuum]
+\label{cor:bound-nonvacuum}
+Let $\psi(t,x)=\phi(x)\,e^{-iEt}$ be a stationary bound state on
+$\mathbb{R}^{1,3}$ with $|\phi(x)|\to 0$ as $|x|\to\infty$ and
+$\phi\not\equiv 0$.  Then the wavefunction metric
+$g_{\mu\nu}=|\phi|^2\,\eta_{\mu\nu}$ is not vacuum:
+$G_{\mu\nu}\neq 0$.
+\end{corollary}
+
+\begin{proof}
+Since $|\psi|=|\phi(x)|$ is time-independent, the vacuum condition
+$\Box_\eta|\psi|=0$ reduces to $\Delta|\phi|=0$ on $\mathbb{R}^3$.
+But $|\phi|\ge 0$ with $|\phi|\to 0$ at infinity.  By the maximum
+principle for harmonic functions, a non-negative harmonic function that
+vanishes at infinity on $\mathbb{R}^3$ must be identically zero.  Since
+$\phi\not\equiv 0$, the vacuum condition fails.
+\end{proof}
+
+\begin{remark}[Physical reading of Corollary~\ref{cor:bound-nonvacuum}]
+\label{rem:bound-reading}
+Corollary~\ref{cor:bound-nonvacuum} shows that spatial quantum confinement
+is incompatible with a vacuum wavefunction metric.
+Only completely delocalised states (such as plane waves with
+$|\psi|=\mathrm{const}$) can yield $G_{\mu\nu}=0$.
+For any localised bound state, the quantum potential is necessarily non-zero
+and the effective spacetime carries intrinsic curvature.
+\end{remark}
+
+\subsection{Self-consistent wavefunction seam}
+\label{subsec:self-consistent}
+
+So far the wavefunction $\psi$ satisfies the Klein--Gordon equation on the
+\emph{flat} background $\eta$.  The metric $g=|\psi|^2\eta$ is then read off
+as a derived object; the field does not propagate on the geometry it generates.
+A natural strengthening is to require \emph{self-consistency}: the field
+satisfies Klein--Gordon on $g$ itself,
+\begin{equation}
+  \label{eq:self-consistent}
+  (\Box_g+m^2)\psi=0,
+  \qquad
+  g_{\mu\nu}=|\psi|^2\,\eta_{\mu\nu}.
+\end{equation}
+
+\begin{proposition}[Conformal wave operator]
+\label{prop:conformal-box}
+For $g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$ in $n=4$, the minimally coupled
+d'Alembertian satisfies
+\begin{equation}
+  \label{eq:conformal-box}
+  \Box_g\phi
+  = e^{-2s}\bigl[\Box_\eta\phi+2\,(\pa^\mu_\eta s)\,\pa_\mu\phi\bigr]
+\end{equation}
+for any scalar $\phi$.
+\end{proposition}
+
+\begin{proof}
+$g^{\mu\nu}=e^{-2s}\eta^{\mu\nu}$ and $\sqrt{|g|}=e^{4s}\sqrt{|\eta|}$.
+Expanding the covariant divergence
+$\Box_g\phi=|g|^{-1/2}\pa_\mu(\sqrt{|g|}\,g^{\mu\nu}\pa_\nu\phi)$
+gives~\eqref{eq:conformal-box}.
+\end{proof}
+
+With $s=\log|\psi|$, Proposition~\ref{prop:conformal-box} converts the
+self-consistent equation~\eqref{eq:self-consistent} into a nonlinear wave
+equation on the flat background:
+\begin{equation}
+  \label{eq:sc-flat}
+  \Box_\eta\psi
+  + \frac{2\,\pa^\mu|\psi|}{|\psi|}\,\pa_\mu\psi
+  + m^2|\psi|^2\,\psi = 0.
+\end{equation}
+
+\begin{proposition}[Madelung form of the self-consistent system]
+\label{prop:sc-madelung}
+Under the polar decomposition $\psi=A\,e^{i\theta}$ with
+$A=|\psi|>0$, equation~\eqref{eq:sc-flat} splits into:
+\begin{enumerate}[label=\textup{(\roman*)},noitemsep]
+\item \textbf{Modified Hamilton--Jacobi (real part):}
+\begin{equation}
+  \label{eq:sc-real}
+  Q + 2\,|\nn\!\log A|_\eta^2
+  = |\nn\theta|_\eta^2 - m^2 A^2,
+\end{equation}
+where $Q=\Box_\eta A/A$ is the quantum potential.
+\item \textbf{Modified continuity (imaginary part):}
+\begin{equation}
+  \label{eq:sc-continuity}
+  \pa_\mu\!\bigl(A^4\,\pa^\mu_\eta\theta\bigr)=0.
+\end{equation}
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Substitute $\psi=Ae^{i\theta}$ into~\eqref{eq:sc-flat} and separate
+real and imaginary parts.
+The real part yields~\eqref{eq:sc-real} after dividing by~$A$.
+For the imaginary part, one obtains
+$4\,(\pa^\mu A)(\pa_\mu\theta)+A\,\Box_\eta\theta=0$, which is
+$A^{-3}\,\pa_\mu(A^4\,\pa^\mu\theta)=0$.
+\end{proof}
+
+\begin{remark}[Comparison with the flat-background system]
+\label{rem:sc-comparison}
+On flat background (Section~\ref{sec:wavefunction}), the Klein--Gordon
+Madelung system reads $Q=|\nn\theta|^2-m^2$ and
+$\pa_\mu(A^2\pa^\mu\theta)=0$.  The self-consistent
+version~\eqref{eq:sc-real}--\eqref{eq:sc-continuity} introduces two
+modifications:
+\begin{itemize}[noitemsep]
+\item the mass term $m^2$ is replaced by the amplitude-dependent
+  $m^2A^2$, producing a \emph{nonlinear dispersion relation};
+\item the conserved current is $A^4\pa^\mu\theta$ instead of
+  $A^2\pa^\mu\theta$; equivalently, the continuity equation is
+  $\pa_\mu(\sqrt{|g|}\,g^{\mu\nu}\pa_\nu\theta)=0$, i.e.\ the current
+  is the natural $g$-divergence-free vector.
+\end{itemize}
+\end{remark}
+
+\begin{remark}[Comparison with the Schr\"odinger--Newton system]
+\label{rem:sn-comparison}
+The standard model for a self-gravitating nonrelativistic quantum field
+is the Schr\"odinger--Newton (SN) equation: $i\hbar\pa_t\psi=-(\hbar^2/2m)\Delta\psi+m\Phi_N\psi$
+with $\Delta\Phi_N=4\pi G m|\psi|^2$, where the Newtonian potential
+$\Phi_N$ is sourced by the probability density.  The self-consistent
+seam system~\eqref{eq:self-consistent} differs from SN in three structural
+respects:
+\begin{enumerate}[label=\textup{(\roman*)},noitemsep]
+\item \emph{Fully relativistic:} the field satisfies the Klein--Gordon
+  (not Schr\"odinger) equation on the curved metric, so no
+  nonrelativistic limit is assumed.
+\item \emph{Conformal coupling:} the gravitational backreaction
+  enters conformally ($g=|\psi|^2\eta$), not through a Newtonian
+  potential; this replaces the Poisson equation with a nonlinear wave
+  equation~\eqref{eq:sc-flat}.
+\item \emph{Current:} the conserved current is $A^4\pa^\mu\theta$
+  (the $g$-natural current) versus $A^2\nn\theta$ in SN; the extra
+  $A^2$ factor encodes the volume element of the self-generated
+  geometry.
+\end{enumerate}
+In the nonrelativistic, weak-field limit ($A\approx 1+\epsilon$ with
+$|\epsilon|\ll 1$, $|\pa_t|\ll m$), the self-consistent system
+reduces to a Schr\"odinger equation with a nonlinear potential
+$\propto|\psi|^2$, which has the same scaling as SN but with a
+conformal coupling constant in place of $Gm^2$.  A detailed
+comparison of the two nonlinear eigenvalue problems (Emden--Fowler
+versus Choquard--Pekar) is deferred to future work.
+\end{remark}
+
+\begin{corollary}[Self-consistent vacuum fixed point]
+\label{cor:sc-vacuum}
+A solution of the self-consistent system~\eqref{eq:self-consistent} with
+$|\psi|>0$ has vanishing Einstein tensor ($G_{\mu\nu}=0$, equivalently
+$Q=0$) if and only if
+\begin{equation}
+  \label{eq:sc-eikonal}
+  |\nn\theta|^2_\eta = m^2\,|\psi|^2 + 2\,|\nn\!\log|\psi||^2_\eta.
+\end{equation}
+For a constant-amplitude solution $|\psi|=A_0=\mathrm{const}$, this
+reduces to $|\nn\theta|^2_\eta=m^2A_0^2$: the standard mass-shell
+relation with effective mass $m_{\mathrm{eff}}=mA_0$, consistent with
+the rescaled metric $g=A_0^2\eta$.
+\end{corollary}
+
+\begin{proof}
+Set $Q=0$ in~\eqref{eq:sc-real}.  For $A=A_0=\mathrm{const}$,
+$|\nn\log A|=0$ and the wavefunction metric is $g=A_0^2\eta$, on which
+$(\Box_g+m^2)\psi=0$ becomes $\Box_\eta\psi+m^2A_0^2\psi=0$.
+\end{proof}
+
+\begin{remark}[Physical interpretation]
+\label{rem:sc-physics}
+The self-consistent system~\eqref{eq:self-consistent} closes the loop
+between the wavefunction and its generated geometry: the metric is
+sourced by $|\psi|$, and $\psi$ propagates on that metric.  Fixed-point
+solutions---configurations satisfying $G_{\mu\nu}=0$ together
+with~\eqref{eq:sc-flat}---are simultaneously vacuum geometries \emph{and}
+WKB-limit fields, but with the modified eikonal
+relation~\eqref{eq:sc-eikonal} replacing the standard mass-shell.  The
+amplitude dependence in $m^2|\psi|^2$ means that the effective
+rest mass varies with the field strength, a self-gravitational
+backreaction absent in the flat-background treatment.
+
+The self-consistent system can also be read as a concrete implementation
+of the programme suggested by Shojai and
+Shojai~\cite{ShojaiShojai1998}: the quantum potential appears as
+spacetime curvature, and the transition from quantum to classical
+propagation corresponds to geometric relaxation toward the vacuum.
+Whether this system admits non-trivial stationary solutions, and
+whether the resulting quantisation conditions have independent physical
+content, is addressed in the next subsection.
+\end{remark}
+
+\subsection{Exact solutions and spectral quantisation}
+\label{subsec:sc-solutions}
+
+We now show that the self-consistent system admits non-trivial exact
+solutions.  The key is a linearising substitution: the map
+$\Phi:=|\psi|^3$ converts the nonlinear field equation into a classical
+PDE with well-understood spectral theory.
+
+\begin{theorem}[Cube-harmonic linearisation]
+\label{thm:cube-harmonic}
+Let $\psi=A(x)\,e^{-i\omega t}$ with $A>0$ time-independent.  Then the
+massless ($m=0$) self-consistent equation~\eqref{eq:sc-flat} is equivalent
+to the Helmholtz equation for $\Phi:=A^3$:
+\begin{equation}
+  \label{eq:helmholtz}
+  \Delta\Phi + 3\omega^2\,\Phi = 0.
+\end{equation}
+In the static limit ($\omega=0$) this reduces to $\Delta(A^3)=0$: the
+cube of the amplitude is harmonic.
+\end{theorem}
+
+\begin{proof}
+For $\psi=Ae^{-i\omega t}$ with $m=0$, equation~\eqref{eq:sc-flat}
+becomes (after dividing by $e^{-i\omega t}$)
+\[
+  \Delta A+\frac{2\,|\nn A|^2}{A}+\omega^2 A=0.
+\]
+The identity
+$A^2\Delta A+2A\,|\nn A|^2=\nn\cdot(A^2\nn A)=\tfrac{1}{3}\Delta(A^3)$
+lets us multiply through by $A^2$ to obtain~\eqref{eq:helmholtz}.
+The continuity equation~\eqref{eq:sc-continuity} is identically satisfied
+because $\theta=-\omega t$ and $A$ is time-independent:
+$\pa_\mu(A^4\pa^\mu\theta)=-\omega\,\pa_t(A^4)=0$.
+\end{proof}
+
+\begin{corollary}[Static exact solution]
+\label{cor:static-exact}
+In the static massless case ($\omega=0$), the unique spherically symmetric
+solution with $A>0$ for $r>0$ is
+\begin{equation}
+  \label{eq:static-sol}
+  A(r) = \bigl(a+b/r\bigr)^{1/3},
+  \qquad a>0,\;\;b>0,
+\end{equation}
+generating the wavefunction metric
+$g_{\mu\nu}=(a+b/r)^{2/3}\,\eta_{\mu\nu}$.
+The scalar curvature is $R=4b^2/[3\,r^4(a+b/r)^{8/3}]>0$ for all $r>0$.
+\end{corollary}
+
+\begin{proof}
+$\Delta(A^3)=0$ with spherical symmetry gives $A^3=a+b/r$ (the general
+harmonic function on $\mathbb{R}^3\setminus\{0\}$).  Positivity requires
+$a,b>0$.  The scalar curvature follows from
+Corollary~\ref{cor:R-quantum}:
+$R=-6Q/A^2$ with $Q=\Delta A/A=-2|\nn A|^2/A^2$
+(using $\Delta A=-2|\nn A|^2/A$ from the original equation with
+$\omega=0$), giving $R=12|\nn A|^2/A^4$.  Substituting
+$A'=-b/(3r^2)(a+b/r)^{-2/3}$ yields the stated expression.
+\end{proof}
+
+\begin{remark}[Physical interpretation of the static solution]
+\label{rem:static-physics}
+The spacetime $(a+b/r)^{2/3}\eta$ has positive curvature decaying as
+$r^{-4}$ at infinity and a curvature singularity at $r=0$ where
+$R\sim r^{-4}$.  This singularity is \emph{integrable}: the
+Kretschner scalar satisfies
+$\int_0^\epsilon R^2\,r^2\,dr<\infty$ for any $\epsilon>0$,
+so it is milder than, for instance, the $r^{-6}$ Schwarzschild
+singularity.  Nevertheless, the metric degenerates at $r=0$
+($g_{\mu\nu}\to\infty$ as $(b/r)^{2/3}$), so $r=0$ is a genuine
+geometric singularity, not merely a coordinate artifact.  The conformal
+factor $A^2=(a+b/r)^{2/3}$ is smooth for $r>0$ and approaches
+$a^{2/3}$ at infinity, so the geometry is asymptotically conformally
+flat.
+
+Physically, the field $\psi=A(r)$ generates its own effective
+stress-energy and propagates self-consistently on the resulting
+geometry.  The parameter $b$ sets the``geometric charge''
+(strength of the curvature), while $a$ determines the asymptotic
+conformal factor $g\to a^{2/3}\eta$ at large~$r$.
+\end{remark}
+
+\begin{theorem}[Spectral quantisation from geometric self-consistency]
+\label{thm:spectral-quant}
+Let $\omega>0$ and consider regular spherically symmetric solutions of the
+massless self-consistent system with $A>0$ on $0<r<R$ and $A(R)=0$
+(conformal degeneration at $r=R$).  Then:
+\begin{enumerate}[label=\textup{(\roman*)},noitemsep]
+\item The frequency is uniquely determined by the cavity radius:
+\begin{equation}
+  \label{eq:quant-freq}
+  \omega = \frac{\pi}{\sqrt{3}\,R}\,.
+\end{equation}
+\item The amplitude profile is
+\begin{equation}
+  \label{eq:quant-profile}
+  A(r)=\left(\frac{C\,\sin(\pi r/R)}{r}\right)^{\!1/3},
+  \qquad C>0.
+\end{equation}
+\item No higher harmonics ($n\ge 2$) are admissible: the positivity
+  constraint $A=\Phi^{1/3}>0$ selects the ground-state eigenfunction.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:cube-harmonic}, $\Phi=A^3$ satisfies the
+Helmholtz equation $\Delta\Phi+3\omega^2\Phi=0$.  Regular spherically
+symmetric solutions are
+$\Phi=\hat C\,\sin(\sqrt{3}\omega\,r)/r$.  The boundary condition
+$\Phi(R)=0$ requires $\sqrt{3}\omega R=n\pi$ for some positive
+integer $n$, giving $\omega_n=n\pi/(\sqrt{3}R)$.
+
+For $n\ge 2$, $\Phi$ has interior zeros (at $r=kR/n$, $k=1,\dots,n-1$).
+Since $\Phi=A^3$ and $A\ge 0$, these zeros force $A=0$ at interior
+points, contradicting $A>0$ on $(0,R)$.  Hence only $n=1$ is admissible,
+and $\omega=\pi/(\sqrt{3}R)$.
+
+Equivalently, by the Courant nodal domain theorem the only positive
+Dirichlet eigenfunction of $-\Delta$ on a ball is the first
+eigenfunction, which is non-degenerate.
+\end{proof}
+
+\begin{proposition}[Curvature invariants of the self-consistent cavity]
+\label{prop:cavity-curvature}
+For the oscillating massless solution of
+Theorem~\ref{thm:spectral-quant}, let $\Phi=A^3=C\sin(\pi r/R)/r$.
+The scalar curvature of the self-generated metric $g=A^2\eta$ is
+\begin{equation}
+  \label{eq:cavity-R}
+  R_g
+  = \frac{6\omega^2}{A^2}
+    + \frac{4(\Phi')^2}{3\,\Phi^{8/3}}\,,
+  \qquad \omega=\frac{\pi}{\sqrt{3}\,R}\,.
+\end{equation}
+At the origin, $A(0)=(C\pi/R)^{1/3}$ is finite and $A'(0)=0$ by
+symmetry, so
+$R_g(0)=6\omega^2/(C\pi/R)^{2/3}<\infty$: the interior geometry is
+regular.  At the cavity boundary $r\to R^-$, $A\sim(R-r)^{1/3}\to 0$
+and $R_g\sim(R-r)^{-8/3}\to\infty$: the scalar curvature diverges,
+consistent with the metric degeneration $g\to 0$
+(Corollary~\ref{cor:nodes}).
+\end{proposition}
+
+\begin{proof}
+From Corollary~\ref{cor:R-quantum}, $R_g=-6\Delta A/A^3$.
+Since $A=\Phi^{1/3}$,
+$\Delta A=\tfrac{1}{3}\Phi^{-2/3}\Delta\Phi
+ -\tfrac{2}{9}\Phi^{-5/3}|\nn\Phi|^2$.
+Substituting $\Delta\Phi=-3\omega^2\Phi$ gives
+$\Delta A=-\omega^2 A-2|\nn\Phi|^2/(9\Phi^{5/3})$,
+and $A^3=\Phi$ yields~\eqref{eq:cavity-R}.
+Near $r=R$, $\Phi\sim C\pi(R-r)/R^2$ so
+$\Phi^{8/3}\sim(R-r)^{8/3}$ while $(\Phi')^2\to(C\pi/R^2)^2>0$,
+giving the exponent $-8/3$.
+\end{proof}
+
+\begin{remark}[Self-generated geometric cavity]
+\label{rem:cavity}
+The ``cavity'' in Theorem~\ref{thm:spectral-quant} is not imposed
+externally: the metric $g=A^2\eta$ degenerates at $r=R$ where $A\to 0$
+(cf.\ Corollary~\ref{cor:nodes}).  The field creates its own confining
+geometry.
+
+Importantly, the quantisation in~\eqref{eq:quant-freq} is \emph{relational}
+rather than absolute: for any cavity radius $R>0$ there exists a
+self-consistent solution at $\omega=\pi/(\sqrt{3}\,R)$, and conversely
+any $\omega>0$ determines a cavity of radius $R=\pi/(\sqrt{3}\,\omega)$.
+What is rigid is the $\omega$--$R$ ratio, not the individual values.
+Nevertheless, this constraint is non-trivial: it arises purely from
+geometric self-consistency (the field propagates on the metric it
+generates) together with regularity at the origin and positivity
+($|\psi|>0$ in the interior), without any external quantisation
+postulate.  If an independent mechanism fixes $R$ (e.g.\  boundary
+conditions, a mass scale from the $m>0$ theory, or matching to an
+external geometry), the frequency becomes absolutely quantised.
+\end{remark}
+
+\begin{proposition}[Massive case: Emden--Fowler reduction]
+\label{prop:emden-fowler}
+For $m>0$ and the time-periodic ansatz
+$\psi=A(r)\,e^{-i\omega t}$, the self-consistent
+equation~\eqref{eq:sc-flat} is equivalent to
+\begin{equation}
+  \label{eq:emden-fowler}
+  \Delta\Phi+3\omega^2\,\Phi+3m^2\,\Phi^{5/3}=0,
+  \qquad \Phi=A^3.
+\end{equation}
+This is a nonlinear eigenvalue problem of Emden--Fowler type
+(exponent $5/3$).  The mass term $m^2\Phi^{5/3}$ couples the amplitude
+to the frequency, breaking the conformal scaling symmetry of the
+massless case and potentially selecting isolated solution branches.
+\end{proposition}
+
+\begin{proof}
+Proceeding as in Theorem~\ref{thm:cube-harmonic} but retaining $m$:
+multiplying the radial equation by $A^2$ and using
+$\nabla\!\cdot\!(A^2\nabla A)=\tfrac{1}{3}\Delta(A^3)$ gives
+$\tfrac{1}{3}\Delta\Phi+\omega^2\Phi+m^2 A^5=0$.  Since
+$A^5=(\Phi)^{5/3}$, this is~\eqref{eq:emden-fowler}.
+\end{proof}
+
+\begin{remark}[Amplitude--frequency coupling in the massive case]
+\label{rem:massive-quant}
+In the massless system, the Helmholtz equation~\eqref{eq:helmholtz} is
+linear: the amplitude $C$ in~\eqref{eq:quant-profile} is a free parameter
+and does not affect the frequency.  For $m>0$, the
+nonlinearity~\eqref{eq:emden-fowler} forces $\omega$ to depend on both
+the cavity size $R$ and the amplitude $C$.  This
+amplitude--frequency coupling is the hallmark of a self-gravitational
+backreaction: the field's own energy content shifts its oscillation
+frequency.  The following results establish that this coupling uniquely
+determines the amplitude once the frequency is fixed, and that an
+additional charge constraint produces discrete solution branches.
+\end{remark}
+
+\begin{theorem}[Existence, uniqueness, and domain for the massive system]
+\label{thm:massive-existence}
+Let $m>0$ and $R>0$.  The rescaling
+$\Phi(r)=(3m^2)^{-3/2}R^{-3}\,\hat\Phi(r/R)$
+transforms~\eqref{eq:emden-fowler} on $B_R$ into
+\begin{equation}
+  \label{eq:rescaled-ef}
+  \Delta\hat\Phi+\Lambda\hat\Phi+\hat\Phi^{5/3}=0,
+  \quad \hat\Phi>0\;\text{on }B_1,
+  \quad\hat\Phi\big|_{\pa B_1}=0,
+\end{equation}
+where $\Lambda:=3\omega^2 R^2$.  Then:
+\begin{enumerate}[label=\textup{(\roman*)},noitemsep]
+\item For each $\Lambda\in[0,\pi^2)$,
+  problem~\eqref{eq:rescaled-ef} has exactly one positive radial
+  solution~$\hat\Phi_\Lambda$.
+\item For $\Lambda\ge\pi^2$, no positive solution exists.
+\item The map $\Lambda\mapsto\hat\Phi_\Lambda(0)$ is continuous and
+  positive on $[0,\pi^2)$, with
+  $\hat\Phi_\Lambda(0)\to 0$ as $\Lambda\nearrow\pi^2$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The exponent $5/3$ is subcritical ($5/3<5=(n+2)/(n-2)$ for $n=3$).
+
+\emph{Existence.}  For $\Lambda\in(0,\pi^2)$ the functional
+$E(u)=\tfrac{1}{2}\!\int|\nn u|^2
+ -\tfrac{\Lambda}{2}\!\int u^2
+ -\tfrac{3}{8}\!\int|u|^{8/3}$
+has mountain-pass geometry on $H^1_0(B_1)$; the subcritical exponent
+guarantees the Palais--Smale condition via the compact embedding
+$H^1_0\hookrightarrow L^{8/3}$.  For $\Lambda=0$ the same argument
+applies on the Nehari manifold with the pure nonlinearity
+$\hat\Phi^{5/3}$.
+
+\emph{Uniqueness.}  By Gidas--Ni--Nirenberg, every positive
+solution is radially symmetric and radially decreasing, hence determined
+by its central value $\alpha=\hat\Phi(0)$.  Denoting by $R_1(\alpha)$
+the first zero of the radial ODE solution with initial data
+$\hat\Phi(0)=\alpha$, $\hat\Phi'(0)=0$, Sturm comparison shows that
+$R_1(\alpha)$ is strictly monotone in $\alpha$ (larger central values
+produce stronger nonlinear restoring and earlier zeroes), so at most
+one $\alpha$ satisfies $R_1(\alpha)=1$.
+
+\emph{Non-existence.}  Testing~\eqref{eq:rescaled-ef} against
+the first eigenfunction $\phi_1>0$ of $-\Delta$ on $B_1$
+(eigenvalue $\lambda_1=\pi^2$):
+$\int(\pi^2-\Lambda)\hat\Phi\,\phi_1=\int\hat\Phi^{5/3}\phi_1>0$,
+which requires $\Lambda<\pi^2$.
+
+\emph{Continuity.}  The solution branch bifurcates (supercritically)
+from the trivial solution at $\Lambda=\pi^2$: near the bifurcation,
+$\hat\Phi_\Lambda\approx\epsilon\,\phi_1$ with
+$\epsilon\sim C(\pi^2-\Lambda)^{3/2}\to 0$.  The branch extends
+continuously to $\Lambda=0$ by the implicit function theorem
+(the linearised operator is invertible for each $\Lambda<\pi^2$
+since the positive solution is unique).
+\end{proof}
+
+\begin{corollary}[Amplitude--frequency locking and gravitational redshift]
+\label{cor:amp-freq-lock}
+Fix $m>0$ and $R>0$, and let
+$\omega_0:=\pi/(\sqrt{3}\,R)$ denote the massless cut-off frequency.
+\begin{enumerate}[label=\textup{(\roman*)},noitemsep]
+\item For each $\omega\in(0,\omega_0)$, the self-consistent massive
+  system has a unique positive radial solution whose central amplitude
+  $A(0)=\Phi(0)^{1/3}$ is uniquely determined by $\omega$.
+\item The mass term always shifts the frequency below the massless
+  value: $\omega<\omega_0$.  Larger amplitudes correspond to lower
+  frequencies---a gravitational redshift arising from the field's own
+  conformal factor.
+\item As $\omega\nearrow\omega_0$, the amplitude vanishes and the
+  solution reduces to the linearised Helmholtz mode of
+  Theorem~\ref{thm:spectral-quant} (rescaled to zero amplitude).
+  As $\omega\searrow 0$, the solution approaches the massive static
+  configuration $\Delta\Phi+3m^2\Phi^{5/3}=0$
+  (the Lane--Emden limit).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+$\omega\in(0,\omega_0)$ corresponds to
+$\Lambda=3\omega^2R^2\in(0,\pi^2)$.  By
+Theorem~\ref{thm:massive-existence}, the unique solution
+$\hat\Phi_\Lambda$ determines the physical amplitude
+$\Phi(0)=(3m^2)^{-3/2}R^{-3}\hat\Phi_\Lambda(0)$.
+Near the bifurcation ($\Lambda\nearrow\pi^2$), the nonlinear term
+becomes negligible and the solution approaches a rescaled Helmholtz
+eigenfunction; at $\Lambda=0$ the linear term drops out and only the
+Lane--Emden nonlinearity survives.
+\end{proof}
+
+\begin{proposition}[Charge quantisation from the fold structure]
+\label{prop:charge-quant}
+The continuity equation~\eqref{eq:sc-continuity} with
+$\theta=-\omega t$ defines a conserved geometric charge
+\begin{equation}
+  \label{eq:charge}
+  \mathcal{Q}
+  :=4\pi\omega\!\int_0^R\! \Phi^{4/3}\,r^2\,dr,
+  \qquad \Phi=A^3.
+\end{equation}
+For fixed $m>0$ and $R>0$:
+\begin{enumerate}[label=\textup{(\roman*)},noitemsep]
+\item $\mathcal{Q}$ is a continuous function of
+  $\Lambda=3\omega^2R^2$ on $(0,\pi^2)$ with
+  $\mathcal{Q}\to 0$ at both endpoints.
+\item There exists a maximum charge
+  $\mathcal{Q}_{\max}(m,R)>0$, and no self-consistent
+  configuration of radius~$R$ exists for
+  $\mathcal{Q}>\mathcal{Q}_{\max}$.
+\item For each $\mathcal{Q}\in(0,\mathcal{Q}_{\max})$, the equation
+  $\mathcal{Q}(\Lambda)=\mathcal{Q}$ has at least two solutions:
+  a \emph{weakly gravitating mode}
+  (high~$\omega$, low amplitude, near the Helmholtz limit) and a
+  \emph{strongly gravitating mode}
+  (low~$\omega$, high amplitude, near the Lane--Emden limit).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+In rescaled variables (Theorem~\ref{thm:massive-existence}),
+\[
+  \mathcal{Q}(\Lambda)
+  =\frac{4\pi\sqrt{\Lambda/3}}{(3m^2)^2 R^2}\,I(\Lambda),
+  \qquad
+  I(\Lambda):=\int_0^1\!\hat\Phi_\Lambda^{4/3}\,\sigma^2\,d\sigma.
+\]
+As $\Lambda\nearrow\pi^2$:
+$\hat\Phi_\Lambda\to 0$ uniformly, so $I(\Lambda)\to 0$
+and $\mathcal{Q}\to 0$.
+As $\Lambda\searrow 0$:
+$I(\Lambda)\to I(0)>0$ (the Lane--Emden solution has finite
+$L^{4/3}$ norm) but $\sqrt\Lambda\to 0$, so $\mathcal{Q}\to 0$.
+Extending $\mathcal{Q}$ to $[0,\pi^2]$ by continuity, the maximum
+is attained on this compact interval at some interior point.
+For $\mathcal{Q}<\mathcal{Q}_{\max}$, the intermediate
+value theorem gives at least two pre-images (one on each side
+of the maximum).
+\end{proof}
+
+\begin{remark}[Physical interpretation of the fold]
+\label{rem:fold-physics}
+The weakly gravitating branch is a near-linear perturbation of the
+massless Helmholtz eigenstate: the backreaction is a small correction.
+The strongly gravitating branch is a genuinely nonlinear configuration
+in which the conformal factor $A^2$ varies significantly and the
+geometry departs from flat.
+
+The maximum charge scales as
+$\mathcal{Q}_{\max}\propto 1/(m^4 R^2)$, providing
+an upper bound on the charge supportable by a self-consistent
+oscillating configuration of given radius---a self-gravitational
+analogue of a Chandrasekhar-type limit.
+
+In the massless system, the charge
+$\mathcal{Q}=4\pi\omega C^{4/3}\int_0^R(\sin(\pi r/R)/r)^{4/3}r^2\,dr$
+depends independently on $\omega$ (which is locked to $R$) and the
+free amplitude $C$, so any $\mathcal{Q}>0$ is achievable by
+adjusting~$C$.  The mass introduces the coupling between $\omega$
+and $C$ that produces the fold, and it is this coupling that
+elevates the relational $\omega$--$R$ quantisation
+of Theorem~\ref{thm:spectral-quant} to the amplitude quantisation
+described here.
+\end{remark}
+
+% ================================================================
+\section{Extension to Complex Seams}
+\label{sec:complex}
+% ================================================================
+
+Remark~\ref{rem:complex-seam} identified three structural limitations of
+the real scalar seam: vacuum flatness rigidity, a single functional degree
+of freedom, and identically vanishing vorticity.  In this section we promote
+the seam to a complex-valued field $\varphi=u+iv$ and verify that each
+limitation is resolved.
+
+\subsection{The complex seam metric}
+
+\begin{definition}[Complex seam metric on a real background]
+\label{def:complex-seam-metric}
+Let $(M^n,h)$ be a (pseudo-)Riemannian manifold and
+$\varphi = u + iv \colon M \to \mathbb{C}$ a smooth complex-valued
+function.  A \emph{complex seam metric} of order~$\le 2$ is
+\begin{equation}
+\label{eq:complex-seam-metric}
+g_{\mu\nu}
+= \alpha\,h_{\mu\nu}
+  + \beta_u\,\pa_\mu u\,\pa_\nu u
+  + \beta_v\,\pa_\mu v\,\pa_\nu v
+  + \beta_\times\,(\pa_\mu u\,\pa_\nu v + \pa_\nu u\,\pa_\mu v)
+  + \gamma_u\,\nn_\mu\nn_\nu u
+  + \gamma_v\,\nn_\mu\nn_\nu v,
+\end{equation}
+where $\alpha,\beta_u,\beta_v,\beta_\times,\gamma_u,\gamma_v$ are
+smooth real-valued functions of the scalar jet invariants
+$(u,v,|\nn u|^2_h,|\nn v|^2_h,
+\langle\nn u,\nn v\rangle_h,\Delta_h u,\Delta_h v)$.
+\end{definition}
+
+\begin{remark}[Recovery of the real ansatz]
+\label{rem:recovery-real}
+Setting $v \equiv 0$ reduces~\eqref{eq:complex-seam-metric} to the
+real seam metric~\eqref{eq:seam-metric} (with $\beta_v$, $\beta_\times$,
+and $\gamma_v$ absent and $s = u$).  The real framework is a sub-family
+of the complex one.
+\end{remark}
+
+\subsection{Two degrees of freedom}
+
+\begin{proposition}[Functional independence]
+\label{prop:complex-dof}
+Let $\varphi = u + iv$ with $u,v \in C^\infty(M)$ independent
+(i.e.\ $du \wedge dv \neq 0$ on a dense open set).
+The conformal-plus-gradient metric
+\begin{equation}
+  \label{eq:conf-grad-complex}
+  g_{\mu\nu}
+  = e^{2u}\,\eta_{\mu\nu}
+    + \beta\,\pa_\mu v\,\pa_\nu v
+\end{equation}
+(with $\beta = \beta(u,v)$ not identically zero) defines a two-function
+family of non-isometric metrics.  At a point where $du \wedge dv \neq 0$,
+the metric has eigenvalues in $n-2$ directions controlled by $e^{2u}$
+and distinct eigenvalues in the remaining two directions controlled
+independently by $u$ and $\beta$, giving two spectral degrees of
+freedom compared with one in the real case.
+\end{proposition}
+
+\begin{proof}
+Write the metric as $g = e^{2u}\eta + \beta\,dv \otimes dv$.
+In an $\eta$-orthonormal frame with $e_1 \propto \nn u$ and
+$e_2 \propto \nn v - \frac{\langle\nn v,\nn u\rangle}{|\nn u|^2}\nn u$,
+the $n-2$ directions orthogonal to both gradients see eigenvalue
+$e^{2u}$, while the $e_1$- and $e_2$-directions have distinct eigenvalues
+modified by $\beta$.  Since $u$ and $v$ are independent, the two
+spectral parameters are independently adjustable; in particular, two
+choices $(u_1,v_1) \neq (u_2,v_2)$ with $du_i \wedge dv_i \neq 0$
+give metrics with generically distinct scalar curvatures, hence are
+non-isometric.
+\end{proof}
+
+\subsection{Vorticity from the cross-gradient}
+
+In the real-seam framework, whenever $\nn s$ is timelike the unit
+4-velocity $U = \nn s / |\nn s|$ has vanishing vorticity because $U$
+is proportional to the exact 1-form $ds$
+(Corollary~\ref{cor:irrotational}).  The complex ansatz breaks this.
+
+\begin{theorem}[Non-vanishing vorticity from a complex seam]
+\label{thm:complex-vorticity}
+Let $g$ be a complex seam metric~\eqref{eq:complex-seam-metric} on
+Minkowski background in $n = 4$.  Define the 1-form
+\begin{equation}
+\label{eq:tilted-velocity}
+W_\mu := \pa_\mu u + \lambda(x)\,\pa_\mu v,
+\end{equation}
+where $\lambda$ is a smooth function.  Then the vorticity 2-form satisfies
+\begin{equation}
+\label{eq:vorticity-formula}
+dW = d\lambda \wedge dv.
+\end{equation}
+In particular, if $\lambda = \lambda(u)$, then
+$dW = \lambda'(u)\,du \wedge dv \neq 0$
+wherever $\lambda'(u) \neq 0$ and $du \wedge dv \neq 0$.
+In the real limit $v \to 0$ the support vanishes, recovering the
+irrotationality of the real seam.
+\end{theorem}
+
+\begin{proof}
+Since $du$ is exact, $d(du) = 0$.  Hence
+$dW = d(\lambda\,dv) = d\lambda \wedge dv$.
+If $\lambda = \lambda(u)$, then $d\lambda = \lambda'\,du$, giving
+$dW = \lambda'\,du \wedge dv$.
+\end{proof}
+
+\begin{remark}[Physical interpretation]
+\label{rem:vorticity-physics}
+The 1-form $W$ is not the normalised 4-velocity of the seam flow, but
+the theorem demonstrates that the complex ansatz provides a tensorial
+mechanism for vorticity \emph{absent} in the real case: the 2-form
+$du \wedge dv$ is identically available once $\varphi$ is complex.
+In a charged scalar-field context, the macroscopic current
+$J^\mu \propto |\psi|^2\,\nn^\mu\theta$ naturally takes a form
+involving both $\nn u$ and $\nn v = \nn\theta$; any physical
+4-velocity built from both gradients will generically inherit nonzero
+vorticity.
+\end{remark}
+
+\subsection{Breaking vacuum flatness rigidity}
+
+A natural question is whether the complex ansatz can break the vacuum
+flatness rigidity of the real seam
+(Theorems~\ref{thm:vacuumon}, \ref{thm:vacuum};
+Corollary~\ref{cor:lorentz-vacuum}).
+Within the conformal-plus-phase-gradient subfamily
+\begin{equation}
+\label{eq:conf-phase-metric}
+g_{\mu\nu} = e^{2u}\bigl(\eta_{\mu\nu} + \beta\,\pa_\mu v\,\pa_\nu v\bigr),
+\end{equation}
+rigidity persists: for static $u = -c\log|z|$ and linear
+$v = m\,x^0$, the metric is conformally flat and a direct computation
+gives $G_{33} = 3c^2/z^2$, forcing $c = 0$.
+However, the full six-generator span admits genuinely curved vacua.
+
+\begin{theorem}[Non-flat vacuum from a complex seam]
+\label{thm:complex-vacuum}
+Let $u = \log z$, $v = m\,t$ (with $m > 0$, $z > 0$), and set
+\begin{equation}
+\label{eq:taub-coefficients}
+\alpha(u) = e^{4u/3},\qquad
+\beta_v(u) = \frac{e^{4u/3} - e^{-2u/3}}{m^2},\qquad
+\gamma_u(u) = e^{10u/3} - e^{2u},
+\end{equation}
+with $\beta_u = \beta_\times = \gamma_v = 0$.  Then the complex seam
+metric~\eqref{eq:complex-seam-metric} on Minkowski background
+$(M,\eta)$ is
+\begin{equation}
+\label{eq:taub-metric}
+g = \mathrm{diag}\!\bigl(-z^{-2/3},\;z^{4/3},\;z^{4/3},\;1\bigr),
+\end{equation}
+the Taub plane-symmetric vacuum.  This metric is Ricci-flat
+($G_{\mu\nu} = 0$) and genuinely curved: the Riemann tensor has
+$R^0_{\;101} = \tfrac{2}{9}\,z^{-2/3} \neq 0$.
+\end{theorem}
+
+\begin{proof}
+Since $u = \log z$ we have $\pa_\mu u = \delta_{\mu 3}/z$ and
+$\nn_\mu\nn_\nu u = -\delta_{\mu 3}\delta_{\nu 3}/z^2$;
+since $v = m\,t$ we have $\pa_\mu v = m\,\delta_{\mu 0}$.
+The six generators evaluate as follows.
+\begin{enumerate}[label=\quad(\arabic*)]
+\item $\alpha\,\eta_{\mu\nu}$: contributes
+  $-z^{4/3}$ to $g_{00}$,\ $z^{4/3}$ to $g_{11}$ and $g_{22}$,\
+  $z^{4/3}$ to $g_{33}$.
+\item $\beta_v\,\pa_\mu v\,\pa_\nu v = (z^{4/3}-z^{-2/3})\,\delta_{\mu 0}\delta_{\nu 0}$:
+  adds $z^{4/3}-z^{-2/3}$ to $g_{00}$.
+\item $\gamma_u\,\nn_\mu\nn_\nu u = -(z^{10/3}-z^2)/z^2\,\delta_{\mu 3}\delta_{\nu 3}$:
+  adds $1 - z^{4/3}$ to $g_{33}$.
+\end{enumerate}
+Summing: $g_{00} = -z^{4/3} + z^{4/3} - z^{-2/3} = -z^{-2/3}$,\
+$g_{11} = g_{22} = z^{4/3}$,\ $g_{33} = z^{4/3} + 1 - z^{4/3} = 1$.
+This is~\eqref{eq:taub-metric}.  The Ricci-flat and Riemann
+statements are verified by direct computation (the metric depends on
+$z$ alone, so all curvature reduces to ODEs in $z$).
+\end{proof}
+
+\begin{remark}[Mechanism and real-seam obstruction]
+\label{rem:rigidity-persists}
+In the real seam the conformal generator forces
+$g_{00}/g_{11} = -1$, but the Taub metric requires
+$g_{00}/g_{11} = -z^{-2}$.  The phase-gradient generator
+$\beta_v\,\pa_\mu v\,\pa_\nu v$ breaks this lock by contributing
+only to $g_{00}$, independently of the conformal factor;
+the Hessian generator $\gamma_u\,\nn_\mu\nn_\nu u$ similarly
+adjusts $g_{33}$ alone.  Together the three generators $\alpha$,
+$\beta_v$, $\gamma_u$ supply three independent diagonal degrees of
+freedom, precisely what is needed to realise an anisotropic vacuum.
+The conformal-plus-gradient subfamily~\eqref{eq:conf-phase-metric}
+lacks both $\beta_v$ and $\gamma_u$ as functions of $u$
+independently of $\alpha$, which is why it inherits the
+real-seam rigidity.
+\end{remark}
+
+\subsection{Self-consistent complex wavefunction seam}
+
+The wavefunction seam of Section~\ref{sec:wavefunction} identifies
+the seam scalar with the log-amplitude of a Klein--Gordon field:
+$s = \log|\psi|$, $\psi = |\psi|\,e^{i\theta}$.  The complex seam
+provides the natural extension: setting $u = \log|\psi|$ and $v = \theta$
+promotes \emph{both} quantum-mechanical degrees of freedom---amplitude and
+phase---to geometric data.
+
+\begin{definition}[Complex wavefunction seam metric]
+\label{def:complex-wf-seam}
+Let $\psi = |\psi|\,e^{i\theta}$ be a smooth complex scalar field with
+$|\psi| > 0$.  The \emph{complex wavefunction seam metric} is the complex
+seam metric~\eqref{eq:complex-seam-metric} with
+$u = \log|\psi|$ and $v = \theta$.
+The coefficient functions depend on the scalar jet invariants
+of $(\log|\psi|,\theta)$.
+Setting $\beta_v = \beta_\times = \gamma_u = \gamma_v = 0$ and
+$\alpha = |\psi|^2$ recovers the conformal wavefunction seam
+$g = |\psi|^2\eta$ of Section~\ref{sec:wavefunction}.
+\end{definition}
+
+\begin{proposition}[Vacuum no-go: conformal vs.\ complex]
+\label{prop:vacuum-nogo-lift}
+\mbox{}
+\begin{enumerate}[label=\upshape(\roman*)]
+\item In the conformal wavefunction seam $g = |\psi|^2\eta$, every
+Ricci-flat metric is flat (Theorem~\ref{thm:vacuum}).
+\item In the complex wavefunction seam
+(Definition~\ref{def:complex-wf-seam}),
+Ricci-flat metrics need not be flat: the wavefunction
+$\psi = z\,e^{imt}$ generates the Taub vacuum~\eqref{eq:taub-metric}
+via the coefficient functions of Theorem~\ref{thm:complex-vacuum}.
+\end{enumerate}
+\end{proposition}
+
+\begin{definition}[Self-consistent complex wavefunction system]
+\label{def:sc-complex}
+A \emph{self-consistent complex wavefunction seam} is a pair $(\psi,g)$
+where $g$ is the complex wavefunction seam
+metric (Definition~\ref{def:complex-wf-seam}) and $\psi$ satisfies the
+Klein--Gordon equation on the spacetime it generates:
+\begin{equation}
+\label{eq:sc-complex-kg}
+(\Box_g + m^2)\,\psi = 0.
+\end{equation}
+The conformal restriction $\alpha = |\psi|^2$,
+$\beta_u = \beta_v = \beta_\times = \gamma_u = \gamma_v = 0$ recovers the
+self-consistent system of
+Section~\ref{subsec:self-consistent}, whose solutions
+exhibit spectral quantisation (Theorem~\ref{thm:spectral-quant}).
+\end{definition}
+
+\begin{remark}[The phase as a geometric degree of freedom]
+\label{rem:phase-geometry}
+In the conformal wavefunction seam, the phase $\theta$ is geometrically
+invisible: the metric $g = |\psi|^2\eta$ depends only on the amplitude.
+The phase enters the physics only through the Klein--Gordon constraint,
+which in the vacuum limit reduces to the eikonal equation
+$|\nn\theta|^2 = m^2$ (Theorem~\ref{thm:kg-compat})---a condition
+\emph{on} $\theta$ but not \emph{from} $\theta$ in the metric.
+
+In the complex wavefunction seam, the phase enters the metric directly
+through the generators $\beta_v\,\pa_\mu\theta\,\pa_\nu\theta$
+and $\gamma_v\,\nn_\mu\nn_\nu\theta$.  It is this promotion
+of the phase from constraint-level to metric-level that
+breaks the conformal rigidity
+(Theorem~\ref{thm:complex-vacuum},
+Remark~\ref{rem:rigidity-persists}):
+the phase-gradient generator decouples the temporal and spatial
+conformal factors, enabling the anisotropic metric structure required
+by non-flat vacuum solutions.
+In this sense, the phase of the wavefunction---a second degree of
+freedom absent from the real seam and supplied by the
+quantum-mechanical structure of $\psi$---is the geometric ingredient
+that enables curvature in the self-consistent framework.
+\end{remark}
+
+% ================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+% ================================================================
+
+We have proved eight structural results.
+
+For the conformally flat metric $g_{\mu\nu}=e^{2s}\eta_{\mu\nu}$,
+the Einstein tensor is an exact decomposition into three seam generators
+(Theorem~\ref{thm:conformal}), with anisotropic tidal stress, kinetic
+flux, and isotropic pressure corresponding respectively to the Hessian,
+gradient-tensor, and conformal generators of the seam decomposition.
+The vacuum condition reduces to harmonicity of $e^s$
+(Theorem~\ref{thm:vacuum}).
+
+For the $O(n)$-invariant family $g_{ij}=A(r)\delta_{ij}+B(r)x_ix_j$,
+the Einstein tensor takes the Cartesian form $C_1\delta_{ij}+C_2 x_ix_j$
+with explicit coefficients (Theorem~\ref{thm:on}).  No generator beyond
+the two surviving seam generators appears.  The vacuum condition is
+rigid: it forces the metric to be flat within this family
+(Theorem~\ref{thm:vacuumon}).
+
+For the Lorentz-invariant family $g_{\mu\nu}=A(s)\eta_{\mu\nu}+B(s)x_\mu x_\nu$,
+the metric is equivalent (inside the light cone) to an open ($k=-1$) FLRW
+ansatz with explicit lapse and scale factor (Section~\ref{sec:lorentz}).  The
+Einstein tensor is computed in that form (Theorem~\ref{thm:lorentz}), and the
+vacuum condition forces flatness within this family
+(Corollary~\ref{cor:lorentz-vacuum}).
+
+For the wavefunction seam $s=\log|\psi|$ with $\psi$ satisfying the
+Klein--Gordon equation, the seam-geometric vacuum condition is equivalent to
+the eikonal equation $|\nabla\theta|^2_\eta=m^2$ for the phase---equivalently,
+to the vanishing of the relativistic quantum potential
+(Theorem~\ref{thm:kg-compat}).  The null energy condition reduces to
+null-convexity of $1/|\psi|$ (Proposition~\ref{prop:wf-dictionary}).
+
+In these families, metric signature is an output of the seam structure.
+A \emph{sphericity} statement for degeneration loci follows from
+$O(n)$-equivariance of the seam rule without the field equations
+(Corollary~\ref{cor:birkhoff}).
+
+\medskip
+\noindent\textbf{No-go interpretation of vacuum flatness.}
+The repeated conclusion ``vacuum forces flatness'' should be read as a
+rigidity/no-go statement about the seam-generated ansatz classes, rather than
+as a deficiency in solution-finding.  Within the $O(n)$-invariant and
+Lorentz-invariant families generated from a scalar seam by an order-$\le 2$
+isotropic rule, the Einstein equations overdetermine the remaining degrees of
+freedom and eliminate nontrivial vacuum curvature.  In both cases this matches
+the familiar rigidity of the underlying symmetry-reduced geometries: the
+spatially spherically symmetric Riemannian setting on one hand, and the open
+FLRW vacuum setting on the other.
+
+The natural continuation is: (a) extend the computation to the full
+three-parameter seam metric on a curved background, to test whether the
+extended closure property holds in general; and
+(b) identify which coefficient choices for $(A,B)$ correspond to specific
+physically known spacetimes (Kerr, de~Sitter, Reissner--Nordstr\"{o}m),
+thereby completing the dictionary between seam parameters and GR solutions.
+
+\medskip
+\noindent\textbf{First-order closure of the seam decomposition.}
+The seam decomposition employs four generators
+(Definition~\ref{def:seam-decomposition}).  In the three symmetric
+families of Results~1--3, the Hessian-square generator collapses into
+the span of the other three
+(Remark~\ref{rem:why-closure-held}), explaining why three generators
+suffice there.  For a general seam whose Hessian has three or more
+distinct eigenvalues, all four generators are needed: the
+linearised Einstein tensor of the gradient-tensor perturbation
+produces an independent Hessian-squared contribution
+(Theorem~\ref{thm:closure-fails}).  With all four generators present,
+first-order closure holds
+(Theorem~\ref{thm:extended-closure}).  Whether closure persists at the
+nonlinear level within an extended equivariant ring remains open.
+
+\medskip
+\noindent\textbf{What the results provide.}
+Taken together, the structural results serve eight purposes.
+First, a \emph{translation layer}: energy conditions become scalar
+inequalities on the reciprocal seam factor and its Hessian
+(Proposition~\ref{prop:ec-dictionary}, Corollary~\ref{cor:ec-temporal}),
+replacing full tensor checks with convexity conditions on a single function.
+Second, \emph{no-go information}: the rigidity/vacuum-flatness theorems
+(Theorems~\ref{thm:vacuumon}, \ref{thm:lorentz},
+Corollaries~\ref{cor:lorentz-vacuum}, \ref{cor:lambda-on})
+delineate which seam-generated ansatz classes cannot support nontrivial
+vacuum curvature, preventing misdirected searches for solutions within them.
+Third, a \emph{program for controlled metric construction}: the closure
+analysis identifies the equivariant span needed at each order, and the
+temporal reductions (Corollary~\ref{cor:ec-temporal}) show where the full
+tensor problem collapses to tractable ODE or convexity constraints.
+Fourth, a \emph{bridge to quantum mechanics}: the wavefunction seam
+(Section~\ref{sec:wavefunction}) shows that the conformal seam framework
+naturally absorbs Klein--Gordon fields, with the vacuum condition
+corresponding to the classical (WKB/eikonal) limit and the energy
+conditions translating into convexity of $1/|\psi|$.
+Fifth, a \emph{self-consistent closure}: requiring $\psi$ to satisfy
+Klein--Gordon on $g=|\psi|^2\eta$ rather than on $\eta$ yields a
+well-defined nonlinear system
+(Proposition~\ref{prop:sc-madelung}) whose Madelung form exhibits
+an amplitude-dependent mass-shell relation and a geometrically natural
+conserved current.  The vacuum fixed points of this system
+(Corollary~\ref{cor:sc-vacuum}) satisfy a modified eikonal equation
+$|\nn\theta|^2=m^2|\psi|^2+2|\nn\log|\psi||^2$, providing a concrete
+arena for studying self-gravitating quantum fields within the seam
+framework.
+Sixth, \emph{exact solutions and spectral quantisation}: for $m=0$ the
+self-consistent system linearises via the cube-harmonic substitution
+$\Phi=|\psi|^3$ (Theorem~\ref{thm:cube-harmonic}), producing the static
+exact solution $|\psi|=(a+b/r)^{1/3}$
+(Corollary~\ref{cor:static-exact}) and, for the time-periodic ansatz, a
+Helmholtz eigenvalue problem whose positivity constraint selects the
+ground-state eigenfunction and quantises the frequency:
+$\omega=\pi/(\sqrt{3}\,R)$
+(Theorem~\ref{thm:spectral-quant}).  The confining ``cavity'' is
+self-generated by the metric degeneration at $|\psi|=0$
+(Remark~\ref{rem:cavity}).  For $m>0$ the system reduces to an
+Emden--Fowler equation (Proposition~\ref{prop:emden-fowler}) whose
+subcritical nonlinearity admits a unique positive solution for each
+admissible frequency $\omega<\pi/(\sqrt{3}\,R)$
+(Theorem~\ref{thm:massive-existence}), uniquely locking the amplitude
+to the frequency (Corollary~\ref{cor:amp-freq-lock}).  The conserved
+charge from the continuity equation vanishes at both frequency
+endpoints, producing a fold: for each charge below a maximum
+$\mathcal{Q}_{\max}\propto 1/(m^4 R^2)$, there exist (at least) two
+distinct modes---a weakly and a strongly gravitating
+branch (Proposition~\ref{prop:charge-quant}).  This constitutes genuine
+amplitude quantisation arising from geometric self-consistency.
+Seventh, a \emph{complete resolution of real-seam limitations}: the
+complex seam extension (Section~\ref{sec:complex}) resolves each of the
+three structural limitations of the real case by promoting the seam to
+$\varphi=u+iv$.  The phase gradient $\nn v$ provides a second spectral
+parameter (Proposition~\ref{prop:complex-dof}), the 2-form
+$du\wedge dv$ carries non-vanishing vorticity
+(Theorem~\ref{thm:complex-vorticity}), and the full six-generator span
+admits genuinely curved vacua: the Taub plane-symmetric vacuum is
+realised as a complex seam metric with explicit coefficient functions
+(Theorem~\ref{thm:complex-vacuum}).
+Eighth, a \emph{self-consistent framework for curved quantum geometry}:
+the complex wavefunction seam
+(Definition~\ref{def:complex-wf-seam}) unifies the quantum bridge of
+Results~4--6 with the complex extension of Result~7 by promoting both
+degrees of freedom of $\psi = |\psi|\,e^{i\theta}$ to geometric data.
+The conformal wavefunction seam is blind to the phase and forces
+vacuum flatness; the complex wavefunction seam makes the phase a
+geometric degree of freedom that breaks the conformal rigidity
+(Proposition~\ref{prop:vacuum-nogo-lift}).  The self-consistent system
+(Definition~\ref{def:sc-complex})---Klein--Gordon on the metric the
+field generates---defines a nonlinear framework whose solutions
+realise quantum-field-generated curved spacetimes;
+the conformal restriction recovers the spectrally quantised system
+of Results~5--6.
+
+\backmatter
+
+\section*{Acknowledgements}
+
+The author thanks colleagues for discussions on seam geometry and
+mathematical physics.  The author discloses the use of AI-assisted
+tools to help with drafting, editing, symbolic computation, and
+\LaTeX{} code; all mathematical claims, calculations, and final wording
+were reviewed and validated by the author.  AI tools are not listed
+as authors.
+
+\section*{Declarations}
+
+\begin{itemize}
+\item \textbf{Funding.} No funding was received for conducting this study.
+\item \textbf{Competing Interests.} The author has no competing interests to declare that are relevant to the content of this article.
+\item \textbf{Data Availability.} Data sharing is not applicable to this article as no datasets were generated or analysed during the current study.
+\end{itemize}
+
+\begin{thebibliography}{99}
+
+\bibitem{Wald1984}
+Wald, R.M.: General Relativity.
+University of Chicago Press, Chicago (1984)
+
+\bibitem{MisnerThorneWheeler1973}
+Misner, C.W., Thorne, K.S., Wheeler, J.A.: Gravitation.
+W.H. Freeman, San Francisco (1973)
+
+\bibitem{Carroll2004}
+Carroll, S.M.: Spacetime and Geometry: An Introduction to General Relativity.
+Addison-Wesley, San Francisco (2004)
+
+\bibitem{Weinberg1972}
+Weinberg, S.: Gravitation and Cosmology: Principles and Applications of the General Theory of Relativity.
+Wiley, New York (1972)
+
+\bibitem{HawkingEllis1973}
+Hawking, S.W., Ellis, G.F.R.: The Large Scale Structure of Space-Time.
+Cambridge University Press, Cambridge (1973)
+
+\bibitem{Bekenstein1993}
+Bekenstein, J.D.: The relation between physical and gravitational geometry.
+Phys. Rev. D \textbf{48}(6), 3641--3647 (1993)
+
+\bibitem{CliftonFerreiraPadillaSkordis2012}
+Clifton, T., Ferreira, P.G., Padilla, A., Skordis, C.: Modified gravity and cosmology.
+Phys. Rep. \textbf{513}(1), 1--189 (2012)
+
+\bibitem{Birkhoff1923}
+Birkhoff, G.D.: Relativity and Modern Physics.
+Harvard University Press, Cambridge, MA (1923)
+
+\bibitem{Wheeler1990}
+Wheeler, J.A.: Information, physics, quantum: The search for links.
+In: Zurek, W.H. (ed.) Complexity, Entropy, and the Physics
+of Information, pp.~354--368. Addison-Wesley, Redwood City, CA (1990)
+
+\bibitem{ShojaiShojai1998}
+Shojai, F., Shojai, A.: On the geometrization of Bohmian mechanics: A new approach to
+quantum gravity.
+Int. J. Mod. Phys. A \textbf{13}(04), 677--693 (1998)
+
+\bibitem{Chowdhury2021}
+Chowdhury, S.R., Gupta, K., Kar, S.: Disformal transformations and the motion of a particle in
+semi-classical gravity.
+Eur. Phys. J. C \textbf{81}(10), 946 (2021)
+
+\bibitem{MorrisThorne1988}
+Morris, M.S., Thorne, K.S.: Wormholes in spacetime and their use for interstellar travel:
+A tool for teaching general relativity.
+Am. J. Phys. \textbf{56}(5), 395--412 (1988)
+
+\bibitem{KMS1993}
+Kol\'a\v{r}, I., Michor, P.W., Slov\'ak, J.: Natural Operations in Differential Geometry.
+Springer-Verlag, Berlin (1993)
+
+\end{thebibliography}
+
+\end{document}

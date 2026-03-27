@@ -1,0 +1,1465 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{enumitem}%
+
+%% theorem styles follow sn-jnl presets
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{openproblem}{Open Problem}
+
+%% Math operators
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Hess}{Hess}
+\DeclareMathOperator{\image}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\Diff}{Diff}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\UU}{U}
+\DeclareMathOperator{\OO}{O}
+\DeclareMathOperator{\Met}{Met}
+\DeclareMathOperator{\Herm}{Herm}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Ric}{Ric}
+\DeclareMathOperator{\Rm}{Rm}
+\DeclareMathOperator{\Hol}{Hol}
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\SU}{SU}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Vol}{Vol}
+\DeclareMathOperator{\Crit}{Crit}
+\DeclareMathOperator{\Lev}{Lev}
+
+%% Complex analysis shorthands
+\newcommand{\dbar}{\bar{\partial}}
+\newcommand{\pphi}{\partial\varphi}
+\newcommand{\dbarphibar}{\dbar\bar\varphi}
+\newcommand{\Gvarphi}{i\,\partial\varphi \wedge \dbar\bar\varphi}
+\newcommand{\Levphi}[1]{i\partial\dbar\,#1(\varphi)}
+\newcommand{\omegah}{\omega_h}
+\newcommand{\Jbundle}{\mathcal{J}}
+
+\begin{document}
+
+\title[Complex Seam Geometry]{Complex Seam Geometry: A Jet-Theoretic Framework
+for the Hermitian Generation of Geometric Structures}
+
+\author*[1]{\fnm{Lars} \sur{R\"onnb\"ack}}\email{lars@uptochange.com}
+
+\affil*[1]{\orgdiv{Department of Computer and Systems Sciences},
+  \orgname{Stockholm University},
+  \orgaddress{\city{Stockholm}, \country{Sweden}}}
+
+\abstract{%
+We develop a jet-theoretic framework for the seam-rule paradigm in
+the setting of \emph{complex-valued scalar fields} on Hermitian manifolds.
+Viewing a rule as a $\UU(m)$-equivariant natural differential operator on
+complex jet bundles yields a classification of all isotropic
+Hermitian-metric-generating rules of order $\le 2$: an explicit
+\emph{seven-real-parameter family} consisting of a conformal term,
+a unitary-isotropic quadratic gradient family, and a complex Levi-form
+term, with coefficients depending smoothly on $\UU(m)$-invariant scalar
+jets.  The Levi-form generator $\operatorname{Re}(\gamma\,i\partial\dbar\varphi)$
+is genuinely new relative to the real-seam framework and arises from the
+tighter $\UU(m)$-equivariance replacing $\OO(2m)$.
+
+We then develop the deformation theory of complex rules.  The
+linearisation at a seam is a real-linear differential operator whose
+ellipticity character is governed by the Levi-form term; the
+degeneration locus unifies the holomorphic critical-point locus and the
+Levi-degenerate set of the seam.
+
+Finally, we study a universality problem: when can complex scalar seam
+data generate an open neighbourhood of Hermitian metrics up to
+biholomorphism?  We prove that the Levi-form generator achieves local
+universality within a fixed K\"ahler class via the $\partial\dbar$-lemma,
+and state open problems for the full complex rule.
+}
+
+\keywords{complex seam geometry, natural differential operators,
+Hermitian metrics, Levi form, K\"ahler geometry,
+$\UU(m)$-equivariance}
+
+\pacs[MSC Classification]{53C55 (primary), 58A20, 53C21, 53A35,
+32Q15, 53C25, 32W05}
+
+\maketitle
+
+% ================================================================
+\section{Introduction}
+% ================================================================
+
+The observation that drives this paper is elementary but has
+consequences that reach into several applied domains.  In the
+real-seam framework of~\cite{Ronnback2025}, the naturality group is
+$\OO(n)$ (the orthogonal group of the background Riemannian metric),
+and $\OO(n)$-invariant theory yields exactly three generators of
+isotropic metric rules at order $\le 2$.  When the ambient manifold
+carries a compatible complex structure---making it a Hermitian
+manifold $(M^{2m}, h, J)$---and the seam is promoted to a
+\emph{complex}-valued function $\varphi \in C^\infty(M,\mathbb{C})$,
+two things happen simultaneously:
+
+\begin{enumerate}[label=(\roman*)]
+\item The naturality group narrows from $\OO(2m)$ to $\UU(m)$
+  (the unitary group), because coordinate changes must now preserve
+  both $h$ and $J$.  A tighter equivariance constraint means
+  \emph{more} equivariant maps are admissible, not fewer: the
+  finer orbit structure of $\UU(m)$ distinguishes holomorphic
+  from antiholomorphic data, allowing new generators that are
+  invisible to $\OO(2m)$.
+\item The jet of $\varphi$ decomposes under $\UU(m)$ into
+  \emph{bidegree components} $(\partial\varphi, \dbar\varphi,
+  \partial^2\varphi, \partial\dbar\varphi, \dbar^2\varphi)$
+  rather than the single symmetric Hessian of the real case.
+  The mixed component $\partial\dbar\varphi$ is the
+  \emph{Levi form} of $\varphi$, and it generates a
+  fundamentally new class of Hermitian metrics with no real
+  analogue.
+\end{enumerate}
+
+These two points together produce the \emph{complex Levi-form generator}
+in the classification theorem (Theorem~\ref{thm:classification-complex}).  The
+Levi-form generator is why K\"ahler geometry---in which every
+metric arises locally as $i\partial\dbar\psi$ for a real potential
+$\psi = \mathrm{Re}(\varphi)$---is richer and more rigid than the
+purely conformal or purely gradient-tensor approaches: it exploits
+a generator that is native to the complex structure.
+
+\subsection*{The recurrent construction in complex settings}
+
+The same schema as in the real case appears pervasively in contexts
+where the natural data is complex-valued:
+
+\begin{center}
+\emph{complex scalar field $\varphi$}
+$\;\xrightarrow{\;\text{rule}\;}\;$
+\emph{Hermitian structure}.
+\end{center}
+
+Concrete instances include:
+
+\begin{itemize}
+\item \textbf{K\"ahler metrics}: $\omega = i\partial\dbar\psi$
+  for a strictly plurisubharmonic real potential $\psi$---the
+  Levi-form generator with $\gamma = 1$ and all gradient/conformal
+  coefficients set to $0$.
+\item \textbf{Fubini--Study metric on $\mathbb{CP}^m$}:
+  $\omega_{\mathrm{FS}} = i\partial\dbar\log(1 + |z|^2)$---a
+  Levi-form rule applied to the log-norm seam.
+\item \textbf{Fisher--Rao metric of a complex exponential
+  family}: the log-partition function of an exponential family
+  parametrised by complex $\theta$ is the seam; its Levi form
+  $i\partial\dbar A(\theta)$ gives the Fisher information metric on the
+  complex parameter manifold.
+\item \textbf{Phase geometry in MRI and radar}: the k-space
+  phase field $\varphi = \rho e^{i\phi}$ is the natural complex
+  seam; the gradient-tensor generator $i\partial\varphi \wedge \dbar\bar\varphi$
+  encodes the local frequency content as a Hermitian form.
+\item \textbf{Quantum state geometry}: for a (local section of a)
+  wave function $\psi \in L^2$, the Fubini--Study metric arises
+  from the seam $\varphi = \log\psi$ via the Levi-form rule.
+  The degeneration locus is the zero set of $\psi$---the nodal
+  hypersurface---which plays the role of the critical-point locus
+  in the real-seam framework.
+\end{itemize}
+
+\subsection*{Three payoffs of the jet-theoretic viewpoint}
+
+As in the real case, the naturality framework delivers three
+structural payoffs:
+
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Classification.}  $\UU(m)$-equivariant invariant theory
+  constrains the space of possible rules to a seven-real-parameter family
+  at order $\le 2$ under the assumption of at most linear dependence on the
+  mixed Hessian.  Relative to the real-seam framework, there are two distinct
+  sources of enrichment: (a) the mixed Hessian component $\partial\dbar\varphi$
+  contributes the genuinely complex Levi-form generator, and (b) the 1-jet of a
+  complex seam carries two independent holomorphic gradients
+  $(\partial\varphi,\partial\bar\varphi)$, yielding a full $2\times 2$ Hermitian
+  family of unitary-isotropic quadratic gradient terms
+  (Theorem~\ref{thm:classification-complex}).
+\item \textbf{Linearisation and inverse design.}  The linearised rule
+  at a complex seam has a principal symbol involving $\xi \otimes \bar\xi$
+  (from the Levi-form generator) rather than the symmetric $\xi \otimes \xi$
+  of the real Hessian generator.  This changes the ellipticity character:
+  the relevant operator is the \emph{complex Laplacian} $\partial\dbar$
+  rather than the real Laplacian $\nabla^2$
+  (\S\ref{sec:linearisation}).
+\item \textbf{Universality.}  The image of the complex seam map
+  is constrained to Hermitian metrics lying in the image of
+  $i\partial\dbar$ (for the Levi-form rule) and to specific subsets of
+  the K\"ahler cone.  The universality question---when can a complex seam
+  generate an open neighbourhood of Hermitian metrics up to
+  biholomorphism---has a richer answer than the real case, connected
+  to the Calabi--Yau conjecture and $\partial\dbar$-lemma techniques
+  (\S\ref{sec:universality}).
+\end{enumerate}
+
+\begin{remark}[Relation to the real-seam framework]
+\label{rem:real-embedding}
+The real-seam framework of~\cite{Ronnback2025} embeds into the
+present one by restricting to real-valued seams $\varphi = s \in
+C^\infty(M, \mathbb{R})$.  In this case the imaginary Levi-form
+generator $i\partial\dbar\,\mathrm{Im}(\varphi)$ vanishes, and
+$i\partial\dbar\,\mathrm{Re}(\varphi) = i\partial\dbar s$ coincides with
+(a scalar multiple of) the $(1,1)$-part of the Riemannian Hessian
+$\nabla^2_h s$ on a K\"ahler manifold.  The gradient-tensor generator
+$i\partial s \wedge \dbar s$ is proportional to the $(1,1)$-form
+representation of $ds \otimes ds$.  Thus the five complex generators
+specialise to the three real generators when the seam is real, with
+the Levi form and Hessian generators identified through the K\"ahler
+structure.
+
+
+
+In holomorphic coordinates,
+\[
+i\partial s \wedge \dbar s
+= \frac{i}{2}\,\partial_\alpha s\,\partial_{\bar\beta} s\,dz^\alpha\wedge d\bar z^\beta,
+\]
+so the associated Hermitian matrix is the rank-$1$ outer product
+$(\partial_\alpha s)(\partial_{\bar\beta} s)$, i.e. the $(1,1)$-projection
+of $ds\otimes ds$.
+\end{remark}
+
+\begin{theorem}[Reduction to the real-seam framework]
+\label{thm:reduction-real}
+If the seam $\varphi$ is real-valued, $\varphi = s \in C^\infty(M,\mathbb{R})$,
+then the complex universal decomposition~\eqref{eq:universal-complex} reduces to
+the three-generator decomposition of the real-seam framework of~\cite{Ronnback2025}.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+If $\varphi=s$ is real, then $\bar\varphi=\varphi$ and the two holomorphic
+gradients coincide: $\partial\bar\varphi=\partial\varphi$.
+Consequently the unitary-isotropic gradient family collapses to the single
+generator $i\partial s\wedge\dbar s$.
+Moreover $\mathrm{Im}(\varphi)=0$, so the imaginary Levi form vanishes and the
+Levi-form generator reduces to $i\partial\dbar s$, which on a K\"ahler manifold
+is (up to a scalar multiple) the $(1,1)$-part of the real Hessian generator.
+These identifications are explained in Remark~\ref{rem:real-embedding}.
+\end{proof}
+
+% ================================================================
+\section{Complex Seams and Their Jets}
+\label{sec:seams}
+% ================================================================
+
+Throughout, $(M^{2m}, h, J)$ denotes a smooth Hermitian manifold of
+complex dimension $m \ge 2$ (real dimension $n = 2m$), where $h$ is
+a Riemannian metric and $J$ is a compatible complex structure.
+We write $\omegah$ for the fundamental $(1,1)$-form of the Hermitian
+structure:
+\[
+\omegah(X,Y) = h(JX, Y),
+\quad X, Y \in TM.
+\]
+We use holomorphic local coordinates $(z^1, \ldots, z^m)$ throughout,
+and adopt the standard bidegree convention $\partial = \partial_z$,
+$\dbar = \partial_{\bar z}$.
+
+\begin{definition}[Complex seam]
+\label{def:seam-complex}
+A \emph{complex seam} on $(M, h, J)$ is a smooth complex-valued
+function $\varphi \in \mathcal{S}_\mathbb{C}(M) \subseteq
+C^\infty(M, \mathbb{C})$, where $\mathcal{S}_\mathbb{C}(M)$ is an
+admissible function class appropriate to the application (e.g.\
+all smooth, plurisubharmonic, holomorphic, or discrete vertex-based
+functions).  We write $\varphi = u + iv$ with $u,v \in C^\infty(M,\mathbb{R})$.
+\end{definition}
+
+\begin{remark}[The role of the decomposition $\varphi = u + iv$]
+The real and imaginary parts $u = \mathrm{Re}(\varphi)$ and
+$v = \mathrm{Im}(\varphi)$ are not symmetric in the complex
+structure: under a holomorphic change of local coordinates,
+$\partial u$ and $\partial v$ are related by the Cauchy--Riemann
+operator, which encodes the complex structure $J$.  When $\varphi$
+is holomorphic ($\dbar\varphi = 0$), the Cauchy--Riemann equations
+force $v$ to be the harmonic conjugate of $u$, and the two Levi
+forms $i\partial\dbar u$ and $i\partial\dbar v$ become related
+(both vanish for a holomorphic seam, since $\partial\dbar\varphi = 0$).
+This coupling between $u$ and $v$ is precisely what the complex
+naturality group $\UU(m)$---and not merely $\OO(2m)$---detects.
+\end{remark}
+
+The Peetre--Slov\'ak localisation theorem~\cite{Peetre1960,Slovak1988}
+applies verbatim: every smooth natural operator of finite order
+factors through the complex jet bundle.
+
+\begin{definition}[Complex $k$-jet of a seam]
+\label{def:jet-complex}
+Let $\varphi \in C^\infty(M, \mathbb{C})$.  The \emph{complex
+$k$-jet of $\varphi$ at $x \in M$}, denoted $j^k_{x,\mathbb{C}}\varphi$,
+is the equivalence class of $\varphi$ under the relation of having the
+same Taylor expansion in holomorphic coordinates at $x$ through
+bidegree order $(p,q)$ with $p + q \le k$.  In holomorphic
+local coordinates $(z^\alpha, \bar{z}^{\bar\alpha})$,
+\[
+j^2_{x,\mathbb{C}}\varphi
+= \Bigl(
+  \varphi(x),\;\;
+  \partial_\alpha\varphi(x),\;\;
+  \dbar_{\bar\alpha}\varphi(x),\;\;
+  \partial_\alpha\partial_\beta\varphi(x),\;\;
+  \partial_\alpha\dbar_{\bar\beta}\varphi(x),\;\;
+  \dbar_{\bar\alpha}\dbar_{\bar\beta}\varphi(x)
+  \Bigr).
+\]
+The collection of all complex $k$-jets forms the \emph{complex
+$k$-jet bundle} $J^k_\mathbb{C}(M, \mathbb{C}) \to M$.
+\end{definition}
+
+\begin{remark}[Bidegree decomposition of the 2-jet]
+\label{rem:bidegree-decomp}
+At order $k = 2$, the complex jet $j^2_{x,\mathbb{C}}\varphi$
+decomposes under the $\UU(m)$-action (evaluated in $h$-unitary
+frames at $x$) into irreducible components as follows.
+Write $\varphi_0 = \varphi(x) \in \mathbb{C}$,
+$v_\alpha = \partial_\alpha\varphi(x) \in T^{*1,0}_xM \cong \mathbb{C}^m$,
+$\bar w_{\bar\alpha} = \dbar_{\bar\alpha}\varphi(x) \in T^{*0,1}_xM
+\cong \overline{\mathbb{C}^m}$,
+$P_{\alpha\beta} = \partial_\alpha\partial_\beta\varphi(x) \in
+\Sym^2(T^{*1,0}_xM)$,
+$B_{\alpha\bar\beta} = \partial_\alpha\dbar_{\bar\beta}\varphi(x) \in
+T^{*1,0}_xM \otimes T^{*0,1}_xM$,
+and
+$\bar Q_{\bar\alpha\bar\beta} = \dbar_{\bar\alpha}\dbar_{\bar\beta}\varphi(x)
+\in \Sym^2(T^{*0,1}_xM)$.
+The irreducible $\UU(m)$-components are:
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Value:} $\varphi_0 \in \mathbb{C}$
+  (trivial complex representation, $\mathrm{U}(1)$-charged).
+\item \textbf{Holomorphic gradient:} $v = (v_\alpha) \in
+  T^{*1,0}_xM$ (standard complex representation of $\UU(m)$).
+\item \textbf{Antiholomorphic gradient:} $\bar w = (\bar w_{\bar\alpha}) =
+  \dbar\varphi(x) \in T^{*0,1}_xM$ (conjugate representation).
+\item \textbf{Holomorphic Hessian:} $P \in \Sym^2(T^{*1,0}_xM)$
+  (symmetric square of the standard representation).
+\item \textbf{Mixed (Levi) Hessian:} $B \in
+  T^{*1,0}_xM \otimes T^{*0,1}_xM$ (tensor product of standard and
+  conjugate).  This is the $\UU(m)$-representation containing the
+  Hermitian forms as a real subspace; it further decomposes as
+  $\mathbb{R}\,\omega_h \oplus \mathfrak{u}(m)^\perp$
+  (trace plus trace-free Hermitian part).
+\item \textbf{Antiholomorphic Hessian:} $\bar Q \in
+  \Sym^2(T^{*0,1}_xM) = \overline{\Sym^2(T^{*1,0}_xM)}$
+  (conjugate of the holomorphic Hessian representation).
+\end{enumerate}
+This six-component decomposition is substantially richer than the
+three-component real decomposition
+$j^2_x s = (s_0, \nabla s, \nabla^2 s)$, reflecting the finer
+orbit structure of $\UU(m)$ compared with $\OO(2m)$.  The
+components $v$ and $\bar w$ are \emph{independent} for a general complex
+seam.  Indeed, $\overline{v} = \dbar\,\bar\varphi$ whereas
+$\overline{\bar w} = \partial\,\bar\varphi$, so $\bar w$ coincides with
+$\overline{v}$ only when $\varphi$ is real-valued.
+In particular, the 1-jet carries two independent holomorphic gradients
+$\partial\varphi$ and $\partial\bar\varphi$ (equivalently
+$\partial\bar\varphi = \overline{\dbar\varphi}$), which yields a richer
+family of unitary-isotropic quadratic gradient terms than in the real-seam
+case.  Similarly $\bar Q = \overline{P}$.
+The genuinely new data relative to the real case is the
+decomposition of the Hessian into the holomorphic part~$P$,
+the antiholomorphic part~$\bar Q$, and the mixed part~$B$.
+\end{remark}
+
+\begin{remark}[Comparison with the real 2-jet]
+\label{rem:comparison}
+Viewing $(M,h,J)$ as a real Riemannian manifold $(M^{2m},h)$
+with $\OO(2m)$-symmetry, the real 2-jet $j^2_x\varphi$ (treating
+$\varphi$ as a pair of real functions $(u,v)$) has three components:
+value, real gradient, and real Hessian.  The $\UU(m)$ bidegree
+decomposition of Remark~\ref{rem:bidegree-decomp} is a refinement:
+it splits the real gradient into holomorphic and antiholomorphic
+parts, and the real Hessian into holomorphic, mixed (Levi), and
+antiholomorphic parts.  The Levi component $B$ is the critical
+new actor: it is the part of the Hessian most directly controlled
+by the complex structure, and it generates the $i\partial\dbar$
+operator that does not appear in the real-seam classification.
+\end{remark}
+
+% ================================================================
+\section{Rules as Natural Differential Operators}
+\label{sec:rules}
+% ================================================================
+
+The natural target bundle for a complex rule is the bundle of real
+$(1,1)$-forms:
+\[
+\mathcal{H}(M) := \Lambda^{1,1}(M) \cap \Lambda^2(M,\mathbb{R}).
+\]
+Inside it sits the open convex cone of positive Hermitian forms:
+\[
+\mathcal{H}^+(M) \;:=\;
+\bigl\{\,\Omega \in \Lambda^{1,1}(M) \cap \Lambda^2(M,\mathbb{R}) \;:\;
+\Omega \text{ is positive definite}\bigr\}.
+\]
+Thus $\mathcal{H}^+(M) \subseteq \mathcal{H}(M)$.
+Locally, $\Omega \in \mathcal{H}^+(M)$ is a real $(1,1)$-form with
+positive-definite coefficient matrix $h_{\alpha\bar\beta}(x)$
+satisfying $\Omega = \frac{i}{2}h_{\alpha\bar\beta}\,dz^\alpha \wedge
+d\bar{z}^\beta$ and $h_{\alpha\bar\beta} = \overline{h_{\beta\bar\alpha}}$,
+$h > 0$.
+
+\begin{definition}[Complex rule of order $k$]
+\label{def:rule-complex}
+A \emph{complex rule of order $k$} is a smooth bundle map
+\begin{equation}
+\label{eq:rule-complex}
+\Phi \colon J^k_\mathbb{C}(M, \mathbb{C}) \times \mathcal{B}(M)
+\longrightarrow \mathcal{H}(M)
+\end{equation}
+satisfying:
+\begin{enumerate}[label=(R\arabic*)]
+\item \label{item:locality-c}
+  \textbf{Locality.}
+  $\Phi$ depends fibrewise on $(j^k_{x,\mathbb{C}}\varphi,\, b_x)$
+  where $b_x$ is the fibre of the background structure
+  $\mathcal{B}(M)$ at $x$.
+\item \label{item:naturality-c}
+  \textbf{Naturality.}
+  For every biholomorphism $\psi \colon M \to M$ preserving
+  $\mathcal{B}$,
+  \[
+  \Phi\bigl(j^k_\mathbb{C}(\psi^*\varphi),\, \psi^*b\bigr)
+  = \psi^*\,\Phi(j^k_\mathbb{C}\varphi,\, b).
+  \]
+  If $\mathcal{B}$ includes a Hermitian structure $(h,J)$, naturality
+  reduces to $\UU(m)$-equivariance at each fibre.
+\item \label{item:regularity-c}
+  \textbf{Regularity.}
+  $\Phi$ is smooth as a map of fibre variables.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Metric-admissible rule]
+\label{def:admissible-rule}
+A complex rule $\Phi$ is \emph{metric-admissible} on an open subset
+$\mathcal{U} \subseteq J^k_\mathbb{C}(M, \mathbb{C}) \times \mathcal{B}(M)$ if
+$\Phi(\mathcal{U}) \subseteq \mathcal{H}^+(M)$.  When the domain of interest is
+clear from context, we simply say that $\Phi$ is a (Hermitian) metric rule.
+\end{definition}
+
+\begin{remark}[Why $\UU(m)$, not $\OO(2m)$]
+\label{rem:unitary}
+The naturality condition in axiom~\ref{item:naturality-c} is stated
+for biholomorphisms, which preserve both $h$ and $J$.  On a
+Hermitian manifold $(M^{2m},h,J)$, the stabiliser of the background
+structure at a fibre is the unitary group $\UU(m)$, not the full
+orthogonal group $\OO(2m)$.  This is the decisive difference from
+the real-seam framework: $\OO(2m)$-equivariance would allow rules
+that mix the $(1,0)$ and $(0,1)$ components of the jet, producing
+no new structure beyond what is already visible in real coordinates.
+$\UU(m)$-equivariance forbids such mixing, enforcing a bidegree
+conservation that is ultimately responsible for the extra generator
+in the classification theorem.
+
+Concretely: the real Hessian $\nabla^2_h\varphi$ is a section of
+$\Sym^2(T^*M \otimes \mathbb{C})$, which decomposes under $\UU(m)$
+as $\Sym^2(T^{*1,0}M) \oplus (T^{*1,0}M \otimes T^{*0,1}M)
+\oplus \Sym^2(T^{*0,1}M)$.  The $\OO(2m)$-equivariant maps from this
+full space to Hermitian forms are strictly fewer than the
+$\UU(m)$-equivariant ones, because $\UU(m)$ identifies the
+bidegree $(1,1)$ part as a separate summand admitting its own
+equivariant map.
+\end{remark}
+
+\begin{definition}[Symbol of a complex rule]
+\label{def:symbol-complex}
+The \emph{principal symbol} of a complex rule $\Phi$ of order $k$
+at a seam~$\varphi$ is the leading-order part of $\Phi$ as a map from
+the $(k,0)+(0,k)+(1,k-1)+\cdots$ bidegree parts of the jet to
+$\mathcal{H}(M)$.  For a Hermitian-form-valued rule, the
+symbol at a cotangent direction $(\xi, \bar\xi) \in T^{*1,0}_xM
+\oplus T^{*0,1}_xM$ is a map
+\begin{equation}
+\sigma_k(\Phi,\varphi,x) \colon
+\bigoplus_{p+q=k} (T^{*1,0}_xM)^{\otimes p}
+\otimes (T^{*0,1}_xM)^{\otimes q}
+\longrightarrow \Herm(T^*_xM).
+\end{equation}
+The component at bidegree $(1,1)$---encoding the mixed Hessian
+direction $\xi \otimes \bar\xi$---governs the ellipticity of the
+linearised rule and is the key quantity in the inverse-design
+analysis (\S\ref{sec:linearisation}).
+\end{definition}
+
+% ================================================================
+\section{Classification of Hermitian-Metric-Generating Rules}
+\label{sec:classification}
+% ================================================================
+
+We now state and prove the central classification result for the
+complex setting: the analogue of the Universal Decomposition of the
+real-seam paper~\cite{Ronnback2025}, now over $\mathbb{C}$.
+
+Here and below, we use \emph{isotropic} to mean \emph{unitary-isotropic}:
+fibrewise $\UU(m)$-equivariant (equivalently, invariant under changes of
+$h$-unitary frames).
+
+\subsection{The representation-theoretic setup}
+
+At a point $x \in M$ (working in $h$-unitary normal coordinates),
+the complex 2-jet of a seam $\varphi = u + iv$ provides the data
+\[
+(\varphi_0,\; v,\; \bar w,\; P,\; B,\; \bar{Q})
+\;\in\;
+\mathbb{C}
+\times \mathbb{C}^m
+\times \overline{\mathbb{C}^m}
+\times \Sym^2(\mathbb{C}^m)
+\times M_{m}(\mathbb{C})
+\times \overline{\Sym^2(\mathbb{C}^m)},
+\]
+where $v_\alpha = \partial_\alpha\varphi(x)$,
+$\bar w_{\bar\alpha} = \dbar_{\bar\alpha}\varphi(x)$,
+$P_{\alpha\beta} = \partial_\alpha\partial_\beta\varphi(x)$, and
+$B_{\alpha\bar\beta} = \partial_\alpha\dbar_{\bar\beta}\varphi(x)$.
+The group $\UU(m)$ acts by:
+$U \cdot v = U v$, $U \cdot P = UPU^T$, $U \cdot B = UB U^\dagger$,
+and with appropriate conjugates on the antiholomorphic components.
+
+The target is the space of Hermitian forms:
+$\Herm_+(\mathbb{C}^m) \cong \mathbb{R}\cdot I \oplus \mathfrak{su}(m)$
+(trace part plus trace-free part) as a real $\UU(m)$-representation.
+
+The \emph{first fundamental theorem of invariant theory for $\UU(m)$}
+\cite{Weyl1946, Procesi2007, GoodmanWallach2009} characterises all polynomial
+$\UU(m)$-equivariant maps
+\[
+F \colon \mathbb{C} \times \mathbb{C}^m \times \overline{\mathbb{C}^m} \times M_m(\mathbb{C})
+\longrightarrow \Herm(\mathbb{C}^m).
+\]
+At first derivative order, a complex seam carries two independent holomorphic
+gradients $\partial\varphi$ and $\partial\bar\varphi = \overline{\dbar\varphi}$.
+Consequently, the unitary-isotropic quadratic gradient contribution is governed
+by a $2\times 2$ Hermitian matrix of coefficients acting on the pair
+$(\partial\varphi,\partial\bar\varphi)$.  At second derivative order, the mixed
+Hessian $B=\partial\dbar\varphi$ contributes its Hermitian and skew-Hermitian
+parts (equivalently, the real and imaginary Levi forms).
+
+\subsection{Building blocks}
+
+\begin{proposition}[Equivariant building blocks over $\mathbb{C}$]
+\label{prop:building-blocks-c}
+Write $v := \partial\varphi(x) \in \mathbb{C}^m$ and
+$\tilde v := \partial\bar\varphi(x) = \overline{\dbar\varphi(x)} \in \mathbb{C}^m$.
+The space of $\UU(m)$-equivariant maps
+from $\mathbb{C} \oplus \mathbb{C}^m \oplus \mathbb{C}^m \oplus M_m(\mathbb{C})$
+to $\Herm(\mathbb{C}^m)$ that are linear in $B$ and at most quadratic in
+$(v,\tilde v)$ is spanned by the following generators:
+\begin{enumerate}[label=(\roman*)]
+\item $\Pi_h \colon (\varphi_0, v, B) \mapsto
+  \mathrm{Re}(\varphi_0)\cdot I$
+  \quad\emph{(scalar-times-identity)};
+\item $\Pi_{11} \colon (v,\tilde v) \mapsto v_\alpha\bar{v}_\beta$
+  \quad\emph{(holomorphic gradient-square)};
+\item $\Pi_{22} \colon (v,\tilde v) \mapsto \tilde v_\alpha\overline{\tilde v}_\beta$
+  \quad\emph{(antiholomorphic gradient-square)};
+\item $\Pi_{12,+} \colon (v,\tilde v) \mapsto
+  \frac{1}{2}\bigl(v_\alpha\overline{\tilde v}_\beta + \tilde v_\alpha\bar v_\beta\bigr)$
+  \quad\emph{(mixed gradient, Hermitian part)};
+\item $\Pi_{12,-} \colon (v,\tilde v) \mapsto
+  \frac{1}{2i}\bigl(v_\alpha\overline{\tilde v}_\beta - \tilde v_\alpha\bar v_\beta\bigr)$
+  \quad\emph{(mixed gradient, skew part converted to Hermitian)};
+\item $\Pi_{\mathrm{Lev},+} \colon (\varphi_0, v, B) \mapsto
+  \frac{1}{2}\bigl(B_{\alpha\bar\beta} + \overline{B_{\beta\bar\alpha}}\bigr)$
+  \quad\emph{(Hermitian part of the Levi form)};
+\item $\Pi_{\mathrm{Lev},-} \colon (\varphi_0, v, B) \mapsto
+  \frac{1}{2i}\bigl(B_{\alpha\bar\beta} - \overline{B_{\beta\bar\alpha}}\bigr)$
+  \quad\emph{(skew-Hermitian part converted to Hermitian)}.
+\end{enumerate}
+Equivalently, the gradient generators (ii)--(v) may be packaged by a
+$2\times 2$ Hermitian coefficient matrix $(\beta_{ij}) \in \Herm(\mathbb{C}^2)$,
+and generators (vi) and (vii) may be combined into the
+single \emph{complex Levi generator}
+$\Pi_{\mathrm{Lev}} \colon (\varphi_0, v, B) \mapsto B_{\alpha\bar\beta}$,
+with the understanding that we pass to its Hermitian part to land in
+$\Herm(\mathbb{C}^m)$.  The combined form is:
+$\operatorname{Re}(\gamma\, B_{\alpha\bar\beta})$ for complex $\gamma$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+By Schur's lemma applied to the $\UU(m)$-representation
+$\mathbb{C} \oplus \mathbb{C}^m \oplus \mathbb{C}^m \oplus M_m(\mathbb{C})$, a
+$\UU(m)$-equivariant linear map to $\Herm(\mathbb{C}^m)$ is
+nonzero only on summands that contain $\Herm(\mathbb{C}^m)$ as a
+$\UU(m)$-subrepresentation.
+
+\medskip\noindent
+\emph{From $\mathbb{C}$ (trivial $\UU(m)$-action, $\UU(1)$-charged).}
+The fixed subspace of $\Herm(\mathbb{C}^m)$ under $\UU(m)$ is
+$\mathbb{R}\cdot I$ (real multiples of the identity).  The real
+part $\mathrm{Re}(\varphi_0)$ maps to $\mathbb{R}\cdot I$, giving
+generator~(i).  (The imaginary part $\mathrm{Im}(\varphi_0)$ maps
+to $i\cdot \mathbb{R}\cdot I$, but $i I \notin \Herm(\mathbb{C}^m)$;
+it contributes to the skew-Hermitian part and is discarded.)
+
+\medskip\noindent
+\emph{From the first derivatives (standard $\UU(m)$-representation).}
+There is no \emph{linear} $\UU(m)$-equivariant map
+$\mathbb{C}^m \to \Herm(\mathbb{C}^m)$: by Schur's lemma, such
+a map would identify $\mathbb{C}^m$ with a subrepresentation
+of $\Herm(\mathbb{C}^m)$, but the standard representation does
+not appear in $\Herm(\mathbb{C}^m) \cong \mathbb{R} \oplus
+\mathfrak{su}(m)$ (both summands are self-dual real representations).
+
+For a complex seam, the 1-jet provides two independent holomorphic gradients
+$v = \partial\varphi$ and $\tilde v = \partial\bar\varphi$.
+Any Hermitian quadratic form in the pair $(v,\tilde v)$ produces a
+$\UU(m)$-equivariant Hermitian matrix via outer products
+$v_i\overline{v_j}^*$, $i,j\in\{1,2\}$.
+Equivalently, the space of unitary-isotropic quadratic gradient generators is
+parameterised by $(\beta_{ij}) \in \Herm(\mathbb{C}^2)$, giving the four real
+generators (ii)--(v) of Proposition~\ref{prop:building-blocks-c}.
+
+\medskip\noindent
+\emph{From $M_m(\mathbb{C})$ (the adjoint$+$its conjugate).}
+As a $\UU(m)$-representation,
+$M_m(\mathbb{C}) \cong \Herm(\mathbb{C}^m) \oplus
+\mathrm{SkewHerm}(\mathbb{C}^m)$
+(Hermitian $\oplus$ skew-Hermitian matrices).
+By Schur's lemma,
+$\Hom_{\UU(m)}(M_m(\mathbb{C}),\, \Herm(\mathbb{C}^m))$
+has exactly two generators: the projection onto $\Herm(\mathbb{C}^m)$
+(taking the Hermitian part $\frac{1}{2}(B_{\alpha\bar\beta} + \overline{B_{\beta\bar\alpha}})$) and
+the skew-Hermitian projection composed with multiplication by $1/i$
+to land in $\Herm(\mathbb{C}^m)$
+(giving $\frac{1}{2i}(B_{\alpha\bar\beta} - \overline{B_{\beta\bar\alpha}})$).
+These are generators~(vi) and~(vii), or equivalently the single complex
+generator $B_{\alpha\bar\beta}$ with $\operatorname{Re}(\gamma\cdot)$
+applied.
+\end{proof}
+
+\begin{corollary}[Dimension count of the building-block space]
+\label{cor:dim-building-blocks-c}
+Assume $m\ge 2$.  The real vector space of $\UU(m)$-equivariant maps
+\[
+F\colon \mathbb{C} \oplus \mathbb{C}^m \oplus \mathbb{C}^m \oplus M_m(\mathbb{C}) \to \Herm(\mathbb{C}^m)
+\]
+that are linear in $B$ and at most quadratic in $(v,\tilde v)$ has real
+dimension $7$.  Equivalently, it is parameterised by
+\[
+\alpha\in\mathbb{R},\qquad (\beta_{ij})\in\Herm(\mathbb{C}^2),\qquad \gamma\in\mathbb{C}.
+\]
+\end{corollary}
+
+\begin{remark}[Coordinate-free packaging of the gradient family]
+\label{rem:coordfree-gradient}
+At a point $x$, the pair of holomorphic gradients
+$(v,\tilde v)=(\partial\varphi,\partial\bar\varphi)$ may be viewed as a
+complex-linear map $V_x\colon \mathbb{C}^2\to\mathbb{C}^m$ by taking $v$ and
+$\tilde v$ as its columns in an $h$-unitary frame.  For
+$(\beta_{ij})\in\Herm(\mathbb{C}^2)$, the associated quadratic gradient
+contribution is then
+\[
+V_x\,\beta\,V_x^\dagger\ \in\ \Herm(\mathbb{C}^m),
+\]
+which is independent of the chosen unitary frame.  In particular, if
+$\beta\succeq 0$ as a Hermitian $2\times 2$ matrix, then the resulting gradient
+term is positive semidefinite at every point.
+\end{remark}
+
+\begin{lemma}[Absence of holomorphic and antiholomorphic Hessian generators]
+\label{lem:no-hessian}
+The holomorphic Hessian $P_{\alpha\beta} \in \Sym^2(T^{*1,0}M)$
+and its conjugate $\bar Q$ do \emph{not} contribute generators to
+$\Herm(\mathbb{C}^m)$: there is no $\UU(m)$-equivariant linear
+map from $\Sym^2(\mathbb{C}^m)$ to $\Herm(\mathbb{C}^m)$, because
+these representations do not match (one is complex, the other is real).
+Such maps would require a $\mathbb{C}$-antilinear structure absent
+from $\Herm(\mathbb{C}^m)$.  In the language of K\"ahler geometry:
+$P_{\alpha\beta} = \partial^2_{\alpha\beta}\varphi$ is a $(2,0)$-tensor
+that does not contribute to a $(1,1)$-form without further structure.
+This absence is the representation-theoretic reason why K\"ahler
+potentials enter metric formulas only through $i\partial\dbar\psi$
+and not through $\partial^2\psi$ or $\dbar^2\psi$.
+\end{lemma}
+
+\subsection{The Universal Decomposition}
+
+We now translate Proposition~\ref{prop:building-blocks-c} from
+fibre algebra into a global geometric statement.
+
+In global notation: a convenient generating set is
+\begin{enumerate}[label=(\roman*)]
+\item $\omegah$ --- the background fundamental form,
+\item the \emph{unitary-isotropic gradient family}, generated by
+  \[
+  i\partial\varphi \wedge \dbar\bar\varphi,\qquad
+  i\partial\bar\varphi \wedge \dbar\varphi,\qquad
+  \operatorname{Re}\bigl(i\partial\varphi \wedge \dbar\varphi\bigr),\qquad
+  \operatorname{Im}\bigl(i\partial\varphi \wedge \dbar\varphi\bigr),
+  \]
+  i.e. Hermitian quadratic forms built from the pair
+  $(\partial\varphi,\partial\bar\varphi)$,
+\item $i\partial\dbar\,\mathrm{Re}(\varphi)$ --- the
+  \emph{real Levi form} of the seam,
+\item $i\partial\dbar\,\mathrm{Im}(\varphi)$ --- the
+  \emph{imaginary Levi form} of the seam.
+\end{enumerate}
+The Levi generators (iii) and (iv) combine elegantly into
+$\operatorname{Re}(\gamma\, i\partial\dbar\varphi)$ for complex
+$\gamma = \gamma_+ + i\gamma_-$:
+\[
+\operatorname{Re}\bigl((\gamma_+ + i\gamma_-)\cdot
+i\partial\dbar(u + iv)\bigr)
+= \gamma_+\, i\partial\dbar u - \gamma_-\, i\partial\dbar v.
+\]
+
+\begin{theorem}[Universal Decomposition of order-$\le 2$ isotropic
+  complex metric rules]
+\label{thm:classification-complex}
+Let $(M^{2m}, h, J)$ be a Hermitian manifold with $m \ge 2$.
+Every smooth isotropic natural differential operator
+$\Phi \colon J^2_\mathbb{C}(M, \mathbb{C}) \to \mathcal{H}(M)$
+that depends at most linearly in the mixed Hessian
+$\partial\dbar\varphi$ takes the form
+\begin{equation}
+\label{eq:universal-complex}
+\boxed{
+\Phi(j^2_\mathbb{C}\varphi;\, h, J)
+= \alpha\,\omegah
+  + \beta_{11}\, i\partial\varphi \wedge \dbar\bar\varphi
+  + \beta_{22}\, i\partial\bar\varphi \wedge \dbar\varphi
+  + \operatorname{Re}\!\bigl(\beta_{12}\, i\partial\varphi \wedge \dbar\varphi\bigr)
+  + \operatorname{Re}\!\bigl(\gamma\, i\partial\dbar\varphi\bigr),
+}
+\end{equation}
+where $\alpha,\beta_{11},\beta_{22} \in \mathbb{R}$ and
+$\beta_{12},\gamma \in \mathbb{C}$ are smooth functions of
+$\UU(m)$-invariant scalar jets of order $\le 2$.  One convenient choice of
+invariant feature map is:
+\begin{equation}
+\label{eq:invariants-complex}
+\begin{aligned}
+\mathcal{I}_\mathbb{C}=\Bigl(
+  &\mathrm{Re}(\varphi),\; \mathrm{Im}(\varphi),\; |\partial\varphi|_h^2,\; |\dbar\varphi|_h^2,\\
+  &\mathrm{Re}\,\langle\partial\varphi,\partial\bar\varphi\rangle_h,\;
+   \mathrm{Im}\,\langle\partial\varphi,\partial\bar\varphi\rangle_h,\\
+  &\Delta_h\,\mathrm{Re}(\varphi),\; \Delta_h\,\mathrm{Im}(\varphi),\; |i\partial\dbar\varphi|_h^2
+\Bigr),
+\end{aligned}
+\end{equation}
+where $\Delta_h = \tr_{\omegah}(i\partial\dbar)$ is the complex
+Laplacian on functions.
+
+The quantity $|i\partial\dbar\varphi|^2_h$ is the squared Frobenius norm of
+the complex matrix $B = \partial\dbar\varphi$, namely
+$|i\partial\dbar\varphi|^2_h = \tr(B^\dagger B)$ in any $h$-unitary frame.
+For complex seams $\varphi$ the mixed Hessian coefficients
+$B_{\alpha\bar\beta}=\partial_\alpha\dbar_{\bar\beta}\varphi$ form a general
+complex matrix; only its Hermitian part corresponds to
+$i\partial\dbar\,\mathrm{Re}(\varphi)$.
+
+The condition $\Phi > 0$ (positive-definite output) imposes
+algebraic constraints on $(\alpha, \beta_{11}, \beta_{22}, \beta_{12}, \gamma)$ at each point,
+the most basic being $\alpha > 0$.
+
+When nonlinear dependence on the mixed Hessian is allowed,
+additional equivariant terms arise: $i\partial\dbar\varphi \cdot
+\omegah^{-1} \cdot (i\partial\dbar\varphi)$ (a degree-2 term in
+$B$) and $i\partial\varphi \wedge \dbar\bar\varphi \cdot
+|i\partial\dbar\varphi|^2_h$ (mixed); the full ring of equivariants
+is generated by these together with~\eqref{eq:universal-complex}.
+\end{theorem}
+
+\begin{proof}
+\emph{Step 1 (Reduction to fibre).}
+By the Peetre--Slov\'ak theorem \cite{Peetre1960, Slovak1988},
+a smooth natural operator of order $\le 2$ factors through
+$J^2_\mathbb{C}(M,\mathbb{C})$.  By $\UU(m)$-equivariance
+(axiom~\ref{item:naturality-c}), the value at a point depends
+only on the complex 2-jet $j^2_{x,\mathbb{C}}\varphi$ expressed
+in $h$-unitary normal coordinates, and is $\UU(m)$-equivariant.
+Equivalently, there is a smooth bundle map $F$ such that
+$\Phi = F \circ j^2_\mathbb{C}$.
+The problem therefore reduces to classifying $\UU(m)$-equivariant
+maps
+\[
+F \colon
+\underbrace{\mathbb{C}}_{\varphi_0}
+\times \underbrace{\mathbb{C}^m}_{v}
+\times \underbrace{\mathbb{C}^m}_{\tilde v = \partial\bar\varphi}
+\times \underbrace{M_m(\mathbb{C})}_{B}
+\longrightarrow \Herm(\mathbb{C}^m)
+\]
+that are smooth and at most linear in $B$.
+
+\emph{Step 2 (Decomposition).}
+We decompose the source as a $\UU(m)$-representation and identify
+equivariant maps to the target $\Herm(\mathbb{C}^m)$.
+This is carried out in the proof of
+Proposition~\ref{prop:building-blocks-c}, yielding generators
+$\Pi_h$, $\Pi_{11}$, $\Pi_{22}$, $\Pi_{12,+}$, $\Pi_{12,-}$,
+$\Pi_{\mathrm{Lev},+}$, and $\Pi_{\mathrm{Lev},-}$.
+
+\emph{Step 3 (Coefficients).}
+The coefficients may depend smoothly on any choice of
+$\UU(m)$-invariant scalar features of the 2-jet.
+At first derivative order this includes the norms and inner products of the
+pair $(v,\tilde v) = (\partial\varphi,\partial\bar\varphi)$;
+at second derivative order it includes trace invariants of
+$B = \partial\dbar\varphi$ (and of words in $B$ and $B^\dagger$ if one works
+polynomially).  The tuple~\eqref{eq:invariants-complex} is one convenient
+low-order choice.
+
+\emph{Step 4 (Completeness).}
+Every $\UU(m)$-equivariant map from
+$\mathbb{C} \oplus \mathbb{C}^m \oplus \mathbb{C}^m \oplus M_m(\mathbb{C})$ to
+$\Herm(\mathbb{C}^m)$ that is linear in $B$ and polynomial of degree
+$\le 2$ in $(v,\tilde v)$ is a linear combination (with invariant coefficients)
+of the generators in Proposition~\ref{prop:building-blocks-c}.
+This follows from the exhaustive $\UU(m)$-representation-theoretic
+analysis: no further copies of $\Herm(\mathbb{C}^m)$ appear in
+the relevant tensor products.
+
+\emph{Step 5 (Restoring global notation).}
+Generator (i) gives $\mathrm{Re}(\varphi_0)\cdot\omegah$; the gradient generators give
+$i\partial\varphi \wedge \dbar\bar\varphi$,
+$i\partial\bar\varphi \wedge \dbar\varphi$,
+$\operatorname{Re}(i\partial\varphi \wedge \dbar\varphi)$ and
+$\operatorname{Im}(i\partial\varphi \wedge \dbar\varphi)$; the Levi generators
+give
+$\frac{1}{2}\bigl(B_{\alpha\bar\beta} + \overline{B_{\beta\bar\alpha}}\bigr)$ and
+$\frac{1}{2i}\bigl(B_{\alpha\bar\beta} - \overline{B_{\beta\bar\alpha}}\bigr)$,
+which are
+$i\partial\dbar\,\mathrm{Re}(\varphi)$ and
+$i\partial\dbar\,\mathrm{Im}(\varphi)$ in global notation.
+These combine as $\mathrm{Re}(\gamma\, i\partial\dbar\varphi)$.
+The coefficient dependence on
+$\mathrm{Re}(\varphi_0)$ and $\mathrm{Im}(\varphi_0)$ is absorbed
+into the scalar-valued coefficient function $\alpha$.
+\end{proof}
+
+\begin{remark}[Holomorphic seams]
+\label{rem:holomorphic-seams}
+If $\dbar\varphi = 0$ (i.e.\ $\varphi$ is holomorphic), then
+$\partial\bar\varphi = 0$ and $\partial\dbar\varphi = 0$, so the universal
+decomposition~\eqref{eq:universal-complex} reduces to
+\[
+\Phi(j^2_\mathbb{C}\varphi;h,J)
+= \alpha\,\omegah
+  + \beta_{11}\, i\partial\varphi \wedge \dbar\bar\varphi.
+\]
+In particular, holomorphic seams eliminate both the mixed-gradient terms and
+the Levi-form generator.
+\end{remark}
+
+\begin{remark}[Complex dimension one]
+\label{rem:m1}
+The assumption $m\ge 2$ excludes the Riemann surface case.  When $m=1$,
+$\Herm(\mathbb{C})$ is $1$-dimensional over $\mathbb{R}$, so every Hermitian
+$(1,1)$-form is pointwise a scalar multiple of $\omegah$.  Consequently, any
+order-$\le 2$ complex seam rule produces a conformal metric
+$\Phi = f\,\omegah$ for some scalar natural operator $f$ depending on the jet
+of $\varphi$.
+\end{remark}
+
+\begin{remark}[Phase-rotation symmetry]
+\label{rem:phase-symmetry}
+In applications with a $\UU(1)$ phase symmetry, one may impose invariance under
+constant rotations $\varphi\mapsto e^{i\theta}\varphi$.  If, in addition, the
+coefficient functions in~\eqref{eq:universal-complex} are required to depend
+only on phase-invariant scalar jets (e.g.\ $|\varphi|$, $|\partial\varphi|_h$,
+and other $\theta$-independent contractions), then phase invariance forces
+$\beta_{12}=0$ and $\gamma=0$, since the mixed term
+$i\partial\varphi\wedge\dbar\varphi$ acquires a factor $e^{2i\theta}$ and the
+Levi term $\partial\dbar\varphi$ acquires a factor $e^{i\theta}$.
+\end{remark}
+
+\begin{corollary}[Phase-invariant subsector]
+\label{cor:phase-invariant-subsector}
+Under the phase-rotation hypothesis in Remark~\ref{rem:phase-symmetry}, the
+maximal phase-invariant sub-family of the universal rule is
+\[
+\Phi
+= \alpha\,\omegah
+  + \beta_{11}\, i\partial\varphi \wedge \dbar\bar\varphi
+  + \beta_{22}\, i\partial\bar\varphi \wedge \dbar\varphi,
+\]
+where $\alpha,\beta_{11},\beta_{22}\in\mathbb{R}$.
+Equivalently, among the seven real building-block coefficients, phase
+invariance eliminates precisely the four parameters corresponding to
+$\Pi_{12,\pm}$ and $\Pi_{\mathrm{Lev},\pm}$.
+\end{corollary}
+
+\begin{corollary}[Gradient terms obstruct the K\"ahler condition]
+\label{cor:gradient-obstructs-kahler}
+Assume $d\omegah=0$ (i.e.\ the background Hermitian form is K\"ahler) and that
+$\alpha,\beta_{11},\beta_{22}\in\mathbb{R}$ and $\beta_{12},\gamma\in\mathbb{C}$
+are constant.
+Then the universal rule~\eqref{eq:universal-complex} produces a $d$-closed
+$(1,1)$-form for every seam $\varphi$ if and only if
+$\beta_{11}=\beta_{22}=0$ and $\beta_{12}=0$.
+In particular, the Levi-form term $\mathrm{Re}(\gamma\,i\partial\dbar\varphi)$
+is automatically K\"ahler, while the gradient-tensor generators are the
+precise obstruction.
+\end{corollary}
+
+\begin{proof}
+Since $d=\partial+\dbar$ and $\partial^2=\dbar^2=0$, we have
+$d\,\mathrm{Re}(\gamma\,i\partial\dbar\varphi)=0$ for every $\varphi$ and every
+constant $\gamma$.
+By contrast,
+\[
+d\bigl(i\partial\varphi\wedge\dbar\bar\varphi\bigr)
+= -i\partial\varphi\wedge\partial\dbar\bar\varphi
+  + i\dbar\partial\varphi\wedge\dbar\bar\varphi,
+\]
+which is generically nonzero (and similarly for the other gradient-tensor
+generators).  Hence $d\Phi=0$ for all seams forces
+$\beta_{11}=\beta_{22}=\beta_{12}=0$.
+The converse is immediate when $d\omegah=0$.
+\end{proof}
+
+\begin{corollary}[Forced factorisation through invariants]
+\label{cor:forced-arch-c}
+Under the hypotheses of Theorem~\ref{thm:classification-complex},
+the value of $\Phi(j^2_\mathbb{C}\varphi;\, h,J)$ at $x \in M$
+depends on the 2-jet of $\varphi$ at $x$ only through
+$\UU(m)$-invariant scalar functions of that jet and the basis forms
+$\omegah(x)$,
+$(i\partial\varphi \wedge \dbar\bar\varphi)(x)$,
+$(i\partial\bar\varphi \wedge \dbar\varphi)(x)$,
+$\operatorname{Re}(i\partial\varphi \wedge \dbar\varphi)(x)$,
+$\operatorname{Im}(i\partial\varphi \wedge \dbar\varphi)(x)$,
+$(i\partial\dbar\,\mathrm{Re}(\varphi))(x)$, and
+$(i\partial\dbar\,\mathrm{Im}(\varphi))(x)$.
+
+Equivalently, any parametric family of such rules (e.g., a neural
+architecture constrained to represent a smooth isotropic natural
+complex operator of order $\le 2$ linear in $\partial\dbar\varphi$)
+takes the canonical form
+\[
+\begin{aligned}
+\Phi_\theta(j^2_\mathbb{C}\varphi;\, h,J)
+={}&\alpha_\theta(\mathcal{I}_\mathbb{C})\,\omegah
++ \beta_{11,\theta}(\mathcal{I}_\mathbb{C})\,i\partial\varphi \wedge \dbar\bar\varphi \\
+&+ \beta_{22,\theta}(\mathcal{I}_\mathbb{C})\,i\partial\bar\varphi \wedge \dbar\varphi \\
+&+ \operatorname{Re}\!\bigl(\beta_{12,\theta}(\mathcal{I}_\mathbb{C})\,i\partial\varphi \wedge \dbar\varphi\bigr) \\
+&+ \operatorname{Re}\!\bigl(\gamma_\theta(\mathcal{I}_\mathbb{C})\,i\partial\dbar\varphi\bigr)
+\end{aligned}
+\]
+for smooth coefficient functions
+$(\alpha_\theta, \beta_{11,\theta}, \beta_{22,\theta})\colon \mathbb{R}^N \to \mathbb{R}^3$
+and $(\beta_{12,\theta}, \gamma_\theta)\colon \mathbb{R}^N \to \mathbb{C}^2$,
+for some choice of invariant feature map $\mathcal{I}_\mathbb{C}\colon J^2_\mathbb{C}\to\mathbb{R}^N$.
+\end{corollary}
+
+\subsection{Recovery of known structures}
+
+Every Hermitian metric-generating construction in the literature
+is a specialisation of~\eqref{eq:universal-complex}:
+
+\begin{example}[K\"ahler metric from a K\"ahler potential]
+\label{ex:kahler}
+$\alpha = 0$, $\beta_{11} = \beta_{22} = 0$, $\beta_{12} = 0$, $\gamma = 1$ (real), $\varphi = \psi$
+real (plurisubharmonic).
+Output: $\Phi = i\partial\dbar\psi$.
+This is the fundamental $(1,1)$-form of the K\"ahler metric
+associated to the potential $\psi$.  Strict plurisubharmonicity of
+$\psi$ ($i\partial\dbar\psi > 0$) is precisely the positivity
+condition for $\Phi$.
+\end{example}
+
+\begin{proposition}[Chern--Ricci form of a Levi-form metric]
+\label{prop:chern-ricci-levi}
+Let $\omega = i\partial\dbar\psi$ be a K\"ahler metric written in local
+holomorphic coordinates as
+$\omega = i\, g_{\alpha\bar\beta}\, dz^\alpha\wedge d\bar z^\beta$ with
+$g_{\alpha\bar\beta} = \partial_\alpha\dbar_{\bar\beta}\psi$.
+Then its Chern--Ricci form is
+\[
+\Ric(\omega) = -i\partial\dbar\log\det(g_{\alpha\bar\beta}).
+\]
+\end{proposition}
+
+\begin{remark}[Calabi--Yau as a seam equation]
+Fix a compact K\"ahler manifold $(M,\omega_0,J)$.  Writing a metric in the same
+K\"ahler class as $\omega = \omega_0 + i\partial\dbar\psi$ turns the problem of
+prescribing the volume form (equivalently, the Ricci form within the class)
+into a PDE for the scalar seam $\psi$.  Concretely, prescribing
+$\omega^m = e^F\,\omega_0^m$ yields the complex Monge--Amp\`ere equation
+\[
+(\omega_0 + i\partial\dbar\psi)^m = e^F\,\omega_0^m,
+\]
+with $\psi$ determined up to an additive constant.  The Calabi--Yau theorem
+asserts existence and uniqueness (up to constant) under the usual compatibility
+condition on total volume \cite{Yau1978}.
+\end{remark}
+
+\begin{example}[Fubini--Study metric]
+\label{ex:fs}
+Let $M = \mathbb{C}^m$ with background
+$h = \delta$ (flat), and take the seam
+$\varphi = \log(1 + |z|^2)$ (real, plurisubharmonic).
+Then $\alpha = 0$, $\beta_{11} = \beta_{22} = 0$, $\beta_{12} = 0$, $\gamma = 1$, and
+$\Phi = i\partial\dbar\log(1+|z|^2)$
+is the Fubini--Study metric on $\mathbb{CP}^m$ in affine
+coordinates.
+\end{example}
+
+\begin{example}[Hermitian conformal rule]
+\label{ex:herm-conformal}
+$\alpha = e^{2\psi}$ (for real seam $\psi$), $\beta_{11} = \beta_{22} = 0$, $\beta_{12} = 0$, $\gamma = 0$.
+Output: $\Phi = e^{2\psi}\omegah$.
+This is a conformal rescaling of the background Hermitian metric:
+it preserves the complex structure $J$ and the conformal class
+$[\omegah]$ but changes the pointwise scale.
+\end{example}
+
+\begin{example}[Holomorphic gradient metric]
+\label{ex:grad-metric}
+$\alpha = 0$, $\beta_{11} = 1$, $\beta_{22} = 0$, $\beta_{12} = 0$, $\gamma = 0$.
+Output: $\Phi = i\partial\varphi \wedge \dbar\bar\varphi$.
+This is a positive semidefinite Hermitian form of rank $\le 1$,
+vanishing precisely at the points where $\partial\varphi = 0$
+(the \emph{holomorphic critical points} of $\varphi$).
+For holomorphic $\varphi$, these coincide with the algebraic
+critical points; for a general complex seam, $\partial\varphi = 0$
+and $\dbar\varphi = 0$ may be independent conditions.
+\end{example}
+
+\begin{example}[Fisher--Rao metric of a complex exponential family]
+\label{ex:fisher-complex}
+Let $\{\,p(x|\theta)\,\}$ be an exponential family parametrised by
+complex $\theta \in \Theta \subset \mathbb{C}^m$, with log-partition
+function $A(\theta) \in \mathbb{R}$ (a real function of complex
+parameters).  The complex Fisher information metric on $\Theta$ is
+\[
+g^{\mathrm{Fisher}}_{\alpha\bar\beta}(\theta)
+= \partial_\alpha\dbar_{\bar\beta}\,A(\theta),
+\]
+which is precisely the Levi-form rule ($\alpha = 0$, $\beta_{11} = \beta_{22} = 0$, $\beta_{12} = 0$,
+$\gamma = 1$) applied to the real seam $\varphi = A(\theta)$ on the
+flat background $(\Theta, \delta)$.  Strict convexity of $A$ (a
+standard property of exponential families) is equivalent to
+strict plurisubharmonicity of $A$ viewed as a function of complex
+parameters, and hence to positive-definiteness of the resulting
+Hermitian metric.
+\end{example}
+
+\begin{example}[Mixed Hermitian-Levi rule]
+\label{ex:mixed-c}
+$\alpha = e^{|\varphi|^2}$, $\beta_{11} = \beta_{22} = 0$, $\beta_{12} = 0$, $\gamma = \lambda \in \mathbb{R}$.
+Output: $\Phi = e^{|\varphi|^2}\omegah + \lambda\, i\partial\dbar
+\mathrm{Re}(\varphi)$.
+The background term ensures positive-definiteness for small $|\lambda|$,
+while the Levi-form term introduces curvature.  This is the complex
+analogue of the mixed conformal--Hessian rule of~\cite{Ronnback2025},
+and arises naturally in the study of curvature perturbations of
+K\"ahler metrics.
+\end{example}
+
+\begin{corollary}[No globally K\"ahler pure Levi metrics on
+  closed manifolds with non-K\"ahler fundamental class]
+\label{cor:no-global-levi}
+Let $(M^{2m},h,J)$ be a closed Hermitian manifold, and let
+$\varphi \in C^\infty(M,\mathbb{C})$.  If the de Rham cohomology
+class $[\omegah]$ is not in the image of $\partial\dbar\colon
+C^\infty(M,\mathbb{C}) \to \mathcal{H}(M)$---i.e.\ if $\omegah$
+is not globally $\partial\dbar$-exact---then the pure Levi-form rule
+$g = i\partial\dbar\,\mathrm{Re}(\varphi)$ cannot produce a metric
+cohomologous to $\omegah$.
+\end{corollary}
+
+\begin{proof}
+Since $i\partial\dbar\,\mathrm{Re}(\varphi)$ is globally
+$\partial\dbar$-exact (equal to $\frac{i}{2}(dd^c)\mathrm{Re}(\varphi)$
+where $d^c = i(\dbar - \partial)$), it represents the zero class in
+de Rham cohomology.  A metric cohomologous to $\omegah$ would require
+$[\omegah] = 0$ in $H^{1,1}(M,\mathbb{R})$, which by assumption does
+not hold.
+\end{proof}
+
+This is the complex analogue of the obstruction for the pure
+Hessian rule on closed real manifolds \cite{Ronnback2025}.
+
+\subsection{The degeneration locus for complex rules}
+
+The degeneration locus inherits a richer structure in the complex
+setting, reflecting the bidegree decomposition of the jet.
+
+\begin{definition}[Complex degeneration locus]
+\label{def:degen-c}
+For a complex rule $\Phi$ and a seam $\varphi$, the
+\emph{complex degeneration locus} is
+\[
+\mathcal{D}_\mathbb{C}(\Phi,\varphi)
+:= \bigl\{\, x \in M :
+  \text{the fibre map }
+  D\Phi_\varphi(x) \colon J^k_{x,\mathbb{C}} \to
+  \mathcal{H}^+(T^*_xM)
+  \text{ is not surjective}\bigr\}.
+\]
+For some basic rules:
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{Hermitian conformal rule} $(\alpha = e^{2\psi},
+  \beta_{11} = \beta_{22} = \beta_{12} = \gamma = 0)$: $\mathcal{D}_\mathbb{C} = \emptyset$
+  (the conformal factor $e^{2\psi}$ is everywhere positive).
+\item \textbf{Holomorphic gradient rule} $(\beta_{11} = 1,
+  \alpha = \beta_{22} = \beta_{12} = \gamma = 0)$: $\mathcal{D}_\mathbb{C} =
+  \{\partial\varphi = 0\}$ (the holomorphic critical points),
+  which for a holomorphic $\varphi$ coincides with the
+  algebraic zero set $\{\varphi' = 0\}$.
+\item \textbf{Pure Levi-form rule} $(\gamma = 1,
+  \alpha = \beta_{11} = \beta_{22} = \beta_{12} = 0)$: $\mathcal{D}_\mathbb{C} =
+  \{\det_h(i\partial\dbar\,\mathrm{Re}(\varphi)) = 0\}$, the
+  \emph{Levi-degenerate set} of the seam.
+  For a plurisubharmonic seam, this is the boundary of the
+  strictly plurisubharmonic domain.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[Kernel distribution for the holomorphic gradient form]
+Away from $\{\partial\varphi = 0\}$, the form
+$i\partial\varphi\wedge\dbar\bar\varphi$ has rank $1$ and its kernel is the
+complex hyperplane distribution $\ker(\partial\varphi)\subset T^{1,0}M$.
+If $\varphi$ is holomorphic and a submersion, this distribution integrates
+to the holomorphic foliation by level hypersurfaces of $\varphi$.
+\end{remark}
+
+\begin{remark}[Holomorphic critical points vs.\ real critical points]
+The degeneration locus of the holomorphic gradient rule is
+$\{\partial\varphi = 0\}$, which is genuinely different from
+the real critical set $\{\nabla_{\mathbb{R}}\varphi = 0\}$:
+since $\nabla_{\mathbb{R}}\varphi = 0$ if and only if both
+$\partial\varphi = 0$ and $\dbar\varphi = 0$, we have
+$\mathcal{D}_\mathbb{C} \supseteq \Crit_\mathbb{R}(\varphi)$
+with equality only when $\varphi$ is holomorphic.  For a
+general complex seam, $\partial\varphi = 0$ does not require
+$\dbar\varphi = 0$, so the complex degeneration locus may be
+strictly larger than the real critical set.  This enlargement
+is precisely the additional geometric information the complex
+structure detects.
+\end{remark}
+
+% ================================================================
+\section{The Linearisation of a Complex Rule}
+\label{sec:linearisation}
+% ================================================================
+
+Given a complex rule $\Phi$ and a background seam $\varphi_0$,
+the first-order response to a perturbation $\dot\varphi =
+\dot u + i\dot v$ is
+\begin{equation}
+\label{eq:linearisation-c}
+D\Phi_{\varphi_0}(\dot\varphi) :=
+\left.\frac{d}{dt}\right|_{t=0}
+\Phi(\varphi_0 + t\dot\varphi;\, h, J).
+\end{equation}
+This is a $\mathbb{R}$-linear differential operator
+$D\Phi_{\varphi_0}\colon C^\infty(M,\mathbb{C}) \to
+\Gamma(\mathcal{H}(M))$ (into the bundle of Hermitian forms,
+not necessarily positive-definite).
+
+\begin{proposition}[Linearisation of the universal decomposition]
+\label{prop:lin-c}
+For the rule
+\[
+\Phi = \alpha\,\omegah
+  + \beta_{11}\, i\partial\varphi \wedge \dbar\bar\varphi
+  + \beta_{22}\, i\partial\bar\varphi \wedge \dbar\varphi
+  + \operatorname{Re}\!\bigl(\beta_{12}\, i\partial\varphi \wedge \dbar\varphi\bigr)
+  + \operatorname{Re}\!\bigl(\gamma\,i\partial\dbar\varphi\bigr),
+\]
+with $\alpha,\beta_{11},\beta_{22} \in \mathbb{R}$ and
+$\beta_{12},\gamma \in \mathbb{C}$ constant, the linearisation at any
+background seam $\varphi_0$ is:
+\[
+\begin{aligned}
+D\Phi_{\varphi_0}(\dot\varphi)
+={}&\beta_{11}\, i\bigl(\partial\dot\varphi \wedge \dbar\bar\varphi_0
+  + \partial\varphi_0 \wedge \dbar\overline{\dot\varphi}\bigr) \\
+&+ \beta_{22}\, i\bigl(\partial\overline{\dot\varphi} \wedge \dbar\varphi_0
+  + \partial\bar\varphi_0 \wedge \dbar\dot\varphi\bigr) \\
+&+ \operatorname{Re}\!\bigl(\beta_{12}\, i(\partial\dot\varphi \wedge \dbar\varphi_0
+  + \partial\varphi_0 \wedge \dbar\dot\varphi)\bigr) \\
+&+ \operatorname{Re}\bigl(\gamma\, i\partial\dbar\dot\varphi\bigr)
+ + \text{(coefficient variation terms)}.
+\end{aligned}
+\]
+In particular:
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Conformal rule} $(\beta_{11} = \beta_{22} = \beta_{12} = \gamma = 0)$:
+  $D\Phi_{\varphi_0}(\dot\varphi) = (\partial_u\alpha)\dot u\,\omegah
+  + (\partial_v\alpha)\dot v\,\omegah$, a zeroth-order operator.
+\item \textbf{Holomorphic gradient rule} $(\alpha = \beta_{22} = \beta_{12} = \gamma = 0,\, \beta_{11} = 1)$:
+  at $\varphi_0$ with $\partial\varphi_0 \neq 0$,
+  $D\Phi_{\varphi_0}(\dot\varphi) = i(\partial\dot\varphi \wedge
+  \dbar\bar\varphi_0 + \partial\varphi_0 \wedge \dbar\overline{\dot\varphi})$,
+  a first-order operator.  At $\partial\varphi_0 = 0$, the
+  linearisation vanishes: the rule degenerates at holomorphic
+  critical points.
+\item \textbf{Pure Levi-form rule} $(\alpha = \beta_{11} = \beta_{22} = \beta_{12} = 0,\, \gamma = 1)$:
+  $D\Phi_{\varphi_0}(\dot\varphi) = i\partial\dbar\dot u$,
+  a second-order overdetermined-elliptic operator.  Its
+  kernel consists of functions $\dot\varphi$ whose real part
+  is pluriharmonic: $\ker D\Phi|_{\gamma=1} \supseteq
+  \{\dot\varphi \in C^\infty(M,\mathbb{C}) :
+  \partial\dbar\,\mathrm{Re}(\dot\varphi) = 0\}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{corollary}[Kernel rigidity for the Levi linearisation]
+\label{cor:levi-kernel-rigidity}
+Let $(M,\omega_0,J)$ be a compact K\"ahler manifold and consider the pure
+Levi-form rule $\Phi(\varphi)=i\partial\dbar\,\mathrm{Re}(\varphi)$.  For
+real-valued variations $\dot\varphi=\dot u\in C^\infty(M,\mathbb{R})$,
+\[
+\ker(D\Phi_{\varphi_0})\cap C^\infty(M,\mathbb{R}) = \{\text{constants}\}.
+\]
+\end{corollary}
+
+\begin{proof}
+If $D\Phi_{\varphi_0}(\dot u)=i\partial\dbar\dot u=0$, then $\dot u$ is
+pluriharmonic.  Tracing with respect to $\omega_0$ gives
+$\Delta_{\omega_0}\dot u=0$, hence $\dot u$ is constant by the maximum
+principle.
+\end{proof}
+
+\begin{remark}[The Levi-form generator and ellipticity]
+\label{rem:ellipticity}
+For the Levi-form term $\operatorname{Re}(\gamma\,i\partial\dbar\varphi)$, the
+linearisation contributes $\dot\varphi \mapsto \operatorname{Re}(\gamma\,i\partial\dbar\dot\varphi)$.
+The principal symbol at a covector
+$\xi \in T^{*1,0}_xM$ is:
+\[
+\sigma\bigl(\operatorname{Re}(\gamma\,i\partial\dbar\cdot)\bigr)(\xi)\cdot\dot\varphi
+= \xi \otimes \bar\xi \cdot \mathrm{Re}(\gamma\,\dot\varphi),
+\]
+the $(1,1)$-form $\xi \wedge \bar\xi$ (positive semidefinite, rank 1).
+In particular, restricting to real variations $\dot\varphi=\dot u$ gives a
+symbol proportional to $\mathrm{Re}(\gamma)\,\xi\otimes\bar\xi$, so the Levi
+term degenerates at the level of the principal symbol precisely when
+$\mathrm{Re}(\gamma)=0$.
+This is the complex analogue of the real symbol $\xi \otimes \xi$ for
+the Hessian generator of~\cite{Ronnback2025}, with $\xi \in T^*_xM$
+replaced by the $(1,0)$-component $\xi \in T^{*1,0}_xM$.  The key
+structural difference is that the complex symbol is Hermitian
+(satisfying $(\xi \otimes \bar\xi)^\dagger = \bar\xi \otimes \xi =
+\xi \otimes \bar\xi$ up to the Hermitian identification), while the
+real symbol is only symmetric.  This Hermitian positivity of the
+symbol implies that, as an operator on \emph{real} variations
+$\dot\varphi=\dot u$, the Levi linearisation is overdetermined-elliptic: the
+symbol $\xi\otimes\bar\xi\cdot \dot u$ is injective as a map
+$\mathbb{R}\to\Herm(T^{1,0}_xM)$ whenever $\xi\neq 0$.
+The term \emph{subelliptic} is used in a different, genuinely analytic sense
+(e.g.\ Kohn--Nirenberg estimates) and does not follow from this symbol
+computation alone.  On K\"ahler backgrounds, additional Hodge-theoretic
+structure (including K\"ahler identities such as $\Box_{\partial}=\Box_{\dbar}$)
+can lead to sharper spectral estimates, but this is distinct from
+subellipticity.
+\end{remark}
+
+% ================================================================
+\section{Discussion: Towards a Universality Theory}
+\label{sec:universality}
+% ================================================================
+
+The universality question for complex seams is: when can scalar
+seam data $\varphi$ generate, via rule~\eqref{eq:universal-complex},
+an open neighbourhood of all Hermitian metrics on $M$ (up to
+biholomorphism)?
+
+The situation is markedly different from the real case.  On a compact
+K\"ahler manifold, the $\partial\dbar$-lemma (a consequence of Hodge
+theory) asserts that every $\partial\dbar$-closed real $(1,1)$-form
+in a fixed de Rham class is $\partial\dbar$-exact, meaning
+$\omega = \omega_0 + i\partial\dbar\psi$ for a real potential $\psi$.
+
+\begin{theorem}[Local universality in a K\"ahler class]
+\label{thm:local-universality-kahler}
+Let $(M,\omega_0,J)$ be a compact K\"ahler manifold.  If $\omega$ is any
+K\"ahler metric with $[\omega]=[\omega_0]$ in de Rham cohomology, then
+\[
+\omega = \omega_0 + i\partial\dbar\psi
+\]
+for some $\psi\in C^\infty(M,\mathbb{R})$, unique up to addition of a constant.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Since $[\omega]=[\omega_0]$, the real $(1,1)$-form $\eta:=\omega-\omega_0$ is
+exact, hence in particular $d$-closed.  On a compact K\"ahler manifold the
+$\partial\dbar$-lemma implies that any exact real $(1,1)$-form is
+$\partial\dbar$-exact, so $\eta=i\partial\dbar\psi$ for a real potential
+$\psi$.  If also $\omega=\omega_0+i\partial\dbar\psi'$, then
+$i\partial\dbar(\psi-\psi')=0$, so tracing with respect to $\omega_0$ gives
+$\Delta_{\omega_0}(\psi-\psi')=0$ and thus $\psi-\psi'$ is constant by the
+maximum principle.
+\end{proof}
+
+This is a \emph{local universality} statement for the Levi-form rule within a
+fixed K\"ahler class.  It should be contrasted with the real-seam case, where
+universal decomposition at order 2 falls far short of reaching all metrics.
+
+
+For the full complex seam $\varphi = u + iv$ and the complete
+rule~\eqref{eq:universal-complex}, the universality question
+acquires a K\"ahler-class component (governed by $i\partial\dbar u$)
+and a Hermitian-but-non-K\"ahler component (governed by
+$i\partial\dbar v$ and the gradient-tensor term).  We state the
+following as open problems, motivated by the real-seam analogues
+proved in~\cite{Ronnback2025}:
+
+\begin{openproblem}[Complex local universality]
+On a compact K\"ahler manifold $(M,\omega_0, J)$, is the extended
+complex seam map
+\[
+F(\varphi,\psi_\phi)
+= (\mathrm{biholomorphism})^*\,\bigl[\,
+  \alpha\,\omegah
+  + \beta_{11}\,i\partial\varphi\wedge\dbar\bar\varphi
+  + \beta_{22}\,i\partial\bar\varphi\wedge\dbar\varphi
+  + \operatorname{Re}\!\bigl(\beta_{12}\,i\partial\varphi\wedge\dbar\varphi\bigr)
+  + \operatorname{Re}(\gamma\,i\partial\dbar\varphi)
+  \,\bigr]
+\]
+locally surjective onto the cone of Hermitian metrics near any
+non-degenerate background?  In particular, does the gradient-tensor
+family $(\beta_{ij})\in\Herm(\mathbb{C}^2)$ play the same
+role of navigating the Teichm\"uller directions in the complex
+setting as it does for the torus in the real setting?
+\end{openproblem}
+
+\begin{openproblem}[Complex vs.\ real universality]
+Is the complex seam map~\eqref{eq:universal-complex}
+``more universal'' than the real seam map in the sense that its image
+has smaller codimension in the space of Hermitian metrics?
+The $\partial\dbar$-lemma suggests that the Levi-form generator alone
+covers the entire K\"ahler class---an infinite-dimensional subspace
+of all Hermitian metrics---which is a stronger universality result
+than any of the real-seam generators achieve at order $\le 2$.
+Make this precise.
+\end{openproblem}
+
+% ================================================================
+\section{Conclusion}
+% ================================================================
+
+The promotion of the seam from a real-valued to a complex-valued
+function, combined with the tightening of the naturality group from
+$\OO(2m)$ to $\UU(m)$, produces one genuinely new generator in the
+classification of isotropic Hermitian-metric rules at order $\le 2$:
+the complex Levi form $\operatorname{Re}(\gamma\, i\partial\dbar\varphi)$
+for complex $\gamma$.  This single additional generator subsumes the
+entire theory of K\"ahler metrics from potentials, the Fisher--Rao
+metric of complex exponential families, and the Fubini--Study geometry
+of quantum state spaces.
+
+The framework developed here retains all three structural properties
+of the real case---classification, Fredholm deformation theory, and
+a well-posed universality question---while exploiting the tighter
+$\UU(m)$-equivariance to access geometric structures (holomorphic
+gradient forms, Levi degeneracy sets, $\partial\dbar$-exact deformations)
+that are invisible to the real $\OO(n)$ theory.
+
+\backmatter
+
+\bmhead{Acknowledgements}
+
+Not applicable.
+
+\section*{Declarations}
+
+\bmhead{Funding}
+
+Not applicable.
+
+\bmhead{Competing interests}
+
+The author declares no competing interests.
+
+\bmhead{Use of large language models (LLMs)}
+
+During preparation of this manuscript, the author used large language
+models (Claude Opus~4.6, GPT-5.2, Grok~4.20, and Gemini~3.1 Pro) to
+assist with drafting and editing text and with exploring alternative
+expositions. The author reviewed and edited the resulting content and
+takes full responsibility for the manuscript.
+
+\bmhead{Ethics approval and consent to participate}
+
+Not applicable.
+
+\bmhead{Consent for publication}
+
+Not applicable.
+
+\bmhead{Data availability}
+
+Not applicable.
+
+\bmhead{Materials availability}
+
+Not applicable.
+
+\bmhead{Code availability}
+
+Not applicable.
+
+\bmhead{Author contribution}
+
+The author wrote the manuscript.
+
+\begin{thebibliography}{99}
+
+\bibitem{Ronnback2025}
+L.~R\"onnb\"ack,
+``Seam Geometry: A Jet-Theoretic Framework for the Scalar Generation
+of Geometric Structures,''
+\textit{preprint}, 2025.
+
+\bibitem{Peetre1960}
+J.~Peetre,
+``Rectification \`a l'article `Une caract\'erisation abstraite des
+op\'erateurs diff\'erentiels'\,''
+\textit{Math.\ Scand.} \textbf{8}, 116--120 (1960).
+
+\bibitem{Slovak1988}
+J.~Slov\'ak,
+``Peetre theorem for nonlinear operators,''
+\textit{Ann.\ Global Anal.\ Geom.} \textbf{6}(3), 273--283 (1988).
+
+\bibitem{Weyl1946}
+H.~Weyl,
+\textit{The Classical Groups: Their Invariants and Representations},
+Princeton University Press, 1946.
+
+\bibitem{Procesi2007}
+C.~Procesi,
+\textit{Lie Groups: An Approach through Invariants and
+Representations},
+Springer, 2007.
+
+\bibitem{GoodmanWallach2009}
+R.~Goodman and N.~R.~Wallach,
+\textit{Symmetry, Representations, and Invariants},
+Graduate Texts in Mathematics~\textbf{255},
+Springer, 2009.
+
+\bibitem{Yau1978}
+S.-T.~Yau,
+``On the Ricci curvature of a compact K\"ahler manifold and the complex
+Monge--Amp\`ere equation, I,''
+\textit{Comm.\ Pure Appl.\ Math.} \textbf{31}(3), 339--411 (1978).
+
+\end{thebibliography}
+
+\end{document}

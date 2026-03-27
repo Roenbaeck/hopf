@@ -1,0 +1,1525 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathtools}%
+\usepackage{enumitem}%
+\usepackage{graphicx}%
+
+\hbadness=10000
+\vbadness=10000
+
+%% Theorem environments
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}[theorem]{Definition}
+
+%% Math operators
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Hess}{Hess}
+\DeclareMathOperator{\Ric}{Ric}
+\DeclareMathOperator{\OO}{O}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Span}{span}
+
+%% Shorthand
+\newcommand{\pa}{\partial}
+\newcommand{\nn}{\nabla}
+\newcommand{\del}{\delta}
+\newcommand{\half}{\tfrac{1}{2}}
+
+\numberwithin{equation}{section}
+
+% ================================================================
+\begin{document}
+% ================================================================
+
+\title[Quaternionic Seam Geometry and Maxwell]{Maxwell's Equations
+  from Self-Consistent Quaternionic Seam Geometry}
+
+\author*[1]{\fnm{Lars} \sur{R\"{o}nnb\"{a}ck}}\email{lars@uptochange.com}
+
+\affil*[1]{\orgdiv{Department of Computer and Systems Sciences},
+  \orgname{Stockholm University},
+  \orgaddress{\city{Stockholm}, \country{Sweden}}}
+
+\abstract{We extend seam geometry to a quaternion-valued
+field $\varphi\colon M\to\mathbb{H}$ with $U(1)$-equivariance.
+The invariant generators split into five symmetric metric generators
+and an antisymmetric 2-form $F = dq_2\wedge dq_3$ that automatically
+satisfies the Bianchi identity.  We derive an exact divergence formula
+relating $\nabla_\mu F^{\mu\nu}$ to the scalar wave equations and a
+Hessian residue, showing that source-free Maxwell's equations hold if
+and only if a Hessian orthogonality condition is satisfied.  On a
+spherical background, both the azimuthal and polar ans\"{a}tze produce
+no-go theorems: the self-consistency condition is incompatible with
+non-trivial electromagnetic fields.  On a cylindrical background,
+the azimuthal vortex ansatz admits a unique solution $Q = c\rho$,
+yielding a uniform magnetic field on a flat self-generated metric.
+Restoring the Hessian generator $\gamma_0\nabla^2_h q_0$ breaks this
+flatness obstruction: the logarithmic potential $q_0 = d\ln\rho$
+produces the exact curved solution
+$Q = c(\alpha\rho - \Lambda/\rho)$ with a non-flat metric
+$g_{\phi\phi} = (\alpha^2\rho^4-\Lambda^2)/(2\alpha\rho^2)$
+that simultaneously satisfies the wave equations and source-free
+Maxwell's equations---a self-consistent curved
+configuration generated purely from scalars.  The
+Einstein tensor of this solution projects onto the
+plane orthogonal to~$F$, a relation imposed by
+self-consistency rather than postulated.}
+
+\keywords{seam geometry, quaternion, Maxwell equations,
+  self-consistency, no-go theorem}
+
+\maketitle
+
+% ================================================================
+\section{Introduction}
+\label{sec:intro}
+% ================================================================
+
+In the companion paper~\cite{seam1} we introduced \emph{seam geometry},
+a framework in which a (pseudo-)Riemannian metric on $(M^n,h)$ is
+generated from a scalar field $s\colon M\to\mathbb{R}$ through four
+$O(n)$-equivariant generators:
+\begin{equation}
+\label{eq:real-seam}
+g = \alpha\,h + \beta\,ds\otimes ds
+    + \gamma\,\nn^2 s + \delta\,(\nn^2 s)^2.
+\end{equation}
+Promoting the scalar to a complex field
+$\varphi = u + iv\colon M\to\mathbb{C}$ introduced six generators
+and resolved the structural limitations of the real framework, with
+the Taub plane-symmetric vacuum providing an explicit non-flat seam
+metric.
+
+The natural next step in the hierarchy of division algebras
+$\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}$~\cite{BaezHuerta2010} is the
+\emph{quaternionic seam}: a field
+$\varphi = q_0 + q_1\mathbf{i} + q_2\mathbf{j} + q_3\mathbf{k}
+\colon M\to\mathbb{H}$ with four real components.
+The general quaternionic seam has 25 equivariant generators at
+orders~$\le 2$.  The central question is what internal symmetry
+to impose.
+
+Two boundary cases are instructive.  Maximal internal
+symmetry---$Sp(1)\cong SU(2)$ acting by left
+multiplication---averages all cross-gradient terms, reducing the
+quaternionic seam to formally the real seam with $s = |\varphi|$:
+only the total gradient $\sum_a dq_a\otimes dq_a$ and the
+background $h$ survive as generators.  The fully general case
+is computationally intractable.
+
+The intermediate case, $U(1)\subset Sp(1)$, is the
+\emph{Goldilocks} equivariance.  Right multiplication by
+$e^{\mathbf{i}\theta}$ rotates $(q_2,q_3)$ while fixing
+$(q_0,q_1)$, producing exactly 6 generators---the same count as
+the complex seam---plus an invariant antisymmetric 2-form
+$F = dq_2\wedge dq_3$ that has no analogue in the complex
+framework.  This $F$ automatically satisfies the Bianchi identity
+$dF = 0$ and is a natural candidate for the electromagnetic field
+tensor.  The programme of deriving electromagnetism from
+geometric self-consistency has a long history, from
+Kaluza--Klein theory~\cite{Kaluza1921,Klein1926} to the
+Rainich--Misner--Wheeler ``already unified field
+theory''~\cite{Rainich1925,MisnerWheeler1957}.  The seam
+approach is complementary: $F$ arises not from an extra
+dimension or from algebraic conditions on the Ricci tensor,
+but from the internal $U(1)$ structure of a quaternionic
+scalar field.
+
+\medskip\noindent
+\textbf{Summary of results.}
+\begin{enumerate}[noitemsep]
+\item An exact divergence formula
+  (Theorem~\ref{thm:maxwell-from-seam}) relating
+  $\nn_\mu F^{\mu\nu}$ to the scalar wave equations and a
+  Hessian residue: Maxwell holds iff a Hessian orthogonality
+  condition is satisfied.
+\item A no-go theorem (Theorem~\ref{thm:no-go-maxwell}) for the
+  azimuthal ansatz on a spherical background: the numerator of
+  $\nn_\mu F^{\mu\phi}$ is a sum of non-negative terms that
+  forces $F = 0$.
+\item A stronger no-go (Theorem~\ref{thm:polar-nogo}) for the
+  polar ansatz: the dipole eigenvalue $\ell(\ell+1) = 2$
+  introduces an unconditional obstruction.
+\item A unique flat escape (Theorem~\ref{thm:cyl-maxwell}): the
+  cylindrical vortex ansatz with $Q = c\rho$ produces a
+  self-consistent uniform magnetic field on a flat metric.
+\item A curved solution (Theorem~\ref{thm:curved-cyl}): restoring
+  the Hessian generator yields the exact solution
+  $Q = c(\alpha\rho - \Lambda/\rho)$ on a non-flat metric with
+  a curvature singularity at $\rho_0 = (\Lambda/\alpha)^{1/2}$.
+\item A curvature analysis (Proposition~\ref{prop:curvature}):
+  the Einstein tensor satisfies
+  $F_{\mu\alpha}\,G^{\alpha\nu} = 0$---it vanishes in the
+  electromagnetic plane and projects onto the orthogonal
+  $(t,z)$-subspace.  Standard Einstein--Maxwell is
+  \emph{not} satisfied; instead, self-consistency imposes an
+  emergent projection identity.
+\end{enumerate}
+
+% ================================================================
+\section{The \texorpdfstring{$U(1)$}{U(1)}-equivariant quaternionic seam}
+\label{sec:u1-seam}
+% ================================================================
+
+\subsection{\texorpdfstring{$U(1)$}{U(1)} action and invariant generators}
+
+The $U(1)$ subgroup acts by right multiplication by
+$e^{\mathbf{i}\theta}$, i.e.\
+$(q_0,q_1,q_2,q_3)\mapsto (q_0,q_1,
+  q_2\cos\theta - q_3\sin\theta,\,
+  q_2\sin\theta + q_3\cos\theta)$.
+The fields split into an \emph{invariant pair} $(q_0,q_1)$ and a
+\emph{rotating pair} $(q_2,q_3)$.
+
+\begin{proposition}[$U(1)$-invariant gradient generators]
+\label{prop:u1-generators}
+The $U(1)$-invariant symmetric $(0,2)$-tensors built from the first
+derivatives of $(q_0,q_1,q_2,q_3)$ are:
+\begin{enumerate}[noitemsep,label=(\roman*)]
+\item $G_{00} = \pa_\mu q_0\,\pa_\nu q_0$
+  \hfill (from invariant pair)
+\item $G_{11} = \pa_\mu q_1\,\pa_\nu q_1$
+  \hfill (from invariant pair)
+\item $G_{01} = \pa_{(\mu}q_0\,\pa_{\nu)}q_1$
+  \hfill (cross-term, invariant pair)
+\item $G_\perp = \pa_\mu q_2\,\pa_\nu q_2 + \pa_\mu q_3\,\pa_\nu q_3$
+  \hfill ($U(1)$-invariant from rotating pair)
+\item $h_{\mu\nu}$ \hfill (conformal generator)
+\end{enumerate}
+No cross-gradients between the invariant pair and the rotating pair
+survive: $\pa_{(\mu}q_0\,\pa_{\nu)}q_2$ transforms under $U(1)$ as
+the first component of a doublet and averages to zero.
+The total count is \textbf{5 gradient generators $+$ 1 conformal
+$=$ 6 generators}---the same as the complex seam.
+\end{proposition}
+
+\begin{proof}
+Under $\theta$-rotation, $\pa_\mu q_2\mapsto \cos\theta\,\pa_\mu q_2
+- \sin\theta\,\pa_\mu q_3$ and
+$\pa_\mu q_3\mapsto\sin\theta\,\pa_\mu q_2
++ \cos\theta\,\pa_\mu q_3$.  Direct computation shows
+$\pa_\mu q_2\,\pa_\nu q_2 + \pa_\mu q_3\,\pa_\nu q_3$ is invariant
+(the rotation is orthogonal).  The antisymmetric combination
+$\pa_\mu q_2\,\pa_\nu q_3 - \pa_\mu q_3\,\pa_\nu q_2$ is also
+invariant but is not a metric generator (it is the 2-form $F$;
+see below).  All other bilinears involving exactly one rotated
+index transform non-trivially.
+\end{proof}
+
+\subsection{The invariant 2-form}
+
+Besides the metric generators, the $U(1)$-invariant 2-form
+\begin{equation}
+\label{eq:u1-Fform}
+F_{\mu\nu} := \pa_\mu q_2\,\pa_\nu q_3 - \pa_\nu q_2\,\pa_\mu q_3
+            = (dq_2\wedge dq_3)_{\mu\nu}
+\end{equation}
+is the antisymmetric counterpart of the surviving generators.
+
+\begin{proposition}[Automatic Bianchi identity]
+\label{prop:bianchi}
+The 2-form $F = dq_2\wedge dq_3$ satisfies $dF = 0$ identically.
+\end{proposition}
+
+\begin{proof}
+$dF = d(dq_2\wedge dq_3) = d^2q_2\wedge dq_3 - dq_2\wedge d^2q_3
+= 0$, since $d^2 = 0$ on any smooth function.
+\end{proof}
+
+\noindent
+Thus $F$ automatically satisfies the homogeneous Maxwell equation.
+Whether the inhomogeneous equation $\nn_\mu F^{\mu\nu} = 0$ holds
+depends on the metric and the field equations for $q_2,q_3$.
+
+\subsection{The seam metric}
+
+\begin{definition}[$U(1)$-equivariant quaternionic seam metric]
+\label{def:u1-seam-metric}
+The $U(1)$-equivariant quaternionic seam metric of order~$\le 1$
+(gradient generators only) is
+\begin{equation}
+\label{eq:u1-seam-metric}
+g_{\mu\nu}
+= \alpha\,h_{\mu\nu}
+  + \beta_0\,\pa_\mu q_0\,\pa_\nu q_0
+  + \beta_1\,\pa_\mu q_1\,\pa_\nu q_1
+  + \beta_\times\,\pa_{(\mu}q_0\,\pa_{\nu)}q_1
+  + \beta_\perp\bigl(
+      \pa_\mu q_2\,\pa_\nu q_2 + \pa_\mu q_3\,\pa_\nu q_3
+    \bigr),
+\end{equation}
+where the coefficients $\alpha,\beta_0,\beta_1,\beta_\times,
+\beta_\perp$ are smooth functions of the $U(1)$-invariant
+scalar jet data.
+\end{definition}
+
+\begin{remark}[Comparison with the complex seam]
+\label{rem:u1-vs-complex}
+The complex seam of~\cite{seam1} has six generators built from
+two real fields $u,v$.  The $U(1)$-equivariant quaternionic seam
+has the same count with a different origin: the key structural
+difference is that the antisymmetric 2-form $F = dq_2\wedge dq_3$
+has no analogue in the two-real-field complex seam.
+\end{remark}
+
+% ================================================================
+\section{Self-consistency and Maxwell's equations}
+\label{sec:maxwell}
+% ================================================================
+
+The seam metric is generated by scalar fields, so there is no
+\emph{a~priori} guarantee that the resulting geometry supports
+electromagnetic propagation.  We now ask: under what conditions
+does the wave equation $\square_g q_a = 0$ imply the source-free
+Maxwell equation $\nn_\mu F^{\mu\nu} = 0$?  The answer is an
+exact divergence identity (Theorem~\ref{thm:maxwell-from-seam})
+that reduces Maxwell to a single Hessian alignment condition.
+
+\subsection{The divergence identity}
+
+\begin{definition}[$U(1)$-seam self-consistency]
+\label{def:u1-self-consistency}
+The $U(1)$-equivariant quaternionic seam is \emph{self-consistent}
+if each scalar field satisfies its wave equation on the metric it
+generates:
+\begin{equation}
+\label{eq:u1-self-consistency}
+\square_g q_a
+:= \frac{1}{\sqrt{|g|}}\,\pa_\mu\bigl(\sqrt{|g|}\,g^{\mu\nu}\,
+   \pa_\nu q_a\bigr) = m_a^2\,q_a,
+\qquad a=0,1,2,3,
+\end{equation}
+where the $m_a$ are mass parameters
+(with $m_a = 0$ for the massless case).
+\end{definition}
+
+\begin{theorem}[Divergence of $F$ from scalar wave equations]
+\label{thm:maxwell-from-seam}
+Let $(M,g)$ be a pseudo-Riemannian manifold and
+$q_2,q_3\in C^\infty(M)$.  Define $F := dq_2\wedge dq_3$.
+Then
+\begin{equation}
+\label{eq:div-F-exact}
+\nn_\mu F^{\mu\nu}
+= (\square_g q_2)\,\pa^\nu q_3
+  - (\square_g q_3)\,\pa^\nu q_2
+  - \bigl[
+      (\Hess\,q_2)^{\nu\mu}\,\pa_\mu q_3
+    - (\Hess\,q_3)^{\nu\mu}\,\pa_\mu q_2
+    \bigr],
+\end{equation}
+where $(\Hess\,q_a)^{\nu\mu} := g^{\nu\beta}\nn_\beta\nn^\mu q_a$.
+
+In particular, $F$ satisfies $\nn_\mu F^{\mu\nu} = 0$ if and only if
+the \textbf{Hessian orthogonality condition}
+\begin{equation}
+\label{eq:hessian-orthogonality}
+(\square_g q_2)\,\pa^\nu q_3
+  - (\square_g q_3)\,\pa^\nu q_2
+= (\Hess\,q_2)^{\nu\mu}\,\pa_\mu q_3
+  - (\Hess\,q_3)^{\nu\mu}\,\pa_\mu q_2
+\end{equation}
+holds.
+When both fields are massless ($\square_g q_a = 0$), this reduces to
+\begin{equation}
+\label{eq:hessian-condition-massless}
+(\Hess\,q_2)^{\nu\mu}\,\pa_\mu q_3
+= (\Hess\,q_3)^{\nu\mu}\,\pa_\mu q_2,
+\end{equation}
+which is \textbf{not} automatically satisfied.
+\end{theorem}
+
+\begin{proof}
+The Bianchi identity $dF = 0$ is automatic
+(Proposition~\ref{prop:bianchi}).  For the divergence, compute:
+\begin{align}
+\nn_\mu F^{\mu\nu}
+&= \nn_\mu\bigl(g^{\mu\alpha}g^{\nu\beta}
+   (\pa_\alpha q_2\,\pa_\beta q_3 - \pa_\alpha q_3\,\pa_\beta q_2)
+   \bigr).
+  \label{eq:div-F-expand}
+\end{align}
+Using the Leibniz rule and $\nn_\mu(g^{\mu\alpha}\pa_\alpha q_a)
+= \square_g q_a$:
+\begin{align}
+\nn_\mu F^{\mu\nu}
+&= g^{\nu\beta}\bigl[
+     (\square_g q_2)\,\pa_\beta q_3
+   + (\nn q_2)^\mu\,\nn_\mu\pa_\beta q_3
+   - (\square_g q_3)\,\pa_\beta q_2
+   - (\nn q_3)^\mu\,\nn_\mu\pa_\beta q_2
+   \bigr].
+  \label{eq:div-F-leibniz}
+\end{align}
+Since $\nn_\mu\pa_\beta q_a = \nn_\beta\pa_\mu q_a$ (torsion-free
+connection), the gradient--Hessian terms become:
+\begin{align*}
+(\nn q_2)^\mu\nn_\beta\pa_\mu q_3
+&= \nn_\beta\bigl(\langle\nn q_2,\nn q_3\rangle_g\bigr)
+   - (\nn_\beta\nn^\mu q_2)\,\pa_\mu q_3, \\
+(\nn q_3)^\mu\nn_\beta\pa_\mu q_2
+&= \nn_\beta\bigl(\langle\nn q_3,\nn q_2\rangle_g\bigr)
+   - (\nn_\beta\nn^\mu q_3)\,\pa_\mu q_2.
+\end{align*}
+The $\nn_\beta\langle\cdots\rangle$ terms cancel (the inner product
+is symmetric).  The Hessian residue survives,
+giving~\eqref{eq:div-F-exact}.
+\end{proof}
+
+\begin{remark}[Counterexample: massless waves do not suffice]
+\label{rem:counterexample}
+On flat Minkowski space, $q_2 = \sin(t+x)$ and
+$q_3 = \sin(t+y)$ both satisfy $\square q_a = 0$, yet
+$\nn_\mu F^{\mu t} = -\cos(t+x)\sin(t+y) \neq 0$.
+The Hessians point in different null directions, violating
+the alignment condition~\eqref{eq:hessian-condition-massless}.
+\end{remark}
+
+\subsection{The Hessian condition on a static spherical ansatz}
+
+We specialise to a static ansatz on the $n=4$ Minkowski background
+with coordinates $(t,r,\theta,\phi)$:
+\begin{equation}
+\label{eq:u1-ansatz}
+q_0 = q_0(r), \qquad q_1 = \omega\,t, \qquad
+q_2 = Q(r)\cos\phi, \qquad q_3 = Q(r)\sin\phi,
+\end{equation}
+where $\omega$ is a constant and $Q(r)$ is a radial profile.
+The $\phi$-winding gives a $U(1)$-equivariant configuration with
+\begin{equation}
+\label{eq:F-ansatz}
+F = dq_2\wedge dq_3 = Q\,Q'\,dr\wedge d\phi.
+\end{equation}
+
+The $U(1)$-seam metric~\eqref{eq:u1-seam-metric} evaluates to a
+diagonal metric (the cross-term $G_{01} = 0$ since the gradients
+of $q_0$ and $q_1$ are orthogonal):
+\begin{equation}
+\label{eq:u1-metric-explicit}
+g = \operatorname{diag}\!\bigl(
+  -\alpha + \beta_1\omega^2,\;\;
+  \alpha + \beta_0(q_0')^2 + \beta_\perp(Q')^2,\;\;
+  \alpha\,r^2,\;\;
+  \alpha\,r^2\sin^2\!\theta + \beta_\perp Q^2
+\bigr).
+\end{equation}
+
+\begin{proposition}[Hessian condition on the ansatz]
+\label{prop:hessian-ansatz}
+For the ansatz $(q_2,q_3) = Q(r)(\cos\phi,\sin\phi)$ on a
+diagonal metric, the Hessian orthogonality
+condition~\eqref{eq:hessian-condition-massless} satisfies:
+\begin{enumerate}[noitemsep,label=(\roman*)]
+\item For $\nu\in\{t,r,\theta\}$, the condition holds identically
+  (by $U(1)$ averaging: $\sin\phi\cos\phi$ cancels).
+\item For $\nu = \phi$, the condition is a single radial ODE
+  relating $Q(r)$, $Q'(r)$, and the metric components
+  $g_{rr}$, $g_{\phi\phi}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The gradients $\pa_\mu q_{2,3}$ have support only in the $r$
+and $\phi$ directions.  The diagonal Hessian components
+$H_{rr}(q_2) = Q''\cos\phi$ and $H_{rr}(q_3) = Q''\sin\phi$
+contribute terms proportional to
+$\cos\phi\sin\phi - \sin\phi\cos\phi = 0$ by $U(1)$ rotation,
+so the $\nu\in\{t,r,\theta\}$ components vanish.  The
+off-diagonal Hessians $H_{r\phi}(q_2) = -(Q'-Q/r)\sin\phi$ and
+$H_{r\phi}(q_3) = (Q'-Q/r)\cos\phi$ contribute only to
+$\nu = \phi$ after $\phi$-averaging ($\sin^2\phi + \cos^2\phi = 1$).
+\end{proof}
+
+\subsection{Electromagnetic stress-energy}
+
+The 2-form $F = Q\,Q'\,dr\wedge d\phi$ produces a diagonal
+electromagnetic stress-energy tensor
+\begin{equation}
+\label{eq:T-em-explicit}
+T^{(F)}_{\mu\nu} = F_{\mu\alpha}F_\nu{}^\alpha
+  - \tfrac{1}{4}\,g_{\mu\nu}\,F_{\alpha\beta}F^{\alpha\beta}.
+\end{equation}
+
+\begin{proposition}[$T^{(F)}$ is traceless]
+\label{prop:T-traceless}
+The stress-energy tensor~\eqref{eq:T-em-explicit} satisfies
+$g^{\mu\nu}T^{(F)}_{\mu\nu} = 0$ in $n=4$ dimensions.
+\end{proposition}
+
+\begin{proof}
+The trace $F_{\mu\alpha}F^{\mu\alpha}
+= F_{\alpha\beta}F^{\alpha\beta}$ cancels the
+$\frac{1}{4}\cdot 4 = 1$ times $F^2$ from the second term.
+\end{proof}
+
+% ================================================================
+\section{No-go theorems on spherical backgrounds}
+\label{sec:nogo}
+% ================================================================
+
+With the divergence identity in hand, we now test whether
+specific field configurations can satisfy both the wave equations
+and Maxwell simultaneously.  The most natural starting point is
+a spherically symmetric background, where the rotating pair
+inherits the angular structure of the coordinate system.
+
+\subsection{No-go for the azimuthal ansatz}
+
+The azimuthal ansatz~\eqref{eq:u1-ansatz}, with $q_{2,3}$
+winding in the $\phi$-direction, is the simplest
+$U(1)$-equivariant configuration on a spherical background.
+
+\begin{theorem}[No-go: azimuthal ansatz on spherical background]
+\label{thm:no-go-maxwell}
+Let $g$ be the $U(1)$-equivariant seam
+metric~\eqref{eq:u1-metric-explicit} with $\alpha > 0$ and
+$\beta_0 \ge 0$, generated by the
+ansatz~\eqref{eq:u1-ansatz}.  If $q_2$ and $q_3$ satisfy the
+massless wave equation $\square_g q_a = 0$, then
+\begin{equation}
+\label{eq:no-go-residue}
+\nn_\mu F^{\mu\phi}
+= \frac{
+    \alpha\,Q^2\cos^2\!\theta
+  + \beta_0\,Q^2(q_0')^2
+  + \alpha\,\sin^2\!\theta\,(rQ'-Q)^2
+  }{g_{rr}\,g_{\phi\phi}^2}.
+\end{equation}
+Each term is non-negative, so $\nn_\mu F^{\mu\nu} = 0$ implies
+$Q \equiv 0$ and hence $F = 0$.  In particular, the
+$U(1)$-equivariant seam with this ansatz admits \textbf{no
+non-trivial self-consistent Maxwell solution on a curved seam metric}.
+\end{theorem}
+
+\begin{proof}
+\emph{Step~1: Maxwell divergence via the wave equation.}
+The only non-zero component of $F^{\mu\nu}$ is
+$F^{r\phi} = QQ'/(g_{rr}\,g_{\phi\phi})$, so
+\begin{equation}
+\label{eq:div-F-explicit}
+\nn_\mu F^{\mu\phi}
+= \frac{1}{\sqrt{|g|}}\,\pa_r\!\left(
+    \sqrt{|g|}\,\frac{QQ'}{g_{rr}\,g_{\phi\phi}}
+  \right).
+\end{equation}
+By the product rule,
+\begin{equation}
+\label{eq:maxwell-product-rule}
+\nn_\mu F^{\mu\phi}
+= \frac{Q}{g_{\phi\phi}}\cdot
+  \frac{1}{\sqrt{|g|}}\,\pa_r\!\left(
+    \frac{\sqrt{|g|}\,Q'}{g_{rr}}
+  \right)
+\;+\; \frac{Q'}{g_{rr}}\,\pa_r\!\left(
+    \frac{Q}{g_{\phi\phi}}
+  \right).
+\end{equation}
+The wave equation $\square_g(Q\cos\phi) = 0$ on the diagonal metric
+gives (separating $\cos\phi$, with $-Q/g_{\phi\phi}$ from
+$\pa_\phi^2\cos\phi = -\cos\phi$):
+\begin{equation}
+\label{eq:wave-Q}
+\frac{1}{\sqrt{|g|}}\,\pa_r\!\left(
+  \frac{\sqrt{|g|}\,Q'}{g_{rr}}\right)
+= \frac{Q}{g_{\phi\phi}}.
+\end{equation}
+Substituting:
+\begin{equation}
+\label{eq:maxwell-after-wave}
+\nn_\mu F^{\mu\phi}
+= \frac{Q^2\,g_{rr} + (Q')^2\,g_{\phi\phi}
+        - Q'Q\,g_{\phi\phi}'}
+       {g_{rr}\,g_{\phi\phi}^2}.
+\end{equation}
+
+\medskip
+\emph{Step~2: Expansion of the numerator.}
+With $g_{rr} = \alpha + \beta_0(q_0')^2 + \beta_\perp(Q')^2$,
+$g_{\phi\phi} = \alpha r^2\sin^2\!\theta + \beta_\perp Q^2$,
+and $g_{\phi\phi}' = 2\alpha r\sin^2\!\theta + 2\beta_\perp QQ'$:
+\begin{align*}
+\mathcal{N}
+&:= Q^2\,g_{rr} + (Q')^2\,g_{\phi\phi} - Q'Q\,g_{\phi\phi}' \\
+&= \alpha Q^2 + \beta_0 Q^2(q_0')^2
+   + \alpha\sin^2\!\theta\,
+     (r^2(Q')^2 - 2rQ'Q).
+\end{align*}
+(The $\beta_\perp$ terms cancel exactly.)
+Completing the square:
+$r^2(Q')^2 - 2rQ'Q = (rQ'-Q)^2 - Q^2$, so
+\begin{equation*}
+\mathcal{N}
+= \alpha Q^2\cos^2\!\theta + \beta_0 Q^2(q_0')^2
+  + \alpha\sin^2\!\theta\,(rQ'-Q)^2.
+\end{equation*}
+
+\medskip
+\emph{Step~3: Positivity.}
+With $\alpha > 0$ and $\beta_0 \ge 0$, all three terms are
+$\ge 0$.  Since $\cos^2\!\theta$ and $1$ are linearly independent
+on $(0,\pi)$, both coefficients must vanish separately.
+The constant coefficient is a sum of non-negative terms, so
+$Q(r) = 0$ for all $r$, giving $F = 0$.
+\end{proof}
+
+\begin{remark}[Source of the obstruction]
+\label{rem:obstruction-source}
+The obstruction is geometric: the Minkowski background in
+spherical coordinates has $g_{\phi\phi}^{(\eta)}
+= r^2\sin^2\!\theta$, but the seam correction
+$\beta_\perp Q^2$ is $\theta$-independent.  The mismatch
+produces a $\cos^2\!\theta$ term in $\mathcal{N}$ that no
+radial profile $Q(r)$ can cancel.
+\end{remark}
+
+\subsection{No-go for the polar ansatz}
+
+\begin{definition}[Polar ansatz]
+\label{def:polar-ansatz}
+On Minkowski spacetime in spherical coordinates, set
+\begin{equation}
+\label{eq:polar-ansatz}
+q_0 = q_0(r), \qquad q_1 = \omega\,t, \qquad
+q_2 = Q(r)\cos\theta, \qquad q_3 = Q(r)\sin\theta.
+\end{equation}
+\end{definition}
+
+The seam metric becomes
+\begin{equation}
+\label{eq:polar-metric}
+g = \operatorname{diag}\!\bigl(
+  -\alpha+\beta_1\omega^2,\;\;
+  \alpha + \beta_0(q_0')^2 + \beta_\perp(Q')^2,\;\;
+  \alpha r^2 + \beta_\perp Q^2,\;\;
+  \alpha r^2\sin^2\!\theta
+\bigr),
+\end{equation}
+with $F = QQ'\,dr\wedge d\theta$.
+
+\begin{theorem}[Stronger no-go: polar ansatz]
+\label{thm:polar-nogo}
+On the polar ansatz~\eqref{eq:polar-ansatz} with $\alpha > 0$,
+$\beta_0\ge 0$, $\beta_\perp\ge 0$, and $\square_g q_{2,3} = 0$,
+\begin{equation}
+\label{eq:polar-numerator}
+\nn_\mu F^{\mu\theta}
+= \frac{\alpha\bigl[Q^2 + (rQ'-Q)^2\bigr]
+        + 2\beta_0\,Q^2(q_0')^2
+        + \beta_\perp\,Q^2(Q')^2}
+       {g_{rr}\,g_{\theta\theta}^2}.
+\end{equation}
+The numerator is strictly positive for $Q\neq 0$, so
+$Q\equiv 0$ is forced.
+\end{theorem}
+
+\begin{proof}
+The wave equation $\square_g(Q\cos\theta) = 0$ gives
+\begin{equation}
+\label{eq:wave-polar}
+\frac{1}{\sqrt{|g|}}\,\pa_r\!\left(
+  \frac{\sqrt{|g|}\,Q'}{g_{rr}}\right)
+= \frac{2Q}{g_{\theta\theta}},
+\end{equation}
+where the factor $2$ (vs.\ $1$ in~\eqref{eq:wave-Q}) arises
+because $\cos\theta$ is a dipole harmonic: eigenvalue
+$\ell(\ell+1) = 2$ instead of $m^2 = 1$ for $\cos\phi$.
+
+The product-rule decomposition gives numerator
+\begin{align*}
+\mathcal{N}
+&= 2Q^2\,g_{rr} + (Q')^2\,g_{\theta\theta}
+   - QQ'\,g_{\theta\theta}' \\
+&= \alpha\bigl[Q^2 + (rQ'-Q)^2\bigr]
+ + 2\beta_0 Q^2(q_0')^2
+ + \beta_\perp Q^2(Q')^2.
+\end{align*}
+Since $Q^2 + (rQ'-Q)^2 \ge Q^2 > 0$ for $Q\neq 0$, and all
+other terms are non-negative, $\mathcal{N} = 0$ requires $Q = 0$.
+\end{proof}
+
+\begin{remark}[Eigenvalue mismatch]
+\label{rem:polar-stronger}
+The azimuthal ansatz had eigenvalue $m^2 = 1$ from $\cos\phi$,
+allowing the cylindrical background
+(Section~\ref{sec:cyl}) to zero the numerator with
+$Q = c\rho$.  The polar eigenvalue $\ell(\ell+1) = 2$ produces
+an extra $\alpha Q^2$ term that cannot be absorbed by any radial
+profile, making the no-go unconditional.
+\end{remark}
+
+\subsection{The hedgehog obstruction}
+
+\begin{remark}[Hedgehog ansatz]
+\label{rem:hedgehog}
+A \emph{hedgehog ansatz} $q_a = f(r)\,x_a/r$ ($a=1,2,3$)
+maps each spatial direction to an imaginary quaternion component.
+However, a spherically symmetric monopole field requires a
+\emph{non-abelian} field strength $F^a_{\mu\nu}$ with all three
+internal components~\cite{tHooft1974,Polyakov1974}; the abelian
+$F = dq_2\wedge dq_3$ selects a plane in internal space and
+breaks spherical symmetry.
+Since $Sp(1)$-equivariance collapses to the real seam (only
+$\sum_a dq_a\otimes dq_a$ survives), the hedgehog route would
+require an intermediate equivariance group strictly between
+$U(1)$ and $Sp(1)$.
+\end{remark}
+
+% ================================================================
+\section{The cylindrical vortex solution}
+\label{sec:cyl}
+% ================================================================
+
+The spherical no-go theorems trace to a common source: the
+background angular structure ($\sin^2\!\theta$ in the azimuthal
+case, $\ell(\ell+1)=2$ in the polar case) produces positive-definite
+obstructions that no radial profile can cancel.  A cylindrical
+background eliminates this angular mismatch, opening the door to
+non-trivial solutions.
+
+\begin{definition}[Cylindrical $U(1)$-seam ansatz]
+\label{def:cylindrical-ansatz}
+On Minkowski spacetime in cylindrical coordinates
+$(t,\rho,\phi,z)$ with $\eta = \operatorname{diag}(-1,1,\rho^2,1)$,
+set
+\begin{equation}
+\label{eq:cyl-ansatz}
+q_0 = q_0(\rho), \qquad q_1 = \omega\,t, \qquad
+q_2 = Q(\rho)\cos\phi, \qquad q_3 = Q(\rho)\sin\phi.
+\end{equation}
+\end{definition}
+
+The $U(1)$-seam metric~\eqref{eq:u1-seam-metric} evaluates to
+\begin{equation}
+\label{eq:cyl-metric}
+g = \operatorname{diag}\!\bigl(
+  -\alpha+\beta_1\omega^2,\;\;
+  \alpha+\beta_0(q_0')^2+\beta_\perp(Q')^2,\;\;
+  \alpha\rho^2+\beta_\perp Q^2,\;\;
+  \alpha
+\bigr),
+\end{equation}
+where primes denote $d/d\rho$.  Crucially, $g_{\phi\phi}
+= \alpha\rho^2 + \beta_\perp Q^2$ contains no $\sin^2\!\theta$
+factor---the angular mismatch of
+Remark~\ref{rem:obstruction-source} is absent.
+
+\begin{theorem}[Cylindrical Maxwell from self-consistency]
+\label{thm:cyl-maxwell}
+On the cylindrical ansatz~\eqref{eq:cyl-ansatz}, imposing the wave
+equation $\square_g q_{2,3} = 0$ gives
+\begin{equation}
+\label{eq:cyl-numerator}
+\nn_\mu F^{\mu\phi}
+= \frac{\alpha(\rho\,Q' - Q)^2
+        + \beta_0\,Q^2(q_0')^2}
+       {g_{\rho\rho}\,g_{\phi\phi}^2}.
+\end{equation}
+This vanishes for all $\rho > 0$ if and only if
+\begin{equation}
+\label{eq:cyl-maxwell-conditions}
+Q(\rho) = c\,\rho
+\qquad\text{and}\qquad
+q_0'(\rho) = 0
+\quad(\text{or } Q \equiv 0).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The computation follows the same product-rule strategy as
+Theorem~\ref{thm:no-go-maxwell} with $r\to\rho$ and no
+$\theta$-dependence.  The numerator is:
+\begin{align*}
+\mathcal{N}
+&= Q^2\,g_{\rho\rho} + (Q')^2\,g_{\phi\phi} - QQ'\,g_{\phi\phi}'
+\\
+&= \alpha(\rho Q' - Q)^2 + \beta_0 Q^2(q_0')^2,
+\end{align*}
+where the $\beta_\perp$ terms cancel exactly.  With $\alpha > 0$
+and $\beta_0 \ge 0$, both terms are non-negative.  Setting
+$\mathcal{N} = 0$ requires $\rho Q' = Q$ (i.e.\ $Q = c\rho$) and
+either $q_0' = 0$ or $Q = 0$.
+\end{proof}
+
+\begin{proposition}[Self-consistent cylindrical solution]
+\label{prop:cyl-solution}
+The configuration $Q = c\rho$, $q_0 = \mathrm{const}$,
+$q_1 = \omega t$ satisfies simultaneously:
+\begin{enumerate}[noitemsep,label=(\roman*)]
+\item the wave equations $\square_g q_a = 0$ for $a = 0,1,2,3$;
+\item the source-free Maxwell equations $\nn_\mu F^{\mu\nu} = 0$
+  and $dF = 0$;
+\item the seam metric is
+\begin{equation}
+\label{eq:cyl-solution-metric}
+g = \operatorname{diag}\!\bigl(
+  -\alpha+\beta_1\omega^2,\;\;
+  A,\;\;
+  A\,\rho^2,\;\;
+  \alpha
+\bigr),
+\qquad
+A := \alpha + \beta_\perp c^2;
+\end{equation}
+\item the electromagnetic field is
+\begin{equation}
+\label{eq:cyl-F}
+F = c^2\rho\,d\rho\wedge d\phi
+  = c^2\,dx\wedge dy,
+\end{equation}
+a uniform magnetic field along the $z$-axis.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) $q_0 = \mathrm{const}$: $\square_g q_0 = 0$ trivially.
+$q_1 = \omega t$: $\square_g q_1
+= \omega\,\pa_t(\sqrt{|g|}\,g^{tt})/\sqrt{|g|} = 0$ since $g^{tt}$
+and $\sqrt{|g|}$ are $t$-independent.
+For $q_2 = c\rho\cos\phi$: the wave equation reduces
+to~\eqref{eq:wave-Q} (with $r\to\rho$).  Setting
+$Q' = c$, $g_{\rho\rho} = A$, $g_{\phi\phi} = A\rho^2$:
+\[
+\text{LHS} = \frac{1}{\rho K}\pa_\rho\!\left(\frac{\rho K c}{A}\right)
+= \frac{c}{A\rho},
+\qquad
+\text{RHS} = \frac{c\rho}{A\rho^2} = \frac{c}{A\rho},
+\]
+where $K = \sqrt{|g_{tt}|\,A^2\,\alpha}$ is $\rho$-independent.
+The equation for $q_3$ is identical by $U(1)$ rotation.
+
+(ii) Theorem~\ref{thm:cyl-maxwell} + Proposition~\ref{prop:bianchi}.
+
+(iii) Substitute $Q = c\rho$, $q_0' = 0$
+into~\eqref{eq:cyl-metric}.
+
+(iv) $F = QQ'\,d\rho\wedge d\phi = c^2\rho\,d\rho\wedge d\phi
+= c^2\,dx\wedge dy$.
+\end{proof}
+
+\begin{remark}[Physical interpretation]
+\label{rem:cyl-interpretation}
+The solution describes a uniform magnetic field
+$\mathbf{B} = c^2\,\hat{z}$ on a static spacetime with
+anisotropic spatial scaling: the $(x,y)$-plane is scaled by
+$A = \alpha+\beta_\perp c^2$ while the $z$-direction is scaled
+by $\alpha$.  The metric~\eqref{eq:cyl-solution-metric} has
+constant coefficients, so $G_{\mu\nu} = 0$: the electromagnetic
+stress-energy does \emph{not} curve spacetime in this solution.
+Whether non-constant coefficient functions $\alpha(Q^2)$,
+$\beta_\perp(Q^2)$ produce gravitational backreaction (a
+Melvin-type magnetic universe~\cite{Melvin1964}) remains open.
+\end{remark}
+
+\begin{remark}[Uniqueness]
+\label{rem:cyl-uniqueness}
+Within the class of constant seam coefficients,
+$Q = c\rho$ is the \emph{unique} non-trivial radial profile
+satisfying both the wave equation and Maxwell's equations on
+the self-generated seam metric.  The coupled system is exactly
+determined: the wave equation fixes $Q$, and the Maxwell
+condition further requires $q_0 = \mathrm{const}$.
+\end{remark}
+
+% ================================================================
+\section{Restoring Hessian generators: curvature from
+  self-consistency}
+\label{sec:hessian}
+% ================================================================
+
+The cylindrical solution
+(Proposition~\ref{prop:cyl-solution}) has a flat metric
+($G_{\mu\nu} = 0$) despite a non-zero electromagnetic field.
+In the companion paper~\cite{seam1}, curvature with constant
+seam coefficients arose from the
+\emph{Hessian generators} $\gamma\,\nn^2_h s$ and
+$\delta\,(\nn^2_h s)^2$: the Hessian of a radial field $s(r)$
+is position-dependent even when $\gamma,\,\delta$ are constants
+(e.g.\ $(\nn^2_h s)_{\theta\theta} = r\,s'$ on the spherical
+background).  The $U(1)$-equivariant metric of
+Definition~\ref{def:u1-seam-metric} was restricted to
+order~$\le 1$ (gradient generators only), deliberately
+excluding the mechanism that produced curvature in the real
+seam.
+
+\subsection{\texorpdfstring{$U(1)$}{U(1)}-invariant Hessian generators}
+
+The $U(1)$-invariant Hessian generators at order~$2$ include:
+\begin{enumerate}[noitemsep,label=(\roman*)]
+\item $(\nn^2_h q_0)_{\mu\nu}$ --- Hessian of the invariant
+  field $q_0$ (individually $U(1)$-invariant),
+\item $(\nn^2_h q_1)_{\mu\nu}$ --- Hessian of $q_1$
+  (individually $U(1)$-invariant),
+\item $(\nn^2_h q_2)_{\mu\alpha}\,(\nn^2_h q_2)^\alpha{}_\nu
+  + (\nn^2_h q_3)_{\mu\alpha}\,(\nn^2_h q_3)^\alpha{}_\nu$
+  --- $U(1)$-averaged squared Hessian from the rotating pair.
+\end{enumerate}
+The individual Hessians $(\nn^2_h q_2)_{\mu\nu}$ and
+$(\nn^2_h q_3)_{\mu\nu}$ transform as a doublet under $U(1)$
+and cannot appear separately (just as for the gradients), but
+generators~(i) and~(ii) are available directly.
+
+For the cylindrical ansatz with $q_1 = \omega t$, the Hessian
+$\nn^2_h(\omega t) = 0$ (all Christoffel symbols
+$\Gamma^t_{\mu\nu} = 0$ on the flat background), so
+generator~(ii) vanishes.  The simplest non-trivial extension is
+therefore to include the Hessian of $q_0$:
+
+\begin{definition}[Extended $U(1)$-seam metric with Hessian
+  generator]
+\label{def:u1-seam-hessian}
+The extended $U(1)$-equivariant quaternionic seam metric of
+order~$\le 2$ is
+\begin{equation}
+\label{eq:u1-seam-hessian}
+g_{\mu\nu}
+= \alpha\,h_{\mu\nu}
+  + \beta_0\,\pa_\mu q_0\,\pa_\nu q_0
+  + \beta_1\,\pa_\mu q_1\,\pa_\nu q_1
+  + \beta_\perp\,G_{\perp\,\mu\nu}
+  + \gamma_0\,(\nn^2_h q_0)_{\mu\nu},
+\end{equation}
+where $G_\perp$, $\alpha$, $\beta_0$, $\beta_1$, $\beta_\perp$,
+$\gamma_0$ are as before (the cross-term $\beta_\times$ drops
+out on our ansatz).
+\end{definition}
+
+\subsection{Cylindrical metric with the Hessian generator}
+
+On the cylindrical background $h = \operatorname{diag}(-1,1,\rho^2,1)$,
+the only non-zero components of $\nn^2_h q_0$ for
+$q_0 = q_0(\rho)$ are:
+\begin{equation}
+\label{eq:hess-q0-cyl}
+(\nn^2_h q_0)_{\rho\rho} = q_0'',
+\qquad
+(\nn^2_h q_0)_{\phi\phi}
+= -\Gamma^\rho_{\phi\phi}\,q_0' = \rho\,q_0',
+\end{equation}
+where $\Gamma^\rho_{\phi\phi} = -\rho$ is the background
+Christoffel symbol.  The extended metric is therefore
+\begin{equation}
+\label{eq:cyl-metric-hess}
+g = \operatorname{diag}\!\bigl(
+  -\alpha+\beta_1\omega^2,\;\;
+  \alpha+\beta_0(q_0')^2+\beta_\perp(Q')^2+\gamma_0 q_0'',\;\;
+  \alpha\rho^2+\beta_\perp Q^2+\gamma_0\rho\,q_0',\;\;
+  \alpha
+\bigr).
+\end{equation}
+The Hessian contributes $\gamma_0 q_0''$ to $g_{\rho\rho}$ and
+$\gamma_0\rho\,q_0'$ to $g_{\phi\phi}$.  Both are
+$\rho$-dependent (whenever $q_0$ is non-constant), so the
+metric is \emph{no longer flat}: its coefficients vary with
+$\rho$, producing non-zero curvature.
+
+\subsection{The modified Maxwell numerator}
+
+\begin{theorem}[Maxwell numerator with Hessian generator]
+\label{thm:hessian-numerator}
+On the cylindrical ansatz~\eqref{eq:cyl-ansatz} with the
+extended metric~\eqref{eq:cyl-metric-hess}, imposing the
+wave equation $\square_g q_{2,3} = 0$ gives
+\begin{equation}
+\label{eq:hessian-numerator}
+\nn_\mu F^{\mu\phi}
+= \frac{\mathcal{N}}{g_{\rho\rho}\,g_{\phi\phi}^2},
+\end{equation}
+where
+\begin{equation}
+\label{eq:hessian-N}
+\mathcal{N}
+= \alpha\,(\rho Q'-Q)^2
+  + \beta_0\,Q^2(q_0')^2
+  + \gamma_0\,(\rho Q'-Q)\,(q_0'\,Q' - q_0''\,Q).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The proof follows the product-rule strategy of
+Theorem~\ref{thm:cyl-maxwell}.  The numerator is
+$\mathcal{N} = Q^2 g_{\rho\rho} + (Q')^2 g_{\phi\phi}
+- QQ'\,g_{\phi\phi}'$
+with the extended metric components.  The $\beta_\perp$ terms
+cancel exactly (as before).  The $\gamma_0$ contribution is:
+\begin{align*}
+&Q^2\,\gamma_0 q_0'' + (Q')^2\,\gamma_0\rho\,q_0'
+- QQ'(\gamma_0 q_0' + \gamma_0\rho\,q_0'') \\
+&\quad= \gamma_0\bigl[
+  q_0''(Q^2 - \rho QQ') + q_0'(\rho(Q')^2 - QQ')
+\bigr] \\
+&\quad= \gamma_0\,(\rho Q'-Q)\,(q_0' Q' - q_0'' Q).
+\end{align*}
+\end{proof}
+
+\begin{remark}[Breaking the sum-of-squares obstruction]
+\label{rem:hessian-breaking}
+In the order-$\le 1$ case (Theorem~\ref{thm:cyl-maxwell}),
+the numerator $\mathcal{N} = \alpha(\rho Q'-Q)^2
++ \beta_0 Q^2(q_0')^2$ was a sum of non-negative terms,
+forcing either $Q = c\rho$ (uniform field) or $q_0' = 0$
+(no gravitational potential).  With the Hessian generator,
+the cross-term $\gamma_0(\rho Q'-Q)(q_0' Q' - q_0'' Q)$
+is \textbf{sign-indefinite}: it can be negative when
+$\gamma_0$ and $(\rho Q'-Q)(q_0' Q' - q_0'' Q)$ have
+opposite signs.  This breaks the no-go structure and opens
+the door to solutions with \textbf{both} $Q \neq c\rho$
+(non-uniform electromagnetic field) \textbf{and} $q_0' \neq 0$
+(radial gravitational potential), producing a
+\textbf{curved} self-consistent metric.
+\end{remark}
+
+\subsection{The coupled ODE system}
+
+Setting $\mathcal{N} = 0$ and imposing the wave equations for
+all four fields gives a coupled second-order ODE system for
+$Q(\rho)$ and $q_0(\rho)$:
+\begin{enumerate}[label=(\roman*)]
+\item\label{item:wave-q0}
+  \textbf{Wave equation for $q_0$:}
+  $q_0' = q_0(\rho)$ depends only on $\rho$, so
+  \begin{equation}
+  \label{eq:wave-q0-hess}
+  \frac{1}{\sqrt{|g|}}\,\pa_\rho\!\left(
+    \frac{\sqrt{|g|}\,q_0'}{g_{\rho\rho}}\right) = 0,
+  \qquad\text{i.e.}\qquad
+  q_0'\,\sqrt{\frac{g_{\phi\phi}}{g_{\rho\rho}}} = C_0
+  \end{equation}
+  for a constant $C_0$.
+
+\item\label{item:wave-Q}
+  \textbf{Wave equation for $q_2,q_3$:}
+  as in~\eqref{eq:wave-Q} (with $r\to\rho$),
+  \begin{equation}
+  \label{eq:wave-Q-hess}
+  \frac{1}{\sqrt{|g|}}\,\pa_\rho\!\left(
+    \frac{\sqrt{|g|}\,Q'}{g_{\rho\rho}}\right)
+  = \frac{Q}{g_{\phi\phi}}.
+  \end{equation}
+
+\item\label{item:maxwell-hess}
+  \textbf{Maxwell condition:}
+  \begin{equation}
+  \label{eq:maxwell-hess}
+  \alpha\,(\rho Q'-Q)^2
+  + \beta_0\,Q^2(q_0')^2
+  + \gamma_0\,(\rho Q'-Q)(q_0'\,Q' - q_0''\,Q) = 0.
+  \end{equation}
+\end{enumerate}
+The metric components
+$g_{\rho\rho} = \alpha + \beta_0(q_0')^2 + \beta_\perp(Q')^2
++ \gamma_0 q_0''$ and
+$g_{\phi\phi} = \alpha\rho^2 + \beta_\perp Q^2
++ \gamma_0\rho\,q_0'$
+depend on the unknowns, making the system fully nonlinear and
+self-referential---the metric is determined by the fields whose
+dynamics it governs.  This is structurally identical to
+the self-consistent system that produced curvature in the real
+seam~\cite{seam1}.
+
+\begin{remark}[The quantum-mechanical connection]
+\label{rem:qm-connection}
+The Hessian generator $\gamma_0\nn^2_h q_0$ makes the metric
+respond to the \emph{curvature} of the scalar field---the
+second-order structure that distinguishes wave-like solutions
+from mere gradients.  In the Madelung representation of
+quantum mechanics, the Hessian of the log-amplitude produces
+the quantum potential; here, the Hessian of $q_0$ produces
+gravitational curvature.  The wave equation
+$\square_g q_0 = 0$ then closes the loop self-consistently:
+the geometry curves because of the field's Hessian, and
+the field's profile is shaped by propagation on that curved
+geometry.  This self-referential coupling is the mechanism
+that gave the real seam its non-trivial vacuum
+solutions~\cite{seam1}, now extended to the quaternionic
+setting where it simultaneously produces curvature
+\emph{and} electromagnetism.
+\end{remark}
+
+\subsection{The curved cylindrical solution}
+\label{sec:curved-cyl}
+
+The coupled system~\eqref{eq:wave-q0-hess}--\eqref{eq:maxwell-hess}
+is fully nonlinear, but the factored form of
+the numerator~\eqref{eq:N-factored} suggests looking for
+solutions where the bracket vanishes.  We now show that
+this strategy yields an exact closed-form solution with
+non-trivial curvature.
+
+\begin{theorem}[Curved self-consistent Maxwell
+  solution on a seam metric]
+\label{thm:curved-cyl}
+Setting $\beta_0 = 0$ in the extended $U(1)$-seam
+metric~\eqref{eq:u1-seam-hessian} and choosing
+$\beta_\perp c^2 \alpha = -\tfrac{1}{2}$,
+$\gamma_0 = -\Lambda/d$ with $\Lambda > 0$, the fields
+\begin{equation}
+\label{eq:curved-fields}
+q_0 = d\,\ln\rho, \qquad
+q_1 = \omega\,t, \qquad
+Q(\rho) = c\!\left(\alpha\rho
+  - \frac{\Lambda}{\rho}\right),
+\end{equation}
+satisfy simultaneously:
+\begin{enumerate}[noitemsep,label=(\roman*)]
+\item the wave equations $\square_g q_a = 0$ for
+  $a = 0,1,2,3$;
+\item the source-free Maxwell equations
+  $\nn_\mu F^{\mu\nu} = 0$ and $dF = 0$;
+\item the seam metric is
+\begin{equation}
+\label{eq:curved-metric}
+g = \operatorname{diag}\!\left(
+  -\alpha+\beta_1\omega^2,\;\;
+  \frac{\alpha^2\rho^4 - \Lambda^2}{2\alpha\rho^4},\;\;
+  \frac{\alpha^2\rho^4 - \Lambda^2}{2\alpha\rho^2},\;\;
+  \alpha
+\right);
+\end{equation}
+\item the electromagnetic field is
+\begin{equation}
+\label{eq:curved-F}
+F = \frac{c^2(\alpha^2\rho^4 - \Lambda^2)}{\rho^3}\,
+  d\rho\wedge d\phi.
+\end{equation}
+\end{enumerate}
+The metric degenerates at
+$\rho_0 = (\Lambda/\alpha)^{1/2}$, where
+$g_{\phi\phi} = g_{\rho\rho} = 0$ and the field strength
+vanishes.  The Kretschner scalar diverges there
+(Proposition~\ref{prop:curvature}), so $\rho_0$ is a
+genuine curvature singularity---not a coordinate
+artifact.  For $\rho > \rho_0$ the metric is Lorentzian
+with $\rho$-dependent coefficients and non-zero
+Riemann curvature.  The parameter $\Lambda$ controls
+the strength of gravitational back-reaction: it
+deforms the uniform vortex $Q = c\rho$ into a
+non-uniform magnetic configuration whose core radius
+$\rho_0$ grows with $\Lambda$.
+\end{theorem}
+
+\begin{proof}
+\emph{Step~1.\ Maxwell condition.}
+With $\beta_0 = 0$, the
+numerator~\eqref{eq:hessian-N} factors:
+\begin{equation}
+\label{eq:N-factored}
+\mathcal{N}
+= (\rho Q'-Q)\bigl[\alpha(\rho Q'-Q)
+  + \gamma_0(q_0' Q' - q_0'' Q)\bigr].
+\end{equation}
+The first factor $\rho Q'-Q = 2c\Lambda/\rho \neq 0$
+(for the non-trivial branch $\Lambda > 0$), so we need
+the second factor to vanish:
+\begin{equation}
+\label{eq:maxwell-bracket}
+\alpha(\rho Q'-Q) + \gamma_0(q_0' Q' - q_0'' Q) = 0.
+\end{equation}
+With $q_0 = d\ln\rho$\,(so $q_0' = d/\rho$,
+$q_0'' = -d/\rho^2$) and
+$Q = c(\alpha\rho-\Lambda/\rho)$\,(so
+$Q' = c(\alpha+\Lambda/\rho^2)$):
+\begin{align*}
+q_0' Q' - q_0'' Q
+&= \frac{d}{\rho}\,c\!\left(\alpha+\frac{\Lambda}{\rho^2}\right)
+  + \frac{d}{\rho^2}\,c\!\left(\alpha\rho
+  - \frac{\Lambda}{\rho}\right) \\
+&= \frac{cd}{\rho}\left[
+  \alpha + \frac{\Lambda}{\rho^2}
+  + \alpha - \frac{\Lambda}{\rho^2}\right]
+= \frac{2cd\alpha}{\rho}.
+\end{align*}
+Substituting into~\eqref{eq:maxwell-bracket}:
+\[
+\alpha\cdot\frac{2c\Lambda}{\rho}
++ \gamma_0\cdot\frac{2cd\alpha}{\rho}
+= \frac{2c\alpha}{\rho}\,(\Lambda + d\gamma_0) = 0.
+\]
+Since $\gamma_0 = -\Lambda/d$, this vanishes
+identically.
+
+\smallskip
+\emph{Step~2.\ Wave equation for $q_0$.}
+The extended metric components with $\beta_0 = 0$,
+$\beta_\perp c^2 \alpha = -\tfrac{1}{2}$,
+$\gamma_0 d = -\Lambda$ are:
+\begin{align*}
+g_{\rho\rho}
+&= \alpha + \beta_\perp c^2\!\left(\alpha
+  + \frac{\Lambda}{\rho^2}\right)^{\!2}
+  + \gamma_0 q_0'' \\
+&= \alpha - \frac{1}{2\alpha}\!\left(\alpha
+  + \frac{\Lambda}{\rho^2}\right)^{\!2}
+  + \frac{\Lambda}{\rho^2} \\
+&= \frac{\alpha^2\rho^4 - \Lambda^2}{2\alpha\rho^4},
+\end{align*}
+and similarly
+\[
+g_{\phi\phi}
+= \alpha\rho^2
+  - \frac{1}{2\alpha}\!\left(\alpha\rho
+  - \frac{\Lambda}{\rho}\right)^{\!2}
+  - \Lambda
+= \frac{\alpha^2\rho^4 - \Lambda^2}{2\alpha\rho^2}.
+\]
+Therefore $g_{\phi\phi}/g_{\rho\rho} = \rho^2$, and
+the first integral~\eqref{eq:wave-q0-hess} gives
+\[
+q_0'\,\sqrt{\frac{g_{\phi\phi}}{g_{\rho\rho}}}
+= \frac{d}{\rho}\cdot\rho = d = C_0. \qquad\checkmark
+\]
+
+\smallskip
+\emph{Step~3.\ Wave equation for $Q$.}
+With $g_{\phi\phi}/g_{\rho\rho} = \rho^2$,
+the determinant factor
+$\sqrt{|g|} = \sqrt{|g_{tt}|\,g_{\rho\rho}\,g_{\phi\phi}\,g_{zz}}$
+has $g_{\rho\rho}\,g_{\phi\phi}\,g_{zz}$ proportional to
+$(\alpha^2\rho^4 - \Lambda^2)^2/(4\alpha^2\rho^4)\cdot\alpha$,
+so $\sqrt{|g|}\,g^{\rho\rho} \propto \rho$.
+The wave equation~\eqref{eq:wave-Q-hess} reduces to
+the Euler equation
+\begin{equation}
+\label{eq:euler-Q}
+\rho^2\,Q'' + \rho\,Q' - Q = 0,
+\end{equation}
+whose general solution is $Q = c_1\rho + c_2/\rho$.
+Our $Q = c(\alpha\rho - \Lambda/\rho)$ is precisely this,
+with $c_1 = c\alpha$, $c_2 = -c\Lambda$.
+
+\smallskip
+\emph{Step~4.\ Non-trivial curvature.}
+The Christoffel symbol
+$\Gamma^\rho_{\phi\phi} = -g_{\phi\phi}'/(2g_{\rho\rho})
+= -\rho(\alpha^2\rho^4 + \Lambda^2)/
+(\alpha^2\rho^4 - \Lambda^2)
+\neq -\rho$
+(the flat-space value), so the Riemann tensor is non-zero
+for $\Lambda \neq 0$. \qedhere
+\end{proof}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{curved_metric.pdf}
+\caption{Curved cylindrical solution
+  (Theorem~\ref{thm:curved-cyl}) with
+  $\alpha = \Lambda = c = 1$.
+  \emph{Left:} metric components $g_{\rho\rho}$ (blue) and
+  $g_{\phi\phi}$ (red), with the flat solution
+  ($\Lambda = 0$, dotted) for comparison.  Both vanish at the
+  critical radius $\rho_0 = \sqrt{\Lambda/\alpha}$ (dashed).
+  \emph{Right:} field strength $F_{\rho\phi}$, showing the
+  suppression near $\rho_0$ relative to the flat uniform field.}
+\label{fig:curved-metric}
+\end{figure}
+
+\begin{remark}[Comparison with $Q = c\rho$]
+\label{rem:curved-comparison}
+Setting $\Lambda = 0$ gives $Q = c\alpha\rho$,
+$g_{\phi\phi} = \alpha\rho^2/2$, $g_{\rho\rho} = \alpha/2$:
+the flat solution of Proposition~\ref{prop:cyl-solution}
+(up to a constant rescaling).  The parameter $\Lambda > 0$
+deforms the flat vortex into a curved configuration
+(Fig.~\ref{fig:curved-metric}):
+\begin{itemize}[noitemsep]
+\item The $1/\rho$ correction to $Q$ makes the magnetic
+  field \emph{non-uniform}: $F_{\rho\phi}$ vanishes at the
+  critical radius $\rho_0 = (\Lambda/\alpha)^{1/2}$ and
+  reverses sign, akin to a magnetic null surface.
+\item The metric develops a curvature singularity at
+  $\rho_0$ where $g_{\phi\phi} = g_{\rho\rho} = 0$
+  and the Kretschner scalar diverges
+  (Proposition~\ref{prop:curvature}), forming a
+  genuine geometric boundary.
+\item The Hessian generator $\gamma_0\nn^2_h q_0$, with its
+  logarithmic potential $q_0 = d\ln\rho$, is the mechanism
+  that lifts $Q = c\rho$ to
+  $Q = c(\alpha\rho - \Lambda/\rho)$.
+\end{itemize}
+\end{remark}
+
+\begin{remark}[Sign of $\beta_\perp$]
+\label{rem:beta-perp-sign}
+The condition $\beta_\perp c^2 \alpha = -\tfrac{1}{2}$
+requires $\beta_\perp < 0$.  This means the rotating-pair
+gradient \emph{subtracts} from the metric, which is unusual
+but physically natural: because the electromagnetic field is
+part of the metric generation itself, a negative $\beta_\perp$
+represents the \emph{binding energy} of the vortex---the
+phase gradient pulls spacetime into a tight configuration
+around the core, counteracting the positive conformal
+factor~$\alpha$ that would otherwise make the space expand.
+The seam coefficients are smooth functions of the jet
+invariants, with no \emph{a~priori} sign constraint on
+$\beta_\perp$.  The positivity of the metric is maintained
+for $\rho > \rho_0 = (\Lambda/\alpha)^{1/2}$, where the
+numerator $\alpha^2\rho^4 - \Lambda^2 > 0$ ensures both
+$g_{\rho\rho} > 0$ and $g_{\phi\phi} > 0$.
+Similarly, $\gamma_0 = -\Lambda/d < 0$, so the Hessian
+generator subtracts from the metric.  Both signs are
+consistent with the companion paper~\cite{seam1}, where
+the Taub solution used either sign for the Hessian
+coefficient~$\gamma$.
+\end{remark}
+
+% ------ Curvature analysis ------
+
+\begin{proposition}[Curvature analysis of the curved solution]
+\label{prop:curvature}
+Consider the metric of Theorem~\ref{thm:curved-cyl} with
+$H = \alpha^2\rho^4 - \Lambda^2$.
+\begin{enumerate}[label=\textup{(\roman*)},noitemsep]
+\item \textbf{Kretschner scalar.}
+$K = R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma}
+    = \frac{1024\,\Lambda^4\alpha^6\rho^{12}}{H^6}$.
+Since $H \to 0$ as $\rho \to \rho_0$, we have
+$K \to \infty$: the degeneration at $\rho_0$ is a
+genuine curvature singularity.  Note that the
+electromagnetic field $F_{\rho\phi} = c^2 H/\rho^3 \to 0$
+vanishes at~$\rho_0$: the singularity is sourced by
+the gravitational self-interaction of the metric
+coefficients, not by concentration of
+electromagnetic energy.
+
+\item \textbf{Einstein tensor.}
+$G_{\rho\rho} = G_{\phi\phi} = 0$,
+while
+$\displaystyle
+  \frac{G_{tt}}{g_{tt}}
+  = \frac{G_{zz}}{g_{zz}}
+  = -\frac{16\,\Lambda^2\alpha^3\rho^6}{H^3}$.
+Hence $G_{\mu\nu} = -\mathcal{K}(\rho)\,h^{(\|)}_{\mu\nu}$,
+where $\mathcal{K} = 16\Lambda^2\alpha^3\rho^6/H^3 > 0$
+is the Gaussian curvature of the $(\rho,\phi)$-surface
+and $h^{(\|)}$ is the induced metric on the
+$(t,z)$-plane orthogonal to the electromagnetic
+field~$F = F_{\rho\phi}\,d\rho \wedge d\phi$.
+In coordinate-invariant form,
+$F_{\mu\alpha}\,G^{\alpha\nu} = 0$:
+the Einstein tensor vanishes on every vector in
+the support of~$F$.
+
+\item \textbf{Relation to stress--energy.}
+Standard Einstein--Maxwell requires
+$G_{\mu\nu} = \kappa\,T^{(F)}_{\mu\nu}$ for some
+$\kappa$.  Here $T^{(F)}_{\rho\rho}$ and
+$T^{(F)}_{\phi\phi}$ are non-zero while
+$G_{\rho\rho} = G_{\phi\phi} = 0$: no proportionality
+constant satisfies the Einstein equation in all
+components.  The same obstruction holds for the scalar
+stress--energy $T^{(S)}_{\mu\nu}$ and for any linear
+combination $T^{(F)} + T^{(S)}$.
+
+This mismatch is \emph{structural}, not parametric:
+the metric is a warped product
+$g = g_{(t,z)} \oplus g_{(\rho,\phi)}$
+with constant $(t,z)$-components, so all curvature
+lives in the $(\rho,\phi)$-surface.  In two
+dimensions the Einstein tensor vanishes
+identically, forcing $G_{\rho\rho} = G_{\phi\phi} = 0$
+regardless of the specific metric functions.  Since
+$T^{(F)}$ is non-zero precisely in these directions,
+no tuning of $\Lambda/\alpha$ can restore the
+Einstein equation.
+
+\item \textbf{Field-strength invariant.}
+$F^{\alpha\beta}F_{\alpha\beta}
+  = 8\alpha^2 c^4$,
+independent of $\rho$---the EM field has constant
+invariant magnitude despite living on a curved
+background.  This contrasts with the Melvin magnetic
+universe~\cite{Melvin1964}, where
+$F^{\alpha\beta}F_{\alpha\beta}$ falls off as
+$(1 + B_0^2\rho^2/4)^{-4}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[Self-consistency versus field equations]
+\label{rem:no-einstein}
+Item~(iii) shows that the seam framework does \emph{not}
+reproduce the Einstein equation as an identity.
+In general relativity, two independent postulates are
+needed: (i)~matter tells spacetime how to curve
+($G_{\mu\nu} = \kappa\,T_{\mu\nu}$), and
+(ii)~spacetime tells matter how to move (field equations
+on the curved background).  In the seam framework these
+collapse into a single requirement: the self-consistency
+loop---each scalar satisfies its wave equation on the
+metric it generates---simultaneously determines both the
+geometry and the field dynamics.
+The emergent relation
+$G_{\mu\nu} = -\mathcal{K}(\rho)\,h^{(\|)}_{\mu\nu}$
+is neither trivial ($G = 0$) nor standard ($G = \kappa T$)
+but exhibits \emph{geometric complementarity}: curvature
+and electromagnetism occupy orthogonal subspaces of the
+tangent bundle ($F_{\mu\alpha}\,G^{\alpha\nu} = 0$),
+without requiring an extra dimension as in Kaluza--Klein
+theory.
+\end{remark}
+
+% ================================================================
+\section{Discussion}
+\label{sec:discussion}
+% ================================================================
+
+The $U(1)$-equivariant quaternionic seam provides the natural
+\emph{architecture} for coupling electromagnetism to
+curvature:
+$dF = 0$ is automatic, $T^{(F)}$ is traceless, and the
+divergence equation reduces to an algebraic identity plus a
+single geometric condition.  The self-consistency condition---that
+each scalar field satisfies its wave equation on the metric it
+generates---then acts as a \emph{symmetry filter}, selecting
+the coordinate system compatible with emergent electromagnetism.
+
+At order~$\le 1$ (gradient generators only), the cylindrical
+vortex $Q = c\rho$ is the unique self-consistent Maxwell
+solution, but it lives on a flat metric.  Restoring the
+Hessian generator $\gamma_0\nn^2_h q_0$
+(Section~\ref{sec:hessian}) breaks the sum-of-squares
+obstruction in the Maxwell numerator.  The resulting coupled
+ODE system admits an exact solution
+(Theorem~\ref{thm:curved-cyl}):
+$Q = c(\alpha\rho - \Lambda/\rho)$
+with $q_0 = d\ln\rho$ produces a non-flat metric that
+simultaneously satisfies the wave equations and source-free
+Maxwell---a \emph{curved, self-consistent seam solution}
+generated purely from scalars, in direct analogy with the
+Melvin magnetic universe~\cite{Melvin1964}.  The curvature
+analysis of Proposition~\ref{prop:curvature} shows that
+the resulting Einstein tensor does \emph{not} satisfy
+standard Einstein--Maxwell: $G_{\mu\nu}$ vanishes in the
+electromagnetic plane while $T^{(F)}_{\mu\nu}$ does not.
+Instead, $G_{\mu\nu}$ projects onto the $(t,z)$-subspace
+orthogonal to~$F$, a geometric relation imposed by
+self-consistency rather than postulated.
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccl}
+\textbf{Ansatz} & \textbf{Background} & \textbf{Maxwell?}
+  & \textbf{Obstruction / solution} \\
+\hline
+$Q(r)(\cos\phi,\sin\phi)$
+  & spherical & \textbf{No}
+  & $\cos^2\!\theta$ mismatch (Thm~\ref{thm:no-go-maxwell}) \\
+$Q(\rho)(\cos\phi,\sin\phi)$
+  & cylindrical & \textbf{Yes}
+  & $Q = c\rho$, uniform $\mathbf{B}$, flat
+    (Thm~\ref{thm:cyl-maxwell}) \\
+$Q(r)(\cos\theta,\sin\theta)$
+  & spherical & \textbf{No}
+  & eigenvalue $\ell(\ell+1)=2$ too strong
+    (Thm~\ref{thm:polar-nogo}) \\
+Hedgehog $f(r)\hat{x}_a$
+  & spherical & ---
+  & requires non-abelian (Rem.~\ref{rem:hedgehog}) \\
+Cylindrical $+$ Hessian
+  & cylindrical & \textbf{Yes}
+  & $Q = c(\alpha\rho-\Lambda/\rho)$, curved
+    (Thm~\ref{thm:curved-cyl}) \\
+\end{tabular}%
+}
+\end{center}
+
+\medskip\noindent
+\textbf{Open questions.}
+
+\begin{enumerate}[noitemsep]
+\item \textbf{Monopole from intermediate equivariance.}
+  A spherically symmetric monopole requires non-abelian field
+  strength.  Does an intermediate equivariance group (between
+  $U(1)$ and $Sp(1)$) support a self-consistent monopole
+  within seam geometry?
+
+\item \textbf{Non-flat backgrounds.}
+  All results use a flat Minkowski background $h$.  Can the
+  seam framework produce non-flat vacuum solutions (e.g.\ Kerr)
+  or self-consistent configurations on curved backgrounds?
+
+\item \textbf{Modified field equation.}
+  Proposition~\ref{prop:curvature} shows $G_{\mu\nu} \neq
+  \kappa\,T^{(F)}_{\mu\nu}$ for any $\kappa$: the seam
+  framework does not reproduce the standard Einstein equation
+  as an identity.  The emergent relation
+  $G_{\mu\nu} = -\mathcal{K}(\rho)\,h^{(\|)}_{\mu\nu}$, or
+  equivalently $F_{\mu\alpha}\,G^{\alpha\nu} = 0$, projects the
+  Einstein tensor onto the plane orthogonal to~$F$.
+  Can this projection identity be derived from an action
+  principle, and does it generalise beyond cylindrical
+  symmetry?
+
+\item \textbf{Massive fields and quantum potential.}
+  This paper uses massless wave equations $\square_g q_a = 0$.
+  The companion paper~\cite{seam1} showed that the massive
+  Klein--Gordon system introduces a nonlinear
+  amplitude--frequency coupling; in the quaternionic setting,
+  replacing the massless equations with a quaternionic
+  Klein--Gordon system would couple the electromagnetic and
+  gravitational sectors through the mass term, potentially
+  linking photon dispersion to spacetime curvature.
+\end{enumerate}
+
+% ================================================================
+\backmatter
+
+\begin{thebibliography}{99}
+
+\bibitem{seam1}
+R\"onnb\"ack, L.: The Einstein tensor in seam geometry: generator
+closure, emergent signature, and null-convexity.
+Submitted to Gen. Relativ. Gravit. (2026)
+
+\bibitem{BaezHuerta2010}
+Baez, J.C., Huerta, J.: Division algebras and supersymmetry~I.
+ In: Doran, R., Friedman, G., Rosenberg, J. (eds.) Superstrings,
+ Geometry, Topology, and $C^*$-Algebras, Proc.\ Sympos.\ Pure
+ Math., vol.~81, pp.~65--80. Amer.\ Math.\ Soc., Providence (2010)
+
+\bibitem{Kaluza1921}
+Kaluza, T.: Zum Unit\"atsproblem der Physik.
+Sitzungsber.\ Preuss.\ Akad.\ Wiss.\ Berlin (Math.\ Phys.)
+\textbf{1921}, 966--972 (1921)
+
+\bibitem{Klein1926}
+Klein, O.: Quantentheorie und f\"unfdimensionale
+Relativit\"atstheorie.
+Z.\ Phys.\ \textbf{37}(12), 895--906 (1926)
+
+\bibitem{Rainich1925}
+Rainich, G.Y.: Electrodynamics in the general relativity theory.
+Trans.\ Amer.\ Math.\ Soc.\ \textbf{27}(1), 106--136 (1925)
+
+\bibitem{MisnerWheeler1957}
+Misner, C.W., Wheeler, J.A.: Classical physics as geometry:
+Gravitation, electromagnetism, unquantized charge, and mass as
+properties of curved empty space.
+Ann.\ Phys.\ \textbf{2}(6), 525--603 (1957)
+
+\bibitem{tHooft1974}
+'t~Hooft, G.: Magnetic monopoles in unified gauge theories.
+Nucl.\ Phys.\ B \textbf{79}(2), 276--284 (1974)
+
+\bibitem{Polyakov1974}
+Polyakov, A.M.: Particle spectrum in quantum field theory.
+JETP Lett.\ \textbf{20}(6), 194--195 (1974)
+
+\bibitem{Melvin1964}
+Melvin, M.A.: Pure magnetic and electric geons.
+Phys.\ Lett.\ \textbf{8}(1), 65--68 (1964)
+
+\end{thebibliography}
+
+\end{document}
