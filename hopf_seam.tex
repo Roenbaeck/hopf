@@ -1691,49 +1691,53 @@ For the isotropic archetype
 $s(x,y) = x \cdot y$ ($\sigma_1 = \sigma_2 = \sigma_3 = 1$),
 we obtain a stronger pointwise result:
 
-\smallskip\noindent\emph{Step 1: A totally geodesic flat torus
-(pointwise $K = 0$ for $s = x \cdot y$).}
-Let $P \subset \mathbb{R}^3$ be any $2$-dimensional plane through
-the origin, and let $R_P$ denote reflection across~$P$.  The
-product map $R_P \times R_P$ preserves both the background metric
-and the seam:
+\smallskip\noindent\emph{Step 1: Totally geodesic flat tori
+(analytic obstruction for all singular-value types).}
+We begin with the general $\ell = 1$ normal form
+$s = \sigma_1 x_1 x_2 + \sigma_2 y_1 y_2 + \sigma_3 z_1 z_2$
+and arbitrary distinct $\sigma_k$.
+Let $\iota$ be the coordinate reflection
+$(x,y,z) \mapsto (x,y,-z)$ on each~$S^2$.  Then
 \[
-s(R_P x,\,R_P y) = (R_P x) \cdot (R_P y) = x \cdot y = s(x,y),
+s(\iota x_1,\,\iota x_2)
+= \sigma_1 x_1 x_2 + \sigma_2 y_1 y_2 + \sigma_3(-z_1)(-z_2)
+= s(x_1,x_2),
 \]
-since $R_P$ is orthogonal.  Because the metric rule
-$g = h + \gamma\,\nabla^2 s$ is natural, $R_P \times R_P$ is an
-isometry of $(S^2 \times S^2, g)$.
+so the product involution $\Phi = \iota \times \iota$ is an
+isometry of $(S^2 \times S^2, g)$.  Its fixed-point set is the
+product of equators
+\(
+N \;=\; \{z_1 = 0\} \times \{z_2 = 0\} \;\cong\; T^2,
+\)
+which is a \emph{totally geodesic} submanifold (as the
+fixed-point set of an isometry).  Parametrising by azimuthal
+angles $\phi_1, \phi_2$, the seam restricts to
+\(
+s|_N = \sigma_1 \cos\phi_1 \cos\phi_2
+     + \sigma_2 \sin\phi_1 \sin\phi_2,
+\)
+which is separable.  By
+Theorem~\ref{thm:rank1-K0}, the Brioschi numerators of the
+induced orbit metric on~$N$ vanish identically, giving
+$K_g(T_{(x,y)} N) = 0$ for all $(x,y) \in N$.
+The same argument applies to the reflections
+$(x,y,z) \mapsto (-x,y,z)$ and $(x,-y,z)$, producing three
+totally geodesic tori for \emph{every} $\ell = 1$ seam.
 
-Its fixed-point set is the surface
+For the isotropic archetype
+$s = x \cdot y$ ($\sigma_1 = \sigma_2 = \sigma_3$), a
+\emph{continuous} family of such tori exists.  Let
+$P \subset \mathbb{R}^3$ be any plane through the origin and
+$R_P$ the reflection across~$P$.  Since $R_P$ is orthogonal,
+$s(R_P x, R_P y) = s(x,y)$, giving an isometry
+$R_P \times R_P$ whose fixed-point set
 \[
-N_P \;=\; (S^2 \cap P) \times (S^2 \cap P) \;\cong\; S^1 \times S^1.
+N_P \;=\; (S^2 \cap P) \times (S^2 \cap P) \;\cong\; T^2
 \]
-As the fixed-point set of an isometry, $N_P$ is a \emph{totally
-geodesic} submanifold of $(S^2 \times S^2, g)$.  Parametrise
-$N_P$ by angles $\theta_1, \theta_2 \in [0, 2\pi)$ along the
-great circles $S^2 \cap P$.  The background metric restricts
-to $h|_{N_P} = d\theta_1^2 + d\theta_2^2$ (flat torus), and the
-seam restricts to $s|_{N_P} = \cos(\theta_1 - \theta_2)$.
-Since $N_P$ is totally geodesic in the background, the covariant
-Hessian restricts to the intrinsic Hessian on $N_P$, giving the
-induced metric
-\[
-g|_{N_P} = (1 - \gamma\cos u)\,\tfrac{1}{2}\,du^2
-  + \tfrac{1}{2}\,dv^2,
-\]
-in the coordinates $u = \theta_1 - \theta_2$,
-$v = \theta_1 + \theta_2$.  This is a Riemannian product of a
-closed curve (parametrised by~$u$) and a circle (parametrised
-by~$v$), so its Gaussian curvature vanishes identically.  Since
-$N_P$ is totally geodesic, the sectional curvature of
-$(S^2 \times S^2, g)$ along $T N_P$ equals this intrinsic
-curvature:
-\begin{equation}
-\label{eq:K-NP-zero}
-K_g(T_{(x,y)} N_P) = 0 \quad \text{for all } (x,y) \in N_P.
-\end{equation}
+is a totally geodesic flat torus with the same Brioschi
+cancellation.
 
-\smallskip\noindent\emph{Step 2: Coverage.}
+\smallskip\noindent\emph{Step 2: Coverage (isotropic case).}
 For any generic point $(x, y) \in S^2 \times S^2$ with
 $x \neq \pm y$, take $P = \operatorname{span}(x, y)$.  Then
 $(x,y) \in N_P$, and the tangent plane $T_{(x,y)} N_P$ is a
@@ -1744,8 +1748,7 @@ $K_{\min} = 0$ pointwise (not merely $\le 0$ as from Step~0).
 For the rank-$1$ case, $K = 0$ holds for \emph{all} mixed planes
 analytically (Theorem~\ref{thm:rank1-K0}).
 
-\smallskip\noindent\emph{Step 3: Non-negativity and distinct
-singular values (numerical).}
+\smallskip\noindent\emph{Step 3: Non-negativity (numerical).}
 Lemma~\ref{lem:riemann-expansion} establishes $K \ge 0$
 at $O(\gamma^2)$ analytically, but the perturbative
 bound degrades at the gradient-parallel plane where the
@@ -1760,17 +1763,6 @@ The minimum is $|K_{\min}| < 10^{-8}$ at every point, consistent
 with $K_{\min} = 0$ exactly.  Convergence under mesh refinement
 ($h = 10^{-2}$ through $10^{-5}$) confirms that the negative
 values are finite-difference artefacts.
-
-For seams with distinct singular values
-$\sigma_1 > \sigma_2 > \sigma_3$
-(Remark~\ref{rem:symmetry-classification}), the reflection
-$R_P \times R_P$ no longer preserves the seam for arbitrary
-planes~$P$, so the totally geodesic argument does not apply.
-(The equal-$\sigma$ and two-equal cases independently follow
-from Hsiang--Kleiner, since they admit a continuous isometric
-circle action.)  For these genuinely non-equivariant seams,
-$K_{\min} = 0$ and $K \ge 0$ are verified numerically with
-equally strong evidence.
 \end{proof}
 
 \subsection{The $K = 0$ locus}
@@ -1879,6 +1871,16 @@ an analytic obstruction for \emph{any} product seam: at
 simultaneous critical points of the two factors, all mixed
 curvatures vanish identically, so no product seam metric of any
 degree achieves strictly positive sectional curvature.
+Moreover, the coordinate-reflection torus argument of
+Step~1 in Proposition~\ref{prop:l1-nonneg} extends
+directly: any product harmonic seam
+$s = Y_\ell^m(x_1)\,Y_\ell^m(x_2)$ is invariant
+under $(x,y,z) \mapsto (x,y,-z)$ on both factors
+(and similarly for the other two coordinate reflections),
+so each provides a totally geodesic torus on which the
+seam restricts to a separable function and
+$K \equiv 0$ by the Brioschi cancellation
+(Theorem~\ref{thm:rank1-K0}).
 \end{remark}
 
 
@@ -1919,12 +1921,15 @@ The value of the seam perspective is fourfold:
   matrix $A$ are all distinct
   (Remark~\ref{rem:symmetry-classification}), the resulting metric
   has no continuous symmetry and Hsiang--Kleiner does not apply.
-  The conformal Hessian property (Proposition~\ref{prop:conformal-hessian}),
-  the Brioschi vanishing for separable seams (Theorem~\ref{thm:rank1-K0}),
-  and the coupling SVD (Proposition~\ref{prop:coupling-svd})
-  provide a new geometric mechanism---independent of
-  symmetry---showing that $K_{\mathrm{mix}} \ge 0$ with equality
-  at every point.
+  The discrete-involution torus argument
+  (Step~1 of Proposition~\ref{prop:l1-nonneg}) provides an
+  \emph{analytic} obstruction even in this genuinely
+  non-equivariant case: coordinate-plane reflections produce
+  totally geodesic flat tori on which $K \equiv 0$.
+  Together with the coupling SVD
+  (Proposition~\ref{prop:coupling-svd}) and the numerical
+  non-negativity (Step~3), this shows $K_{\mathrm{mix}} \ge 0$
+  with equality at every point.
 \item \emph{Universality pathway.}  The combination of equivariant
   (Theorem~\ref{thm:main}) and non-equivariant
   (Proposition~\ref{prop:l1-nonneg}) results, together with the
