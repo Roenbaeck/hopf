@@ -1449,6 +1449,20 @@ R_{a\alpha b\beta}\big|_{\nabla s = 0} = 0
 \end{equation}
 In particular, \emph{all} mixed sectional curvatures are
 zero at such points.
+
+\item\label{it:product-crit-flat}
+More generally, if $s = f(x_1)\,g(x_2)$ for smooth
+$f \in C^\infty(M_1)$, $g \in C^\infty(M_2)$ on \emph{any}
+Riemannian product, then at every simultaneous critical
+point ($\nabla_1 f(x_0) = 0$ and $\nabla_2 g(y_0) = 0$)
+the same conclusion holds:
+\[
+R_{a\alpha b\beta}\big|_{(x_0,y_0)} = 0
+\quad\text{for all } a,\alpha,b,\beta.
+\]
+Since every smooth function on a compact manifold has
+critical points, \emph{every} product seam metric of any
+degree~$\ell$ has points where all mixed curvatures vanish.
 \end{enumerate}
 \end{lemma}
 
@@ -1501,6 +1515,43 @@ the coordinate Hessian equals the covariant Hessian there).
 Vanishing first derivatives of $g$ at the base point in
 normal coordinates implies $\Gamma^I_{JK} = 0$, so
 $R_{a\alpha b\beta} = L_{a\alpha b\beta} + 0 = 0$.
+
+\ref{it:product-crit-flat}\enspace
+Choose geodesic normal coordinates at $(x_0,y_0)$.  For
+$s = fg$, the product rule gives
+$s_{,IJK} = \sum (\partial^{|S|}f/\partial u^S)
+  (\partial^{|T|}g/\partial v^T)$ summed over ways to
+distribute the three indices among $f$ and~$g$.  Whenever
+the indices span \emph{both} factors (i.e.\ at least one
+$a$-type and one $\alpha$-type), every term in the product
+rule carries either a factor $f_{,a}(x_0) = 0$ or
+$g_{,\alpha}(y_0) = 0$.  Only the purely same-factor
+combinations survive:
+$s_{,abc} = f_{,abc}\,g(y_0)$ and
+$s_{,\alpha\beta\gamma} = f(x_0)\,g_{,\alpha\beta\gamma}$.
+
+Since $g_{IJ,K} = \gamma\,s_{,IJK}$ in normal coordinates,
+this has three consequences:
+\begin{enumerate}[label=(\alph*)]
+\item all cross-type Christoffel symbols $\Gamma^M_{a\alpha}$
+vanish (the relevant $s_{,IJK}$ always mixes factors);
+\item upper-cross Christoffels $\Gamma^\gamma_{ab}$ and
+$\Gamma^c_{\alpha\beta}$ vanish (e.g.\
+$\Gamma^c_{\alpha\beta} \propto s_{,c\alpha\beta}
+= f_{,c}(x_0)\,g_{,\alpha\beta} = 0$);
+\item the metric is block-diagonal at $(x_0,y_0)$:
+$g_{a\alpha} = \gamma\,f_{;a}g_{;\alpha} = 0$.
+\end{enumerate}
+By~\ref{it:L-vanish}, $L_{a\alpha b\beta} = 0$.  The
+Christoffel quadratic
+$Q = g_{MN}(\Gamma^M_{\alpha b}\Gamma^N_{a\beta}
+  - \Gamma^M_{\alpha\beta}\Gamma^N_{ab})$
+vanishes because:
+the first product is zero by~(a); and in the second, the
+only surviving Christoffels are
+$\Gamma^\gamma_{\alpha\beta}$ and $\Gamma^c_{ab}$ (all
+same-factor), contracted through $g_{\gamma c} = 0$
+by~(c).
 \end{proof}
 
 \begin{lemma}[Leading-order mixed curvature for $\ell = 1$]
@@ -1822,6 +1873,12 @@ of~$\ell$.  What changes at $\ell \ge 2$ is the $O(\gamma^2)$
 Christoffel-product structure: the non-conformal diagonal blocks
 produce a sign-indefinite quadratic form, in contrast to the
 sum-of-squares of Lemma~\ref{lem:riemann-expansion}.
+Nevertheless,
+Lemma~\ref{lem:linear-cancel}\ref{it:product-crit-flat} provides
+an analytic obstruction for \emph{any} product seam: at
+simultaneous critical points of the two factors, all mixed
+curvatures vanish identically, so no product seam metric of any
+degree achieves strictly positive sectional curvature.
 \end{remark}
 
 
