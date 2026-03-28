@@ -1410,6 +1410,210 @@ blocks are positive multiples of the round metric (by
 Proposition~\ref{prop:conformal-hessian}), and the off-diagonal
 block provides the inter-factor coupling.
 
+\begin{lemma}[Linear Riemann cancellation and mixed-flat
+critical points for $\ell = 1$]
+\label{lem:linear-cancel}
+Let $s$ be any $\ell = 1$ product harmonic seam on
+$S^2 \times S^2$, and let $g = h + \gamma\,\nabla^2 s$.
+\begin{enumerate}[label=(\roman*)]
+\item\label{it:L-vanish}
+The linearisation of the mixed Riemann tensor vanishes
+identically:
+\begin{equation}
+\label{eq:L-vanish}
+L_{a\alpha b\beta}
+  \;=\; \tfrac{1}{2}\bigl(
+    g_{a\beta;\alpha b} + g_{\alpha b;a\beta}
+    - g_{ab;\alpha\beta} - g_{\alpha\beta;ab}
+  \bigr)
+  \;=\; 0,
+\end{equation}
+where $a,b$ are indices on the first factor and
+$\alpha,\beta$ on the second, and semicolons denote
+background covariant derivatives.  Consequently the mixed
+sectional curvature is $O(\gamma^2)$, not~$O(\gamma)$.
+
+\item\label{it:crit-flat}
+At every critical point of~$s$ (where $\nabla s = 0$),
+the mixed Riemann tensor vanishes:
+\begin{equation}
+\label{eq:crit-flat}
+R_{a\alpha b\beta}\big|_{\nabla s = 0} = 0
+\quad\text{for all } a,\alpha,b,\beta.
+\end{equation}
+In particular, \emph{all} mixed sectional curvatures are
+zero at such points.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\ref{it:L-vanish}\enspace
+By \eqref{eq:metric-conformal}, $g_{ab} = (1-\gamma s)\,h_{ab}$
+and $g_{\alpha\beta} = (1-\gamma s)\,h_{\alpha\beta}$, while
+$g_{a\beta} = \gamma\,s_{;a\beta}$.  Since mixed covariant
+derivatives commute on the product background, the conformal
+Hessian~\eqref{eq:diag-conformal} gives
+$s_{;a\beta\alpha} = \nabla_\alpha\nabla_a\nabla_\beta s
+= \nabla_a(-s\,h_{\alpha\beta}) = -s_{;a}\,h_{\alpha\beta}$,
+and so
+\[
+g_{a\beta;\alpha b}
+   = \gamma\,s_{;a\beta\alpha b}
+   = \gamma\,\nabla_b\!\bigl(-s_{;a}\,h_{\alpha\beta}\bigr)
+   = -\gamma\,s_{;ab}\,h_{\alpha\beta}.
+\]
+By the same symmetry,
+$g_{\alpha b;a\beta} = -\gamma\,s_{;\alpha\beta}\,h_{ab}$.
+For the diagonal blocks,
+$g_{ab;\alpha\beta} = -({\gamma\,s_{;\alpha\beta}})\,h_{ab}$
+and
+$g_{\alpha\beta;ab} = -\gamma\,s_{;ab}\,h_{\alpha\beta}$.
+Substituting into~\eqref{eq:L-vanish}:
+\[
+L_{a\alpha b\beta}
+= \tfrac{1}{2}\bigl[
+  -\gamma s_{;ab}\,h_{\alpha\beta}
+  -\gamma s_{;\alpha\beta}\,h_{ab}
+  +\gamma s_{;\alpha\beta}\,h_{ab}
+  +\gamma s_{;ab}\,h_{\alpha\beta}
+\bigr] = 0.
+\]
+
+\ref{it:crit-flat}\enspace
+The full Riemann tensor splits as
+$R_{a\alpha b\beta} = L_{a\alpha b\beta} + Q(\Gamma)$,
+where $Q$ is quadratic in the Christoffel symbols of~$g$.
+It therefore suffices to show that every Christoffel symbol
+of~$g$ vanishes at a critical point.
+
+Choose geodesic normal coordinates $(u^a)$ on the first
+$S^2$ centred at the base point~$x_0$, and $(v^\alpha)$ on
+the second centred at~$y_0$, where $(x_0,y_0)$ is the
+critical point.  The embedding coordinates
+$x_i(u)$ are \emph{odd} functions of~$u$
+(indeed $x_i = u^i\operatorname{sinc}|u|$ for $i = 1,2$
+and $x_3 = \cos|u|$ is even), and similarly for $y_j(v)$.
+Since $s = \sum \sigma_k x_k y_k$, each summand
+$\sigma_k x_k(u)\,y_k(v)$ has definite parity: odd $\times$
+odd (even total degree) or even $\times$ even (even total
+degree).  Hence $s(u,v)$ is an \emph{even} function of
+$(u,v)$, and all its odd-order partial derivatives vanish
+at the origin---in particular, all third derivatives are
+zero.
+
+Consequently
+$\partial_K g_{IJ}\big|_{(u,v)=0}
+= -\gamma(\partial_K s)\,h_{IJ}
+  + \gamma\,\partial_K s_{;IJ} = 0$,
+because $\partial_K s = 0$ (critical point) and
+$\partial_K s_{;IJ} = 0$ (no cubic terms; the background
+Christoffel symbols also vanish in normal coordinates, so
+the coordinate Hessian equals the covariant Hessian there).
+Vanishing first derivatives of $g$ at the base point in
+normal coordinates implies $\Gamma^I_{JK} = 0$, so
+$R_{a\alpha b\beta} = L_{a\alpha b\beta} + 0 = 0$.
+\end{proof}
+
+\begin{lemma}[Leading-order mixed curvature for $\ell = 1$]
+\label{lem:riemann-expansion}
+For an $\ell = 1$ seam metric $g = h + \gamma\,\nabla^2 s$
+with $|\gamma|$ sufficiently small that $g > 0$, the mixed
+sectional curvature of a plane
+$\sigma = \operatorname{span}(X,Y)$ with $h$-unit vectors
+$X \in TM_1$, $Y \in TM_2$ is
+\begin{equation}
+\label{eq:R-expansion}
+K_g(X,Y)
+= \frac{\gamma^2}{4}\!\Bigl(
+    |\nabla_1 s|^2 - (\nabla_1 s \cdot X)^2
+  + |\nabla_2 s|^2 - (\nabla_2 s \cdot Y)^2
+  \Bigr) + O(\gamma^3),
+\end{equation}
+where norms and inner products are with respect to the
+background metric~$h$.  Since
+$|\nabla_k s|^2 \ge (\nabla_k s \cdot V)^2$ by
+Cauchy--Schwarz, the $O(\gamma^2)$ coefficient is a sum of
+squares, non-negative everywhere, and vanishes exactly when
+$X \parallel \nabla_1 s$ and $Y \parallel \nabla_2 s$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:linear-cancel}\ref{it:L-vanish}, the
+derivative term in the Riemann tensor contributes zero to
+mixed components, so the leading-order Riemann tensor is
+entirely quadratic in the Christoffel perturbations
+$\delta\Gamma$:
+\begin{equation}
+\label{eq:R2-christoffel}
+R^{(2)}_{XYXY}
+= \sum_{K}\bigl(
+  \delta\Gamma^K{}_{XY}\,\delta\Gamma_{K,XY}
+  - \delta\Gamma^K{}_{XX}\,\delta\Gamma_{K,YY}
+\bigr),
+\end{equation}
+where the sum runs over an orthonormal basis for
+$TM_1 \oplus TM_2$ and the index is raised with $h^{KM}$
+(absorbing the $g^{KM}$ correction into $O(\gamma^3)$).
+
+Since $g_{IJ}$ is \emph{exactly} linear in $\gamma$, all
+background covariant derivatives $g_{IJ;K}$ are exactly
+$O(\gamma)$, making each $\delta\Gamma$ exactly $O(\gamma)$
+with no higher-order terms.  A direct computation using
+$g_{ab;K} = -\gamma\,s_{;K}\,h_{ab}$, the conformal Hessian
+$s_{;ab} = -s\,h_{ab}$, and the commutativity of mixed
+covariant derivatives on the product background yields the
+Christoffel symbols of the first kind ($C$ on factor~1,
+$W$ on factor~2):
+\begin{alignat*}{2}
+\delta\Gamma_{C,XY}
+  &= -\tfrac{\gamma}{2}\,s_Y\,h_{CX},
+&\qquad
+\delta\Gamma_{W,XY}
+  &= -\tfrac{\gamma}{2}\,s_X\,h_{WY},
+\\
+\delta\Gamma_{C,XX}
+  &= -\tfrac{\gamma}{2}(2s_X\,h_{CX} - s_C),
+&\qquad
+\delta\Gamma_{W,XX}
+  &= -\tfrac{\gamma}{2}\,s_W,
+\\
+\delta\Gamma_{C,YY}
+  &= -\tfrac{\gamma}{2}\,s_C,
+&\qquad
+\delta\Gamma_{W,YY}
+  &= -\tfrac{\gamma}{2}(2s_Y\,h_{WY} - s_W),
+\end{alignat*}
+where $s_X = \nabla_1 s \cdot X$,
+$s_Y = \nabla_2 s \cdot Y$, and
+$s_C$, $s_W$ are the gradient components along~$C$, $W$.
+
+Substituting into~\eqref{eq:R2-christoffel}, the factor-$1$
+sum (over orthonormal~$C$) yields
+\[
+\tfrac{\gamma^2}{4}\sum_C
+\bigl[s_Y^2\,h_{CX}^2 - (2s_X\,h_{CX} - s_C)\,s_C\bigr]
+= \tfrac{\gamma^2}{4}\bigl[
+  s_Y^2 + |\nabla_1 s|^2 - 2s_X^2
+\bigr],
+\]
+and by symmetry the factor-$2$ sum gives
+$\tfrac{\gamma^2}{4}\bigl[
+  s_X^2 + |\nabla_2 s|^2 - 2s_Y^2\bigr]$.
+Adding the two sums and dividing by the area element
+$(1 - \gamma s)^2 + O(\gamma^2) = 1 + O(\gamma)$ produces
+\eqref{eq:R-expansion}.
+\end{proof}
+
+Since every $\ell = 1$ seam $s = x^T\Sigma\,y$ attains its
+extrema on $S^2 \times S^2$ (compactness), critical points
+always exist; explicitly, $(x_0, y_0)$ can be taken as any pair
+of corresponding left and right singular vectors of~$\Sigma$.
+Lemma~\ref{lem:linear-cancel}\ref{it:crit-flat} therefore
+provides a \emph{purely analytic} obstruction to strictly
+positive sectional curvature for all $\ell = 1$ seams, including
+those with distinct singular values that admit no continuous
+isometry group.
+
 \begin{proposition}[Mixed curvature of $\ell = 1$ seams]
 \label{prop:l1-nonneg}
 For any $\ell = 1$ product harmonic seam on $S^2 \times S^2$
@@ -1424,16 +1628,31 @@ Equality $K_g(\sigma) = 0$ is achieved at every point, for at
 least one mixed plane.
 \end{proposition}
 
-\begin{proof}[Proof (analytic for isotropic archetype; numerical
-for generic cases)]
+\begin{proof}[Proof (analytic obstruction; numerical for
+non-negativity in the generic case)]
 By Lemma~\ref{lem:SVD}, any $\ell = 1$ seam is isometric to the
-normal form~\eqref{eq:l1-normal-form}.  We first give an exact
-analytic proof for the fully isotropic case
-$s(x,y) = x \cdot y$ ($\sigma_1 = \sigma_2 = \sigma_3 = 1$);
-the extension to distinct singular values is numerical (Step~3).
+normal form~\eqref{eq:l1-normal-form}.
+
+\smallskip\noindent\emph{Step 0: Analytic obstruction for all
+singular-value types.}
+By Lemma~\ref{lem:linear-cancel}\ref{it:crit-flat}, every mixed
+sectional curvature vanishes at each critical point of~$s$.
+Critical points always exist (compactness of $S^2 \times S^2$),
+so $K_{\min} \le 0$ globally for every $\ell = 1$ seam,
+regardless of the singular-value structure.
+Moreover, Lemma~\ref{lem:riemann-expansion} shows that the
+leading-order mixed curvature is a sum of squares at
+$O(\gamma^2)$, explaining the non-negativity at
+leading order and identifying the $K = 0$ direction
+as the gradient-parallel plane
+$X \parallel \nabla_1 s$, $Y \parallel \nabla_2 s$.
+
+For the isotropic archetype
+$s(x,y) = x \cdot y$ ($\sigma_1 = \sigma_2 = \sigma_3 = 1$),
+we obtain a stronger pointwise result:
 
 \smallskip\noindent\emph{Step 1: A totally geodesic flat torus
-(for $s = x \cdot y$).}
+(pointwise $K = 0$ for $s = x \cdot y$).}
 Let $P \subset \mathbb{R}^3$ be any $2$-dimensional plane through
 the origin, and let $R_P$ denote reflection across~$P$.  The
 product map $R_P \times R_P$ preserves both the background metric
@@ -1479,15 +1698,19 @@ For any generic point $(x, y) \in S^2 \times S^2$ with
 $x \neq \pm y$, take $P = \operatorname{span}(x, y)$.  Then
 $(x,y) \in N_P$, and the tangent plane $T_{(x,y)} N_P$ is a
 mixed plane (spanned by one tangent vector from each factor).
-Hence every generic point admits a mixed plane with $K = 0$.
-By continuity, $K_{\min} \le 0$ everywhere.
+Hence every generic point admits a mixed plane with $K = 0$---so
+$K_{\min} = 0$ pointwise (not merely $\le 0$ as from Step~0).
 
 For the rank-$1$ case, $K = 0$ holds for \emph{all} mixed planes
 analytically (Theorem~\ref{thm:rank1-K0}).
 
 \smallskip\noindent\emph{Step 3: Non-negativity and distinct
 singular values (numerical).}
-That $K_g(\sigma) \ge 0$ for all \emph{other} mixed planes is
+Lemma~\ref{lem:riemann-expansion} establishes $K \ge 0$
+at $O(\gamma^2)$ analytically, but the perturbative
+bound degrades at the gradient-parallel plane where the
+$O(\gamma^2)$ coefficient vanishes.
+That $K_g(\sigma) \ge 0$ for all mixed planes is therefore
 verified by extensive numerical computation (companion scripts
 \texttt{test\_local\_fine.py}, \texttt{test\_fine\_scan.py}).
 At each of~$1296$ sample points on $S^2 \times S^2$, all mixed
@@ -1565,6 +1788,11 @@ and $M(e_1, f_2) = M(e_2, f_1) = 0$.  Thus $M$ is diagonal in the
 basis $(e_1, e_2) \times (f_1, f_2)$ with entries $(s, 1)$, confirming
 that the $K = 0$ plane corresponds to the weak singular value
 $|s| \le 1$.
+Equivalently, the in-plane tangents $e_1, f_1$ are precisely
+the factor-gradient directions $\nabla_1 s/|\nabla_1 s|$ and
+$\nabla_2 s/|\nabla_2 s|$, so the $K = 0$ plane is the
+gradient-parallel plane identified by
+Lemma~\ref{lem:riemann-expansion}.
 
 The three cases (a)--(c) follow: at generic $s$, the weak singular
 value $|s|$ is positive but gives $K = 0$; at $s = 0$, it vanishes
