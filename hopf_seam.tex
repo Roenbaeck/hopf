@@ -1410,11 +1410,11 @@ blocks are positive multiples of the round metric (by
 Proposition~\ref{prop:conformal-hessian}), and the off-diagonal
 block provides the inter-factor coupling.
 
-\begin{lemma}[Linear Riemann cancellation and mixed-flat
-critical points for $\ell = 1$]
+\begin{lemma}[Linear Riemann cancellation on products;
+mixed-flat critical points for $\ell = 1$]
 \label{lem:linear-cancel}
-Let $s$ be any $\ell = 1$ product harmonic seam on
-$S^2 \times S^2$, and let $g = h + \gamma\,\nabla^2 s$.
+Let $(M_1 \times M_2, h = h_1 + h_2)$ be a Riemannian product
+and $g = h + \gamma\,\nabla^2 s$ for any smooth function~$s$.
 \begin{enumerate}[label=(\roman*)]
 \item\label{it:L-vanish}
 The linearisation of the mixed Riemann tensor vanishes
@@ -1428,14 +1428,16 @@ L_{a\alpha b\beta}
   \bigr)
   \;=\; 0,
 \end{equation}
-where $a,b$ are indices on the first factor and
-$\alpha,\beta$ on the second, and semicolons denote
-background covariant derivatives.  Consequently the mixed
-sectional curvature is $O(\gamma^2)$, not~$O(\gamma)$.
+where $a,b$ are indices on~$M_1$, $\alpha,\beta$ on~$M_2$,
+and semicolons denote background covariant derivatives.
+Consequently the mixed sectional curvature is
+$O(\gamma^2)$, not~$O(\gamma)$.
 
 \item\label{it:crit-flat}
-At every critical point of~$s$ (where $\nabla s = 0$),
-the mixed Riemann tensor vanishes:
+If, additionally, $M_1 = M_2 = S^2$ and $s$ is an
+$\ell = 1$ product harmonic seam, then at every critical
+point of~$s$ (where $\nabla s = 0$) the full mixed Riemann
+tensor vanishes:
 \begin{equation}
 \label{eq:crit-flat}
 R_{a\alpha b\beta}\big|_{\nabla s = 0} = 0
@@ -1448,36 +1450,19 @@ zero at such points.
 
 \begin{proof}
 \ref{it:L-vanish}\enspace
-By \eqref{eq:metric-conformal}, $g_{ab} = (1-\gamma s)\,h_{ab}$
-and $g_{\alpha\beta} = (1-\gamma s)\,h_{\alpha\beta}$, while
-$g_{a\beta} = \gamma\,s_{;a\beta}$.  Since mixed covariant
-derivatives commute on the product background, the conformal
-Hessian~\eqref{eq:diag-conformal} gives
-$s_{;a\beta\alpha} = \nabla_\alpha\nabla_a\nabla_\beta s
-= \nabla_a(-s\,h_{\alpha\beta}) = -s_{;a}\,h_{\alpha\beta}$,
-and so
-\[
-g_{a\beta;\alpha b}
-   = \gamma\,s_{;a\beta\alpha b}
-   = \gamma\,\nabla_b\!\bigl(-s_{;a}\,h_{\alpha\beta}\bigr)
-   = -\gamma\,s_{;ab}\,h_{\alpha\beta}.
-\]
-By the same symmetry,
-$g_{\alpha b;a\beta} = -\gamma\,s_{;\alpha\beta}\,h_{ab}$.
-For the diagonal blocks,
-$g_{ab;\alpha\beta} = -({\gamma\,s_{;\alpha\beta}})\,h_{ab}$
-and
-$g_{\alpha\beta;ab} = -\gamma\,s_{;ab}\,h_{\alpha\beta}$.
-Substituting into~\eqref{eq:L-vanish}:
-\[
-L_{a\alpha b\beta}
-= \tfrac{1}{2}\bigl[
-  -\gamma s_{;ab}\,h_{\alpha\beta}
-  -\gamma s_{;\alpha\beta}\,h_{ab}
-  +\gamma s_{;\alpha\beta}\,h_{ab}
-  +\gamma s_{;ab}\,h_{\alpha\beta}
-\bigr] = 0.
-\]
+Write $g_{IJ} = h_{IJ} + \gamma\,s_{;IJ}$.  Since $h$ is a
+product metric, $h_{ab;\alpha} = 0$ and
+$h_{\alpha\beta;a} = 0$, so $g_{IJ;K} = \gamma\,s_{;IJK}$.
+Each of the four terms in~\eqref{eq:L-vanish} therefore equals
+$\gamma\,s_{;ab\alpha\beta}$: cross-factor covariant
+derivatives commute because the mixed background curvature
+$R^{(h)}_{a\alpha\cdot\cdot} = 0$, while same-factor
+derivatives acting on a tensor with indices entirely on the
+\emph{other} factor also commute (the Riemann-symmetry
+contraction vanishes by type).  Hence
+$L_{a\alpha b\beta}
+= \tfrac{\gamma}{2}(1 + 1 - 1 - 1)\,s_{;ab\alpha\beta}
+= 0$.
 
 \ref{it:crit-flat}\enspace
 The full Riemann tensor splits as
@@ -1826,21 +1811,13 @@ sign-changing $K_{\mathrm{mix}}$.  The non-negativity of
 Proposition~\ref{prop:l1-nonneg} is thus specific to the conformal
 Hessian structure of $\ell = 1$.
 
-The distinction is \emph{not} that the linearised mixed Riemann
-tensor $L_{a\alpha b\beta}$ becomes nonzero for $\ell \ge 2$.
-In fact, $L_{a\alpha b\beta} = 0$ for \emph{every} Hessian-rule
-seam $g = h + \gamma\,\nabla^2 s$ on any Riemannian product
-$M_1 \times M_2$, regardless of~$s$: the four fourth-order terms
-in~\eqref{eq:L-vanish} each reduce to $\gamma\,s_{;ab\alpha\beta}$
-after commuting cross-factor derivatives (which commute freely
-since $R^{(h)}_{a\alpha\cdot\cdot} = 0$), so $L = 0$ identically.
-Thus $K_{\mathrm{mix}} = O(\gamma^2)$ for all~$\ell$.  What
-changes at $\ell \ge 2$ is the $O(\gamma^2)$ Christoffel-product
-structure: the non-conformal diagonal blocks
-$g_{ab} = h_{ab} + \gamma\,\nabla_a\nabla_b s$ produce Christoffel
-symbols whose quadratic contraction is sign-indefinite, in contrast
-to the sum-of-squares form of
-Lemma~\ref{lem:riemann-expansion}.
+Note that $L_{a\alpha b\beta} = 0$ for all~$\ell$ by
+Lemma~\ref{lem:linear-cancel}\ref{it:L-vanish} (which holds
+for any~$s$), so $K_{\mathrm{mix}} = O(\gamma^2)$ regardless
+of~$\ell$.  What changes at $\ell \ge 2$ is the $O(\gamma^2)$
+Christoffel-product structure: the non-conformal diagonal blocks
+produce a sign-indefinite quadratic form, in contrast to the
+sum-of-squares of Lemma~\ref{lem:riemann-expansion}.
 \end{remark}
 
 
