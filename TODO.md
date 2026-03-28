@@ -8,10 +8,10 @@ Prove that no $O(2) \times O(2)$-equivariant order-$\le 2$ seam metric on $S^2 \
 
 - `hopf_seam.tex` — Main paper (Springer sn-jnl class)
 - `compute_mixed_curvature.py` — Symbolic computation of $R_{0202}$ (Python + SymPy)
-- `reference_material/jet-framework.tex` — Real seam framework paper (reference)
-- `reference_material/complex-jet-framework.tex` — Complex seam framework paper (reference)
-- `reference_material/seam_einstein.tex` — Real / complex seam framework applied to the Einstein Tensor (reference)
-- `reference_material/quaternion_seam_einstein.tex` — Quaternion seam framework applied to Maxwell's equations (reference)
+- `reference_material/jet-framework.txt` — Real seam framework paper (reference)
+- `reference_material/complex-jet-framework.txt` — Complex seam framework paper (reference)
+- `reference_material/seam_einstein.txt` — Real / complex seam framework applied to the Einstein Tensor (reference)
+- `reference_material/quaternion_seam_einstein.txt` — Quaternion seam framework applied to Maxwell's equations (reference)
 
 ### Computation scripts (in `.venv` with SymPy 1.14.0, numpy 2.0.2)
 - `sympy_diagonal_formula.py` — Derives K₀₂ from 4×4 diagonal metric; confirms paper's old formula was WRONG

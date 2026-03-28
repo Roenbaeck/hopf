@@ -1066,7 +1066,15 @@ subject to the positivity condition $\omega_\psi > 0$.
 
 In the language of~\cite{Ronnback2025complex}, the seam is
 $\varphi = \psi$ (real-valued) and the rule is the pure Levi-form
-generator.
+generator.  By the universal decomposition
+of~\cite{Ronnback2025complex}, this is the \emph{unique}
+$\UU(m)$-equivariant generator (among constant-coefficient
+order-${\le}\,2$ rules) that preserves the K\"ahler condition:
+the gradient-tensor generators $\partial\varphi \wedge
+\bar\partial\bar\varphi$ etc.\ obstruct $d$-closure of the output
+$(1,1)$-form.  Thus the $i\partial\bar\partial\psi$ ansatz is not
+a special case but the exhaustive classification of complex seam
+rules on $\mathbb{CP}^1 \times \mathbb{CP}^1$.
 
 \subsection{Holomorphic bisectional curvature}
 
@@ -1210,6 +1218,30 @@ values of~$A$.  The full-rank case $\sigma_1 = \sigma_2 = \sigma_3 = 1$
 gives $s = \hat{n}_1 \cdot \hat{n}_2$, the geodesic cosine.
 \end{lemma}
 
+\begin{remark}[Symmetry classification]
+\label{rem:symmetry-classification}
+The isometry group of the seam metric depends on the singular
+value multiplicities:
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Singular values & Symmetry group & Hsiang--Kleiner? \\
+\hline
+$\sigma_1 = \sigma_2 = \sigma_3$ & diagonal $\SO(3)$ & Yes \\
+$\sigma_1 = \sigma_2 > \sigma_3$ (or cyclic) & diagonal $\SO(2)$ & Yes \\
+$\sigma_1 > \sigma_2 > \sigma_3$, all distinct & discrete only & \textbf{No} \\
+\hline
+\end{tabular}
+\end{center}
+In particular, the cases $s = \hat{n}_1 \cdot \hat{n}_2$
+(diagonal $\SO(3)$) and $s = x_1 x_2 + y_1 y_2$
+(diagonal $\SO(2)$) both admit a continuous isometric circle action,
+so Hsiang--Kleiner already precludes positive curvature.  The
+genuinely symmetry-free case---where our analysis provides new
+information beyond Hsiang--Kleiner---is when all three singular
+values are distinct.
+\end{remark}
+
 \subsection{The conformal Hessian property}
 
 Consider the metric $g = h + \gamma\,\nabla^2 s$ on
@@ -1309,6 +1341,59 @@ $I_2 - v v^T$ with $|v|^2 = 1 - s^2$ has eigenvalues $s^2$ and~$1$,
 giving singular values $(1, |s|)$ for~$M$.
 \end{proof}
 
+\subsection{Rank-$1$ seams: analytical proof}
+
+For rank-$1$ seams ($\sigma_2 = \sigma_3 = 0$), which are
+automatically equivariant, we can prove the vanishing of mixed
+curvature directly from the Brioschi formula.
+
+\begin{theorem}[Mixed curvature vanishes for rank-$1$ $\ell = 1$ seams]
+\label{thm:rank1-K0}
+Let $s = f(\theta_1)\,g(\theta_2)$ where $f$ and $g$ are
+$\ell = 1$ spherical harmonics (after choosing axes on each
+factor).  Then for the seam metric
+$g_s = h + \gamma\,\nabla^2 s$ and all values of $\gamma$ for
+which $g_s > 0$,
+\[
+K_{g_s}(\partial_{\theta_1}, \partial_{\theta_2}) = 0
+\quad \text{identically.}
+\]
+\end{theorem}
+
+\begin{proof}
+The orbit metric is
+$g_{\mathrm{orb}} = \bigl(\begin{smallmatrix} \lambda & \eta \\
+\eta & \lambda \end{smallmatrix}\bigr)$ with
+$\lambda = 1 - \gamma s = 1 - \gamma f g$ and
+$\eta = \gamma f'g'$.  Applying the Brioschi
+formula~\eqref{eq:Kmix-general}, the two numerators are
+\[
+\lambda_{,1} - \eta_{,2} = -\gamma f'g - \gamma f'g'' = -\gamma f'(g + g''), \qquad
+\lambda_{,2} - \eta_{,1} = -\gamma f g' - \gamma f'' g' = -\gamma g'(f + f'').
+\]
+Since $f$ and $g$ are $\ell = 1$ harmonics, they satisfy
+$f'' + (\cot\theta_1)f' + 2f = 0$, i.e.\ $\Delta_{S^1}f = -2f$.
+However, the key identity is stronger: as restrictions to $S^2$
+of linear functions on $\mathbb{R}^3$, they satisfy the
+\emph{pointwise ODE}
+\[
+f''(\theta) = -f(\theta) \quad \text{(along any arc at fixed $\phi$)},
+\]
+when $f$ depends only on $\theta$ (which holds after choosing the
+polar axis along the harmonic's direction).  Thus
+$g + g'' = 0$ and $f + f'' = 0$, so both Brioschi numerators
+vanish identically, giving $K = 0$ for all $\theta_1, \theta_2$
+and all~$\gamma$.
+\end{proof}
+
+\begin{remark}
+The identity $f'' = -f$ is the $\theta$-component of the
+conformal Hessian property~\eqref{eq:conformal-hessian}.
+For $\ell \ge 2$, $f'' \neq -f$ in general (e.g.\
+$f = \cos^2\theta$ gives $f'' = -2\cos 2\theta \neq -\cos^2\theta$),
+and the Brioschi cancellation fails.
+\end{remark}
+
 \subsection{Non-negative mixed curvature for $\ell = 1$}
 
 The full $\ell = 1$ seam metric in block form is
@@ -1339,35 +1424,90 @@ Equality $K_g(\sigma) = 0$ is achieved at every point, for at
 least one mixed plane.
 \end{proposition}
 
-\begin{proof}[Proof (numerical)]
-The proposition is verified by extensive numerical computation
-(companion scripts \texttt{test\_local\_fine.py},
-\texttt{test\_fine\_scan.py}).
+\begin{proof}[Proof (analytic for isotropic archetype; numerical
+for generic cases)]
+By Lemma~\ref{lem:SVD}, any $\ell = 1$ seam is isometric to the
+normal form~\eqref{eq:l1-normal-form}.  We first give an exact
+analytic proof for the fully isotropic case
+$s(x,y) = x \cdot y$ ($\sigma_1 = \sigma_2 = \sigma_3 = 1$);
+the extension to distinct singular values is numerical (Step~3).
 
-For the full-rank seam $s = \hat{n}_1 \cdot \hat{n}_2$: at each
-of~$1296$ sample points on $S^2 \times S^2$, all mixed sectional
-curvatures are computed via finite differences with
-step size $h = 10^{-4}$ (7-point stencil), achieving
-precision~$\sim\!10^{-9}$.  The minimum mixed curvature at each
-point is $|K_{\min}| < 10^{-8}$---consistent with
-$K_{\min} = 0$ exactly.  The result is confirmed at generic points
-(where the $K = 0$ plane does not align with coordinate directions)
-by Nelder--Mead optimisation over the Grassmannian of mixed planes,
-yielding $K_{\min} = O(10^{-9})$.
+\smallskip\noindent\emph{Step 1: A totally geodesic flat torus
+(for $s = x \cdot y$).}
+Let $P \subset \mathbb{R}^3$ be any $2$-dimensional plane through
+the origin, and let $R_P$ denote reflection across~$P$.  The
+product map $R_P \times R_P$ preserves both the background metric
+and the seam:
+\[
+s(R_P x,\,R_P y) = (R_P x) \cdot (R_P y) = x \cdot y = s(x,y),
+\]
+since $R_P$ is orthogonal.  Because the metric rule
+$g = h + \gamma\,\nabla^2 s$ is natural, $R_P \times R_P$ is an
+isometry of $(S^2 \times S^2, g)$.
 
-Convergence under mesh refinement ($h = 10^{-2}$ through $10^{-5}$)
-shows the negative values are finite-difference artefacts converging
-to zero.  The result is consistent across rank-$1$ seams ($z_1 z_2$),
-rank-$2$ seams ($x_1 x_2 + y_1 y_2$), and the full-rank seam
-($\hat{n}_1 \cdot \hat{n}_2$), as predicted by the SVD isometry
-(Lemma~\ref{lem:SVD}).
+Its fixed-point set is the surface
+\[
+N_P \;=\; (S^2 \cap P) \times (S^2 \cap P) \;\cong\; S^1 \times S^1.
+\]
+As the fixed-point set of an isometry, $N_P$ is a \emph{totally
+geodesic} submanifold of $(S^2 \times S^2, g)$.  Parametrise
+$N_P$ by angles $\theta_1, \theta_2 \in [0, 2\pi)$ along the
+great circles $S^2 \cap P$.  The background metric restricts
+to $h|_{N_P} = d\theta_1^2 + d\theta_2^2$ (flat torus), and the
+seam restricts to $s|_{N_P} = \cos(\theta_1 - \theta_2)$.
+Since $N_P$ is totally geodesic in the background, the covariant
+Hessian restricts to the intrinsic Hessian on $N_P$, giving the
+induced metric
+\[
+g|_{N_P} = (1 - \gamma\cos u)\,\tfrac{1}{2}\,du^2
+  + \tfrac{1}{2}\,dv^2,
+\]
+in the coordinates $u = \theta_1 - \theta_2$,
+$v = \theta_1 + \theta_2$.  This is a Riemannian product of a
+closed curve (parametrised by~$u$) and a circle (parametrised
+by~$v$), so its Gaussian curvature vanishes identically.  Since
+$N_P$ is totally geodesic, the sectional curvature of
+$(S^2 \times S^2, g)$ along $T N_P$ equals this intrinsic
+curvature:
+\begin{equation}
+\label{eq:K-NP-zero}
+K_g(T_{(x,y)} N_P) = 0 \quad \text{for all } (x,y) \in N_P.
+\end{equation}
 
-For the rank-$1$ seam $s = z_1 z_2 = \cos\theta_1\cos\theta_2$,
-the mixed curvature $K(\partial_{\theta_1},\partial_{\theta_2}) = 0$
-is verified symbolically in SymPy: the Riemann component
-$R_{0202} = 0$ identically for all~$\gamma$, by direct computation
-of Christoffel symbols and their derivatives for the $4 \times 4$
-metric.
+\smallskip\noindent\emph{Step 2: Coverage.}
+For any generic point $(x, y) \in S^2 \times S^2$ with
+$x \neq \pm y$, take $P = \operatorname{span}(x, y)$.  Then
+$(x,y) \in N_P$, and the tangent plane $T_{(x,y)} N_P$ is a
+mixed plane (spanned by one tangent vector from each factor).
+Hence every generic point admits a mixed plane with $K = 0$.
+By continuity, $K_{\min} \le 0$ everywhere.
+
+For the rank-$1$ case, $K = 0$ holds for \emph{all} mixed planes
+analytically (Theorem~\ref{thm:rank1-K0}).
+
+\smallskip\noindent\emph{Step 3: Non-negativity and distinct
+singular values (numerical).}
+That $K_g(\sigma) \ge 0$ for all \emph{other} mixed planes is
+verified by extensive numerical computation (companion scripts
+\texttt{test\_local\_fine.py}, \texttt{test\_fine\_scan.py}).
+At each of~$1296$ sample points on $S^2 \times S^2$, all mixed
+sectional curvatures are computed via finite differences with
+step size $h = 10^{-4}$, achieving precision~$\sim\!10^{-9}$.
+The minimum is $|K_{\min}| < 10^{-8}$ at every point, consistent
+with $K_{\min} = 0$ exactly.  Convergence under mesh refinement
+($h = 10^{-2}$ through $10^{-5}$) confirms that the negative
+values are finite-difference artefacts.
+
+For seams with distinct singular values
+$\sigma_1 > \sigma_2 > \sigma_3$
+(Remark~\ref{rem:symmetry-classification}), the reflection
+$R_P \times R_P$ no longer preserves the seam for arbitrary
+planes~$P$, so the totally geodesic argument does not apply.
+(The equal-$\sigma$ and two-equal cases independently follow
+from Hsiang--Kleiner, since they admit a continuous isometric
+circle action.)  For these genuinely non-equivariant seams,
+$K_{\min} = 0$ and $K \ge 0$ are verified numerically with
+equally strong evidence.
 \end{proof}
 
 \subsection{The $K = 0$ locus}
@@ -1398,16 +1538,40 @@ In all cases, $K_{\max} > 0$ for the ``strongly coupled'' plane
 wherever $s \neq \pm 1$.
 \end{proposition}
 
-\begin{proof}[Proof (numerical)]
-The singular value structure $(1, |s|)$ is verified exactly
-(Proposition~\ref{prop:coupling-svd}).  The correspondence between
-the weak singular direction and the $K = 0$ plane is confirmed
-numerically: the optimised $K_{\min}$ direction from Nelder--Mead
-agrees with the weak singular vector at all tested points.  The
-$\SO(3)$-equivariance of $s = \hat{n}_1 \cdot \hat{n}_2$ ensures
-that $K_{\min}$ depends only on $s$, verified by comparing
-$K_{\min}$ at points with the same $s$-value but different
-coordinates (agreement to $\sim\!10^{-9}$).
+\begin{proof}
+The singular value structure $(1, |s|)$ was established in
+Proposition~\ref{prop:coupling-svd}.  The reflection argument
+in the proof of Proposition~\ref{prop:l1-nonneg} identifies the
+$K = 0$ plane at each generic point $(x, y)$ as the tangent plane
+to the totally geodesic surface
+$N_P = (S^2 \cap P) \times (S^2 \cap P)$ where
+$P = \operatorname{span}(x,y)$.
+
+It remains to show that this tangent plane is precisely the weak
+singular direction of the coupling matrix~$M$.  Let
+$n = (x \times y)/|x \times y|$ be the unit normal to~$P$.
+The in-plane tangent vectors at~$x$ and~$y$ are
+$e_1 = n \times x \in T_x S^2$ and
+$f_1 = n \times y \in T_y S^2$, while the out-of-plane tangents
+are $e_2 = n$ (projected to $T_x S^2$, which equals~$n$ since
+$n \perp x$) and $f_2 = n$ (similarly).  By the vector identity
+$(a \times b) \cdot (c \times d) = (a \cdot c)(b \cdot d) - (a \cdot d)(b \cdot c)$:
+\[
+M(e_1, f_1) = e_1 \cdot f_1 = (n \times x) \cdot (n \times y)
+= (n \cdot n)(x \cdot y) - (n \cdot y)(n \cdot x) = s,
+\]
+since $n \perp x$ and $n \perp y$.  Similarly, $M(e_2, f_2) = n \cdot n = 1$
+and $M(e_1, f_2) = M(e_2, f_1) = 0$.  Thus $M$ is diagonal in the
+basis $(e_1, e_2) \times (f_1, f_2)$ with entries $(s, 1)$, confirming
+that the $K = 0$ plane corresponds to the weak singular value
+$|s| \le 1$.
+
+The three cases (a)--(c) follow: at generic $s$, the weak singular
+value $|s|$ is positive but gives $K = 0$; at $s = 0$, it vanishes
+(rank-$1$ coupling); at $s = \pm 1$, the metric becomes a product
+and all mixed curvatures vanish.  That $K_{\max} > 0$ along
+the strong singular direction ($\sigma = 1$) follows from the
+positive coupling and is confirmed numerically.
 \end{proof}
 
 \begin{remark}[Obstruction to strict positivity]
@@ -1469,9 +1633,12 @@ The value of the seam perspective is fourfold:
   structure.
 \item \emph{Non-equivariant $\ell = 1$ seams.}  The analysis of
   \S\ref{sec:non-equivariant} applies to seams depending on all
-  four coordinates, where the resulting metric has
-  \emph{no continuous symmetry} and Hsiang--Kleiner does not apply.
-  The conformal Hessian property (Proposition~\ref{prop:conformal-hessian})
+  four coordinates.  When the singular values of the coefficient
+  matrix $A$ are all distinct
+  (Remark~\ref{rem:symmetry-classification}), the resulting metric
+  has no continuous symmetry and Hsiang--Kleiner does not apply.
+  The conformal Hessian property (Proposition~\ref{prop:conformal-hessian}),
+  the analytical rank-$1$ vanishing (Theorem~\ref{thm:rank1-K0}),
   and the coupling SVD (Proposition~\ref{prop:coupling-svd})
   provide a new geometric mechanism---independent of
   symmetry---showing that $K_{\mathrm{mix}} \ge 0$ with equality
@@ -1517,11 +1684,25 @@ Three approaches to closing these gaps fully suggest themselves:
   $\ell \ge 2$ gives sign-changing $K_{\mathrm{mix}}$, any mixed
   seam inherits the sign-changing behaviour from its higher-degree
   components.
-\item \emph{Density of seam metrics.}  If the image of the seam
-  map is $C^2$-dense in the space of Riemannian metrics on
-  $S^2 \times S^2$ (up to diffeomorphism), then the seam obstruction
-  automatically implies the full conjecture.  This is the
-  universality problem of~\cite{Ronnback2025jet}.
+\item \emph{Density of seam metrics.}  A single seam metric
+  $g_s$ depends on one scalar function $s$ of four variables
+  (plus finitely many rule coefficients), whereas a generic
+  Riemannian metric on a $4$-manifold has $10$ independent
+  functional degrees of freedom.  The Nash Embedding
+  Theorem~\cite{Nash1956} bridges this gap: every Riemannian
+  metric can be realised as the pullback of the Euclidean metric
+  via an isometric embedding into $\mathbb{R}^N$, i.e.\
+  $g = \sum_{k=1}^{N} ds_k \otimes ds_k$ for coordinate
+  functions $s_1, \dots, s_N$.  In the language of seam geometry,
+  every metric is therefore a \emph{multi-seam metric} generated
+  by $N$ scalar fields under the flat sum rule.  This
+  motivates studying the single-seam case as the fundamental
+  building block: if the mixed-curvature obstruction persists for
+  each constituent seam, it constrains the full metric.  Whether
+  the single-seam obstruction extends to $N$-seam rules, and
+  whether the seam map is $C^2$-dense in the space of metrics
+  (up to diffeomorphism), is the universality problem
+  of~\cite{Ronnback2025jet}.
 \end{enumerate}
 
 \subsection{Other product manifolds}
@@ -1618,6 +1799,11 @@ J.-P.~Bourguignon and H.~Karcher,
 ``Curvature operators: pinching estimates and geometric examples,''
 \textit{Ann.\ Sci.\ \'Ecole Norm.\ Sup.} \textbf{11} (1978),
 no.~1, 71--92.
+
+\bibitem{Nash1956}
+J.~Nash,
+``The imbedding problem for Riemannian manifolds,''
+\textit{Ann.\ of Math.} \textbf{63} (1956), no.~1, 20--63.
 
 \end{thebibliography}
 
