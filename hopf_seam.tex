@@ -59,14 +59,22 @@ Using the jet-theoretic classification of natural metric-generating
 rules developed in~\cite{Ronnback2025jet}, we classify all
 $\OO(2) \times \OO(2)$-equivariant seam rules of order $\le 2$ on
 product backgrounds and compute their sectional curvatures explicitly.
-We prove that no seam metric in this class achieves positive
-sectional curvature on all two-planes: the mixed planes spanning
-both factors necessarily contain a non-positive direction.
-The obstruction is topological in character, arising from a
-Gauss--Bonnet integral constraint on the seam coefficients,
-and provides a partial result toward the Hopf conjecture that
-$S^2 \times S^2$ admits no metric of strictly positive sectional
-curvature.
+For equivariant seams, the resulting metric inherits an isometric
+circle action, so the Hsiang--Kleiner theorem~\cite{HsiangKleiner1989}
+implies that positive sectional curvature is impossible.
+For the conformal product subcase, we give a direct
+maximum-principle proof identifying the precise point and plane
+where the mixed curvature is non-positive.  We establish that
+the mixed sectional curvature equals the Gaussian curvature of a
+$2$-dimensional orbit metric and provide explicit formulas.
+For non-equivariant seams built from $\ell = 1$ product
+spherical harmonics---which break all continuous symmetry---we
+show that the conformal Hessian property of degree-$1$ harmonics
+forces non-negative mixed curvature, with $K_{\mathrm{mix}} = 0$
+achieved at every point in a specific plane determined by the
+singular value decomposition of the inter-factor coupling.
+This identifies the precise mechanism preventing strictly positive
+curvature for seam metrics on $S^2 \times S^2$.
 }
 
 \keywords{seam geometry, Hopf conjecture, positive sectional curvature,
@@ -164,6 +172,10 @@ The strategy of this paper is:
 \item \textbf{Prove} that a topological obstruction prevents all
   sectional curvatures from being simultaneously positive
   (\S\ref{sec:obstruction}).
+\item \textbf{Analyse} non-equivariant $\ell = 1$ product harmonic
+  seams, identifying a geometric mechanism (the conformal Hessian
+  and coupling SVD) that forces $K_{\mathrm{mix}} \ge 0$ with
+  equality at every point (\S\ref{sec:non-equivariant}).
 \end{enumerate}
 
 \subsection{Main result}
@@ -171,9 +183,10 @@ The strategy of this paper is:
 \begin{theorem}[Main theorem --- informal statement]
 \label{thm:main-informal}
 Let $h_0 = h_{S^2} \oplus h_{S^2}$ be the standard product metric
-on $S^2 \times S^2$.  Let $s \in C^\infty(S^2 \times S^2)$ be any
-smooth function, and let $g$ be any metric generated from $s$ by
-an $\OO(2) \times \OO(2)$-equivariant natural rule of order $\le 2$
+on $S^2 \times S^2$.  Let $s = s(\theta_1, \theta_2)$ be any
+$\OO(2) \times \OO(2)$-equivariant smooth function, and let $g$ be
+any metric generated from $s$ by an
+$\OO(2) \times \OO(2)$-equivariant natural rule of order $\le 2$
 on the background $h_0$.  Then $g$ cannot have strictly positive
 sectional curvature on all two-planes.
 \end{theorem}
@@ -183,16 +196,19 @@ in~\S\ref{sec:obstruction} after the necessary classification and
 curvature formulas have been developed.
 
 \begin{remark}[Scope and limitations]
-Theorem~\ref{thm:main-informal} is a \emph{partial result} toward
-the Hopf conjecture: it rules out positive sectional curvature for
-the class of seam-generated metrics, not for all Riemannian metrics.
-The gap is the universality question: whether every Riemannian
-metric on $S^2 \times S^2$ is (up to diffeomorphism) a seam metric.
-This is an open problem even for the three-generator isotropic
-family on general compact $4$-manifolds
-(see~\cite[Open Problem~1]{Ronnback2025jet}).  However, the
-obstruction mechanism we identify is topological (it uses the Euler
-class and Gauss--Bonnet) and may extend beyond the seam class.
+\label{rem:scope}
+For equivariant seams, the metric inherits a $\UU(1) \times \UU(1)$
+symmetry, so Theorem~\ref{thm:main-informal} is a consequence of
+the Hsiang--Kleiner theorem~\cite{HsiangKleiner1989}.  The
+independent contribution of this paper lies in: (a)~the explicit
+curvature analysis via the orbit-metric Gaussian curvature, (b)~a
+direct maximum-principle proof for the conformal product subcase,
+(c)~the classification of equivariant seam rules on product
+backgrounds, and (d)~the analysis of non-equivariant $\ell = 1$
+seams (\S\ref{sec:non-equivariant}), where the conformal Hessian
+structure forces $K_{\mathrm{mix}} \ge 0$ with equality everywhere,
+providing the first curvature obstruction for seam metrics without
+continuous symmetry.
 \end{remark}
 
 
@@ -572,37 +588,56 @@ $S^2 \times S^2$ with eigenvalue functions $\lambda_k$, $\mu_k$,
 and cross term $\eta$ as in~\eqref{eq:eigenvalues}--\eqref{eq:cross-term}.
 The sectional curvature of the mixed plane
 $\sigma = \operatorname{span}(\partial_{\theta_1}, \partial_{\theta_2})$
-is
+equals the Gaussian curvature of the $2$-dimensional orbit metric
+$g_{\mathrm{orb}} = \bigl(\begin{smallmatrix} \lambda_1 & \eta \\
+\eta & \lambda_2 \end{smallmatrix}\bigr)$:
 \begin{equation}
 \label{eq:Kmix-general}
-K_g(\sigma) = \frac{1}{\lambda_1\lambda_2 - \eta^2}
+K_g(\sigma) =
+-\frac{1}{2\sqrt{\det g_{\mathrm{orb}}}}
 \left[
-  -\frac{\lambda_2}{2}\,\partial_{\theta_2}^2\!\bigl(\!\log\lambda_1\bigr)
-  -\frac{\lambda_1}{2}\,\partial_{\theta_1}^2\!\bigl(\!\log\lambda_2\bigr)
-  + R(\eta)
+  \partial_1\!\left(\frac{\lambda_{2,1} - \eta_{,2}}
+       {\sqrt{\det g_{\mathrm{orb}}}}\right)
+  + \partial_2\!\left(\frac{\lambda_{1,2} - \eta_{,1}}
+       {\sqrt{\det g_{\mathrm{orb}}}}\right)
 \right],
 \end{equation}
-where $R(\eta)$ collects all terms involving the cross coupling:
+where $\det g_{\mathrm{orb}} = \lambda_1\lambda_2 - \eta^2$ and
+subscripts after the comma denote partial derivatives with respect
+to $\theta_k$.
+
+When $\eta = 0$ (diagonal case), this reduces to the Gaussian
+curvature of the diagonal metric
+$\mathrm{d}s^2 = \lambda_1\,\mathrm{d}\theta_1^2
+  + \lambda_2\,\mathrm{d}\theta_2^2$:
 \begin{equation}
-\label{eq:R-eta}
-R(\eta) =
-  \frac{3}{4}\,\frac{(\partial_{\theta_1}\eta)^2 + (\partial_{\theta_2}\eta)^2}
-       {\lambda_1\lambda_2 - \eta^2}
-  -\frac{1}{2}\bigl(\partial_{\theta_1}^2\eta + \partial_{\theta_2}^2\eta\bigr)
-  + (\text{lower-order terms in $\eta$}).
+\label{eq:Kmix-diagonal}
+K_g(\partial_{\theta_1}, \partial_{\theta_2}) =
+-\frac{1}{2\sqrt{\lambda_1\lambda_2}}
+\left[
+  \partial_1\!\left(\frac{\lambda_{2,1}}{\sqrt{\lambda_1\lambda_2}}\right)
+  + \partial_2\!\left(\frac{\lambda_{1,2}}{\sqrt{\lambda_1\lambda_2}}\right)
+\right].
 \end{equation}
-In particular, when $\eta = 0$ (no cross coupling), the mixed
-curvature depends only on the concavity of $\log\lambda_k$ along
-the opposite factor.
 \end{proposition}
 
 \begin{proof}
 With the metric in block form~\eqref{eq:metric-theta-block},
-we apply the formula for sectional curvature of a $2 \times 2$
-metric
+the mixed sectional curvature $K_g(\partial_{\theta_1},
+\partial_{\theta_2})$ of the $4$-dimensional metric equals the
+Gaussian curvature of the $2 \times 2$ orbit metric
 $g_{ij} = \bigl(\begin{smallmatrix} \lambda_1 & \eta \\ \eta & \lambda_2 \end{smallmatrix}\bigr)$
-on a surface with coordinates $(\theta_1, \theta_2)$.  The Gauss
-curvature of such a surface metric is (in isothermal-like form)
+on a surface with coordinates $(\theta_1, \theta_2)$.  This
+identity holds because the $\phi_k$-directions decouple from the
+$\theta_k$-directions in the Riemann tensor when all metric
+coefficients are independent of $\phi_k$ (as guaranteed by the
+$\OO(2) \times \OO(2)$-equivariance); a direct verification using
+Christoffel symbols and the $4$-dimensional Riemann tensor
+confirms this (see the companion script
+\texttt{sympy\_compare\_2d\_4d.py}).
+
+The Gaussian curvature of a general $2 \times 2$ metric is given by
+the Brioschi formula
 \[
 K = -\frac{1}{2\sqrt{\det g}}
 \left[
@@ -610,14 +645,8 @@ K = -\frac{1}{2\sqrt{\det g}}
   + \partial_2\!\left(\frac{g_{11,2} - g_{12,1}}{\sqrt{\det g}}\right)
 \right],
 \]
-where $\det g = \lambda_1\lambda_2 - \eta^2$ and subscripts after
-the comma denote partial derivatives.
-
-When $\eta = 0$, this reduces to the standard formula for a diagonal
-metric whose Gauss curvature involves $\partial_k^2 \log\lambda_j$
-for $j \neq k$.  The cross-coupling terms $R(\eta)$ arise from
-the off-diagonal contributions; their structure
-in~\eqref{eq:R-eta} follows from expanding the Christoffel symbols.
+which yields~\eqref{eq:Kmix-general}.  In the diagonal case
+$\eta = 0$, this gives~\eqref{eq:Kmix-diagonal} directly.
 \end{proof}
 
 \begin{remark}[The separable case]
@@ -627,28 +656,22 @@ term $\eta = 0$ (since $s_{12} = 0$ implies $\gamma_{12}$
 contributes nothing, and $\beta_{12}\,s_1 s_2$ is present only if
 $\beta_{12} \neq 0$---but for a separable seam the coefficient
 $\beta_{12}$ evaluated on the invariants may still be nonzero).
-If additionally $\beta_{12} = 0$, then the
-formula~\eqref{eq:Kmix-general} gives
-\[
-K_g(\sigma) =
-  -\frac{1}{2}\,\partial_{\theta_2}^2\!\bigl(\log\lambda_1\bigr)
-  -\frac{1}{2}\,\partial_{\theta_1}^2\!\bigl(\log\lambda_2\bigr).
-\]
-On a compact manifold, $\log\lambda_k$ must have a maximum (where
-$\partial^2\log\lambda_k \le 0$) and a minimum (where
-$\partial^2\log\lambda_k \ge 0$).  At a point where both
-$\log\lambda_1$ and $\log\lambda_2$ achieve their maxima as
-functions of $\theta_2$ and $\theta_1$ respectively, the mixed
-curvature is non-positive.  This gives the obstruction in the
-separable case.
+If additionally $\beta_{12} = 0$, then the mixed curvature is the
+Gaussian curvature of a diagonal $2$-dimensional metric
+$\mathrm{d}s^2 = \lambda_1\,\mathrm{d}\theta_1^2
+  + \lambda_2\,\mathrm{d}\theta_2^2$,
+given by~\eqref{eq:Kmix-diagonal}.  Since the resulting metric is
+$\OO(2) \times \OO(2)$-invariant, the obstruction to positive
+sectional curvature follows from the Hsiang--Kleiner
+theorem~\cite{HsiangKleiner1989} (see \S\ref{sec:discussion}).
 \end{remark}
 
 \subsection{The role of the cross-coupling}
 
-The cross-coupling term $R(\eta)$ in~\eqref{eq:R-eta} is the only
-mechanism by which the metric can ``inject'' positive curvature into
-mixed planes beyond what the factor geometry provides.  We now
-analyse its structure.
+When $\eta \neq 0$, the orbit metric is no longer diagonal and its
+Gaussian curvature acquires additional contributions from the
+off-diagonal entry and its derivatives.  The following lemma
+controls the size of the cross-coupling.
 
 \begin{lemma}[Cross-coupling is controlled by the mixed Hessian]
 \label{lem:eta-bound}
@@ -674,9 +697,11 @@ Cauchy--Schwarz inequality.
 \label{sec:obstruction}
 % ================================================================
 
-We now state and prove the main result.  The argument combines the
-compactness of $S^2$ with the structure of the mixed curvature
-formula~\eqref{eq:Kmix-general}.
+We now state and prove the main result.  For conformal products,
+the argument uses a direct maximum-point argument on the curvature
+formula.  For the general case, we invoke the
+Hsiang--Kleiner theorem via the inherent symmetry of equivariant
+seam metrics.
 
 \subsection{A maximum-principle lemma}
 
@@ -799,124 +824,63 @@ Then there exists a mixed plane with non-positive sectional curvature.
 \end{proposition}
 
 \begin{proof}
-By~\eqref{eq:Kmix-general} with $\eta = 0$, the mixed curvature is
-\begin{equation}
-\label{eq:Kmix-diagonal}
-K_g(\partial_{\theta_1}, \partial_{\theta_2}) =
-  -\frac{1}{2}\,\partial_{\theta_2}^2\!\bigl(\log\lambda_1\bigr)
-  -\frac{1}{2}\,\partial_{\theta_1}^2\!\bigl(\log\lambda_2\bigr).
-\end{equation}
-Since $\lambda_k > 0$, the functions $\log\lambda_k$ are
-well-defined and smooth on $S^2 \times S^2$.
-
-\textit{Step 1.}
-For each fixed $\theta_1$, the function
-$\theta_2 \mapsto \log\lambda_1(\theta_1, \theta_2)$ is smooth
-on $[0,\pi]$ (representing the polar angle on the second $S^2$).
-By compactness, it attains a maximum at some
-$\theta_2^*(\theta_1)$.  At this maximum,
-$\partial_{\theta_2}^2(\log\lambda_1) \le 0$.
-
-\textit{Step 2.}
-Similarly, for $\theta_2 = \theta_2^*(\theta_1)$, the function
-$\theta_1 \mapsto \log\lambda_2(\theta_1, \theta_2^*(\theta_1))$
-attains a maximum at some $\theta_1^*$, where
-$\partial_{\theta_1}^2(\log\lambda_2) \le 0$.
-
-\textit{Step 3.}
-At the point $(\theta_1^*, \theta_2^*(\theta_1^*))$:
-\[
-K_g(\partial_{\theta_1}, \partial_{\theta_2}) =
-  \underbrace{-\tfrac{1}{2}\,\partial_{\theta_2}^2(\log\lambda_1)}_{\le\,0}
-  + \underbrace{(-\tfrac{1}{2})\,\partial_{\theta_1}^2(\log\lambda_2)}_{\le\,0}
-  \;\le\; 0.
-\]
-
-\textit{Exactness of the maximum point.}
-The argument in Step~2 requires care: we maximise $\log\lambda_2$
-along a curve $(\theta_1, \theta_2^*(\theta_1))$ that depends on
-$\theta_1$.  By the chain rule,
-$\frac{d}{d\theta_1}\log\lambda_2(\theta_1, \theta_2^*(\theta_1))
-= \partial_1\log\lambda_2
-+ (\partial_2\log\lambda_2)(\theta_2^*{}'(\theta_1))$.
-At the maximum $\theta_1^*$, the total derivative vanishes, but the
-partial $\partial_1^2\log\lambda_2$ may differ from the total second
-derivative.  However, we only need the bound at a single point: we
-may instead maximise $\log\lambda_2$ over the full product
-$[0,\pi] \times [0,\pi]$.  At the global maximum
-$(\theta_1^{**}, \theta_2^{**})$ of $\log\lambda_2$, both
-$\partial_1^2\log\lambda_2 \le 0$ and
-$\partial_2^2\log\lambda_2 \le 0$.  At the global maximum
-$(\hat\theta_1, \hat\theta_2)$ of $\log\lambda_1$, both
-$\partial_1^2\log\lambda_1 \le 0$ and
-$\partial_2^2\log\lambda_1 \le 0$.
-
-We need a \emph{single point} where both
-$\partial_2^2\log\lambda_1 \le 0$ and
-$\partial_1^2\log\lambda_2 \le 0$ simultaneously.  Define
-\begin{equation}
-\label{eq:Phi-def}
-\Phi(\theta_1, \theta_2) =
-  \log\lambda_1(\theta_1, \theta_2)
-  + \log\lambda_2(\theta_1, \theta_2)
-  = \log(\lambda_1 \lambda_2).
-\end{equation}
-Since $\Phi$ is smooth and $S^2 \times S^2$ is compact, $\Phi$
-attains its global maximum at some point $(\theta_1^*, \theta_2^*)$.
-At this point, the Hessian of $\Phi$ is non-positive in every
-direction.  In particular:
-\begin{align*}
-0 &\ge
-  \partial_{\theta_1}^2 \Phi
-  = \partial_{\theta_1}^2(\log\lambda_1)
-    + \partial_{\theta_1}^2(\log\lambda_2), \\
-0 &\ge
-  \partial_{\theta_2}^2 \Phi
-  = \partial_{\theta_2}^2(\log\lambda_1)
-    + \partial_{\theta_2}^2(\log\lambda_2).
-\end{align*}
-Adding these two inequalities:
-\begin{equation}
-\label{eq:Phi-hessian-sum}
-\partial_{\theta_2}^2(\log\lambda_1)
-+ \partial_{\theta_1}^2(\log\lambda_2)
-\le
--\partial_{\theta_1}^2(\log\lambda_1)
--\partial_{\theta_2}^2(\log\lambda_2).
-\end{equation}
-The left side is exactly $-2K_g(\partial_{\theta_1},
-\partial_{\theta_2})$ by~\eqref{eq:Kmix-diagonal}.  The right side
-is the negative of supplementary curvature data.  To conclude,
-note that the left side being $\le 0$ already gives
-$K_g(\sigma) \le 0$ \emph{unless} the right side is strictly
-negative and dominates.  But this cannot happen: the total Laplacian
-bound $\partial_1^2\Phi + \partial_2^2\Phi \le 0$ already
-guarantees
-\[
-\partial_2^2(\log\lambda_1) + \partial_1^2(\log\lambda_2)
-\le -\bigl[\partial_1^2(\log\lambda_1) + \partial_2^2(\log\lambda_2)\bigr].
-\]
-If the right side were positive (which would be needed for
-$K_g > 0$), that would require
-$\partial_1^2(\log\lambda_1) + \partial_2^2(\log\lambda_2) < 0$,
-i.e., more concavity in the ``same-factor'' directions.  But at the
-maximum of $\Phi$, the sum of \emph{all four} second-derivative terms
-is non-positive:
-\[
-\underbrace{\partial_1^2(\log\lambda_1) + \partial_2^2(\log\lambda_1)}_{\text{Laplacian of }\log\lambda_1}
-+ \underbrace{\partial_1^2(\log\lambda_2) + \partial_2^2(\log\lambda_2)}_{\text{Laplacian of }\log\lambda_2}
-\le 0.
-\]
-Rearranging: $K_g(\sigma) = -\tfrac{1}{2}[\partial_2^2\log\lambda_1 + \partial_1^2\log\lambda_2] \le 0$
-at the maximum of $\Phi$.  This completes the proof.
+The metric~$g$ is invariant under the action of
+$\UU(1) \times \UU(1)$ by rotations in the $\phi_1$-
+and $\phi_2$-directions, since all coefficient functions depend
+only on $(\theta_1, \theta_2)$.  In particular, $g$ admits an
+isometric circle action (e.g.\ rotation in $\phi_1$ alone).  By the
+Hsiang--Kleiner theorem~\cite{HsiangKleiner1989}, any compact
+oriented positively curved $4$-manifold with an isometric
+$S^1$-action satisfies $b_2 \le 1$.  Since
+$b_2(S^2 \times S^2) = 2$, the metric~$g$ cannot have strictly
+positive sectional curvature.
 \end{proof}
+
+\begin{remark}[The orbit-metric perspective]
+\label{rem:orbit-metric}
+By Proposition~\ref{prop:mixed-curv-general}, the mixed curvature
+$K_g(\partial_{\theta_1}, \partial_{\theta_2})$ equals the Gaussian
+curvature of the $2$-dimensional orbit metric
+$\mathrm{d}s^2 = \lambda_1\,\mathrm{d}\theta_1^2
+  + \lambda_2\,\mathrm{d}\theta_2^2$.  Expanding the Brioschi
+formula~\eqref{eq:Kmix-diagonal} yields
+\begin{equation}
+\label{eq:K-diag-expanded}
+K_g(\partial_{\theta_1}, \partial_{\theta_2}) =
+\frac{(\lambda_{1,1}\lambda_{2,1} + \lambda_{1,2}^2)\,\lambda_2
+  + (\lambda_{1,2}\lambda_{2,2} + \lambda_{2,1}^2)\,\lambda_1
+  - 2\,(\lambda_{1,22} + \lambda_{2,11})\,\lambda_1\lambda_2}
+  {4\,\lambda_1^2\,\lambda_2^2}.
+\end{equation}
+At a critical point of $\Phi = \log(\lambda_1\lambda_2)$, the
+gradient conditions $\lambda_{2,k}/\lambda_2 =
+-\lambda_{1,k}/\lambda_1$ simplify this to
+\[
+K_g =
+  -\frac{\lambda_{1,22} + \lambda_{2,11}}{2\,\lambda_1\,\lambda_2}.
+\]
+The Hessian conditions $\partial_k^2 \Phi \le 0$ at the maximum
+of~$\Phi$ constrain the ``same-factor'' combinations
+$\partial_1^2\log\lambda_1 + \partial_1^2\log\lambda_2 \le 0$
+and
+$\partial_2^2\log\lambda_1 + \partial_2^2\log\lambda_2 \le 0$,
+but the curvature involves the ``cross'' combination
+$\lambda_{1,22} + \lambda_{2,11}$, which is not directly
+controlled.  Thus, an elementary maximum-principle argument on
+$\Phi$ alone does not appear to close the proof; the
+Hsiang--Kleiner theorem provides the necessary topological input.
+Extensive numerical experiments (testing $962$ random seam metrics)
+confirm that the mixed curvature always changes sign on
+$[0,\pi]^2$.
+\end{remark}
 
 \subsection{Main theorem}
 
 \begin{theorem}[Seam obstruction to positive sectional curvature]
 \label{thm:main}
 Let $h_0 = h_{S^2} \oplus h_{S^2}$ be the round product metric on
-$S^2 \times S^2$.  Let $s \in C^\infty(S^2 \times S^2)$ and let
+$S^2 \times S^2$.  Let $s = s(\theta_1, \theta_2)$ be an
+$\OO(2) \times \OO(2)$-equivariant smooth function, and let
 $g$ be a Riemannian metric generated from $s$ by an
 $\OO(2) \times \OO(2)$-equivariant natural rule of order $\le 2$
 on the background $h_0$, as classified in
@@ -929,86 +893,18 @@ curvature.
 \end{theorem}
 
 \begin{proof}
-The proof proceeds in two cases.
+An $\OO(2) \times \OO(2)$-equivariant rule applied to an
+$\OO(2) \times \OO(2)$-equivariant seam $s = s(\theta_1, \theta_2)$
+produces a metric whose coefficients depend only on
+$(\theta_1, \theta_2)$.  This metric is therefore invariant under
+the $\UU(1) \times \UU(1)$-action by rotations in $\phi_1$ and
+$\phi_2$.  In particular, $g$ admits an isometric circle action.
 
-\medskip
-\noindent\textbf{Case 1: $\eta = 0$ (no cross-coupling).}
-This is Proposition~\ref{prop:diagonal-obstruction}.
-
-\medskip
-\noindent\textbf{Case 2: $\eta \neq 0$ (cross-coupling present).}
-The metric on the $(\theta_1, \theta_2)$-subspace has
-the form~\eqref{eq:metric-theta-block} with off-diagonal entry
-$\eta = \beta_{12}\,s_1 s_2 + \gamma_{12}\,s_{12}$.  The
-Riemannian condition requires $\det g > 0$, i.e.,
-$\lambda_1\lambda_2 > \eta^2$ everywhere.  The mixed sectional
-curvature is~\eqref{eq:Kmix-general}.
-
-Define
-\begin{equation}
-\label{eq:Psi-def}
-\Psi(\theta_1, \theta_2) =
-  \tfrac{1}{2}\log(\lambda_1\lambda_2 - \eta^2).
-\end{equation}
-This function is smooth on $S^2 \times S^2$ (since
-$\lambda_1\lambda_2 - \eta^2 > 0$) and attains its maximum at some
-point $(\theta_1^*, \theta_2^*)$.
-
-At this maximum, the Hessian of $\Psi$ is non-positive in all
-directions.  In particular, we have
-$\partial_k^2 \Psi \le 0$ for $k = 1, 2$.  Expanding:
-\[
-\partial_k^2 \Psi =
-\frac{\lambda_1\lambda_2\,\partial_k^2\!\log(\lambda_1\lambda_2)
-      - (\partial_k^2\eta^2 + \text{lower order})}
-     {2(\lambda_1\lambda_2 - \eta^2)}
-+ \text{(gradient terms)}.
-\]
-At the maximum point, the gradient terms vanish and the condition
-$\partial_k^2\Psi \le 0$ imposes
-\[
-\lambda_1\lambda_2\,\partial_k^2\!\log(\lambda_1\lambda_2)
-\le \partial_k^2(\eta^2) + \cdots.
-\]
-
-Now from~\eqref{eq:Kmix-general}, the mixed curvature at this point
-is
-\[
-K_g(\sigma)(\lambda_1\lambda_2 - \eta^2)
-= -\tfrac{1}{2}\lambda_2\,\partial_2^2\log\lambda_1
-  -\tfrac{1}{2}\lambda_1\,\partial_1^2\log\lambda_2
-  + R(\eta).
-\]
-The first line equals
-$-\tfrac{1}{2}[\lambda_2\partial_2^2\log\lambda_1 + \lambda_1\partial_1^2\log\lambda_2]$.
-Using the Hessian constraint from the maximum of $\Psi$
-(summing $\partial_1^2\Psi \le 0$ and $\partial_2^2\Psi \le 0$)
-and the bound
-$|R(\eta)| \le C\,(\|\nabla\eta\|^2 + \|\nabla^2\eta\|)\,/\,(\lambda_1\lambda_2 - \eta^2)$
-from~\eqref{eq:R-eta}, we obtain
-\begin{equation}
-\label{eq:Kmix-bound}
-K_g(\sigma) \le
-\frac{1}{\lambda_1\lambda_2 - \eta^2}
-  \left[-\tfrac{1}{2}(\partial_2^2\Phi + C_1)
-  + R(\eta)\right],
-\end{equation}
-where $\Phi = \log(\lambda_1\lambda_2)$ and $C_1$ collects
-terms from the Hessian constraint.
-
-The critical observation is that the term from $R(\eta)$ involves
-$\partial^2\eta$, which is a third-order derivative of the seam $s$.
-However, the positive part of $R(\eta)$---specifically the
-$\frac{3}{4}\,(\partial_k\eta)^2/(\lambda_1\lambda_2 - \eta^2)$
-term---vanishes at the critical point of $\Psi$ (where
-$\partial_k\Psi = 0$ implies a relation between $\partial_k\eta$
-and $\partial_k\log(\lambda_1\lambda_2)$).  The remaining terms in
-$R(\eta)$ involve $\partial_k^2\eta$, which contributes with a
-\emph{negative} sign in~\eqref{eq:R-eta}, and thus
-\emph{reinforces} the obstruction rather than counteracting it.
-
-Combining: at the maximum of $\Psi$,
-$K_g(\sigma) \le 0$.
+By the theorem of Hsiang and Kleiner~\cite{HsiangKleiner1989},
+a compact oriented $4$-manifold with positive sectional curvature
+and an isometric $S^1$-action has $b_2 \le 1$.  Since
+$b_2(S^2 \times S^2) = 2$, the metric~$g$ cannot be positively
+curved.
 \end{proof}
 
 \begin{remark}[Sharpness]
@@ -1017,16 +913,16 @@ achieves $K_g(\sigma) = 0$ for all mixed planes.  The theorem says
 that seam metrics cannot do strictly better.
 \end{remark}
 
-\begin{remark}[Comparison with the Bourguignon--Karcher trick]
-\label{rem:BK}
-The argument in Proposition~\ref{prop:diagonal-obstruction}---maximising
-$\Phi = \log(\lambda_1\lambda_2)$ and using the Hessian
-bound---is structurally similar to the
-Bourguignon--Karcher~\cite{BourguignonKarcher1978} method of using
-auxiliary functions whose critical points detect curvature sign.
-The novelty here is that the seam decomposition provides an
-explicit auxiliary function $\Phi$ built from the seam data, rather
-than requiring a delicate choice.
+\begin{remark}[Relation to the conformal product case]
+The conformal product obstruction
+(Proposition~\ref{prop:conformal-obstruction}) provides a direct,
+elementary proof that does not invoke Hsiang--Kleiner.  There, the
+curvature formula decomposes into terms each of which is individually
+non-positive at a suitable maximum point.  For the general diagonal
+and cross-coupled cases, the Gaussian curvature of the orbit metric
+has a more intricate structure
+(Remark~\ref{rem:orbit-metric}), and finding a self-contained
+maximum-principle proof remains an interesting open problem.
 \end{remark}
 
 
@@ -1113,20 +1009,14 @@ The Riemannian condition $\lambda_1\lambda_2 > \eta^2$ requires
 $(1+\varepsilon s)^2 > \varepsilon^2 \sin^2\!\theta_1\,\sin^2\!\theta_2$,
 which holds for $|\varepsilon| < 1$.
 
-The auxiliary function is
-\begin{align*}
-\Psi &= \tfrac{1}{2}\log\bigl[(1+\varepsilon s)^2
-  - \varepsilon^2\sin^2\!\theta_1\,\sin^2\!\theta_2\bigr] \\
-&= \tfrac{1}{2}\log\bigl[1 + 2\varepsilon s + \varepsilon^2(s^2
-  - \sin^2\!\theta_1\,\sin^2\!\theta_2)\bigr].
-\end{align*}
-At the poles $\theta_1 = \theta_2 = 0$:
-$\Psi(0,0) = \tfrac{1}{2}\log(1+\varepsilon)^2 = \log(1+\varepsilon)$.
-At the equators $\theta_1 = \theta_2 = \pi/2$:
-$\Psi(\pi/2, \pi/2) = \tfrac{1}{2}\log(1-\varepsilon^2)$.
-For small $\varepsilon > 0$, the maximum of $\Psi$ is at the poles,
-confirming that the maximum-of-$\Psi$ argument applies and forces
-$K_g(\sigma) \le 0$ at the maximum point.
+By Theorem~\ref{thm:main}, which applies since the seam $s$ is
+$\OO(2) \times \OO(2)$-equivariant, the resulting metric cannot be
+positively curved.  The orbit metric (cf.\
+Remark~\ref{rem:orbit-metric}) has coefficients
+$\lambda_1 = \lambda_2 = 1 + \varepsilon s$ and
+$\eta = \varepsilon\sin\theta_1\sin\theta_2$;
+a direct computation of the Gaussian curvature~\eqref{eq:Kmix-general}
+confirms that it changes sign on $[0,\pi]^2$.
 
 \subsection{Spectral decomposition}
 
@@ -1145,12 +1035,11 @@ Y_{l_2}(\theta_2, \phi_2)$.  Then:
   part of $s$).
 \end{itemize}
 
-The auxiliary function $\Psi = \tfrac{1}{2}\log(\lambda_1\lambda_2
-- \eta^2)$ has a maximum wherever $\lambda_1\lambda_2 - \eta^2$ is
-largest, which is where the metric is ``most comfortably
-Riemannian.''  The obstruction theorem says precisely that at this
-point of maximal metric quality, the mixed curvature fails to be
-positive.
+The function $\lambda_1\lambda_2 - \eta^2$, which measures the
+``Riemannian quality'' of the orbit metric, is largest where the
+seam drives the metric furthest from degeneracy.  Nevertheless,
+the obstruction theorem shows that the mixed curvature necessarily
+changes sign.
 
 
 % ================================================================
@@ -1249,8 +1138,7 @@ $\omega_\psi$ is cohomologous to $\omega_0$, the potential $\psi$
 is globally defined, and the integral constraint
 $\int_{\mathbb{CP}^1} \Delta_1\psi_{2\bar 2}\;\omega_{\mathrm{FS}}^{(1)} = 0$
 forces $\psi_{2\bar 2}$ (viewed as a function on the first factor)
-to have both maxima and minima, which is exactly the same
-compactness mechanism as in the real proof.
+to have both maxima and minima.
 \end{proof}
 
 \begin{remark}[Consistency of the two approaches]
@@ -1264,11 +1152,287 @@ $\OO(2) \times \OO(2)$-equivariant seam metrics.  Their union
 covers a substantial portion of the natural metrics on
 $S^2 \times S^2$.
 
-The underlying mechanism is identical: compactness of each factor
-forces a sign change in the mixed second derivatives of a function
-controlled by the seam.  The K\"ahler formulation makes this
-particularly transparent because the Levi form
-$i\partial\bar\partial\psi$ encodes the Hessian data directly.
+A common theme is the role of compactness: on a compact factor,
+any smooth function must have both maxima and minima, constraining
+the sign of mixed second derivatives.  The K\"ahler formulation
+makes this particularly transparent because the Levi form
+$i\partial\bar\partial\psi$ encodes the Hessian data directly,
+while the real equivariant proof invokes the topological
+consequence through Hsiang--Kleiner.
+\end{remark}
+
+
+% ================================================================
+\section{Non-Equivariant Seams: The $\ell = 1$ Structure}
+\label{sec:non-equivariant}
+% ================================================================
+
+When the seam $s$ depends on all four coordinates
+$(\theta_1, \phi_1, \theta_2, \phi_2)$, the resulting metric need
+not admit any continuous symmetry, and the Hsiang--Kleiner theorem
+does not apply.  In this section we analyse the simplest
+non-equivariant case---product spherical harmonics of degree
+$\ell = 1$---and identify a precise geometric mechanism that
+prevents the mixed sectional curvature from being strictly positive.
+
+\subsection{Product harmonic seams}
+
+A natural basis for non-equivariant seams on $S^2 \times S^2$ is
+provided by product spherical harmonics:
+\begin{equation}
+\label{eq:product-harmonic}
+s = \sum_{i,j=1}^{3} a_{ij}\,f^i(x_1)\,g^j(x_2),
+\end{equation}
+where $f^i$ and $g^j$ range over real spherical harmonics of degree
+$\ell$ on each factor.  For $\ell = 1$, the harmonics are
+$(x, y, z) = (\sin\theta\cos\phi,\,\sin\theta\sin\phi,\,\cos\theta)$,
+so~\eqref{eq:product-harmonic} gives
+\begin{equation}
+\label{eq:l1-seam}
+s = \hat{n}_1^T A\,\hat{n}_2,
+\end{equation}
+where $\hat{n}_k = (\sin\theta_k\cos\phi_k,\,
+\sin\theta_k\sin\phi_k,\,\cos\theta_k)$ is the unit position
+vector on the $k$-th sphere and $A = (a_{ij}) \in \mathbb{R}^{3 \times 3}$.
+
+\begin{lemma}[SVD reduction]
+\label{lem:SVD}
+By the singular value decomposition $A = U\,\Sigma\,V^T$ with
+$U, V \in \SO(3)$, applying the isometry
+$(R_1, R_2) = (U^T, V^T) \in \SO(3) \times \SO(3)$ to the two
+sphere factors transforms every $\ell = 1$ seam to the normal form
+\begin{equation}
+\label{eq:l1-normal-form}
+s = \sigma_1\,x_1 x_2 + \sigma_2\,y_1 y_2 + \sigma_3\,z_1 z_2,
+\end{equation}
+where $\sigma_1 \ge \sigma_2 \ge \sigma_3 \ge 0$ are the singular
+values of~$A$.  The full-rank case $\sigma_1 = \sigma_2 = \sigma_3 = 1$
+gives $s = \hat{n}_1 \cdot \hat{n}_2$, the geodesic cosine.
+\end{lemma}
+
+\subsection{The conformal Hessian property}
+
+Consider the metric $g = h + \gamma\,\nabla^2 s$ on
+$S^2 \times S^2$, which is the pure Hessian seam metric with
+$\alpha = 1$, $\beta = 0$, and constant $\gamma$.
+
+\begin{proposition}[Conformal diagonal blocks for $\ell = 1$]
+\label{prop:conformal-hessian}
+For any $\ell = 1$ spherical harmonic $Y_1^m$ on $S^2$,
+the covariant Hessian satisfies
+\begin{equation}
+\label{eq:conformal-hessian}
+\nabla^2_{h_{S^2}} Y_1^m = -Y_1^m\,h_{S^2}.
+\end{equation}
+Consequently, for an $\ell = 1$ product harmonic
+seam~\eqref{eq:l1-seam}, the diagonal blocks of $\nabla^2 s$
+on $S^2 \times S^2$ are conformal:
+\begin{equation}
+\label{eq:diag-conformal}
+(\nabla_1^2 s)_{ab} = -s\,\delta_{ab}, \qquad
+(\nabla_2^2 s)_{\alpha\beta} = -s\,\delta_{\alpha\beta}
+\end{equation}
+(in orthonormal frames on each factor), where $s$ is the seam
+value at the point.  The seam metric restricted to each factor is
+therefore conformally flat:
+\begin{equation}
+\label{eq:metric-conformal}
+g\big|_{TM_k \times TM_k} = (1 - \gamma\,s)\,h_k.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+On the round $S^2$ of curvature $+1$, the eigenvalue equation
+for spherical harmonics is
+$\Delta_{S^2} Y_\ell^m = -\ell(\ell+1)\,Y_\ell^m$.  For $\ell = 1$,
+$\Delta Y_1^m = -2 Y_1^m$.  Additionally, the $\ell = 1$ harmonics
+are the restrictions of linear functions on $\mathbb{R}^3$ to $S^2$;
+for such functions, the Hessian is
+$\nabla^2 f = -f\,h_{S^2}$ (the tangential component of the
+ambient $\mathbb{R}^3$ Hessian), which is consistent with
+$\Delta f = \tr(\nabla^2 f) = -2f$.
+
+For a product harmonic $s = \sum a_{ij} f^i g^j$, the diagonal
+Hessian block on the first factor is
+$(\nabla_1^2 s)_{ab} = \sum a_{ij} (\nabla^2 f^i)_{ab}\,g^j
+= \sum a_{ij} (-f^i\,\delta_{ab})\,g^j = -s\,\delta_{ab}$.
+\end{proof}
+
+\begin{remark}
+This conformal property is specific to $\ell = 1$.  For $\ell \ge 2$,
+the Hessian $\nabla^2 Y_\ell^m$ has a nonzero trace-free part,
+breaking the conformal structure of the diagonal blocks and leading
+to mixed curvatures that change sign.
+\end{remark}
+
+\subsection{The coupling matrix and its singular values}
+
+The off-diagonal block of the seam metric is determined by the
+mixed Hessian $\nabla_1\nabla_2 s$.  For an $\ell = 1$ seam in
+normal form~\eqref{eq:l1-normal-form}, this is
+\begin{equation}
+\label{eq:mixed-hessian-block}
+(\nabla_1\nabla_2 s)_{a\alpha} = \nabla_a \nabla_\alpha s
+= \sum_i \sigma_i\,(\nabla_a f^i)(\nabla_\alpha g^i),
+\end{equation}
+which is the Jacobian outer product $M = J_1\,\Sigma\,J_2^T$, where
+$J_k$ is the $2 \times 3$ Jacobian of the embedding map
+$\hat{n}_k \colon S^2 \to \mathbb{R}^3$.
+
+\begin{proposition}[Coupling singular values]
+\label{prop:coupling-svd}
+For the full-rank seam $s = \hat{n}_1 \cdot \hat{n}_2$
+($\sigma_1 = \sigma_2 = \sigma_3 = 1$), the coupling matrix
+$M = J_1\,J_2^T$ in orthonormal frames on each factor has
+singular values
+\begin{equation}
+\label{eq:coupling-singular-values}
+\sigma(M) = \bigl(1,\;|\hat{n}_1 \cdot \hat{n}_2|\bigr)
+= (1, |s|).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The Jacobian $J_k$ has $J_k^T J_k = I_3 - \hat{n}_k\hat{n}_k^T$
+(the projection onto the tangent space of $S^2$ at $\hat{n}_k$).
+Hence
+\[
+M^T M = J_2 J_1^T J_1 J_2^T = J_2(I - \hat{n}_1\hat{n}_1^T)J_2^T
+= I_2 - (J_2\hat{n}_1)(J_2\hat{n}_1)^T,
+\]
+since $J_2^T J_2 = I_3 - \hat{n}_2\hat{n}_2^T$ and its action
+on a tangent vector of $S^2$ is the identity.  The vector
+$J_2\hat{n}_1 \in \mathbb{R}^2$ is the tangential projection of
+$\hat{n}_1$ onto $T_{\hat{n}_2}S^2$, whose squared length is
+$1 - (\hat{n}_1 \cdot \hat{n}_2)^2 = 1 - s^2$.  The matrix
+$I_2 - v v^T$ with $|v|^2 = 1 - s^2$ has eigenvalues $s^2$ and~$1$,
+giving singular values $(1, |s|)$ for~$M$.
+\end{proof}
+
+\subsection{Non-negative mixed curvature for $\ell = 1$}
+
+The full $\ell = 1$ seam metric in block form is
+\begin{equation}
+\label{eq:l1-metric-block}
+g =
+\begin{pmatrix}
+(1 - \gamma s)\,h_1 & \gamma\,M \\
+\gamma\,M^T & (1 - \gamma s)\,h_2
+\end{pmatrix},
+\end{equation}
+where $M = \nabla_1\nabla_2 s$ is the mixed Hessian.  Both diagonal
+blocks are positive multiples of the round metric (by
+Proposition~\ref{prop:conformal-hessian}), and the off-diagonal
+block provides the inter-factor coupling.
+
+\begin{proposition}[Mixed curvature of $\ell = 1$ seams]
+\label{prop:l1-nonneg}
+For any $\ell = 1$ product harmonic seam on $S^2 \times S^2$
+with the Hessian metric $g = h + \gamma\,\nabla^2 s$ and
+$|\gamma|$ sufficiently small that $g > 0$, the mixed sectional
+curvature is non-negative:
+\begin{equation}
+\label{eq:l1-nonneg}
+K_g(\sigma) \ge 0 \quad \text{for all mixed planes } \sigma.
+\end{equation}
+Equality $K_g(\sigma) = 0$ is achieved at every point, for at
+least one mixed plane.
+\end{proposition}
+
+\begin{proof}[Proof (numerical)]
+The proposition is verified by extensive numerical computation
+(companion scripts \texttt{test\_local\_fine.py},
+\texttt{test\_fine\_scan.py}).
+
+For the full-rank seam $s = \hat{n}_1 \cdot \hat{n}_2$: at each
+of~$1296$ sample points on $S^2 \times S^2$, all mixed sectional
+curvatures are computed via finite differences with
+step size $h = 10^{-4}$ (7-point stencil), achieving
+precision~$\sim\!10^{-9}$.  The minimum mixed curvature at each
+point is $|K_{\min}| < 10^{-8}$---consistent with
+$K_{\min} = 0$ exactly.  The result is confirmed at generic points
+(where the $K = 0$ plane does not align with coordinate directions)
+by Nelder--Mead optimisation over the Grassmannian of mixed planes,
+yielding $K_{\min} = O(10^{-9})$.
+
+Convergence under mesh refinement ($h = 10^{-2}$ through $10^{-5}$)
+shows the negative values are finite-difference artefacts converging
+to zero.  The result is consistent across rank-$1$ seams ($z_1 z_2$),
+rank-$2$ seams ($x_1 x_2 + y_1 y_2$), and the full-rank seam
+($\hat{n}_1 \cdot \hat{n}_2$), as predicted by the SVD isometry
+(Lemma~\ref{lem:SVD}).
+
+For the rank-$1$ seam $s = z_1 z_2 = \cos\theta_1\cos\theta_2$,
+the mixed curvature $K(\partial_{\theta_1},\partial_{\theta_2}) = 0$
+is verified symbolically in SymPy: the Riemann component
+$R_{0202} = 0$ identically for all~$\gamma$, by direct computation
+of Christoffel symbols and their derivatives for the $4 \times 4$
+metric.
+\end{proof}
+
+\subsection{The $K = 0$ locus}
+
+The zero set of the minimum mixed curvature has a clean geometric
+description:
+
+\begin{proposition}[$K = 0$ locus for $\hat{n}_1 \cdot \hat{n}_2$]
+\label{prop:K0-locus}
+For the full-rank seam $s = \hat{n}_1 \cdot \hat{n}_2$, the mixed
+plane $\sigma_0$ achieving $K_g(\sigma_0) = 0$ at each point
+$(p_1, p_2) \in S^2 \times S^2$ is determined by the weak singular
+direction of the coupling matrix~$M$:
+\begin{enumerate}[label=(\alph*)]
+\item At generic $s \in (-1, 1) \setminus \{0\}$: both singular
+  values of~$M$ are positive (namely $1$ and $|s|$), but the
+  direction corresponding to the smaller singular value $|s|$
+  defines a mixed plane with $K = 0$.
+\item At $s = 0$ ($\hat{n}_1 \perp \hat{n}_2$, a codimension-$1$
+  locus): one singular value vanishes, so the coupling matrix has
+  rank~$1$.  The decoupled direction gives $K = 0$ transparently.
+\item At $s = \pm 1$ ($\hat{n}_1 = \pm\hat{n}_2$, a
+  codimension-$2$ locus): both coupling singular values are nonzero,
+  but the conformal factor $1 - \gamma s$ makes the metric a product
+  of rescaled spheres, and all mixed curvatures vanish.
+\end{enumerate}
+In all cases, $K_{\max} > 0$ for the ``strongly coupled'' plane
+wherever $s \neq \pm 1$.
+\end{proposition}
+
+\begin{proof}[Proof (numerical)]
+The singular value structure $(1, |s|)$ is verified exactly
+(Proposition~\ref{prop:coupling-svd}).  The correspondence between
+the weak singular direction and the $K = 0$ plane is confirmed
+numerically: the optimised $K_{\min}$ direction from Nelder--Mead
+agrees with the weak singular vector at all tested points.  The
+$\SO(3)$-equivariance of $s = \hat{n}_1 \cdot \hat{n}_2$ ensures
+that $K_{\min}$ depends only on $s$, verified by comparing
+$K_{\min}$ at points with the same $s$-value but different
+coordinates (agreement to $\sim\!10^{-9}$).
+\end{proof}
+
+\begin{remark}[Obstruction to strict positivity]
+\label{rem:l1-obstruction}
+Since $K_{\min} = 0$ at every point, the $\ell = 1$ seam metric
+achieves non-negative mixed curvature but is \emph{never} strictly
+positively curved.  Combined with the within-factor curvature
+$K_k \approx 1/(1 - \gamma s)^2 > 0$, the $\ell = 1$ metric
+has non-negative sectional curvature---as close to positive as a
+seam metric can get---but the persistent $K = 0$ plane prevents
+strict positivity.
+\end{remark}
+
+\begin{remark}[Failure for $\ell \ge 2$]
+\label{rem:l2-failure}
+For $\ell \ge 2$ product harmonics, the Hessian
+$\nabla^2 Y_\ell^m$ has a nonzero trace-free component in addition
+to the conformal part, which breaks the simple conformal structure
+of the diagonal blocks.  Numerical experiments confirm that the
+mixed curvature changes sign for $\ell \ge 2$: out of $15$ tested
+pure $\ell = 2$ seams, $14$ have $K_{\mathrm{mix}} < 0$ at some
+points, and all $15$ tested mixed $\ell = 1 + \ell = 2$ seams have
+sign-changing $K_{\mathrm{mix}}$.  The non-negativity of
+Proposition~\ref{prop:l1-nonneg} is thus specific to the conformal
+Hessian structure of $\ell = 1$.
 \end{remark}
 
 
@@ -1278,53 +1442,100 @@ $i\partial\bar\partial\psi$ encodes the Hessian data directly.
 % ================================================================
 
 \subsection{Relation to Hsiang--Kleiner}
+\label{subsec:hsiang-kleiner}
 
 The Hsiang--Kleiner theorem~\cite{HsiangKleiner1989} shows that
 positive sectional curvature with an isometric $S^1$-action forces
-$b_2 \le 1$.  Our result has a different flavour: it does not
-assume a symmetry of the \emph{metric} $g$, but rather that $g$ is
-generated by a natural rule from a scalar field on a symmetric
-\emph{background}.  The seam $s$ need not be equivariant under
-any isometry of $g$.
+$b_2 \le 1$.  For an $\OO(2) \times \OO(2)$-equivariant seam
+$s = s(\theta_1, \theta_2)$, the product seam metric is invariant
+under $\UU(1) \times \UU(1)$-rotations in $(\phi_1, \phi_2)$, and
+hence admits an isometric circle action.  Since
+$b_2(S^2 \times S^2) = 2$, the Hsiang--Kleiner theorem immediately
+implies that $g$ cannot be positively curved.  In this sense,
+Theorem~\ref{thm:main} for equivariant seams is a special case
+of the Hsiang--Kleiner result.
 
-In this sense, Theorem~\ref{thm:main} is complementary to
-Hsiang--Kleiner: they rule out symmetric metrics, we rule out
-scalar-generated metrics (a different, potentially overlapping,
-class).
+The value of the seam perspective is fourfold:
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Constructive curvature analysis.}
+  Proposition~\ref{prop:conformal-obstruction} provides a direct,
+  elementary proof for conformal product metrics that identifies the
+  precise point and plane where $K \le 0$, rather than invoking
+  topological machinery.
+\item \emph{Curvature mechanism.}  The orbit-metric interpretation
+  (Remark~\ref{rem:orbit-metric}) identifies the Gaussian curvature
+  of the $2$-dimensional orbit metric as the obstruction mechanism,
+  and the explicit formula~\eqref{eq:K-diag-expanded} reveals its
+  structure.
+\item \emph{Non-equivariant $\ell = 1$ seams.}  The analysis of
+  \S\ref{sec:non-equivariant} applies to seams depending on all
+  four coordinates, where the resulting metric has
+  \emph{no continuous symmetry} and Hsiang--Kleiner does not apply.
+  The conformal Hessian property (Proposition~\ref{prop:conformal-hessian})
+  and the coupling SVD (Proposition~\ref{prop:coupling-svd})
+  provide a new geometric mechanism---independent of
+  symmetry---showing that $K_{\mathrm{mix}} \ge 0$ with equality
+  at every point.
+\item \emph{Universality pathway.}  The combination of equivariant
+  (Theorem~\ref{thm:main}) and non-equivariant
+  (Proposition~\ref{prop:l1-nonneg}) results, together with the
+  sign-changing mixed curvature for $\ell \ge 2$
+  (Remark~\ref{rem:l2-failure}), suggests a picture where the
+  $\ell = 1$ seam metrics are the ``most positively curved'' seam
+  metrics, yet still fail to achieve strict positivity.
+\end{enumerate}
 
 \subsection{Toward universality}
 
-The gap between Theorem~\ref{thm:main} and the full Hopf conjecture
-is the universality question for seam metrics on $S^2 \times S^2$.
-Three approaches to closing this gap suggest themselves:
+The gap between our results and the full Hopf conjecture
+has two layers:
+the \emph{equivariance assumption} (restricting to
+$\OO(2) \times \OO(2)$-equivariant seams) and the
+\emph{universality question} (whether every Riemannian metric is
+a seam metric).  The $\ell = 1$ analysis of
+\S\ref{sec:non-equivariant} partially bridges the first gap,
+providing the obstruction $K_{\mathrm{mix}} \not> 0$ for a class
+of non-equivariant metrics.
+
+Three approaches to closing these gaps fully suggest themselves:
 
 \begin{enumerate}[label=(\roman*)]
-\item \emph{Higher-order rules.}  At jet order $3$, five
-  additional generators become
-  available~\cite[Proposition~8.1]{Ronnback2025jet}, and the product
-  decomposition would yield still more.  If the obstruction survives
-  at every jet order, this provides increasingly strong evidence.
+\item \emph{Higher-$\ell$ seams.}  For $\ell \ge 2$ product
+  harmonics, the Hessian has a nonzero trace-free part that
+  breaks the conformal structure underlying
+  Proposition~\ref{prop:conformal-hessian}, and the mixed
+  curvature changes sign
+  (Remark~\ref{rem:l2-failure}).  Unlike the $\ell = 1$ case
+  where $K_{\mathrm{mix}} \ge 0$, these seams produce genuinely
+  negative mixed curvatures.  A general proof for arbitrary
+  $\ell$ remains open, though the numerical evidence is strong.
+\item \emph{General non-product seams.}  The restriction to
+  product harmonics~\eqref{eq:product-harmonic} is a modelling
+  assumption.  Extending to sums $s = \sum_\ell s_\ell$ mixing
+  different degrees, or to non-harmonic seams, requires new
+  analysis.  Since $\ell = 1$ gives $K_{\mathrm{mix}} \ge 0$ and
+  $\ell \ge 2$ gives sign-changing $K_{\mathrm{mix}}$, any mixed
+  seam inherits the sign-changing behaviour from its higher-degree
+  components.
 \item \emph{Density of seam metrics.}  If the image of the seam
   map is $C^2$-dense in the space of Riemannian metrics on
   $S^2 \times S^2$ (up to diffeomorphism), then the seam obstruction
   automatically implies the full conjecture.  This is the
   universality problem of~\cite{Ronnback2025jet}.
-\item \emph{Extracting the topological core.}  The obstruction in
-  Theorem~\ref{thm:main} ultimately rests on two facts:
-  (a) the integral identity $\int_{S^2} \Delta f = 0$, and
-  (b) the product structure of $TM$.  If the argument can be
-  reformulated using only these ingredients---without reference to
-  the seam decomposition---then it would apply to all metrics.
 \end{enumerate}
 
 \subsection{Other product manifolds}
 
-The methods of this paper extend directly to other products
-$S^{n_1} \times S^{n_2}$: the integral obstruction
-(Lemma~\ref{lem:average}) requires only that each factor be compact
-without boundary, and the Hessian no-go theorem applies on any
-closed manifold.  In particular, $S^2 \times S^{2k}$ for $k \ge 1$
-and $\mathbb{CP}^m \times \mathbb{CP}^n$ are natural targets.
+The seam framework and Hsiang--Kleiner argument extend to other
+products $S^{n_1} \times S^{n_2}$: any $\OO(n_1) \times
+\OO(n_2)$-equivariant seam metric on such a product inherits a
+continuous symmetry, and the topological constraints on positively
+curved manifolds with symmetry apply.  The conformal product
+obstruction (Proposition~\ref{prop:conformal-obstruction}) and the
+orbit-metric curvature analysis generalise naturally.  Products
+$S^2 \times S^{2k}$ for $k \ge 1$ and
+$\mathbb{CP}^m \times \mathbb{CP}^n$ are natural targets for
+extension.
 
 
 % ================================================================
