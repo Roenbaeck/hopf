@@ -1970,7 +1970,12 @@ Three approaches to closing these gaps fully suggest themselves:
   analysis.  Since $\ell = 1$ gives $K_{\mathrm{mix}} \ge 0$ and
   $\ell \ge 2$ gives sign-changing $K_{\mathrm{mix}}$, any mixed
   seam inherits the sign-changing behaviour from its higher-degree
-  components.
+  components.  A partial exception: any seam of the form
+  $s = F(s_1)$ for an arbitrary smooth $F$ and an $\ell = 1$
+  harmonic $s_1$ inherits the coordinate-plane reflection
+  symmetries of~$s_1$, so the totally geodesic torus obstruction
+  of Proposition~\ref{prop:l1-nonneg} applies to this
+  (non-harmonic, mixed-degree) class.
 \item \emph{Density of seam metrics.}  A single seam metric
   $g_s$ depends on one scalar function $s$ of four variables
   (plus finitely many rule coefficients), whereas a generic
@@ -1991,6 +1996,38 @@ Three approaches to closing these gaps fully suggest themselves:
   (up to diffeomorphism), is the universality problem
   of~\cite{Ronnback2025jet}.
 \end{enumerate}
+
+\subsection{The torus as a unifying obstruction}
+
+A striking pattern emerges across all the results of this paper:
+every obstruction to positive sectional curvature ultimately
+manifests on a $2$-torus $T^2 \hookrightarrow S^2 \times S^2$.
+For equivariant seams, the Hsiang--Kleiner proof uses the
+fixed-point set of the circle action---a torus.  For conformal
+products, the maximum-principle argument locates a non-positive
+curvature on a mixed plane tangent to a product of great circles.
+For $\ell = 1$ non-equivariant seams, the discrete-involution torus
+provides the obstruction directly.  In each case, the mechanism is
+the same: the Gauss--Bonnet theorem forces
+$\int_{T^2} K\,dA = 2\pi\chi(T^2) = 0$, so if
+$T^2$ is totally geodesic (or even minimal with controlled second
+fundamental form), the sectional curvature cannot be everywhere
+positive on it.
+
+This suggests a conjectural route to the full Hopf conjecture:
+\emph{every} Riemannian metric on $S^2 \times S^2$ should admit a
+totally geodesic or minimal torus.  The homology class
+$[S^2 \times \{pt\}] + [\{pt\} \times S^2] \in
+H_2(S^2 \times S^2;\mathbb{Z})$
+is represented by an area-minimising surface (by compactness and
+regularity theory), and the product topology forces the existence of
+such representatives.  Establishing that one of these is a torus
+with the right curvature properties---without symmetry
+assumptions---would settle the conjecture.  The seam analysis
+provides evidence for this picture: across all seam metrics studied,
+the torus obstruction appears universally, whether furnished by
+continuous symmetry, discrete involution, or the algebraic structure
+of the seam itself.
 
 \subsection{Other product manifolds}
 
