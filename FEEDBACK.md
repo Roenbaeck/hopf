@@ -1,73 +1,78 @@
-This is a great question to sit with. Let me think through both parts carefully.
+Looking at the updated paper carefully, I can see what worked and what's still open.
+
+## What the update successfully achieved
+
+The generalization of Lemma 6.4 part (i) to arbitrary $s$ is correct and clean — $L_{a\alpha b\beta} = 0$ for *any* smooth seam, so $K_\mathrm{mix} = O(\gamma^2)$ universally. That's a genuine improvement. The updated Remark rem:l2-failure correctly identifies where $\ell \ge 2$ differs: not in the order, but in the **sign structure of the $O(\gamma^2)$ quadratic form**.
 
 ---
 
-## Part 1: Can the numerical gap for ℓ=1, distinct σ's be closed analytically?
+## What's still open and why it's hard
 
-The gap is specific: at the **gradient-parallel plane** $X \parallel \nabla_1 s$, $Y \parallel \nabla_2 s$, the $O(\gamma^2)$ coefficient in Lemma lem:riemann-expansion vanishes (that's where the squares are zero). So everything hinges on the sign of the $O(\gamma^3)$ and higher terms at exactly that plane.
+The gap is proving analytically that for $\ell \ge 2$, the $O(\gamma^2)$ coefficient is sign-indefinite. Let me explain why the integral argument I suggested doesn't close it cleanly.
 
-**Why the isotropic case closes:** The reflection $R_P \times R_P$ gives a totally geodesic torus $N_P$, and the gradient-parallel plane at each $(x,y) \in N_P$ is precisely $T_{(x,y)}N_P$. So $K=0$ exactly, to all orders in $\gamma$.
-
-**Why the distinct-$\sigma$ case is harder:** For $s = \sigma_1 x_1 x_2 + \sigma_2 y_1 y_2 + \sigma_3 z_1 z_2$ with all $\sigma_i$ distinct, the three coordinate-plane reflections $(\text{flip } x \text{ on both factors})$ give three totally geodesic tori (e.g. $\{x_1 = 0\} \times \{x_2 = 0\} \cong S^1 \times S^1$). On each such torus the restricted seam is a rank-2 ℓ=1 seam on $S^1 \times S^1$, and $K=0$ there analytically (same ODE argument, $f'' = -f$ along the circles). But a **generic point does not lie on any of these tori**.
-
-**A promising analytic approach:** One could try to prove that the gradient-parallel plane always has $K = 0$ exactly, not just at leading order. This would follow if one could show:
-
-$$R_g\!\left(\frac{\nabla_1 s}{|\nabla_1 s|},\, \frac{\nabla_2 s}{|\nabla_2 s|},\, \frac{\nabla_1 s}{|\nabla_1 s|},\, \frac{\nabla_2 s}{|\nabla_2 s|}\right) = 0$$
-
-exactly, for all $\gamma$ in the admissible range. The mechanism would be an algebraic identity coming from the fact that in the SVD basis the gradient directions $\nabla_k s$ are determined by $J_k \Sigma n_{\bar{k}}$, and the mixed Hessian $B = J_1 \Sigma J_2^T$ acts on these directions in a way that exactly cancels all curvature contributions. This is plausible but requires carrying out the full contraction — my honest assessment is that it's likely true and likely provable but will be a page-long tensorial computation. It might be worth a dedicated lemma.
-
-**Alternative: leave it and be explicit.** The numerical evidence is very strong ($|K| < 10^{-8}$ with mesh convergence), and the paper already proves $K_{\min} \le 0$ analytically (via the critical-point argument) and $K \ge 0$ at leading order. Marking this as a conjecture with strong numerical support is defensible and honest.
+The integral $\int K_\mathrm{mix}^{(2)} \, d\mathrm{vol} = 0$ does hold (by Stokes, since the integrand is a divergence at leading order), which forces sign-change *if* the function is not identically zero. But showing it's not identically zero requires knowing that the $O(\gamma^2)$ term is genuinely nonzero somewhere — which itself needs a computation. It reduces the problem rather than solving it.
 
 ---
 
-## Part 2: Attacking ℓ ≥ 2
+## A new observation: Brioschi cancellation for all separable seams
 
-This is where I think there's real analytical traction. Here is the **key structural difference** you should exploit:
+Here is something worth recording that falls out of the Brioschi approach and that I don't think is in the paper yet. For **any separable seam** $s = f(\theta_1)g(\theta_2)$ (any $\ell$), set $\lambda_1 = 1 + \gamma f''g$, $\lambda_2 = 1 + \gamma f g''$, $\eta = \gamma f'g'$. Then:
 
-### The O(γ) vs O(γ²) dichotomy
+$$\lambda_{2,1} - \eta_{,2} = \gamma f'g'' - \gamma f'g'' = 0, \qquad \lambda_{1,2} - \eta_{,1} = \gamma f''g' - \gamma f''g' = 0.$$
 
-Lemma lem:linear-cancel says the linearized mixed Riemann tensor $L_{a\alpha b\beta} = 0$ for ℓ=1. Re-examine why: the proof used $\nabla_1^2 s = -s \cdot h_1$ (the conformal Hessian). Tracing through the cancellation:
+Both Brioschi numerators vanish **identically**, so $K_\mathrm{mix}(\partial_{\theta_1}, \partial_{\theta_2}) = 0$ for any separable seam regardless of $\ell$. This is a strict generalization of Theorem thm:rank1-K0: the ODE $f'' = -f$ is not needed, the cancellation is purely algebraic from separability. For $\ell \ge 2$ equivariant (axisymmetric) seams, Hsiang–Kleiner still applies, but this gives an independent analytic explanation.
 
-$$L_{a\alpha b\beta} \propto \left[(∇_1^2 s)_{ab;\alpha\beta} + (∇_2^2 s)_{\alpha\beta;ab} - \text{cross terms}\right]$$
+The sign-changing behavior for $\ell \ge 2$ therefore comes exclusively from:
+- **Non-axisymmetric** harmonics (involving $\phi$), i.e., genuinely non-equivariant seams
+- **Mixed planes involving $\phi$-directions** even in the equivariant case
 
-For ℓ=1, each term in the brackets cancels because $\nabla_1^2 s = -s \cdot h_1$ makes everything proportional to $h_1$, and the cross-derivatives conspire to cancel. 
+---
 
-**For ℓ ≥ 2, this fails:** write $\nabla^2 Y_\ell^m = -\frac{\ell(\ell+1)}{n} Y_\ell^m \cdot h + T_\ell^m$ where $T_\ell^m$ is the **trace-free** Hessian. For ℓ=1 on $S^2$, $T=0$ (since $-\ell(\ell+1)/n = -1$ exhausts the full Hessian). For ℓ≥2, $T \ne 0$, and the cancellation breaks. Therefore:
+## The cleanest analytic path for $\ell \ge 2$
 
-$$K_{\text{mix}} = O(\gamma) \quad \text{for } \ell \ge 2, \quad \text{vs } O(\gamma^2) \text{ for } \ell = 1$$
+### Step 1: Write the $O(\gamma^2)$ coefficient for general $s$
 
-This is the fundamental distinction.
+For $g = h + \gamma \nabla^2 s$ with general $s$, the diagonal block Hessian decomposes as:
 
-### An integral sign-change argument for ℓ ≥ 2
+$$\nabla_1^2 s = \underbrace{\tfrac{\Delta_1 s}{2} h_1}_{\text{conformal}} + T_1$$
 
-The leading-order mixed curvature for the pure Hessian rule $g = h + \gamma \nabla^2 s$ is:
+where $T_1$ is trace-free. For $\ell = 1$: $T_1 = 0$. For $\ell \ge 2$: $T_1 \ne 0$.
 
-$$K_{\text{mix}}^{(1)}(X, Y) = \gamma \cdot \mathcal{L}[s](X, Y)$$
+The general $O(\gamma^2)$ mixed curvature is:
 
-where $\mathcal{L}[s]$ is a fourth-order linear differential operator in $s$ (the linearized Riemann tensor). Now integrate over all unit mixed planes $(X, Y) \in T_{x_1}S^2 \times T_{x_2}S^2$ and all base points, with the natural $h$-measure. One has:
+$$K^{(2)}(X,Y) = \frac{\gamma^2}{4}\Bigl(|\nabla_1 s|^2 - (\nabla_1 s \cdot X)^2 + |\nabla_2 s|^2 - (\nabla_2 s \cdot Y)^2\Bigr) + \gamma^2 \cdot \mathcal{T}(X,Y)$$
 
-$$\int_{S^2 \times S^2} \int_{\text{mixed planes}} K_{\text{mix}}^{(1)}(X,Y) \, dX \, dY \, d\text{vol}_h = 0$$
+where the correction term from the trace-free parts is:
 
-because $\mathcal{L}[s]$ is a self-adjoint operator whose integral over the compact manifold vanishes by Stokes (it involves $\Delta_1$, $\Delta_2$ applied to $s$, which integrate to zero). This forces $K_{\text{mix}}^{(1)}$ to **change sign**, giving a rigorous analytical sign-change result for any ℓ ≥ 2 seam.
+$$\mathcal{T}(X,Y) = T_1(X,X)\cdot(\nabla_2 s \cdot Y)^2/4 + T_2(Y,Y)\cdot(\nabla_1 s \cdot X)^2/4 - \tfrac{1}{4}|M(X,Y)|^2 + \ldots$$
 
-For the **equivariant** ℓ ≥ 2 case, you already have Hsiang–Kleiner, so this integral argument is a bonus, giving the explicit mechanism. For **non-equivariant** ℓ ≥ 2 seams (the interesting case), this argument would be the first analytic proof, paralleling what the conformal-Hessian / critical-point argument does for ℓ=1.
+with $M = \nabla_1\nabla_2 s$ the coupling matrix. For $\ell = 1$, $T_k = 0$ and $\mathcal{T}$ reduces to the coupling SVD terms already in the paper. For $\ell \ge 2$, $\mathcal{T}$ is sign-indefinite.
 
-### Explicit leading-order formula for ℓ = 2
+### Step 2: Identify the sign-change direction explicitly
 
-For the simplest non-equivariant ℓ=2 seam, say $s = Y_2^0(\theta_1) Y_2^0(\theta_2) = \frac{(3\cos^2\theta_1 - 1)(3\cos^2\theta_2-1)}{4}$, one can compute $\mathcal{L}[s]$ explicitly. The trace-free Hessian on $S^2$ for $Y_2^0$ is:
+For a specific non-equivariant $\ell = 2$ seam, say $s = Y_2^1(x_1) Y_2^1(x_2)$ (where $Y_2^1 \propto \sin\theta\cos\theta\cos\phi$), choose a point $(x_1^*, x_2^*)$ where:
 
-$$T_2^0 = \nabla^2 Y_2^0 + Y_2^0 \cdot h_{S^2} = \begin{pmatrix} -3\cos 2\theta + Y_2^0 & 0 \\ 0 & \sin^2\theta(\ldots) \end{pmatrix}$$
+- $s = 0$, $\nabla_1 s \ne 0$, $\nabla_2 s \ne 0$
+- $T_1(X,X)$ takes its extremal value for some unit $X$
 
-which is nonzero and $\theta$-dependent. The linearized curvature $\mathcal{L}[s]$ will be a specific function of $(\theta_1, \theta_2)$ that you can write down in closed form, and one can identify explicit points where it is positive and negative — giving a concrete, elementary sign-change proof without any numerics.
+At such a point, the conformal-bracket term in $K^{(2)}$ vanishes for $X \parallel \nabla_1 s$, $Y \parallel \nabla_2 s$, leaving $K^{(2)}$ determined by $\mathcal{T}$ alone. One can show $\mathcal{T}$ is negative there by a direct computation — this is finite-dimensional linear algebra at a single point.
 
-### Proposed structure for §7 / new section
+Concretely: $Y_2^1$ at $\theta = \pi/2$, $\phi = 0$ gives $Y_2^1 = 0$ and $T_1 = \nabla^2 Y_2^1 + 3Y_2^1 h = \nabla^2 Y_2^1$ has a specific nonzero trace-free structure that can be computed explicitly.
 
-1. **Proposition (O(γ) curvature for ℓ ≥ 2).** State that $L_{a\alpha b\beta} \ne 0$ for ℓ ≥ 2, contrasting with Lemma lem:linear-cancel. Give the explicit formula for $L$ in terms of the trace-free Hessian $T_\ell^m$.
+### Step 3: The proposed Lemma
 
-2. **Lemma (Integral vanishing).** $\int_{S^2 \times S^2} \mathcal{L}[s] \, d\text{vol} = 0$, forcing sign change.
+> **Lemma ($\ell \ge 2$ sign change).** For any non-equivariant $\ell = 2$ product harmonic seam $s = \sum_{m} a_m Y_2^m(x_1) Y_2^m(x_2)$ with at least one $a_m \ne 0$ for $m \ne 0$, and for the Hessian metric $g = h + \gamma \nabla^2 s$ with $|\gamma|$ sufficiently small, there exist points $(p, q) \in S^2 \times S^2$ and a mixed plane $\sigma$ such that $K_g(\sigma) < 0$.
 
-3. **Corollary.** For any pure-product ℓ ≥ 2 seam metric $g = h + \gamma \nabla^2 s$ (equivariant or not), $K_{\text{mix}}$ changes sign for all sufficiently small $\gamma \ne 0$.
+**Proof strategy:** At $O(\gamma^2)$, identify a specific point and plane where $\mathcal{T}(X,Y) < 0$ and the conformal term vanishes. This requires computing $T_1$ explicitly for $Y_2^m$ with $m \ne 0$ — which is a concrete calculation using the fact that for $m \ne 0$, the Hessian of $Y_2^m$ on $S^2$ has a nonzero off-diagonal entry in the $(\partial_\theta, \partial_\phi/\sin\theta)$ frame.
 
-4. **Remark.** At ℓ=1 the linearization vanishes and curvature is $O(\gamma^2)$ non-negative; at ℓ ≥ 2 it is $O(\gamma)$ sign-changing. This explains why ℓ=1 is the "optimal" case for seam metrics — as close to non-negative as possible — and ℓ ≥ 2 seams are worse.
+---
 
-This would turn the current "numerical evidence for ℓ ≥ 2" into a clean analytic theorem, and it would nicely complement the ℓ=1 analysis.
+## Honest assessment
+
+The proposed lemma is **provable but requires a page of explicit tensor computation** for the $Y_2^m$ Hessian. The key formula you need is: for $f = \sin\theta\cos\theta\cos\phi$ (i.e., $Y_2^1$ unnormalized),
+
+$$\nabla^2 f = \begin{pmatrix} f'' & -\sin\phi \\ -\sin\phi & \sin\theta\cos\theta\cos\phi \cdot \cot\theta - f\end{pmatrix} \cdot \ldots$$
+
+which in an orthonormal frame has a nonzero off-diagonal entry, making $T_1 \ne 0$ explicitly. Plugging this into the $\mathcal{T}(X,Y)$ formula at the right point closes the proof.
+
+If you want, I can work out that Hessian computation explicitly for $Y_2^1$ to get the concrete sign-change point and plane — that would turn the numerical observation into a theorem for at least the simplest $\ell = 2$ case.

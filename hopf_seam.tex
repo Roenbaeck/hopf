@@ -1341,17 +1341,17 @@ $I_2 - v v^T$ with $|v|^2 = 1 - s^2$ has eigenvalues $s^2$ and~$1$,
 giving singular values $(1, |s|)$ for~$M$.
 \end{proof}
 
-\subsection{Rank-$1$ seams: analytical proof}
+\subsection{Separable seams: Brioschi analysis}
 
-For rank-$1$ seams ($\sigma_2 = \sigma_3 = 0$), which are
-automatically equivariant, we can prove the vanishing of mixed
-curvature directly from the Brioschi formula.
+For any separable seam $s = f(\theta_1)\,g(\theta_2)$ (with $f$
+and $g$ depending only on the polar angle on each factor), the
+Brioschi numerators vanish algebraically, regardless of the
+degree~$\ell$.
 
-\begin{theorem}[Mixed curvature vanishes for rank-$1$ $\ell = 1$ seams]
+\begin{theorem}[Mixed curvature vanishes for separable seams]
 \label{thm:rank1-K0}
-Let $s = f(\theta_1)\,g(\theta_2)$ where $f$ and $g$ are
-$\ell = 1$ spherical harmonics (after choosing axes on each
-factor).  Then for the seam metric
+Let $s = f(\theta_1)\,g(\theta_2)$ where $f$ and $g$ are smooth
+functions of the polar angle alone.  Then for the seam metric
 $g_s = h + \gamma\,\nabla^2 s$ and all values of $\gamma$ for
 which $g_s > 0$,
 \[
@@ -1361,37 +1361,41 @@ K_{g_s}(\partial_{\theta_1}, \partial_{\theta_2}) = 0
 \end{theorem}
 
 \begin{proof}
-The orbit metric is
-$g_{\mathrm{orb}} = \bigl(\begin{smallmatrix} \lambda & \eta \\
-\eta & \lambda \end{smallmatrix}\bigr)$ with
-$\lambda = 1 - \gamma s = 1 - \gamma f g$ and
-$\eta = \gamma f'g'$.  Applying the Brioschi
-formula~\eqref{eq:Kmix-general}, the two numerators are
+Since $s$ depends only on $\theta_1$ and $\theta_2$, all metric
+coefficients are independent of $\phi_1$ and $\phi_2$, so
+Proposition~\ref{prop:mixed-curv-general} applies and
+$K_{g_s}(\partial_{\theta_1}, \partial_{\theta_2})$ equals the
+Gaussian curvature of the orbit metric
+$g_{\mathrm{orb}} = \bigl(\begin{smallmatrix} \lambda_1 & \eta \\
+\eta & \lambda_2 \end{smallmatrix}\bigr)$ with
 \[
-\lambda_{,1} - \eta_{,2} = -\gamma f'g - \gamma f'g'' = -\gamma f'(g + g''), \qquad
-\lambda_{,2} - \eta_{,1} = -\gamma f g' - \gamma f'' g' = -\gamma g'(f + f'').
+\lambda_1 = 1 + \gamma f''g, \qquad
+\lambda_2 = 1 + \gamma f g'', \qquad
+\eta = \gamma f'g'.
 \]
-Since $f$ and $g$ are $\ell = 1$ harmonics, they satisfy
-$f'' + (\cot\theta_1)f' + 2f = 0$, i.e.\ $\Delta_{S^1}f = -2f$.
-However, the key identity is stronger: as restrictions to $S^2$
-of linear functions on $\mathbb{R}^3$, they satisfy the
-\emph{pointwise ODE}
+The two Brioschi numerators~\eqref{eq:Kmix-general} are
 \[
-f''(\theta) = -f(\theta) \quad \text{(along any arc at fixed $\phi$)},
+\lambda_{2,1} - \eta_{,2}
+  = \gamma f'g'' - \gamma f'g'' = 0, \qquad
+\lambda_{1,2} - \eta_{,1}
+  = \gamma f''g' - \gamma f''g' = 0.
 \]
-when $f$ depends only on $\theta$ (which holds after choosing the
-polar axis along the harmonic's direction).  Thus
-$g + g'' = 0$ and $f + f'' = 0$, so both Brioschi numerators
-vanish identically, giving $K = 0$ for all $\theta_1, \theta_2$
-and all~$\gamma$.
+Both vanish identically by the product rule applied to the
+separable structure of~$s$, so $K = 0$ for all
+$\theta_1, \theta_2$ and all~$\gamma$.
 \end{proof}
 
 \begin{remark}
-The identity $f'' = -f$ is the $\theta$-component of the
-conformal Hessian property~\eqref{eq:conformal-hessian}.
-For $\ell \ge 2$, $f'' \neq -f$ in general (e.g.\
-$f = \cos^2\theta$ gives $f'' = -2\cos 2\theta \neq -\cos^2\theta$),
-and the Brioschi cancellation fails.
+For $\ell = 1$ harmonics, the conformal Hessian
+property~\eqref{eq:conformal-hessian} gives the additional
+identity $f'' = -f$, so that $\lambda_1 = \lambda_2 = 1 - \gamma fg$
+and the orbit metric is symmetric in the two factors.  This
+stronger structure is used in the SVD analysis
+(Proposition~\ref{prop:coupling-svd}).
+For $\ell \ge 2$ separable (axisymmetric) seams, the theorem
+still gives $K(\partial_{\theta_1}, \partial_{\theta_2}) = 0$,
+but curvature in planes involving $\phi$-directions can become
+negative (cf.\ Remark~\ref{rem:l2-failure}).
 \end{remark}
 
 \subsection{Non-negative mixed curvature for $\ell = 1$}
@@ -1859,7 +1863,7 @@ The value of the seam perspective is fourfold:
   (Remark~\ref{rem:symmetry-classification}), the resulting metric
   has no continuous symmetry and Hsiang--Kleiner does not apply.
   The conformal Hessian property (Proposition~\ref{prop:conformal-hessian}),
-  the analytical rank-$1$ vanishing (Theorem~\ref{thm:rank1-K0}),
+  the Brioschi vanishing for separable seams (Theorem~\ref{thm:rank1-K0}),
   and the coupling SVD (Proposition~\ref{prop:coupling-svd})
   provide a new geometric mechanism---independent of
   symmetry---showing that $K_{\mathrm{mix}} \ge 0$ with equality
