@@ -208,9 +208,8 @@ direct maximum-principle proof for the conformal product subcase,
 (c)~the classification of equivariant seam rules on product
 backgrounds, and (d)~the analysis of non-equivariant $\ell = 1$
 seams (\S\ref{sec:non-equivariant}), where the conformal Hessian
-structure forces $K_{\mathrm{mix}} \ge 0$ with equality everywhere,
-providing the first curvature obstruction for seam metrics without
-continuous symmetry.
+structure forces $K_{\mathrm{mix}} = 0$ at critical points and on
+totally geodesic tori, analytically ruling out strict positivity.
 \end{remark}
 
 
@@ -475,69 +474,72 @@ This is the sub-family of~\eqref{eq:product-rule} with
 $\alpha_1 = e^{2u}$, $\alpha_2 = e^{2v}$, and all
 $\beta_k = \gamma_k = \beta_{12} = \gamma_{12} = 0$.
 
-For this metric, the O'Neill--Gray formula for doubly-warped
-products gives the mixed sectional curvature explicitly.  Let
+For this metric, the mixed sectional curvature equals the
+Gaussian curvature of the $2$-dimensional orbit metric.  Let
 $X_1 \in T_{x_1} M_1$ and $X_2 \in T_{x_2} M_2$ be unit vectors
 (in the $h_k$-norms), so that $\sigma = \operatorname{span}(X_1, X_2)$
 is a mixed plane.
 
 \begin{proposition}[Mixed curvature of a conformal product]
 \label{prop:mixed-curv-conformal}
-The sectional curvature of the mixed plane
-$\sigma = \operatorname{span}(X_1, X_2)$ with respect to the
-metric~\eqref{eq:conformal-product} is
+Let $g = e^{2u}\,h_1 + e^{2v}\,h_2$ with
+$u, v \in C^\infty(M_1 \times M_2)$.
+\begin{enumerate}[label=$(\roman*)$]
+\item\label{it:conformal-crit}
+At any point where $\nabla_1 v = 0$ and $\nabla_2 u = 0$:
+\begin{equation}
+\label{eq:Kmix-conformal-crit}
+K_g(X_1, X_2) =
+  -\frac{\nabla_1^2 v(X_1, X_1)}{e^{2u}}
+  -\frac{\nabla_2^2 u(X_2, X_2)}{e^{2v}}.
+\end{equation}
+\item\label{it:conformal-equiv}
+If $u, v$ are $\OO(2) \times \OO(2)$-equivariant (independent of
+$\phi_k$), then by Proposition~\ref{prop:mixed-curv-general} the
+mixed curvature $K_g(\partial_{\theta_1}, \partial_{\theta_2})$
+equals the Gaussian curvature of the orbit metric
+$e^{2u}\,d\theta_1^2 + e^{2v}\,d\theta_2^2$, given by the
+Brioschi formula:
 \begin{equation}
 \label{eq:Kmix-conformal}
-K_g(\sigma) =
-  -\frac{\nabla_1^2 v(X_1, X_1) + X_1(u)\,X_1(v)}{e^{2u}}
-  -\frac{\nabla_2^2 u(X_2, X_2) + X_2(u)\,X_2(v)}{e^{2v}}
-  -\frac{|\nabla_1 v|_{h_1}^2}{e^{2u}}
-  -\frac{|\nabla_2 u|_{h_2}^2}{e^{2v}}.
+K_g(\partial_{\theta_1}, \partial_{\theta_2}) =
+  -\frac{v_{11} + v_1^2 - u_1\,v_1}{e^{2u}}
+  -\frac{u_{22} + u_2^2 - u_2\,v_2}{e^{2v}},
 \end{equation}
+where subscripts denote $\partial_{\theta_k}$.
+When $u = v$, all gradient terms cancel and
+$K = -v_{11}/e^{2u} - u_{22}/e^{2v}$.
+\end{enumerate}
 \end{proposition}
 
 \begin{proof}
-The metric~\eqref{eq:conformal-product} is a doubly-warped product
-with warp functions $\varphi_1 = e^u$ on $M_1$ and
-$\varphi_2 = e^v$ on $M_2$.  The mixed curvature of a warped
-product $\varphi_1^2 h_1 + \varphi_2^2 h_2$ is
-(see~\cite[Chapter~7]{Petersen2016})
-\[
-K_g(\sigma) =
-  -\frac{\nabla_1^2 \varphi_2(X_1, X_1)}{\varphi_1^2 \varphi_2}
-  -\frac{\nabla_2^2 \varphi_1(X_2, X_2)}{\varphi_1 \varphi_2^2}.
-\]
-Substituting $\varphi_k = e^{w_k}$ (with $w_1 = u$, $w_2 = v$) and
-computing $\nabla^2 e^w = e^w(\nabla^2 w + dw \otimes dw)$ gives
-\begin{align*}
-K_g(\sigma)
-&= -\frac{e^v\bigl(\nabla_1^2 v(X_1,X_1) + X_1(v)^2\bigr)}{e^{2u}\,e^v}
-   -\frac{e^u\bigl(\nabla_2^2 u(X_2,X_2) + X_2(u)^2\bigr)}{e^u\,e^{2v}} \\
-&= -\frac{\nabla_1^2 v(X_1,X_1) + X_1(v)^2}{e^{2u}}
-   -\frac{\nabla_2^2 u(X_2,X_2) + X_2(u)^2}{e^{2v}}.
-\end{align*}
-This is the cleaned form.  To arrive
-at~\eqref{eq:Kmix-conformal} in its stated form---which separates
-the roles of $u$ and $v$ for the sign analysis below---we note that
-for a general (non-separable) doubly-warped product where $u$ and
-$v$ both depend on all coordinates, additional cross terms arise
-from the full O'Neill formula involving $\nabla_k u$ and
-$\nabla_k v$.  The complete expression
-is~\eqref{eq:Kmix-conformal}.
+For~\ref{it:conformal-crit}: the Koszul formula on the product gives
+$\nabla_{X_1} X_2 = X_2(u)\,X_1 + X_1(v)\,X_2$
+for $h_k$-unit vectors.  At a point where $\nabla_1 v = 0$ and
+$\nabla_2 u = 0$, this vanishes.  A direct computation of
+$R(X_1, X_2, X_2, X_1) = g(\nabla_{X_1}\nabla_{X_2}X_2
+  - \nabla_{X_2}\nabla_{X_1}X_2, X_1)$
+from these connection formulas, using the Leibniz rule at the
+critical point (where first-order gradient terms vanish but
+second-order Hessian terms survive),
+gives~\eqref{eq:Kmix-conformal-crit}.
+
+For~\ref{it:conformal-equiv}: the metric is block-diagonal between
+$\theta$- and $\phi$-directions and independent of $\phi_k$, so
+Proposition~\ref{prop:mixed-curv-general} applies.  The Brioschi
+formula for $E = e^{2u}$, $G = e^{2v}$
+yields~\eqref{eq:Kmix-conformal}; when $u = v$, the terms
+$v_1^2 - u_1 v_1 = v_1(v_1 - u_1) = 0$ and
+$u_2^2 - u_2 v_2 = 0$.
 \end{proof}
 
 \begin{corollary}[Conformal product: separable case]
 \label{cor:conformal-sep}
 If $u = u(x_1)$ and $v = v(x_2)$ (each warp function depends only
-on its own factor), then~\eqref{eq:Kmix-conformal} simplifies to
-\begin{equation}
-\label{eq:Kmix-sep}
-K_g(\sigma) =
-  -\frac{\nabla_1^2 v(X_1, X_1)}{e^{2u}}
-  -\frac{\nabla_2^2 u(X_2, X_2)}{e^{2v}}
-  = 0,
-\end{equation}
-since $\nabla_1 v = 0$ and $\nabla_2 u = 0$.  Thus a product of
+on its own factor),
+then~\eqref{eq:Kmix-conformal-crit} applies everywhere
+(since $\nabla_1 v = 0$ and $\nabla_2 u = 0$ globally) and
+both Hessians vanish, giving $K_g = 0$.  Thus a product of
 conformally rescaled factors always has vanishing mixed curvature,
 and the obstruction is trivial.
 \end{corollary}
@@ -761,30 +763,22 @@ mixed plane $\sigma$ at $(p_1, p_2)$ such that $K_g(\sigma) \le 0$.
 \end{proposition}
 
 \begin{proof}
-By Proposition~\ref{prop:mixed-curv-conformal}, the mixed curvature is
+By Proposition~\ref{prop:mixed-curv-conformal}\ref{it:conformal-crit},
+at any point where $\nabla_1 v = 0$ and $\nabla_2 u = 0$ the
+mixed curvature reduces to
 \[
 K_g(\sigma) =
-  -\frac{\nabla_1^2 v(X_1, X_1) + X_1(v)^2}{e^{2u}}
-  -\frac{\nabla_2^2 u(X_2, X_2) + X_2(u)^2}{e^{2v}}
-  -\frac{|\nabla_1 v|^2}{e^{2u}}
-  -\frac{|\nabla_2 u|^2}{e^{2v}}.
+  -\frac{\nabla_1^2 v(X_1, X_1)}{e^{2u}}
+  -\frac{\nabla_2^2 u(X_2, X_2)}{e^{2v}}.
 \]
-The last two terms are manifestly non-positive.  To show that the
-first two terms produce a non-positive contribution at some point,
-we use a maximum-point argument.
+We construct such a point by a maximum-point argument.
 
 Fix any $p_2 \in S^2$.  Consider the function
 $\theta_1 \mapsto v(\theta_1, p_2)$ on the first $S^2$ factor.
 By Lemma~\ref{lem:concavity}, there exists $p_1^* \in S^2$ at which
 $v(\cdot, p_2)$ attains its maximum over the first factor.  At
-$p_1^*$:
-\begin{enumerate}[label=(\alph*)]
-\item $\nabla_1 v = 0$ (critical point), so the gradient term
-  $|\nabla_1 v|^2 = 0$ and the cross term $X_1(v)^2 = 0$ for
-  $X_1 = \partial_{\theta_1}$.
-\item $\nabla_1^2 v(X_1, X_1) \le 0$ for all $X_1$
-  (Hessian is non-positive at a maximum).
-\end{enumerate}
+$p_1^*$, $\nabla_1 v = 0$ and
+$\nabla_1^2 v(X_1, X_1) \le 0$ for all $X_1$.
 
 Now fix $p_1 = p_1^*$ and consider
 $\theta_2 \mapsto u(p_1^*, \theta_2)$ on the second factor.
@@ -962,28 +956,29 @@ $\nabla_1^2 v(\partial_{\theta_1}, \partial_{\theta_1})
 = -\alpha\cos\theta_1$.
 
 \paragraph{Mixed curvature.}
-By Proposition~\ref{prop:mixed-curv-conformal} (with $u = v = \alpha s$
-and using that $\nabla_k v = \nabla_k u = \alpha\nabla_k s$):
-\begin{align*}
+By Proposition~\ref{prop:mixed-curv-conformal}\ref{it:conformal-equiv}
+(with $u = v = \alpha s$, so all gradient terms cancel):
+\[
 K_g(\partial_{\theta_1}, \partial_{\theta_2})
-&= -\frac{-\alpha\cos\theta_1 + \alpha^2\sin^2\!\theta_1}{e^{2\alpha s}}
-   -\frac{-\alpha\cos\theta_2 + \alpha^2\sin^2\!\theta_2}{e^{2\alpha s}} \\
-&\qquad -\frac{\alpha^2\sin^2\!\theta_1}{e^{2\alpha s}}
-   -\frac{\alpha^2\sin^2\!\theta_2}{e^{2\alpha s}} \\
-&= \frac{\alpha(\cos\theta_1 + \cos\theta_2)
-         - 2\alpha^2(\sin^2\!\theta_1 + \sin^2\!\theta_2)}
-        {e^{2\alpha s}}.
-\end{align*}
+= -\frac{-\alpha\cos\theta_1}{e^{2\alpha s}}
+  -\frac{-\alpha\cos\theta_2}{e^{2\alpha s}}
+= \frac{\alpha\,s}{e^{2\alpha s}}.
+\]
 
-At the poles $\theta_1 = \theta_2 = 0$: $K_g = 2\alpha\,e^{-4\alpha} > 0$.
+At the north poles $\theta_1 = \theta_2 = 0$:
+$K_g = 2\alpha\,e^{-4\alpha} > 0$.
 
 At the equators $\theta_1 = \theta_2 = \pi/2$:
-$K_g = -4\alpha^2\,e^{0} = -4\alpha^2 < 0$.
+$K_g = 0$.
 
-This confirms the theorem: the mixed curvature is positive near the
-poles but necessarily becomes negative at the equators.  The
-transition occurs at $\cos\theta_k = 2\alpha\sin^2\!\theta_k$,
-which always has a solution for $\alpha > 0$.
+At the south poles $\theta_1 = \theta_2 = \pi$:
+$K_g = -2\alpha\,e^{4\alpha} < 0$.
+
+The mixed curvature has the same sign as the seam~$s$ itself:
+positive where $s > 0$, zero on the level set
+$\cos\theta_1 + \cos\theta_2 = 0$, and negative where $s < 0$.
+This confirms the theorem: no conformal product metric on
+$S^2 \times S^2$ has everywhere positive mixed curvature.
 
 \subsection{The height-product seam}
 \label{sec:height-product}
