@@ -11,6 +11,7 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
 
 \theoremstyle{thmstylethree}%
 \newtheorem{definition}[theorem]{Definition}
@@ -69,12 +70,12 @@ the mixed sectional curvature equals the Gaussian curvature of a
 $2$-dimensional orbit metric and provide explicit formulas.
 For non-equivariant seams built from $\ell = 1$ product
 spherical harmonics---which break all continuous symmetry---we
-show that the conformal Hessian property of degree-$1$ harmonics
-forces non-negative mixed curvature, with $K_{\mathrm{mix}} = 0$
-achieved at every point in a specific plane determined by the
-singular value decomposition of the inter-factor coupling.
-This identifies the precise mechanism preventing strictly positive
-curvature for seam metrics on $S^2 \times S^2$.
+prove that the conformal Hessian property of degree-$1$ harmonics
+forces $K_{\mathrm{mix}} = 0$ at critical points and on totally
+geodesic flat tori, analytically ruling out strictly positive
+curvature.  Numerical evidence further suggests
+$K_{\mathrm{mix}} \ge 0$ for all mixed planes, with
+$K_{\min} = 0$ achieved pointwise.
 }
 
 \keywords{seam geometry, Hopf conjecture, positive sectional curvature,
@@ -1096,77 +1097,43 @@ K_\omega(V_1, \bar V_1, V_2, \bar V_2)
 = \operatorname{HBC}(V_1, V_2) + \operatorname{HBC}(V_1, \bar V_2).
 \end{equation}
 
-\begin{proposition}[K\"ahler seam obstruction]
+\begin{proposition}[K\"ahler obstruction via Bochner technique]
 \label{prop:kahler-obstruction}
-Let $\omega_\psi = \omega_0 + i\partial\bar\partial\psi$ be a
-K\"ahler metric on $\mathbb{CP}^1 \times \mathbb{CP}^1$.  Then
-$\omega_\psi$ cannot have strictly positive holomorphic bisectional
-curvature on all pairs of holomorphic directions from different
-factors.
+No K\"ahler metric on $\mathbb{CP}^1 \times \mathbb{CP}^1$ has
+strictly positive holomorphic bisectional curvature.
 \end{proposition}
 
 \begin{proof}
-Write $\omega_\psi$ in local product coordinates
-$(z_1, z_2) \in \mathbb{C} \times \mathbb{C}$:
-\[
-\omega_\psi = \omega_{\mathrm{FS}}^{(1)} + \omega_{\mathrm{FS}}^{(2)}
-+ i\partial\bar\partial\psi.
-\]
-The mixed component of the curvature tensor is
-\[
-R_{1\bar 1 2\bar 2}
-= -\partial_{z_1}\partial_{\bar z_1}\partial_{z_2}\partial_{\bar z_2}\psi
-  + g^{1\bar 1}\,(\partial_{z_1}\partial_{z_2}\partial_{\bar z_2}\psi)\,
-    (\partial_{\bar z_1}\partial_{z_2}\partial_{\bar z_2}\psi)
-  + \cdots
-\]
-The leading term $-\partial_1\bar\partial_1\partial_2\bar\partial_2\psi$
-involves the mixed fourth derivative of the seam $\psi$.
-
-On the compact manifold $\mathbb{CP}^1 \times \mathbb{CP}^1$,
-consider the function $\Phi(z_1, z_2) = \psi_{2\bar 2}(z_1, z_2)$,
-where $\psi_{2\bar 2} = \partial_{z_2}\partial_{\bar z_2}\psi$.
-By compactness, $\Phi$ attains its maximum at some point
-$(z_1^*, z_2^*)$.  At this maximum,
-$\partial_{z_1}\partial_{\bar z_1}\Phi \le 0$, i.e.,
-\[
-\partial_1\bar\partial_1\partial_2\bar\partial_2\psi\big|_{(z_1^*, z_2^*)} \le 0.
-\]
-The leading contribution to the mixed bisectional curvature is
-$-\partial_1\bar\partial_1\partial_2\bar\partial_2\psi \ge 0$ at
-this point.  However, the positivity condition
-$\omega_\psi > 0$ constrains how $\psi_{2\bar 2}$ can vary,
-and a careful analysis shows that the correction terms from
-the K\"ahler structure (involving the metric
-inverse $g^{i\bar j}$) cannot make the total mixed bisectional
-curvature strictly positive at every point.
-
-The detailed argument uses the $\partial\bar\partial$-lemma: since
-$\omega_\psi$ is cohomologous to $\omega_0$, the potential $\psi$
-is globally defined, and the integral constraint
-$\int_{\mathbb{CP}^1} \Delta_1\psi_{2\bar 2}\;\omega_{\mathrm{FS}}^{(1)} = 0$
-forces $\psi_{2\bar 2}$ (viewed as a function on the first factor)
-to have both maxima and minima.
+By the Bochner technique for harmonic $(1,1)$-forms
+(Goldberg--Kobayashi~\cite{GoldbergKobayashi1967}), a compact
+K\"ahler manifold with strictly positive holomorphic bisectional
+curvature satisfies $h^{1,1} = 1$: the Weitzenb\"ock formula
+forces every primitive harmonic $(1,1)$-form to vanish.
+By the K\"unneth formula,
+$h^{1,1}(\mathbb{CP}^1 \times \mathbb{CP}^1) = 2$,
+since the classes $[\omega_{\mathrm{FS}}^{(1)}]$ and
+$[\omega_{\mathrm{FS}}^{(2)}]$ are linearly independent in
+$H^{1,1}$.  As $h^{1,1}$ depends only on the complex structure,
+no K\"ahler metric can reduce it to~$1$.
 \end{proof}
 
-\begin{remark}[Consistency of the two approaches]
+\begin{remark}[Relation to the real obstruction]
 The K\"ahler obstruction
 (Proposition~\ref{prop:kahler-obstruction}) and the real obstruction
-(Theorem~\ref{thm:main}) target different but overlapping
-classes of metrics.  The K\"ahler result applies to all metrics
-obtainable via the Levi-form generator $i\partial\bar\partial\psi$
-in a fixed K\"ahler class, while the real result applies to all
-$\OO(2) \times \OO(2)$-equivariant seam metrics.  Their union
-covers a substantial portion of the natural metrics on
-$S^2 \times S^2$.
-
-A common theme is the role of compactness: on a compact factor,
-any smooth function must have both maxima and minima, constraining
-the sign of mixed second derivatives.  The K\"ahler formulation
-makes this particularly transparent because the Levi form
-$i\partial\bar\partial\psi$ encodes the Hessian data directly,
-while the real equivariant proof invokes the topological
-consequence through Hsiang--Kleiner.
+(Theorem~\ref{thm:main}) are complementary.  The K\"ahler
+result applies to \emph{all} K\"ahler metrics on
+$\mathbb{CP}^1 \times \mathbb{CP}^1$, regardless of
+cohomology class, but concerns the full holomorphic bisectional
+curvature (all pairs of $(1,0)$-directions); the real result
+applies to all $\OO(2) \times \OO(2)$-equivariant seam metrics
+and directly addresses mixed sectional curvature between the
+factors.  Via Equation~\eqref{eq:HBC-mixed}, strictly positive
+mixed sectional curvature would require certain mixed HBC terms
+to be positive, so the two obstructions constrain overlapping
+aspects of the curvature tensor.  In both cases, the product
+topology of $S^2 \times S^2$ is the ultimate source:
+$h^{1,1} = 2$ for the K\"ahler argument, the existence of a
+flat torus $T^2 \hookrightarrow S^2 \times S^2$ for the real one.
 \end{remark}
 
 
@@ -1654,22 +1621,25 @@ positive sectional curvature for all $\ell = 1$ seams, including
 those with distinct singular values that admit no continuous
 isometry group.
 
-\begin{proposition}[Mixed curvature of $\ell = 1$ seams]
-\label{prop:l1-nonneg}
+\begin{theorem}[Analytic obstruction for $\ell = 1$ seams]
+\label{thm:l1-K0}
 For any $\ell = 1$ product harmonic seam on $S^2 \times S^2$
 with the Hessian metric $g = h + \gamma\,\nabla^2 s$ and
-$|\gamma|$ sufficiently small that $g > 0$, the mixed sectional
-curvature is non-negative:
-\begin{equation}
-\label{eq:l1-nonneg}
-K_g(\sigma) \ge 0 \quad \text{for all mixed planes } \sigma.
-\end{equation}
-Equality $K_g(\sigma) = 0$ is achieved at every point, for at
-least one mixed plane.
-\end{proposition}
+$|\gamma|$ sufficiently small that $g > 0$:
+\begin{enumerate}[label=$(\roman*)$]
+\item At every critical point of~$s$, all mixed sectional
+  curvatures vanish.
+\item The metric admits at least three totally geodesic flat tori
+  (products of equators), on each of which $K \equiv 0$.
+\item For the isotropic case ($\sigma_1 = \sigma_2 = \sigma_3$),
+  every point of $S^2 \times S^2$ admits at least one mixed plane
+  with $K = 0$.
+\end{enumerate}
+In particular, no $\ell = 1$ seam metric has strictly positive
+mixed sectional curvature.
+\end{theorem}
 
-\begin{proof}[Proof (analytic obstruction; numerical for
-non-negativity in the generic case)]
+\begin{proof}
 By Lemma~\ref{lem:SVD}, any $\ell = 1$ seam is isometric to the
 normal form~\eqref{eq:l1-normal-form}.
 
@@ -1686,10 +1656,6 @@ $O(\gamma^2)$, explaining the non-negativity at
 leading order and identifying the $K = 0$ direction
 as the gradient-parallel plane
 $X \parallel \nabla_1 s$, $Y \parallel \nabla_2 s$.
-
-For the isotropic archetype
-$s(x,y) = x \cdot y$ ($\sigma_1 = \sigma_2 = \sigma_3 = 1$),
-we obtain a stronger pointwise result:
 
 \smallskip\noindent\emph{Step 1: Totally geodesic flat tori
 (analytic obstruction for all singular-value types).}
@@ -1742,19 +1708,35 @@ For any generic point $(x, y) \in S^2 \times S^2$ with
 $x \neq \pm y$, take $P = \operatorname{span}(x, y)$.  Then
 $(x,y) \in N_P$, and the tangent plane $T_{(x,y)} N_P$ is a
 mixed plane (spanned by one tangent vector from each factor).
-Hence every generic point admits a mixed plane with $K = 0$---so
-$K_{\min} = 0$ pointwise (not merely $\le 0$ as from Step~0).
+Hence every generic point admits a mixed plane with $K = 0$;
+at the non-generic points $x = \pm y$, part~(i) applies.
 
 For the rank-$1$ case, $K = 0$ holds for \emph{all} mixed planes
 analytically (Theorem~\ref{thm:rank1-K0}).
 
-\smallskip\noindent\emph{Step 3: Non-negativity (numerical).}
+\end{proof}
+
+\begin{conjecture}[Non-negative mixed curvature for $\ell = 1$ seams]
+\label{conj:l1-nonneg}
+For any $\ell = 1$ product harmonic seam on $S^2 \times S^2$
+with $|\gamma|$ sufficiently small, the mixed sectional
+curvature is non-negative:
+\begin{equation}
+\label{eq:l1-nonneg}
+K_g(\sigma) \ge 0 \quad \text{for all mixed planes } \sigma.
+\end{equation}
+Combined with Theorem~\ref{thm:l1-K0}, this would give
+$K_{\min} = 0$ at every point, for at least one mixed plane.
+\end{conjecture}
+
+\begin{remark}[Numerical evidence for Conjecture~\ref{conj:l1-nonneg}]
+\label{rem:l1-numerical}
 Lemma~\ref{lem:riemann-expansion} establishes $K \ge 0$
 at $O(\gamma^2)$ analytically, but the perturbative
 bound degrades at the gradient-parallel plane where the
 $O(\gamma^2)$ coefficient vanishes.
-That $K_g(\sigma) \ge 0$ for all mixed planes is therefore
-verified by extensive numerical computation (companion scripts
+That $K_g(\sigma) \ge 0$ for all mixed planes is verified by
+extensive numerical computation (companion scripts
 \texttt{test\_local\_fine.py}, \texttt{test\_fine\_scan.py}).
 At each of~$1296$ sample points on $S^2 \times S^2$, all mixed
 sectional curvatures are computed via finite differences with
@@ -1763,7 +1745,7 @@ The minimum is $|K_{\min}| < 10^{-8}$ at every point, consistent
 with $K_{\min} = 0$ exactly.  Convergence under mesh refinement
 ($h = 10^{-2}$ through $10^{-5}$) confirms that the negative
 values are finite-difference artefacts.
-\end{proof}
+\end{remark}
 
 \subsection{The $K = 0$ locus}
 
@@ -1796,7 +1778,7 @@ wherever $s \neq \pm 1$.
 \begin{proof}
 The singular value structure $(1, |s|)$ was established in
 Proposition~\ref{prop:coupling-svd}.  The reflection argument
-in the proof of Proposition~\ref{prop:l1-nonneg} identifies the
+in the proof of Theorem~\ref{thm:l1-K0} identifies the
 $K = 0$ plane at each generic point $(x, y)$ as the tangent plane
 to the totally geodesic surface
 $N_P = (S^2 \cap P) \times (S^2 \cap P)$ where
@@ -1836,13 +1818,14 @@ positive coupling and is confirmed numerically.
 
 \begin{remark}[Obstruction to strict positivity]
 \label{rem:l1-obstruction}
-Since $K_{\min} = 0$ at every point, the $\ell = 1$ seam metric
-achieves non-negative mixed curvature but is \emph{never} strictly
-positively curved.  Combined with the within-factor curvature
-$K_k \approx 1/(1 - \gamma s)^2 > 0$, the $\ell = 1$ metric
-has non-negative sectional curvature---as close to positive as a
-seam metric can get---but the persistent $K = 0$ plane prevents
-strict positivity.
+By Theorem~\ref{thm:l1-K0}, every $\ell = 1$ seam metric admits
+a mixed plane with $K = 0$ at critical points, and at every point
+in the isotropic case.  If Conjecture~\ref{conj:l1-nonneg} holds,
+then $K_{\min} = 0$ pointwise, and the $\ell = 1$ metric---combined
+with the within-factor curvature
+$K_k \approx 1/(1 - \gamma s)^2 > 0$---would have non-negative
+sectional curvature, as close to positive as a seam metric can get,
+but the persistent $K = 0$ plane prevents strict positivity.
 \end{remark}
 
 \begin{remark}[Failure for $\ell \ge 2$]
@@ -1854,8 +1837,8 @@ of the diagonal blocks.  Numerical experiments confirm that the
 mixed curvature changes sign for $\ell \ge 2$: out of $15$ tested
 pure $\ell = 2$ seams, $14$ have $K_{\mathrm{mix}} < 0$ at some
 points, and all $15$ tested mixed $\ell = 1 + \ell = 2$ seams have
-sign-changing $K_{\mathrm{mix}}$.  The non-negativity of
-Proposition~\ref{prop:l1-nonneg} is thus specific to the conformal
+sign-changing $K_{\mathrm{mix}}$.  The conjectured non-negativity
+(Conjecture~\ref{conj:l1-nonneg}) is thus specific to the conformal
 Hessian structure of $\ell = 1$.
 
 Note that $L_{a\alpha b\beta} = 0$ for all~$\ell$ by
@@ -1872,7 +1855,7 @@ simultaneous critical points of the two factors, all mixed
 curvatures vanish identically, so no product seam metric of any
 degree achieves strictly positive sectional curvature.
 Moreover, the coordinate-reflection torus argument of
-Step~1 in Proposition~\ref{prop:l1-nonneg} extends
+Step~1 in Theorem~\ref{thm:l1-K0} extends
 directly: any product harmonic seam
 $s = Y_\ell^m(x_1)\,Y_\ell^m(x_2)$ is invariant
 under $(x,y,z) \mapsto (x,y,-z)$ on both factors
@@ -1922,17 +1905,16 @@ The value of the seam perspective is fourfold:
   (Remark~\ref{rem:symmetry-classification}), the resulting metric
   has no continuous symmetry and Hsiang--Kleiner does not apply.
   The discrete-involution torus argument
-  (Step~1 of Proposition~\ref{prop:l1-nonneg}) provides an
+  (Step~1 of Theorem~\ref{thm:l1-K0}) provides an
   \emph{analytic} obstruction even in this genuinely
   non-equivariant case: coordinate-plane reflections produce
   totally geodesic flat tori on which $K \equiv 0$.
-  Together with the coupling SVD
-  (Proposition~\ref{prop:coupling-svd}) and the numerical
-  non-negativity (Step~3), this shows $K_{\mathrm{mix}} \ge 0$
-  with equality at every point.
+  If Conjecture~\ref{conj:l1-nonneg} holds, then together with
+  the coupling SVD (Proposition~\ref{prop:coupling-svd}), this
+  gives $K_{\mathrm{mix}} \ge 0$ with equality at every point.
 \item \emph{Universality pathway.}  The combination of equivariant
   (Theorem~\ref{thm:main}) and non-equivariant
-  (Proposition~\ref{prop:l1-nonneg}) results, together with the
+  (Theorem~\ref{thm:l1-K0}) results, together with the
   sign-changing mixed curvature for $\ell \ge 2$
   (Remark~\ref{rem:l2-failure}), suggests a picture where the
   $\ell = 1$ seam metrics are the ``most positively curved'' seam
@@ -1974,7 +1956,7 @@ Three approaches to closing these gaps fully suggest themselves:
   $s = F(s_1)$ for an arbitrary smooth $F$ and an $\ell = 1$
   harmonic $s_1$ inherits the coordinate-plane reflection
   symmetries of~$s_1$, so the totally geodesic torus obstruction
-  of Proposition~\ref{prop:l1-nonneg} applies to this
+  of Theorem~\ref{thm:l1-K0} applies to this
   (non-harmonic, mixed-degree) class.
 \item \emph{Density of seam metrics.}  A single seam metric
   $g_s$ depends on one scalar function $s$ of four variables
@@ -2016,18 +1998,25 @@ positive on it.
 
 This suggests a conjectural route to the full Hopf conjecture:
 \emph{every} Riemannian metric on $S^2 \times S^2$ should admit a
-totally geodesic or minimal torus.  The homology class
-$[S^2 \times \{pt\}] + [\{pt\} \times S^2] \in
-H_2(S^2 \times S^2;\mathbb{Z})$
-is represented by an area-minimising surface (by compactness and
-regularity theory), and the product topology forces the existence of
-such representatives.  Establishing that one of these is a torus
-with the right curvature properties---without symmetry
-assumptions---would settle the conjecture.  The seam analysis
-provides evidence for this picture: across all seam metrics studied,
-the torus obstruction appears universally, whether furnished by
-continuous symmetry, discrete involution, or the algebraic structure
-of the seam itself.
+totally geodesic or minimal torus.  This idea is classical:
+by the Gauss equation, a totally geodesic $T^2$ in a positively
+curved $4$-manifold would have $K_{T^2} = K_M(TT^2) > 0$
+everywhere, contradicting $\chi(T^2) = 0$ via Gauss--Bonnet.
+More generally, for a minimal (not necessarily totally geodesic)
+surface $N^2 \hookrightarrow M^4$ with second fundamental
+form~$A$, the Gauss equation gives
+$K_N = K_M(TN) + \det(A_\nu)$ for each normal direction~$\nu$.
+The Lawson--Simons theorem~\cite{LawsonSimons1973}
+shows that in a positively curved ambient manifold, no stable
+minimal submanifold of certain dimensions can exist.  A proof that
+every metric on $S^2 \times S^2$ admits a stable minimal
+torus---or a totally geodesic one---would therefore settle the
+conjecture.
+
+The seam analysis provides evidence for this picture: across all
+seam metrics studied, the torus obstruction appears universally,
+whether furnished by continuous symmetry, discrete involution,
+or the algebraic structure of the seam itself.
 
 \subsection{Other product manifolds}
 
@@ -2128,6 +2117,17 @@ no.~1, 71--92.
 J.~Nash,
 ``The imbedding problem for Riemannian manifolds,''
 \textit{Ann.\ of Math.} \textbf{63} (1956), no.~1, 20--63.
+
+\bibitem{LawsonSimons1973}
+H.~B.~Lawson and J.~Simons,
+``On stable currents and their application to global problems in
+real and complex geometry,''
+\textit{Ann.\ of Math.} \textbf{98} (1973), no.~3, 427--450.
+
+\bibitem{GoldbergKobayashi1967}
+S.~I.~Goldberg and S.~Kobayashi,
+``Holomorphic bisectional curvature,''
+\textit{J.\ Differential Geom.} \textbf{1} (1967), 225--233.
 
 \end{thebibliography}
 
