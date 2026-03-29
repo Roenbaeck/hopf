@@ -450,7 +450,7 @@ K_g(\sigma) =
 -\frac{h_2(\nabla_2 \varphi_1, \nabla_2 \varphi_2)}
       {\varphi_1 \varphi_2^2}.
 \end{equation}
-(This simplifies the $\OO'$Neill--Gray formula for warped products.)
+(This simplifies the O'Neill--Gray formula for warped products.)
 
 For the standard product metric ($\varphi_1 = \varphi_2 = 1$),
 \emph{all mixed sectional curvatures vanish}: $K_{h_0}(\sigma) = 0$
@@ -656,9 +656,9 @@ which yields~\eqref{eq:Kmix-general}.  In the diagonal case
 $\eta = 0$, this gives~\eqref{eq:Kmix-diagonal} directly.
 \end{proof}
 
-\begin{remark}[The separable case]
+\begin{remark}[The additively separable case]
 \label{rem:separable}
-For a separable seam $s = f(\theta_1) + g(\theta_2)$, the cross
+For an additively separable seam $s = f(\theta_1) + g(\theta_2)$, the cross
 term $\eta = 0$ (since $s_{12} = 0$ implies $\gamma_{12}$
 contributes nothing, and $\beta_{12}\,s_1 s_2$ is present only if
 $\beta_{12} \neq 0$---but for a separable seam the coefficient
@@ -732,20 +732,6 @@ Since $S^2$ is compact and $\log F$ is smooth (and well-defined
 because $F > 0$), the function $\log F$ attains its maximum at some
 $p_* \in S^2$.  At a maximum of a smooth function on a closed
 manifold, the Hessian is negative semidefinite.
-\end{proof}
-
-\begin{lemma}[Laplacian integral identity]
-\label{lem:laplacian-integral}
-For any smooth function $\varphi$ on $(S^2, h_{S^2})$,
-\begin{equation}
-\int_{S^2} \Delta \varphi\;\mathrm{dA} = 0,
-\end{equation}
-where $\mathrm{dA}$ is the area form of $h_{S^2}$.  In particular,
-$\Delta\varphi$ changes sign unless $\varphi$ is constant.
-\end{lemma}
-
-\begin{proof}
-Stokes' theorem on the closed manifold $S^2$.
 \end{proof}
 
 \subsection{Obstruction for the conformal product}
@@ -998,25 +984,20 @@ For the full product seam metric with
 $\alpha_1 = \alpha_2 = 1$, $\gamma_1 = \gamma_2 = \varepsilon$,
 $\gamma_{12} = \varepsilon$, and all $\beta_k = 0$:
 \begin{align*}
-\lambda_1 &= 1 + \varepsilon\,\cos\theta_1\,\cos\theta_2
-  = 1 + \varepsilon\,s, \\
-\lambda_2 &= 1 + \varepsilon\,\cos\theta_1\,\cos\theta_2
-  = 1 + \varepsilon\,s, \\
+\lambda_1 &= 1 + \varepsilon\,s_{11}
+  = 1 - \varepsilon\,s, \\
+\lambda_2 &= 1 + \varepsilon\,s_{22}
+  = 1 - \varepsilon\,s, \\
 \eta &= \varepsilon\,\sin\theta_1\,\sin\theta_2.
 \end{align*}
 
 The Riemannian condition $\lambda_1\lambda_2 > \eta^2$ requires
-$(1+\varepsilon s)^2 > \varepsilon^2 \sin^2\!\theta_1\,\sin^2\!\theta_2$,
+$(1-\varepsilon s)^2 > \varepsilon^2 \sin^2\!\theta_1\,\sin^2\!\theta_2$,
 which holds for $|\varepsilon| < 1$.
 
-By Theorem~\ref{thm:main}, which applies since the seam $s$ is
-$\OO(2) \times \OO(2)$-equivariant, the resulting metric cannot be
-positively curved.  The orbit metric (cf.\
-Remark~\ref{rem:orbit-metric}) has coefficients
-$\lambda_1 = \lambda_2 = 1 + \varepsilon s$ and
-$\eta = \varepsilon\sin\theta_1\sin\theta_2$;
-a direct computation of the Gaussian curvature~\eqref{eq:Kmix-general}
-confirms that it changes sign on $[0,\pi]^2$.
+Since $s = f(\theta_1)\,g(\theta_2)$ is multiplicatively separable,
+Theorem~\ref{thm:rank1-K0} gives $K = 0$ identically, confirming
+the obstruction analytically.
 
 \subsection{Spectral decomposition}
 
@@ -1316,10 +1297,10 @@ and $g$ depending only on the polar angle on each factor), the
 Brioschi numerators vanish algebraically, regardless of the
 degree~$\ell$.
 
-\begin{theorem}[Mixed curvature vanishes for separable seams]
+\begin{theorem}[Mixed curvature vanishes for multiplicatively separable seams]
 \label{thm:rank1-K0}
-Let $s = f(\theta_1)\,g(\theta_2)$ where $f$ and $g$ are smooth
-functions of the polar angle alone.  Then for the seam metric
+Let $s = f(\theta_1)\,g(\theta_2)$ be a multiplicatively separable
+seam where $f$ and $g$ are smooth functions of the polar angle alone.  Then for the seam metric
 $g_s = h + \gamma\,\nabla^2 s$ and all values of $\gamma$ for
 which $g_s > 0$,
 \[
@@ -1685,9 +1666,13 @@ angles $\phi_1, \phi_2$, the seam restricts to
 s|_N = \sigma_1 \cos\phi_1 \cos\phi_2
      + \sigma_2 \sin\phi_1 \sin\phi_2,
 \)
-which is separable.  By
-Theorem~\ref{thm:rank1-K0}, the Brioschi numerators of the
-induced orbit metric on~$N$ vanish identically, giving
+which satisfies $s_{11} = -s$ and $s_{22} = -s$ (the conformal
+Hessian property of $\cos$ and $\sin$).  Differentiating
+$\lambda_k = 1 - \gamma s$ gives $\lambda_{k,j} = -\gamma s_j$,
+while the mixed derivative of $\eta = \gamma s_{12}$ is
+$\eta_{,k} = \gamma s_{12k} = -\gamma s_k$
+(since $s_{kkj} = -(s_j)$ by differentiating $s_{kk} = -s$).
+Hence both Brioschi numerators vanish and
 $K_g(T_{(x,y)} N) = 0$ for all $(x,y) \in N$.
 The same argument applies to the reflections
 $(x,y,z) \mapsto (-x,y,z)$ and $(x,-y,z)$, producing three
@@ -2102,17 +2087,7 @@ W.-Y.~Hsiang and B.~Kleiner,
 ``On the topology of positively curved 4-manifolds with symmetry,''
 \textit{J.\ Differential Geom.} \textbf{29} (1989), no.~3, 615--621.
 
-\bibitem{Ziller2007}
-W.~Ziller,
-``Examples of Riemannian manifolds with non-negative sectional
-curvature,''
-in \textit{Surveys in Differential Geometry}, vol.~XI,
-Int.\ Press, 2007, pp.~63--102.
 
-\bibitem{Petersen2016}
-P.~Petersen,
-\textit{Riemannian Geometry}, 3rd ed.,
-Graduate Texts in Mathematics 171, Springer, 2016.
 
 \bibitem{Nash1956}
 J.~Nash,
