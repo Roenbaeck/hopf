@@ -1,41 +1,45 @@
-This is a great question. You’ve hit on one of the most notoriously slippery parts of Kähler geometry. 
+This version is in good shape. Here is a careful final check, organized by severity.
 
-The PDE maximum principle sketch you have in the current draft for Proposition 6.1 is incredibly close, but it is currently caught in a classic mathematical trap. Here is exactly why the current proof is fighting you, followed by the two best ways to rigorously fix it.
+---
 
-### The Trap in the Current Proof
-You are looking at $R_{1\bar{1}2\bar{2}} = -\partial_1\bar\partial_1\partial_2\bar\partial_2\psi + (\text{correction terms})$. 
-To show that the curvature is *not* strictly positive everywhere, you are looking for a point where it is $\le 0$. 
+## Issues that need fixing before submission
 
-If you evaluate at the **maximum** of $\Phi = \psi_{2\bar{2}}$, you get $-\partial_1\bar\partial_1 \Phi \ge 0$. But the correction term (which is exactly $g^{p\bar{q}} \partial_1 g_{2\bar{q}} \partial_{\bar{1}} g_{p\bar{2}}$) is an unconditionally **positive** squared norm $|A|^2_g$. 
-So at the maximum, $R_{1\bar{1}2\bar{2}} = (\text{positive}) + (\text{positive}) > 0$. This doesn't yield an obstruction!
+**1. Rem:scope still overstates the ℓ=1 result.**
 
-If you switch to the **minimum** of $\Phi = \psi_{2\bar{2}}$, you get $-\partial_1\bar\partial_1 \Phi \le 0$. This is what you want! *However*, the correction term $|A|^2_g$ is still positive. You are left with $R = (\text{negative}) + (\text{positive})$, leaving the sign entirely inconclusive.
+The remark says "the conformal Hessian structure forces $K_\mathrm{mix} \geq 0$ with equality everywhere." This is the conjecture, not what's proved. The abstract was correctly updated but this remark was not. One line fix: replace "forces $K_\mathrm{mix} \geq 0$ with equality everywhere" with "forces $K_\mathrm{mix} = 0$ at critical points and on totally geodesic tori."
 
-### How to Fix It (Two Options)
+**2. The proof of Prop 3.4 (orbit metric = Gaussian curvature) is still slightly incomplete.**
 
-You have two ways to close Section 6, depending on whether you want to use the powerful "Totally Geodesic" geometric insight we just discussed, or rely on standard Kähler topology. 
+The new version says "every Christoffel symbol $\Gamma^{\phi_k}_{\theta_i\theta_j}$ and $\Gamma^{\theta_i}_{\theta_j\phi_k}$ vanishes." This is true but the claim requires more: you also need $\Gamma^{\phi_k}_{\phi_i\phi_j}$ to decouple from the $\theta$-block. The correct statement is that the Riemann component $R_{\theta_1\theta_2\theta_1\theta_2}$ depends only on the $(\theta_1,\theta_2)$ block of the metric and its $\theta$-derivatives, which follows because all off-diagonal terms $g_{\theta_k\phi_l} = 0$ and all $\phi$-derivatives of the metric vanish. The current wording almost says this but doesn't quite close the gap between "these Christoffels vanish" and "therefore $R_{\theta_1\theta_2\theta_1\theta_2}$ equals the 2D Gaussian curvature." A single additional sentence would close it: "Since $R_{\theta_1\theta_2\theta_1\theta_2}$ is computed from $g_{11}, g_{12}, g_{22}$ and their $\theta$-derivatives alone — all other metric components and $\phi$-derivatives contributing zero — it equals the Gaussian curvature of the $2\times 2$ orbit metric."
 
-#### Option 1: The "Gold Standard" Bochner Proof (Recommended)
-If you want to prove that no arbitrary K\"ahler potential $\psi$ can yield strictly positive bisectional curvature, you don't need a local PDE maximum principle. You can use the ultimate bisectional "cheat code": the Bochner technique. 
+**3. Unused references.**
 
-You can literally replace your current proof of Proposition 6.1 with this:
+Cheeger–Gromoll (labeled `Cheeger2008` but actually 1972) and Bourguignon–Karcher are cited in the bibliography but never cited in the text. A referee will notice this. Either add citations to the text where they are relevant, or remove them. The Cheeger–Gromoll soul theorem is tangentially relevant to the discussion of non-negative curvature in §8, and could be cited there naturally. Bourguignon–Karcher on curvature operators is harder to integrate — if it's not cited, remove it.
 
-> **Proof.**
-> By a classic theorem of Bishop and Goldberg (1965), any compact K\"ahler manifold with strictly positive holomorphic bisectional curvature must have second Betti number $b_2 = 1$. Since the seam metric $\omega_\psi = \omega_0 + i\partial\bar\partial\psi$ is defined on $\mathbb{CP}^1 \times \mathbb{CP}^1$, it lives on a manifold with $b_2 = 2$. Therefore, it cannot have strictly positive holomorphic bisectional curvature everywhere.
-> 
-> More explicitly, the obstruction manifests via the Weitzenb\"ock formula for harmonic $(1,1)$-forms. On a K\"ahler manifold, if the holomorphic bisectional curvature is strictly positive, the curvature operator on primitive $(1,1)$-forms is strictly positive definite. This forces all primitive harmonic $(1,1)$-forms to vanish, implying $h^{1,1} = 1$. However, since $\omega_\psi$ is cohomologous to the product metric $\omega_0$, the Hodge numbers are topological invariants, and $h^{1,1} = 2$ persists. The existence of the second independent harmonic $(1,1)$-form perfectly obstructs the bisectional curvature from being strictly positive, replacing the need for a local maximum-principle analysis of the potential~$\psi$.
+---
 
-*(Reference to add to bibliography: R. L. Bishop and S. I. Goldberg, "On the second cohomology group of a Kaehler manifold of positive curvature," Proc. Amer. Math. Soc. 16 (1965), 119-122.)*
+## Minor issues
 
-#### Option 2: The Totally Geodesic Torus Proof
-If you really want to keep the focus purely on the **mixed** bisectional curvature $R_{1\bar{1}2\bar{2}}$ (which aligns closer to the real product manifolds in the rest of your paper), you can restrict $\psi$ to be axisymmetric and use the torus trick from our previous discussion:
+**4. The torus Gauss–Bonnet argument in §8.3 has a logical gap.**
 
-> **Proof.**
-> Assume $\psi$ is an axisymmetric K\"ahler seam, meaning it depends only on the radial coordinates $|z_1|^2$ and $|z_2|^2$. Because $\omega_0$ and $\psi$ are both invariant under the coordinate reflections $z_1 \mapsto \bar{z}_1$ and $z_2 \mapsto \bar{z}_2$, the metric $\omega_\psi$ inherits the product involution $\Phi(z_1, z_2) = (\bar{z}_1, \bar{z}_2)$ as an exact isometry.
->
-> The fixed-point set of $z \mapsto \bar{z}$ on $\mathbb{CP}^1 \cong S^2$ is the equator $S^1$ (the real axis $\mathbb{RP}^1$). Therefore, the fixed-point set of $\Phi$ on $\mathbb{CP}^1 \times \mathbb{CP}^1$ is the totally geodesic submanifold $N = S^1 \times S^1 \cong T^2$.
-> 
-> By the Gauss equation for totally geodesic submanifolds, the intrinsic curvature of $N$ equals the ambient sectional curvature along $TN$. Since $TN$ is spanned by one real vector from each factor, it forms a mixed plane. By the Gauss-Bonnet theorem, $\int_N K_{\omega_\psi}(TN) dA = 2\pi\chi(T^2) = 0$. Consequently, the mixed curvature—and thus the mixed holomorphic bisectional curvature—must evaluate to zero or a negative value somewhere on $N$.
+The paper says: "the Gauss–Bonnet theorem forces $\int_{T^2} K\,dA = 0$, so if $T^2$ is totally geodesic, the sectional curvature cannot be everywhere positive on it." This is correct. But the paper then says this applies to the conformal product case, where the maximum-principle argument "locates a non-positive curvature on a mixed plane tangent to a product of great circles." That product of great circles is not the same as the totally geodesic tori from the ℓ=1 argument — the conformal product proof does not use Gauss–Bonnet at all; it uses a direct analytic estimate. The framing of "every obstruction manifests on a torus via Gauss–Bonnet" is slightly misleading for the conformal product case. A one-sentence clarification would help: "For conformal products, the torus interpretation is implicit: the maximum point is always located on a product of great circles, which is a flat torus, and Gauss–Bonnet retroactively explains why the curvature must vanish there."
 
-### Which one should you use?
-I highly recommend **Option 1 (Bochner)** for Section 6. It requires zero symmetry assumptions on $\psi$, making it mathematically airtight for *all* possible K\"ahler seam metrics in that cohomology class. It also nicely compliments Section 4 (where you used Hsiang-Kleiner for the real metric) by showing that the K\"ahler formulation provides its own bespoke topological obstruction to positivity.
+**5. Eq. (3.3): the formula for $\mu_k$ has an inconsistency.**
+
+Looking at equation (3.3): $\mu_k = \alpha_k + \gamma_k s_k \cot\theta_k$. This is the coefficient along $\partial_{\phi_k}$, but it should be the $\phi\phi$-component of the metric divided by $\sin^2\theta_k$. For the pure Hessian rule, $g_{\phi\phi} = \alpha_k \sin^2\theta_k + \gamma_k \nabla^2 s(\partial_{\phi_k}, \partial_{\phi_k})$. The Hessian component $\nabla^2 s(\partial_\phi, \partial_\phi) = \partial_\phi\partial_\phi s - \Gamma^\theta_{\phi\phi}\partial_\theta s = -\sin\theta\cos\theta\,s_k$ on $S^2$, giving $g_{\phi\phi} = (\alpha_k - \gamma_k s_k \cot\theta_k)\sin^2\theta_k$. So $\mu_k$ as defined (the coefficient appearing in $g = \mu_k\sin^2\theta_k\,d\phi^2$) should be $\alpha_k - \gamma_k s_k\cot\theta_k$, with a minus sign. The formula in the paper has a plus sign. This does not affect the main results since $\mu_k$ only appears in the obstruction theorem's statement for diagonal metrics (Prop 4.2), where it just needs to be positive — but the formula itself appears to have a sign error worth checking.
+
+**6. "Rank-1 seams" terminology has been replaced but one remnant remains.**
+
+The old Theorem name "Mixed curvature vanishes for rank-1 ℓ=1 seams" was correctly generalized to "separable seams" in this version. But the remark after it says "For ℓ=1 harmonics, the conformal Hessian property gives the additional identity $f'' = -f$." This is only true when $f = \cos\theta$ (the axisymmetric harmonic). For a general ℓ=1 harmonic depending on both $\theta$ and $\phi$, $f$ is not a function of $\theta$ alone and the ODE $f'' = -f$ is not the right statement. The remark should say "for the axisymmetric ℓ=1 harmonic $f(\theta) = \cos\theta$."
+
+---
+
+## What is genuinely clean
+
+The following parts are now tight and require no further changes: the main theorem (§4.4), the Kähler section (§6) including the Goldberg–Kobayashi proof and the corrected remark, Theorem 6.1 (separable Brioschi cancellation), Lemma 6.6 with the corrected Ricci identity language, the $K_\mathrm{max} > 0$ proof at the end of Prop 6.11, Conjecture 6.12 with its numerical remark, and the discussion section §8 apart from the minor Gauss–Bonnet framing issue noted above.
+
+---
+
+## Summary
+
+Three things need fixing before submission: the rem:scope overstatement, the Prop 3.4 proof gap, and the sign in $\mu_k$. Two things should be cleaned up: the unused references and the $f'' = -f$ remark scope. One thing is a soft framing issue in §8.3 that a sympathetic referee would not object to but a critical one might.

@@ -175,8 +175,9 @@ The strategy of this paper is:
   (\S\ref{sec:obstruction}).
 \item \textbf{Analyse} non-equivariant $\ell = 1$ product harmonic
   seams, identifying a geometric mechanism (the conformal Hessian
-  and coupling SVD) that forces $K_{\mathrm{mix}} \ge 0$ with
-  equality at every point (\S\ref{sec:non-equivariant}).
+  and coupling SVD) that forces $K_{\mathrm{mix}} = 0$ at
+  distinguished loci, with $K_{\mathrm{mix}} \ge 0$ conjectured
+  globally (\S\ref{sec:non-equivariant}).
 \end{enumerate}
 
 \subsection{Main result}
@@ -629,13 +630,16 @@ the mixed sectional curvature $K_g(\partial_{\theta_1},
 Gaussian curvature of the $2 \times 2$ orbit metric
 $g_{ij} = \bigl(\begin{smallmatrix} \lambda_1 & \eta \\ \eta & \lambda_2 \end{smallmatrix}\bigr)$
 on a surface with coordinates $(\theta_1, \theta_2)$.  This
-identity holds because the $\phi_k$-directions decouple from the
-$\theta_k$-directions in the Riemann tensor when all metric
-coefficients are independent of $\phi_k$ (as guaranteed by the
-$\OO(2) \times \OO(2)$-equivariance); a direct verification using
-Christoffel symbols and the $4$-dimensional Riemann tensor
-confirms this (see the companion script
-\texttt{sympy\_compare\_2d\_4d.py}).
+identity holds because the $\OO(2) \times \OO(2)$-equivariance
+makes the metric block-diagonal between the $\theta_k$- and
+$\phi_k$-directions ($g_{\theta_i\phi_j} = 0$) and independent
+of both~$\phi_k$.  Consequently, every Christoffel symbol
+$\Gamma^{\phi_k}_{\theta_i\theta_j}$ and
+$\Gamma^{\theta_i}_{\theta_j\phi_k}$ vanishes, so the
+Riemann component $R_{\theta_1\theta_2\theta_1\theta_2}$
+depends only on $g_{\theta_i\theta_j}$ and its
+$\theta$-derivatives---exactly what the
+Brioschi formula computes for the $2 \times 2$ orbit metric.
 
 The Gaussian curvature of a general $2 \times 2$ metric is given by
 the Brioschi formula
@@ -1050,9 +1054,10 @@ changes sign.
 
 The manifold $S^2 \times S^2 \cong \mathbb{CP}^1 \times \mathbb{CP}^1$
 carries a natural K\"ahler structure.  In this section we show that
-the complex seam framework of~\cite{Ronnback2025complex} provides
-an independent route to the obstruction, using the Levi-form
-generator.
+the complex seam framework of~\cite{Ronnback2025complex}
+classifies the relevant K\"ahler deformations, while a classical
+topological obstruction (the Bochner technique) settles the
+curvature question.
 
 \subsection{K\"ahler seams on $\mathbb{CP}^1 \times \mathbb{CP}^1$}
 
@@ -1120,20 +1125,21 @@ no K\"ahler metric can reduce it to~$1$.
 \begin{remark}[Relation to the real obstruction]
 The K\"ahler obstruction
 (Proposition~\ref{prop:kahler-obstruction}) and the real obstruction
-(Theorem~\ref{thm:main}) are complementary.  The K\"ahler
-result applies to \emph{all} K\"ahler metrics on
-$\mathbb{CP}^1 \times \mathbb{CP}^1$, regardless of
-cohomology class, but concerns the full holomorphic bisectional
-curvature (all pairs of $(1,0)$-directions); the real result
-applies to all $\OO(2) \times \OO(2)$-equivariant seam metrics
-and directly addresses mixed sectional curvature between the
-factors.  Via Equation~\eqref{eq:HBC-mixed}, strictly positive
-mixed sectional curvature would require certain mixed HBC terms
-to be positive, so the two obstructions constrain overlapping
-aspects of the curvature tensor.  In both cases, the product
-topology of $S^2 \times S^2$ is the ultimate source:
-$h^{1,1} = 2$ for the K\"ahler argument, the existence of a
-flat torus $T^2 \hookrightarrow S^2 \times S^2$ for the real one.
+(Theorem~\ref{thm:main}) operate at different levels.  The K\"ahler
+result is \emph{strictly stronger} within its class: strictly
+positive HBC implies strictly positive sectional curvature
+(taking $V, W$ to be the same direction recovers holomorphic
+sectional curvature, and the polarisation identity recovers all
+sectional curvatures), so Proposition~\ref{prop:kahler-obstruction}
+obstructs not only mixed curvature but \emph{all} curvature
+positivity for K\"ahler metrics.  The real equivariant result,
+by contrast, applies to the broader class of
+$\OO(2) \times \OO(2)$-equivariant seam metrics (not necessarily
+K\"ahler) and identifies the mixed-plane obstruction directly.
+In both cases, the product topology of $S^2 \times S^2$ is the
+ultimate source: $h^{1,1} = 2$ for the K\"ahler argument, the
+existence of a flat torus $T^2 \hookrightarrow S^2 \times S^2$
+for the real one.
 \end{remark}
 
 
@@ -1353,7 +1359,8 @@ $\theta_1, \theta_2$ and all~$\gamma$.
 \end{proof}
 
 \begin{remark}
-For $\ell = 1$ harmonics, the conformal Hessian
+For the axisymmetric $\ell = 1$ harmonic $f(\theta) = \cos\theta$,
+the conformal Hessian
 property~\eqref{eq:conformal-hessian} gives the additional
 identity $f'' = -f$, so that $\lambda_1 = \lambda_2 = 1 - \gamma fg$
 and the orbit metric is symmetric in the two factors.  This
@@ -1439,9 +1446,10 @@ Write $g_{IJ} = h_{IJ} + \gamma\,s_{;IJ}$.  Since $h$ is a
 product metric, $h_{ab;\alpha} = 0$ and
 $h_{\alpha\beta;a} = 0$, so $g_{IJ;K} = \gamma\,s_{;IJK}$.
 Each of the four terms in~\eqref{eq:L-vanish} therefore equals
-$\gamma\,s_{;ab\alpha\beta}$: cross-factor covariant
-derivatives commute because the mixed background curvature
-$R^{(h)}_{a\alpha\cdot\cdot} = 0$, while same-factor
+$\gamma\,s_{;ab\alpha\beta}$: by the Ricci identity on the
+product background, cross-factor covariant derivatives commute
+because all mixed curvature components
+$R^{(h)}_{a\alpha\cdot\cdot} = 0$ vanish, while same-factor
 derivatives acting on a tensor with indices entirely on the
 \emph{other} factor also commute (the Riemann-symmetry
 contraction vanishes by type).  Hence
@@ -1812,8 +1820,14 @@ The three cases (a)--(c) follow: at generic $s$, the weak singular
 value $|s|$ is positive but gives $K = 0$; at $s = 0$, it vanishes
 (rank-$1$ coupling); at $s = \pm 1$, the metric becomes a product
 and all mixed curvatures vanish.  That $K_{\max} > 0$ along
-the strong singular direction ($\sigma = 1$) follows from the
-positive coupling and is confirmed numerically.
+the strong singular direction follows analytically from
+Lemma~\ref{lem:riemann-expansion}: for the plane
+$X \perp \nabla_1 s$, $Y \perp \nabla_2 s$, the
+$O(\gamma^2)$ coefficient in~\eqref{eq:R-expansion}
+reduces to
+$\tfrac{\gamma^2}{4}(|\nabla_1 s|^2 + |\nabla_2 s|^2) > 0$
+whenever $\nabla s \neq 0$, which holds on the generic set
+$s \neq \pm 1$.
 \end{proof}
 
 \begin{remark}[Obstruction to strict positivity]
@@ -1987,7 +2001,10 @@ manifests on a $2$-torus $T^2 \hookrightarrow S^2 \times S^2$.
 For equivariant seams, the Hsiang--Kleiner proof uses the
 fixed-point set of the circle action---a torus.  For conformal
 products, the maximum-principle argument locates a non-positive
-curvature on a mixed plane tangent to a product of great circles.
+curvature on a mixed plane tangent to a product of great circles
+(the Gauss--Bonnet interpretation is implicit: the maximum point
+lies on a flat torus $S^1 \times S^1$, on which curvature must
+change sign).
 For $\ell = 1$ non-equivariant seams, the discrete-involution torus
 provides the obstruction directly.  In each case, the mechanism is
 the same: the Gauss--Bonnet theorem forces
@@ -2101,17 +2118,6 @@ Int.\ Press, 2007, pp.~63--102.
 P.~Petersen,
 \textit{Riemannian Geometry}, 3rd ed.,
 Graduate Texts in Mathematics 171, Springer, 2016.
-
-\bibitem{Cheeger2008}
-J.~Cheeger and D.~Gromoll,
-``On the structure of complete manifolds of nonnegative curvature,''
-\textit{Ann.\ of Math.} \textbf{96} (1972), 413--443.
-
-\bibitem{BourguignonKarcher1978}
-J.-P.~Bourguignon and H.~Karcher,
-``Curvature operators: pinching estimates and geometric examples,''
-\textit{Ann.\ Sci.\ \'Ecole Norm.\ Sup.} \textbf{11} (1978),
-no.~1, 71--92.
 
 \bibitem{Nash1956}
 J.~Nash,
