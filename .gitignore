@@ -1,1 +1,8 @@
 /.venv
+/.DS_Store
+/tmp/
+/output/pdf/*.aux
+/output/pdf/*.fdb_latexmk
+/output/pdf/*.fls
+/output/pdf/*.log
+/output/pdf/*.out

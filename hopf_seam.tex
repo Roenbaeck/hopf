@@ -1,2109 +1,2629 @@
-\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+\documentclass[11pt]{amsart}
 
-\usepackage{amsmath,amssymb,amsfonts}%
-\usepackage{amsthm}%
-\usepackage{hyperref}%
-\usepackage{enumitem}%
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[pdfusetitle,colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\raggedbottom
 
-%% Theorem styles following sn-jnl presets
-\theoremstyle{thmstyleone}%
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}[theorem]{Conjecture}
-
-\theoremstyle{thmstylethree}%
+\theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-
-\theoremstyle{thmstyletwo}%
+\theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{openproblem}{Open Problem}
 
-%% Math operators
-\DeclareMathOperator{\Sym}{Sym}
-\DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\Hess}{Hess}
-\DeclareMathOperator{\image}{im}
-\DeclareMathOperator{\coker}{coker}
-\DeclareMathOperator{\Diff}{Diff}
-\DeclareMathOperator{\GL}{GL}
-\DeclareMathOperator{\OO}{O}
-\DeclareMathOperator{\UU}{U}
-\DeclareMathOperator{\Met}{Met}
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\Ric}{Ric}
-\DeclareMathOperator{\Rm}{Rm}
-\DeclareMathOperator{\Hol}{Hol}
-\DeclareMathOperator{\SO}{SO}
-\DeclareMathOperator{\SU}{SU}
-\DeclareMathOperator{\diam}{diam}
-\DeclareMathOperator{\Hom}{Hom}
-\DeclareMathOperator{\Vol}{Vol}
-\DeclareMathOperator{\Crit}{Crit}
-\DeclareMathOperator{\sect}{sec}
+\DeclareMathOperator{\Isom}{Isom}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\spanop}{span}
+\DeclareMathOperator{\secop}{sec}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sph}{\mathbb S}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\restr}[2]{\left.#1\right|_{#2}}
+
+\title[Curvature obstructions and flat tori]{Curvature Obstructions and Flat Totally Geodesic Tori in Hessian Deformations of Products of Spheres}
+\author{Lars R\"onnb\"ack}
+\address{Department of Computer and Systems Sciences, Stockholm University, Stockholm, Sweden}
+\email{lars@uptochange.com}
+\date{}
+
+\subjclass[2020]{53C20, 53C21, 53C24}
+\keywords{mixed sectional curvature, product of spheres, Hopf conjecture, Hessian deformation, metric two-jet, curvature threshold, totally geodesic flat torus}
 
 \begin{document}
 
-\title[Seam Obstructions on Product Manifolds]{Seam Obstructions to Positive Sectional Curvature on Product Manifolds}
+\begin{abstract}
+Let $h$ be the product of the unit round metrics on
+$\Sph^m\times\Sph^n$, let $A:\R^{n+1}\to\R^{m+1}$ be linear, and put
+\[
+ s_A(x,y)=\ip{x}{Ay},\qquad
+ g_{\gamma,A}=h+\gamma\Hess_h s_A.
+\]
+Writing $\sigma_1\geq\sigma_2\geq\cdots\geq0$ for the singular values
+of $A$, padded by zeros, we prove that $g_{\gamma,A}$ is Riemannian
+exactly when $|\gamma|(\sigma_1+\sigma_2)<1$.  If $m,n\geq2$ and
+$A\neq0$, the top three singular pairs determine a totally geodesic
+$\Sph^2\times\Sph^2$ containing a plane of negative sectional
+curvature at every nonzero Riemannian parameter.  Thus the round
+product is the unique nonnegatively curved metric on each such
+Hessian ray.  We also obtain an exact formula for every
+background-mixed curvature and an explicit dimension-free negative
+margin on normalized parameter annuli.  For every pair of singular
+directions, the metric contains a flat totally geodesic $2$-torus, so
+no member of the family has strictly positive sectional curvature.
 
-\author*[1]{\fnm{Lars} \sur{R\"onnb\"ack}}\email{lars@uptochange.com}
-
-\affil*[1]{\orgdiv{Department of Computer and Systems Sciences}, \orgname{Stockholm University},
-  \orgaddress{\city{Stockholm}, \country{Sweden}}}
-
-\abstract{%
-We study the sectional curvature of seam-generated metrics on
-Riemannian product manifolds, with primary focus on $S^2 \times S^2$.
-Using the jet-theoretic classification of natural metric-generating
-rules developed in~\cite{Ronnback2025jet}, we classify all
-$\OO(2) \times \OO(2)$-equivariant seam rules of order $\le 2$ on
-product backgrounds and compute their sectional curvatures explicitly.
-For equivariant seams, the resulting metric inherits an isometric
-circle action, so the Hsiang--Kleiner theorem~\cite{HsiangKleiner1989}
-implies that positive sectional curvature is impossible.
-For the conformal product subcase, we give a direct
-maximum-principle proof identifying the precise point and plane
-where the mixed curvature is non-positive.  We establish that
-the mixed sectional curvature equals the Gaussian curvature of a
-$2$-dimensional orbit metric and provide explicit formulas.
-For non-equivariant seams built from $\ell = 1$ product
-spherical harmonics---which break all continuous symmetry---we
-prove that the conformal Hessian property of degree-$1$ harmonics
-forces $K_{\mathrm{mix}} = 0$ at critical points and on totally
-geodesic flat tori, analytically ruling out strictly positive
-curvature.  Numerical evidence further suggests
-$K_{\mathrm{mix}} \ge 0$ for all mixed planes, with
-$K_{\min} = 0$ achieved pointwise.
-}
-
-\keywords{seam geometry, Hopf conjecture, positive sectional curvature,
-product manifolds, natural differential operators, jet bundles}
-
-\pacs[MSC Classification]{53C21 (primary), 53C20, 53C24, 58A20}
+For arbitrary paths $h+t\Hess f+t^2B+O(t^3)$, we give a two-jet normal
+form modulo diffeomorphisms.  An integrated trace identity forces every
+quadratic mixed repair inequality to be an equality on a closed
+product.  We classify the resulting coupled kernel modulo gauge and
+factor variations: one tensor leg must be Killing and the other
+co-closed.  On $\Sph^2\times\Sph^2$, every nonzero coupled class has a
+nearby plane with curvature $-\delta s^2+O(s^3)$; this includes
+cross-degree superpositions, simultaneous mixtures of both one-sided
+towers, and the full $(1,1)$ block.  The associated canonical
+corrected Hessian path therefore fails at order $t^4$.  A transverse
+rotational sum also admits an exact negative oblique formula.  These
+are obstructions for the stated Hessian family and kernel rays, not a
+proof of the Hopf conjecture.
+\end{abstract}
 
 \maketitle
 
-% ================================================================
 \section{Introduction}
-\label{sec:intro}
-% ================================================================
 
-\subsection{The Hopf conjecture}
+The question whether $\Sph^2\times\Sph^2$ admits a metric of strictly
+positive sectional curvature is the classical Hopf conjecture.  It is
+open.  A useful way to approach the problem without overstating what a
+special construction can prove is to choose a geometrically natural
+family of metrics, determine its full parameter range, and identify an
+exact obstruction inside that family.
 
-Among the most stubborn open problems in Riemannian geometry is the
-following question, attributed to Hopf:
-
-\begin{quote}
-\emph{Does $S^2 \times S^2$ admit a Riemannian metric with strictly
-positive sectional curvature?}
-\end{quote}
-
-The expected answer is \emph{no}.  The evidence (both structural and
-numerical) is substantial:
-
-\begin{enumerate}[label=(\roman*)]
-\item \emph{Synge's theorem} implies that a compact, even-dimensional,
-  orientable manifold with positive sectional curvature is simply
-  connected.  Both $S^2 \times S^2$ and $S^4$ satisfy this necessary
-  condition, so the topological obstruction does not come from the
-  fundamental group.
-\item \emph{The Euler characteristic} $\chi(S^2 \times S^2) = 4 > 0$,
-  which is consistent with positive curvature by Chern--Gauss--Bonnet.
-  No contradiction arises at the level of characteristic numbers.
-\item \emph{The rational cohomology ring}
-  $H^*(S^2 \times S^2; \mathbb{Q}) \cong
-  \mathbb{Q}[x,y]/(x^2, y^2)$ with $|x|=|y|=2$ has two independent
-  generators in degree~$2$, whereas all known positively curved
-  $4$-manifolds have $b_2 \le 1$.  This is the strongest heuristic
-  evidence, but it remains a heuristic: no theorem derives a
-  curvature obstruction from $b_2$.
-\item \emph{Hsiang--Kleiner}~\cite{HsiangKleiner1989} proved that
-  if a compact positively curved $4$-manifold admits an isometric
-  $S^1$-action, then $b_2 \le 1$.  Since $S^2 \times S^2$ has
-  $b_2 = 2$ and admits many $S^1$-actions, this rules out a large
-  family of candidate metrics---but not all.
-\end{enumerate}
-
-The difficulty is that the conjecture asks for a statement about
-\emph{all} Riemannian metrics, a space that is infinite-dimensional
-and essentially structureless.  Known approaches either impose
-symmetry assumptions (reducing to a finite-dimensional problem)
-or work with curvature conditions weaker than pointwise positive
-sectional curvature (e.g., positive Ricci curvature, which
-$S^2 \times S^2$ does admit).
-
-\subsection{The seam approach}
-
-The seam framework~\cite{Ronnback2025jet,Ronnback2025complex}
-provides a different angle.  Rather than studying the full space of
-metrics, it studies those metrics generated from a scalar field
-$s \in C^\infty(M)$ by a natural differential operator (a
-\emph{rule}).  The jet-theoretic classification
-of~\cite{Ronnback2025jet} shows that at order $\le 2$, every
-isotropic rule on a Riemannian background $(M,h)$ is a linear
-combination of three generators:
-\begin{equation}
-\label{eq:three-generators}
-g = \alpha(s, |\nabla s|^2, \Delta s)\,h
-  + \beta(s, |\nabla s|^2, \Delta s)\,ds \otimes ds
-  + \gamma(s, |\nabla s|^2, \Delta s)\,\nabla^2 s,
+This paper carries out that program for the finite-dimensional family
+\begin{equation}\label{eq:family-intro}
+ g_{\gamma,A}=h+\gamma\Hess_h s_A,
+ \qquad s_A(x,y)=\ip{x}{Ay},
 \end{equation}
-where $\alpha, \beta, \gamma$ are smooth functions of the
-$\OO(n)$-invariant jets of $s$.
+on a product of unit spheres.  Here
+$A:\R^{n+1}\to\R^{m+1}$ is arbitrary and $\gamma\in\R$.  The functions
+$s_A$ are precisely the linear combinations of bilinear products of
+degree-one spherical harmonics.  Thus the family includes couplings with
+no continuous symmetry inherited from the two round factors, but it
+retains enough structure for the exact global results below.
 
-The key property exploited here is that the seam framework converts
-the problem of constructing a metric with prescribed curvature
-properties into a problem about a \emph{single scalar function} on
-the manifold.  On a product manifold $M = M_1 \times M_2$, the
-natural symmetry group of the background is
-$\OO(n_1) \times \OO(n_2)$ rather than $\OO(n_1 + n_2)$, which
-enriches the classification: new generators appear that respect the
-product structure.
+The results have three parts.  First, a sharp positivity criterion
+depends on the two largest singular values of $A$.  Second, an exact
+mixed-curvature formula gives a spectral-gap obstruction: when
+$\sigma_1>\sigma_2$, a fixed mixed plane has negative curvature at
+every nonzero point of the Riemannian ray.  A top-critical oblique
+plane in the totally geodesic top-three singular
+$\Sph^2\times\Sph^2$ is negative for every matrix of rank at least
+two; a zero-critical oblique plane handles rank one and lies in the
+same slice.  Thus all dimensions are detected by a four-dimensional
+submodel, with an explicit dimension-free quantitative margin.
+Third, each pair of
+singular directions cuts out a product of great circles which remains
+totally geodesic and becomes intrinsically flat for the deformed
+metric.  Together the two curvature mechanisms show that, whenever
+$m,n\geq2$ and $A\neq0$, the round product is the only metric on its
+Hessian ray with nonnegative sectional curvature.  At the isotropic
+$\Sph^2\times\Sph^2$ endpoint all background-mixed
+curvatures are nevertheless nonnegative.  This mixed--oblique
+dichotomy shows in particular that background-mixed nonnegativity is
+not a proxy for full nonnegative sectional curvature.
 
-The strategy of this paper is:
+The exact rays also admit a useful deformation-theoretic
+interpretation.  Since
+$\Hess f=\frac12\mathcal L_{\nabla f}h$, their first variation is
+pure gauge.  We give a two-jet normal form for arbitrary corrected
+paths $h+t\Hess f+t^2B+O(t^3)$ and an explicit mixed-curvature
+functional which every nonnegatively curved path must make
+nonnegative.  Its integrated trace vanishes, so on the closed product
+all those values must in fact be zero.  For $f=s_A$, singular triples
+turn this into concrete identities for the second-order correction
+$B$.  The canonical gauge correction satisfies them, whereas the
+uncorrected ray $B=0$ violates one for every $A\neq0$.
+Modulo diffeomorphisms and factor variations, we classify the full
+kernel: every coupled class is represented by a pure mixed,
+divergence-free tensor with a Killing one-form on at least one factor
+and a co-closed one-form on the other.  On $\Sph^2\times\Sph^2$ this
+leaves exactly the harmonic bidegrees $(1,\ell)$ and $(\ell,1)$.  A
+two-curl moving-plane calculation and a frame-average spectral gap
+obstruct every nonzero element of this entire coupled quotient,
+including arbitrary cross-degree and two-tower mixtures.  A signed
+singular-value argument closes the full $(1,1)$ block.  The canonical
+transverse rotational sum additionally has an exact negative oblique
+formula.
 
-\begin{enumerate}
-\item \textbf{Classify} all $\OO(n_1) \times \OO(n_2)$-equivariant
-  seam rules on product backgrounds (\S\ref{sec:product-rules}).
-\item \textbf{Compute} the sectional curvatures of the resulting
-  metrics, particularly for mixed two-planes
-  (\S\ref{sec:curvature}).
-\item \textbf{Prove} that a topological obstruction prevents all
-  sectional curvatures from being simultaneously positive
-  (\S\ref{sec:obstruction}).
-\item \textbf{Analyse} non-equivariant $\ell = 1$ product harmonic
-  seams, identifying a geometric mechanism (the conformal Hessian
-  and coupling SVD) that forces $K_{\mathrm{mix}} = 0$ at
-  distinguished loci, with $K_{\mathrm{mix}} \ge 0$ conjectured
-  globally (\S\ref{sec:non-equivariant}).
-\end{enumerate}
-
-\subsection{Main result}
-
-\begin{theorem}[Main theorem --- informal statement]
-\label{thm:main-informal}
-Let $h_0 = h_{S^2} \oplus h_{S^2}$ be the standard product metric
-on $S^2 \times S^2$.  Let $s = s(\theta_1, \theta_2)$ be any
-$\OO(2) \times \OO(2)$-equivariant smooth function, and let $g$ be
-any metric generated from $s$ by an
-$\OO(2) \times \OO(2)$-equivariant natural rule of order $\le 2$
-on the background $h_0$.  Then $g$ cannot have strictly positive
-sectional curvature on all two-planes.
-\end{theorem}
-
-The formal version (Theorem~\ref{thm:main}) is stated
-in~\S\ref{sec:obstruction} after the necessary classification and
-curvature formulas have been developed.
-
-\begin{remark}[Scope and limitations]
-\label{rem:scope}
-For equivariant seams, the metric inherits a $\UU(1) \times \UU(1)$
-symmetry, so Theorem~\ref{thm:main-informal} is a consequence of
-the Hsiang--Kleiner theorem~\cite{HsiangKleiner1989}.  The
-independent contribution of this paper lies in: (a)~the explicit
-curvature analysis via the orbit-metric Gaussian curvature, (b)~a
-direct maximum-principle proof for the conformal product subcase,
-(c)~the classification of equivariant seam rules on product
-backgrounds, and (d)~the analysis of non-equivariant $\ell = 1$
-seams (\S\ref{sec:non-equivariant}), where the conformal Hessian
-structure forces $K_{\mathrm{mix}} = 0$ at critical points and on
-totally geodesic tori, analytically ruling out strict positivity.
-\end{remark}
-
-
-% ================================================================
-\section{Product Seam Rules: The Anisotropic Classification}
-\label{sec:product-rules}
-% ================================================================
-
-\subsection{Setup}
-
-Let $(M_1^{n_1}, h_1)$ and $(M_2^{n_2}, h_2)$ be Riemannian
-manifolds.  The product $M = M_1 \times M_2$ carries the product
-metric $h = h_1 \oplus h_2$ and the tangent bundle splits as
-$TM = TM_1 \oplus TM_2$.  The isometry group of $h$ contains the
-subgroup $\operatorname{Isom}(M_1, h_1) \times
-\operatorname{Isom}(M_2, h_2)$, and the structure group of the
-frame bundle reduces from $\OO(n_1 + n_2)$ to
-$\OO(n_1) \times \OO(n_2)$.
-
-A scalar field $s \in C^\infty(M)$ has a 2-jet at $(x_1, x_2) \in M$
-that decomposes under $\OO(n_1) \times \OO(n_2)$ into finer
-components than the isotropic $\OO(n)$-decomposition:
-
-\begin{proposition}[Product decomposition of the 2-jet]
-\label{prop:product-jet}
-At a point $(x_1, x_2) \in M_1 \times M_2$, working in normal
-coordinates adapted to the product structure, the 2-jet of $s$
-decomposes into:
-\begin{enumerate}[label=(\alph*)]
-\item The value $s_0 = s(x_1, x_2) \in \mathbb{R}$.
-\item The factor gradients:
-  $v^{(1)} = \nabla_1 s \in T^*_{x_1} M_1$ and
-  $v^{(2)} = \nabla_2 s \in T^*_{x_2} M_2$.
-\item The factor Hessians:
-  $A^{(1)} = \nabla_1^2 s \in \Sym^2(T^*_{x_1} M_1)$ and
-  $A^{(2)} = \nabla_2^2 s \in \Sym^2(T^*_{x_2} M_2)$.
-\item The mixed Hessian:
-  $B = \nabla_1 \nabla_2 s \in T^*_{x_1} M_1 \otimes T^*_{x_2} M_2$.
-\end{enumerate}
-\end{proposition}
-
-\begin{proof}
-In product-adapted normal coordinates $(x^a, y^\mu)$ where
-$a = 1, \ldots, n_1$ and $\mu = 1, \ldots, n_2$, the full Hessian
-$\nabla^2 s$ has block structure
+\begin{theorem}\label{thm:main}
+Let $m,n\geq1$, set
+$q=\min\{m+1,n+1\}$, and let
+$\sigma_1\geq\sigma_2\geq\cdots\geq\sigma_q\geq0$ be the singular
+values of $A:\R^{n+1}\to\R^{m+1}$.  If $A\neq0$, then
 \[
-\nabla^2 s =
-\begin{pmatrix}
-  \nabla_a \nabla_b s & \nabla_a \nabla_\mu s \\
-  \nabla_\mu \nabla_a s & \nabla_\mu \nabla_\nu s
-\end{pmatrix}
-=
-\begin{pmatrix}
-  A^{(1)}_{ab} & B_{a\mu} \\
-  B_{\mu a} & A^{(2)}_{\mu\nu}
-\end{pmatrix}.
+ g_{\gamma,A}\text{ is Riemannian}
+ \quad\Longleftrightarrow\quad
+ |\gamma|(\sigma_1+\sigma_2)<1.
 \]
-The group $\OO(n_1) \times \OO(n_2)$ acts by $(O_1, O_2)$:
-$v^{(k)} \mapsto O_k v^{(k)}$,
-$A^{(k)} \mapsto O_k A^{(k)} O_k^T$,
-$B \mapsto O_1 B O_2^T$.
-The components (a)--(d) are the irreducible summands under this
-action (with $A^{(k)}$ further splitting into trace and trace-free
-parts).
-\end{proof}
-
-\subsection{The equivariant generators}
-
-\begin{theorem}[Classification of product-equivariant metric rules]
-\label{thm:product-classification}
-The space of $\OO(n_1) \times \OO(n_2)$-equivariant maps from the
-2-jet data $(s_0, v^{(1)}, v^{(2)}, A^{(1)}, A^{(2)}, B)$ to
-$\Sym^2(T^*M)$ is spanned by the following generators acting on
-vectors $X = X_1 + X_2$, $Y = Y_1 + Y_2$ (with $X_k, Y_k \in TM_k$):
-\begin{enumerate}[label=(\roman*)]
-\item \textbf{Factor conformal terms:}
-  $\Pi_{h_1}(X,Y) = h_1(X_1, Y_1)$ and
-  $\Pi_{h_2}(X,Y) = h_2(X_2, Y_2)$.
-\item \textbf{Factor gradient tensors:}
-  $\Pi_{\nabla_1}(X,Y) = (v^{(1)} \cdot X_1)(v^{(1)} \cdot Y_1)$
-  and
-  $\Pi_{\nabla_2}(X,Y) = (v^{(2)} \cdot X_2)(v^{(2)} \cdot Y_2)$.
-\item \textbf{Mixed gradient tensor:}
-  $\Pi_{\nabla_{12}}(X,Y) =
-  (v^{(1)} \cdot X_1)(v^{(2)} \cdot Y_2)
-  + (v^{(1)} \cdot Y_1)(v^{(2)} \cdot X_2)$.
-\item \textbf{Factor Hessians:}
-  $\Pi_{H_1}(X,Y) = A^{(1)}(X_1, Y_1)$ and
-  $\Pi_{H_2}(X,Y) = A^{(2)}(X_2, Y_2)$.
-\item \textbf{Mixed Hessian:}
-  $\Pi_{H_{12}}(X,Y) =
-  B(X_1, Y_2) + B(Y_1, X_2)$.
-\end{enumerate}
-The general $\OO(n_1) \times \OO(n_2)$-equivariant metric rule of
-order $\le 2$ (at most linear in the Hessian components) is
-\begin{equation}
-\label{eq:product-rule}
-g = \alpha_1\,h_1 + \alpha_2\,h_2
-  + \beta_1\,ds_1 \otimes ds_1
-  + \beta_2\,ds_2 \otimes ds_2
-  + \beta_{12}\,(ds_1 \odot ds_2)
-  + \gamma_1\,\nabla_1^2 s
-  + \gamma_2\,\nabla_2^2 s
-  + \gamma_{12}\,\nabla_{12}^2 s,
-\end{equation}
-where $ds_k = \nabla_k s$, $\odot$ denotes the symmetrised tensor
-product, $\nabla_{12}^2 s$ is the symmetrisation of the mixed
-Hessian, and the coefficients
-$\alpha_k, \beta_k, \beta_{12}, \gamma_k, \gamma_{12}$ are smooth
-functions of the $\OO(n_1) \times \OO(n_2)$-invariant scalars
-formed from the jet data.
+For every $\gamma$ in this interval and every choice of singular
+frames, $g_{\gamma,A}$ contains one flat totally geodesic torus for
+each pair $1\leq i<j\leq q$.  In particular,
+\[
+ \secop_{g_{\gamma,A}}(T_pT_{ij})=0
+ \quad\text{for every }p\in T_{ij},
+\]
+and $g_{\gamma,A}$ never has strictly positive sectional curvature.
+If moreover $m,n\geq2$, then the totally geodesic
+$\Sph^2\times\Sph^2$ determined by the top three singular pairs
+contains a plane of strictly negative sectional curvature for every
+nonzero Riemannian parameter.  Hence the metric does not have
+nonnegative sectional curvature.  If $\sigma_2>0$, the plane can be
+chosen top-critical oblique; in rank one it can be chosen
+zero-critical oblique.  If $\sigma_1>\sigma_2$, it can also be chosen
+background-mixed.
+If $A=0$, then $g_{\gamma,A}=h$ for every $\gamma$.
 \end{theorem}
 
-\begin{proof}[Proof sketch]
-By the first fundamental theorem of invariant theory for
-$\OO(n_1) \times \OO(n_2)$, the equivariant maps to
-$\Sym^2(\mathbb{R}^{n_1} \oplus \mathbb{R}^{n_2})$ are
-determined by contractions using $\delta^{(1)}_{ab}$,
-$\delta^{(2)}_{\mu\nu}$, $v^{(1)}_a$, $v^{(2)}_\mu$,
-$A^{(1)}_{ab}$, $A^{(2)}_{\mu\nu}$, and $B_{a\mu}$.  The
-symmetric 2-tensors on $\mathbb{R}^{n_1} \oplus \mathbb{R}^{n_2}$
-decompose as
-$\Sym^2(\mathbb{R}^{n_1}) \oplus
-(\mathbb{R}^{n_1} \otimes \mathbb{R}^{n_2}) \oplus
-\Sym^2(\mathbb{R}^{n_2})$,
-and the equivariant maps into each block are enumerated by Schur's
-lemma applied to the $\OO(n_k)$-representations.  The generators
-(i)--(v) span the linear-in-Hessian equivariants.
-\end{proof}
+The negative mixed curvature in the examples below is strict.  It
+therefore persists under small changes of the matrix, base point, and
+$2$-plane; it is not an isolated algebraic coincidence.
 
-\begin{remark}[Reduction to the isotropic classification]
-When $M_1 = M_2$ and $h_1 = h_2$, further imposing invariance
-under the swap involution $(x_1, x_2) \mapsto (x_2, x_1)$ forces
-$\alpha_1 = \alpha_2$, $\beta_1 = \beta_2$, $\gamma_1 = \gamma_2$.
-If in addition we pass to the diagonal $\OO(n) \hookrightarrow
-\OO(n) \times \OO(n)$, the product generators collapse to the
-three isotropic generators of~\cite{Ronnback2025jet}:
-$h_1 + h_2 \to h$,
-$ds_1 \otimes ds_1 + ds_2 \otimes ds_2 + ds_1 \odot ds_2
-\to ds \otimes ds$,
-and similarly for the Hessian terms.
-\end{remark}
+For $\Sph^2\times\Sph^2$, a chosen singular frame gives three such
+tori.  When $A$ is invertible with three distinct singular values, the
+factor-preserving isometries inherited from the round product form a
+finite group.  This matters because the powerful theorem of
+Hsiang--Kleiner excludes positive curvature on
+$\Sph^2\times\Sph^2$ in the presence of an isometric circle action
+\cite{HsiangKleiner1989}.  Our obstruction is instead visible directly
+on fixed tori of finite involutions.  We do not claim that the full
+isometry group of the deformed metric is always finite.
 
-\begin{remark}[New generators from the product structure]
-\label{rem:new-generators}
-Compared to the isotropic three-generator
-family~\eqref{eq:three-generators}, the product decomposition
-introduces genuinely new structures:
-\begin{enumerate}[label=(\alph*)]
-\item \emph{Independent factor scaling:} the two conformal terms
-  $\alpha_1 h_1$ and $\alpha_2 h_2$ allow anisotropic rescaling
-  of the factors, which is impossible with a single isotropic
-  $\alpha$.
-\item \emph{Mixed gradient and Hessian:} the cross terms
-  $\beta_{12}\,ds_1 \odot ds_2$ and $\gamma_{12}\,\nabla_{12}^2 s$
-  couple the two factors.  These generators vanish identically for
-  separable seams $s(x_1, x_2) = f(x_1) + g(x_2)$ (since then
-  $B = 0$ and $\nabla_1 s = df$, $\nabla_2 s = dg$ are independent).
-  They are the ``interaction terms'' that could, in principle,
-  inject positive curvature into mixed planes.
-\end{enumerate}
-\end{remark}
+Deformations of product metrics have long been studied in connection
+with Hopf's question, notably by Bourguignon
+\cite{Bourguignon1975,BourguignonDeschampsSentenac1973}.  More recent
+work has produced obstructions under symmetry assumptions
+\cite{HsiangKleiner1989,AmannKennard2017} and within conformal or warped
+classes \cite{SeckNiangMasiello2022}; see also the survey
+\cite{Amann2021}.  The present result is deliberately narrower and
+fully explicit: it gives a complete positive-curvature obstruction
+for the family~\eqref{eq:family-intro}, not the Hopf conjecture.  Its
+additional contribution is that the same
+mechanism works on every product $\Sph^m\times\Sph^n$ and identifies
+the exact Riemannian interval rather than only a perturbative
+neighborhood of the product metric.
 
-\subsection{Specialisation to $S^2 \times S^2$}
-\label{sec:S2S2-setup}
+The proof is organized as follows.  Section~\ref{sec:hessian} gives an
+intrinsic formula for the Hessian and its tangent-space block form.
+Section~\ref{sec:positive} proves the sharp positivity interval,
+derives the exact mixed-curvature formula, proves the spectral-gap and
+top-critical oblique obstructions, isolates the
+isotropic mixed--oblique dichotomy, and analyzes plane-wise
+sign-change thresholds.
+Section~\ref{sec:tori} constructs and analyzes the flat totally
+geodesic tori.  Section~\ref{sec:symmetry} separates the inherited
+factor-preserving symmetry from the generally harder full isometry
+group.  Section~\ref{sec:two-jet} gives the two-jet normal form and
+the integrated rigidity, explicit repair identities, the full coupled
+kernel classification, the nonlinear obstruction for its entire
+coupled quotient, and an exact transverse rotational model.
+Section~\ref{sec:scope} records
+the precise relation to the Hopf problem and to possible extensions.
 
-For the remainder of the paper, set $M_1 = M_2 = (S^2, h_{S^2})$
-with the round metric of curvature $+1$, so that
-$n_1 = n_2 = 2$ and $n = 4$.
+\section{The Hessian deformation}\label{sec:hessian}
 
-\paragraph{Natural seams.}
-The following scalar fields on $S^2 \times S^2$ are
-$\OO(2) \times \OO(2)$-equivariant (with respect to rotations
-fixing the poles of each factor):
+Let
+\[
+ M=\Sph^m\times\Sph^n
+ \subset\R^{m+1}\times\R^{n+1},
+ \qquad h=h_m\oplus h_n,
+\]
+where both factors have radius one.  At $(x,y)\in M$ we identify
+\[
+ T_{(x,y)}M=x^\perp\oplus y^\perp.
+\]
+The Levi-Civita connection and Hessian below are those of $h$.
 
-\begin{enumerate}[label=(\alph*)]
-\item \emph{Height functions:}
-  $s(p,q) = \cos\theta_1$ or $s(p,q) = \cos\theta_2$, where
-  $\theta_k$ is the polar angle on the $k$-th sphere.
-\item \emph{Sum of heights:}
-  $s(p,q) = \cos\theta_1 + \cos\theta_2$.  This is the simplest
-  non-separable-in-the-coefficients seam that naturally couples
-  the factors through the coefficient functions.
-\item \emph{Product of heights:}
-  $s(p,q) = \cos\theta_1 \cos\theta_2$.  This has nonvanishing
-  mixed Hessian $B \neq 0$ and activates the cross-coupling
-  generators.
-\item \emph{Distance-type seams:}
-  $s(p,q) = d_{S^2}(p, N)^2 + d_{S^2}(q, N)^2$, where $N$ is
-  the north pole.
-\end{enumerate}
-
-\paragraph{Equivariant jet invariants on $S^2 \times S^2$.}
-The $\OO(2) \times \OO(2)$-invariant scalars formed from the
-2-jet of $s$ are:
-\begin{equation}
-\label{eq:invariants-product}
-\mathcal{I} = \bigl(
-  s,\;
-  |\nabla_1 s|^2,\;
-  |\nabla_2 s|^2,\;
-  \Delta_1 s,\;
-  \Delta_2 s,\;
-  \|B\|^2
-\bigr),
+\begin{proposition}[Hessian formula]\label{prop:hessian}
+For $X,X'\in x^\perp$ and $Y,Y'\in y^\perp$,
+\begin{align}
+ \Hess s_A\big((X,Y),(X',Y')\big)
+ ={}&-s_A(x,y)\big(\ip{X}{X'}+\ip{Y}{Y'}\big) \notag\\
+ &+\ip{X}{AY'}+\ip{X'}{AY}.       \label{eq:hessian}
+\end{align}
+Equivalently, with $P_x$ and $P_y$ the orthogonal projections onto
+$x^\perp$ and $y^\perp$, respectively,
+\begin{equation}\label{eq:block}
+ g_{\gamma,A}=
+ \begin{pmatrix}
+  \lambda I_{x^\perp} & \gamma P_xAP_y\\
+  \gamma P_yA^{\mathsf T}P_x & \lambda I_{y^\perp}
+ \end{pmatrix},
+ \qquad \lambda=1-\gamma s_A(x,y).
 \end{equation}
-where $\Delta_k$ is the Laplacian on the $k$-th factor and
-$\|B\|^2 = h_1^{ac} h_2^{\mu\nu} B_{a\mu} B_{c\nu}$ is the
-squared norm of the mixed Hessian.
-
-
-% ================================================================
-\section{Sectional Curvature of Product Seam Metrics}
-\label{sec:curvature}
-% ================================================================
-
-We now compute the sectional curvatures of a general product seam
-metric~\eqref{eq:product-rule} on $S^2 \times S^2$.  The critical
-quantity is the curvature of \emph{mixed planes}: two-planes
-$\sigma = \operatorname{span}(X_1, X_2)$ with $X_1 \in T_{x_1} S^2$
-and $X_2 \in T_{x_2} S^2$.
-
-\subsection{Review: curvature of warped and twisted products}
-
-For a metric of the form
-$g = \varphi_1^2\,h_1 + \varphi_2^2\,h_2$ (doubly warped product)
-on $M_1 \times M_2$, the sectional curvature of a mixed plane
-$\sigma = \operatorname{span}(X_1, X_2)$ is classically
-\begin{equation}
-\label{eq:mixed-curv-warped}
-K_g(\sigma) =
--\frac{X_1(\varphi_2)}{\varphi_1^2 \varphi_2}\,
-\frac{\nabla_1^2 \varphi_2(X_1, X_1)}{|X_1|_{h_1}^2}
--\frac{X_2(\varphi_1)}{\varphi_1 \varphi_2^2}\,
-\frac{\nabla_2^2 \varphi_1(X_2, X_2)}{|X_2|_{h_2}^2}
--\frac{h_1(\nabla_1 \varphi_1, \nabla_1 \varphi_2)}
-      {\varphi_1^2 \varphi_2}
--\frac{h_2(\nabla_2 \varphi_1, \nabla_2 \varphi_2)}
-      {\varphi_1 \varphi_2^2}.
-\end{equation}
-(This simplifies the O'Neill--Gray formula for warped products.)
-
-For the standard product metric ($\varphi_1 = \varphi_2 = 1$),
-\emph{all mixed sectional curvatures vanish}: $K_{h_0}(\sigma) = 0$
-for every mixed plane $\sigma$.  This is the fundamental geometric
-fact that makes positive curvature on $S^2 \times S^2$ difficult:
-one must deform the metric enough to make the mixed curvatures
-strictly positive while keeping the factor curvatures positive as
-well.
-
-\subsection{Curvature of the conformal product seam metric}
-
-We begin with the most tractable case: the \emph{conformal product
-metric}
-\begin{equation}
-\label{eq:conformal-product}
-g = e^{2u}\,h_1 + e^{2v}\,h_2,
-\end{equation}
-where $u, v \in C^\infty(M_1 \times M_2)$ are expressed through the
-seam: $u = u(s, |\nabla_1 s|^2, \ldots)$ and similarly for $v$.
-This is the sub-family of~\eqref{eq:product-rule} with
-$\alpha_1 = e^{2u}$, $\alpha_2 = e^{2v}$, and all
-$\beta_k = \gamma_k = \beta_{12} = \gamma_{12} = 0$.
-
-For this metric, the mixed sectional curvature equals the
-Gaussian curvature of the $2$-dimensional orbit metric.  Let
-$X_1 \in T_{x_1} M_1$ and $X_2 \in T_{x_2} M_2$ be unit vectors
-(in the $h_k$-norms), so that $\sigma = \operatorname{span}(X_1, X_2)$
-is a mixed plane.
-
-\begin{proposition}[Mixed curvature of a conformal product]
-\label{prop:mixed-curv-conformal}
-Let $g = e^{2u}\,h_1 + e^{2v}\,h_2$ with
-$u, v \in C^\infty(M_1 \times M_2)$.
-\begin{enumerate}[label=$(\roman*)$]
-\item\label{it:conformal-crit}
-At any point where $\nabla_1 v = 0$ and $\nabla_2 u = 0$:
-\begin{equation}
-\label{eq:Kmix-conformal-crit}
-K_g(X_1, X_2) =
-  -\frac{\nabla_1^2 v(X_1, X_1)}{e^{2u}}
-  -\frac{\nabla_2^2 u(X_2, X_2)}{e^{2v}}.
-\end{equation}
-\item\label{it:conformal-equiv}
-If $u, v$ are $\OO(2) \times \OO(2)$-equivariant (independent of
-$\phi_k$), then by Proposition~\ref{prop:mixed-curv-general} the
-mixed curvature $K_g(\partial_{\theta_1}, \partial_{\theta_2})$
-equals the Gaussian curvature of the orbit metric
-$e^{2u}\,d\theta_1^2 + e^{2v}\,d\theta_2^2$, given by the
-Brioschi formula:
-\begin{equation}
-\label{eq:Kmix-conformal}
-K_g(\partial_{\theta_1}, \partial_{\theta_2}) =
-  -\frac{v_{11} + v_1^2 - u_1\,v_1}{e^{2u}}
-  -\frac{u_{22} + u_2^2 - u_2\,v_2}{e^{2v}},
-\end{equation}
-where subscripts denote $\partial_{\theta_k}$.
-When $u = v$, all gradient terms cancel and
-$K = -v_{11}/e^{2u} - u_{22}/e^{2v}$.
-\end{enumerate}
 \end{proposition}
 
 \begin{proof}
-For~\ref{it:conformal-crit}: the Koszul formula on the product gives
-$\nabla_{X_1} X_2 = X_2(u)\,X_1 + X_1(v)\,X_2$
-for $h_k$-unit vectors.  At a point where $\nabla_1 v = 0$ and
-$\nabla_2 u = 0$, this vanishes.  A direct computation of
-$R(X_1, X_2, X_2, X_1) = g(\nabla_{X_1}\nabla_{X_2}X_2
-  - \nabla_{X_2}\nabla_{X_1}X_2, X_1)$
-from these connection formulas, using the Leibniz rule at the
-critical point (where first-order gradient terms vanish but
-second-order Hessian terms survive),
-gives~\eqref{eq:Kmix-conformal-crit}.
-
-For~\ref{it:conformal-equiv}: the metric is block-diagonal between
-$\theta$- and $\phi$-directions and independent of $\phi_k$, so
-Proposition~\ref{prop:mixed-curv-general} applies.  The Brioschi
-formula for $E = e^{2u}$, $G = e^{2v}$
-yields~\eqref{eq:Kmix-conformal}; when $u = v$, the terms
-$v_1^2 - u_1 v_1 = v_1(v_1 - u_1) = 0$ and
-$u_2^2 - u_2 v_2 = 0$.
+For a fixed vector $a\in\R^{m+1}$, the restriction of the linear
+function $x\mapsto\ip{x}{a}$ to the unit sphere satisfies
+\begin{equation}\label{eq:linear-hess}
+ \Hess_{\Sph^m}\ip{x}{a}=-\ip{x}{a}\,h_m.
+\end{equation}
+Indeed, the tangential gradient is $a-\ip{x}{a}x$, and differentiating
+it with the Gauss formula gives~\eqref{eq:linear-hess}.  Holding $y$
+fixed and taking $a=Ay$ yields the first pure block of
+\eqref{eq:hessian}; holding $x$ fixed gives the second.  Since the
+product connection differentiates independently in the two factors,
+the mixed derivative is
+\[
+ X\big(\ip{x}{AY'}\big)=\ip{X}{AY'}.
+\]
+Symmetry of the Hessian supplies the other mixed entry.  Adding $h$
+gives~\eqref{eq:block}.
 \end{proof}
 
-\begin{corollary}[Conformal product: separable case]
-\label{cor:conformal-sep}
-If $u = u(x_1)$ and $v = v(x_2)$ (each warp function depends only
-on its own factor),
-then~\eqref{eq:Kmix-conformal-crit} applies everywhere
-(since $\nabla_1 v = 0$ and $\nabla_2 u = 0$ globally) and
-both Hessians vanish, giving $K_g = 0$.  Thus a product of
-conformally rescaled factors always has vanishing mixed curvature,
-and the obstruction is trivial.
+Formula~\eqref{eq:block} already exhibits the two quantities that
+compete for definiteness: the scalar diagonal coefficient
+$1-\gamma s_A$ and the largest singular value of the tangent
+compression $P_xAP_y$.  The next section optimizes their combination
+globally.
+
+\section{The sharp Riemannian range and mixed curvature}
+\label{sec:positive}
+
+We use a two-frame form of the Ky Fan variational principle.  Singular
+values are always listed in nonincreasing order and padded by zeros.
+
+\begin{lemma}[Two-frame principle]\label{lem:kyfan}
+Let $A:\R^r\to\R^p$ have singular values
+$\sigma_1\geq\sigma_2\geq\cdots$.  Then
+\begin{equation}\label{eq:kyfan}
+ \sup_{\substack{x,X\in\R^p\text{ orthonormal}\\
+                  y,Y\in\R^r\text{ orthonormal}}}
+ \left(\ip{x}{Ay}+\left|\ip{X}{AY}\right|\right)
+ =\sigma_1+\sigma_2.
+\end{equation}
+The same supremum is obtained with $-\ip{x}{Ay}$ in place of
+$\ip{x}{Ay}$.
+\end{lemma}
+
+\begin{proof}
+Change the sign of $X$ if necessary so that the second pairing is
+nonnegative.  The expression is then the trace pairing of $A$ with a
+rank-two partial isometry.  The Ky Fan trace inequality bounds it by
+$\sigma_1+\sigma_2$; equivalently, this is the rank-two case of the
+variational characterization of the nuclear norm of a compression
+\cite[Chapter~III]{Bhatia1997}.
+Equality is obtained from left and right singular vectors
+$x=u_1$, $X=u_2$, $y=v_1$, and $Y=v_2$.  Replacing $x$ by $-x$
+proves the final assertion.
+\end{proof}
+
+For completeness, define the largest tangent coupling at $(x,y)$ by
+\begin{equation}\label{eq:tau}
+ \tau(x,y)=
+ \max_{\substack{X\perp x,\;Y\perp y\\
+                  \norm{X}=\norm{Y}=1}}
+ \left|\ip{X}{AY}\right|.
+\end{equation}
+Lemma~\ref{lem:kyfan} says precisely that
+\begin{equation}\label{eq:two-sups}
+ \sup_{x,y}\big(s_A(x,y)+\tau(x,y)\big)
+ =\sup_{x,y}\big(\tau(x,y)-s_A(x,y)\big)
+ =\sigma_1+\sigma_2.
+\end{equation}
+
+\begin{proposition}[Exact definiteness interval]\label{prop:positive}
+If $A\neq0$, then $g_{\gamma,A}$ is positive definite at every point
+of $M$ if and only if
+\begin{equation}\label{eq:pd-range}
+ |\gamma|(\sigma_1+\sigma_2)<1.
+\end{equation}
+At either endpoint the tensor is degenerate somewhere, and beyond an
+endpoint it is not positive semidefinite everywhere.
+\end{proposition}
+
+\begin{proof}
+At a fixed $(x,y)$, choose singular frames for the tangent compression
+$P_xAP_y$.  The block matrix~\eqref{eq:block} is positive definite if
+and only if
+\begin{equation}\label{eq:pointwise-pd}
+ \lambda>|\gamma|\tau(x,y),
+ \qquad \lambda=1-\gamma s_A(x,y).
+\end{equation}
+The strict inequality also implies $\lambda>0$.
+
+Suppose first that $\gamma>0$.  By~\eqref{eq:two-sups},
+\[
+ \lambda-\gamma\tau
+ =1-\gamma(s_A+\tau)
+ \geq1-\gamma(\sigma_1+\sigma_2).
+\]
+For $\gamma<0$, writing $a=|\gamma|$ gives
+\[
+ \lambda-a\tau
+ =1-a(\tau-s_A)
+ \geq1-a(\sigma_1+\sigma_2).
+\]
+Thus~\eqref{eq:pd-range} implies positive definiteness.
+
+Conversely, take singular vectors satisfying
+$Av_k=\sigma_k u_k$.  For $\gamma>0$, at $(x,y)=(u_1,v_1)$ evaluate
+the metric on $(u_2,-v_2)$.  Proposition~\ref{prop:hessian} gives
+\begin{equation}\label{eq:failure-plus}
+ g_{\gamma,A}\big((u_2,-v_2),(u_2,-v_2)\big)
+ =2\big(1-\gamma(\sigma_1+\sigma_2)\big).
+\end{equation}
+For $\gamma=-a<0$, use $(x,y)=(-u_1,v_1)$ and the vector
+$(u_2,v_2)$ to obtain
+\begin{equation}\label{eq:failure-minus}
+ g_{-a,A}\big((u_2,v_2),(u_2,v_2)\big)
+ =2\big(1-a(\sigma_1+\sigma_2)\big).
+\end{equation}
+These expressions vanish at the endpoints and are negative beyond
+them.  Padding the singular values by zero makes the argument include
+rank-one maps without modification.
+\end{proof}
+
+\begin{remark}
+The occurrence of $\sigma_1+\sigma_2$, rather than only the operator
+norm $\sigma_1$, is geometric.  One top singular direction fixes the
+base point $(x,y)$ and contributes through $s_A$; a second orthogonal
+direction remains available in the tangent spaces and contributes
+through the mixed Hessian block.
+\end{remark}
+
+We next calculate every plane spanned by a vector from each background
+factor.  The formula also explains why a nonnegative second-order term
+does not imply nonnegative curvature for small nonzero parameters.
+
+\begin{theorem}[Exact background-mixed curvature]
+\label{thm:mixed-curvature}
+Fix $p=(x,y)$ and put
+\[
+ a=P_xAy\in x^\perp,\qquad b=P_yA^{\mathsf T}x\in y^\perp.
+\]
+For $X\in x^\perp$ and $Y\in y^\perp$, set
+\[
+ r=\norm{X}^2,\quad w=\norm{Y}^2,\quad
+ \alpha=\ip{a}{X},\quad \beta=\ip{b}{Y},
+\]
+and, using $h$ to identify vectors and covectors, define
+\begin{align}
+ \eta_{XX}&=\big(\tfrac r2a-\alpha X,-\tfrac r2b\big),\notag\\
+ \eta_{XY}&=\big(-\tfrac\beta2X,-\tfrac\alpha2Y\big),
+                                                        \label{eq:etas}\\
+ \eta_{YY}&=\big(-\tfrac w2a,\tfrac w2b-\beta Y\big).\notag
+\end{align}
+Whenever $g_{\gamma,A}$ is Riemannian,
+\begin{equation}\label{eq:exact-mixed-curvature}
+ \secop_{g_{\gamma,A}}(X\wedge Y)
+ =\frac{\gamma^2}{\Delta_{\gamma,A}(X,Y)}
+ \left(
+  g_{\gamma,A}^{-1}(\eta_{XY},\eta_{XY})
+  -g_{\gamma,A}^{-1}(\eta_{XX},\eta_{YY})
+ \right),
+\end{equation}
+where
+\[
+ \Delta_{\gamma,A}(X,Y)
+ =g_{\gamma,A}(X,X)g_{\gamma,A}(Y,Y)
+  -g_{\gamma,A}(X,Y)^2.
+\]
+In particular, if $X$ and $Y$ are $h$-unit vectors, then
+\begin{equation}\label{eq:mixed-expansion}
+ \secop_{g_{\gamma,A}}(X\wedge Y)
+ =\frac{\gamma^2}{4}
+ \left(\norm{a}^2-\alpha^2+\norm{b}^2-\beta^2\right)
+ +O(\gamma^3).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $H=\Hess_hs_A$ and choose $h$-normal coordinates at $p$ adapted
+to $x^\perp\oplus y^\perp$.  If $\Gamma^g_{WUV}$ denotes the
+Christoffel symbol of the first kind, then at $p$
+\[
+ \begin{aligned}
+  \Gamma^g_{WUV}&=\gamma\mathcal C(U,V,W),\\
+  \mathcal C(U,V,W)
+  &=\frac12\big((\nabla_UH)(V,W)+(\nabla_VH)(U,W)\\
+  &\hspace{42mm}-(\nabla_WH)(U,V)\big).
+ \end{aligned}
+\]
+In the lower-index coordinate formula for curvature, the part involving
+second derivatives of the metric is affine in $\gamma$.  Its constant
+term vanishes on a background-mixed plane because the round product has
+zero mixed curvature.  Its linear term vanishes as well: indeed,
+$H=\frac12\mathcal L_{\nabla s_A}h$, so the linearized curvature is a
+Lie derivative of the product curvature tensor.  In each term evaluated
+on $(X,Y,X,Y)$ at least one vector remains in each factor, and the
+product curvature tensor vanishes.  Consequently the exact lower-index
+curvature is only the Christoffel-quadratic part,
+\begin{equation}\label{eq:mixed-lower}
+ R^g(X,Y,X,Y)=\gamma^2\left(
+  g^{-1}(\mathcal C_{XY},\mathcal C_{XY})
+  -g^{-1}(\mathcal C_{XX},\mathcal C_{YY})\right).
+\end{equation}
+
+It remains to calculate the three covectors.  Differentiating
+Proposition~\ref{prop:hessian} with $U=(U_1,U_2)$ gives
+\begin{align*}
+ (\nabla_UH)(V,W)={}&-ds_A(U)h(V,W)
+ -\ip{U_1}{V_1}\ip{b}{W_2}
+ -\ip{U_2}{W_2}\ip{a}{V_1}\\
+ &-\ip{U_1}{W_1}\ip{b}{V_2}
+ -\ip{U_2}{V_2}\ip{a}{W_1}.
+\end{align*}
+Substitution of $(X,X)$, $(X,Y)$, and $(Y,Y)$ yields exactly the
+covectors in~\eqref{eq:etas}.  Dividing~\eqref{eq:mixed-lower} by the
+squared $g$-area proves~\eqref{eq:exact-mixed-curvature}.  Setting
+$g^{-1}=h^{-1}+O(\gamma)$ and using $r=w=1$ gives
+\eqref{eq:mixed-expansion}.
+\end{proof}
+
+The nonnegative coefficient in~\eqref{eq:mixed-expansion} does not
+control the sign on a punctured neighborhood of the product metric.
+In fact, a simple largest singular value forces strict negative
+curvature along the entire punctured Riemannian ray.
+
+\begin{theorem}[Generic spectral-gap obstruction]
+\label{thm:spectral-gap}
+Assume $m,n\geq2$ and $\sigma_1>\sigma_2$.  Write
+\[
+ s=\sigma_1,\qquad t=\sigma_2,\qquad \rho=\sigma_3,
+\]
+where singular values are padded by zeros, and set
+\begin{equation}\label{eq:spectral-cd}
+ c^2=\frac{s^2+t^2-2\rho^2}{2(s^2-\rho^2)},
+ \qquad
+ d^2=\frac{s^2-t^2}{2(s^2-\rho^2)}.
+\end{equation}
+Choose positive square roots and singular pairs satisfying
+$Av_i=\sigma_i u_i$ and $A^{\mathsf T}u_i=\sigma_i v_i$, and define
+\begin{equation}\label{eq:spectral-plane}
+ \begin{aligned}
+  x&=cu_1+du_3,& y&=v_2,& \mathsf X&=(u_2,0),\\
+  B^2&=\frac{s^2+t^2}{2},&
+  Y&=\frac{scv_1+\rho d v_3}{B},&
+  \mathsf Y&=(0,Y).
+ \end{aligned}
+\end{equation}
+Then $\mathsf X,\mathsf Y$ are $h$-orthonormal at $p=(x,y)$ and,
+for every $\gamma$ in the Riemannian interval,
+\begin{equation}\label{eq:spectral-gap-curvature}
+ \secop_{g_{\gamma,A}}(\mathsf X\wedge\mathsf Y)
+ =-\frac{
+  \gamma^4(s^2-t^2)^2(s^2+t^2-2\rho^2)
+ }{
+  16(s^2+t^2)
+  \left(1-\frac{\gamma^2}{2}(s^2-t^2+2\rho^2)\right)
+ }.
+\end{equation}
+In particular, this curvature is strictly negative for every
+$\gamma\neq0$ in that interval.
+\end{theorem}
+
+\begin{proof}
+The numbers in~\eqref{eq:spectral-cd} are positive and add to one.
+At the point and plane in~\eqref{eq:spectral-plane}, the quantities in
+Theorem~\ref{thm:mixed-curvature} are
+\[
+ a=tu_2,\qquad b=BY,\qquad \alpha=t,\qquad \beta=B.
+\]
+Put
+\[
+ Z=du_1-cu_3,\qquad
+ k=sdv_1-\rho cv_3,
+\]
+and abbreviate
+\begin{equation}\label{eq:spectral-mu-kappa}
+ \mu=\ip{k}{Y}=\frac{cd(s^2-\rho^2)}{B},
+ \qquad
+ \kappa^2=\norm{k}^2
+ =\frac{s^2-t^2+2\rho^2}{2}.
+\end{equation}
+Since $s_A(x,y)=0$, the diagonal coefficient of the metric at $p$ is
+one.  The tangent compression $C=P_xAP_y$ satisfies
+\[
+ C^{\mathsf T}u_2=0,
+ \qquad
+ Cw=\ip{k}{w}Z
+ \quad\text{for }w\in\spanop\{v_1,v_3\}.
+\]
+The remaining singular directions form orthogonal blocks and do not
+couple to $u_2$ or $Y$.  The Schur-complement formula, or a direct
+inversion of the block spanned by $Z$ and $k$, therefore gives
+\begin{align}
+ g_{\gamma,A}^{-1}((u_2,0),(u_2,0))&=1,\notag\\
+ g_{\gamma,A}^{-1}((0,Y),(0,Y))
+ &=1+\frac{\gamma^2\mu^2}{1-\gamma^2\kappa^2}
+ =:q_\gamma,                                      \label{eq:spectral-inverse}\\
+ g_{\gamma,A}^{-1}((u_2,0),(0,Y))&=0.\notag
+\end{align}
+The denominator in~\eqref{eq:spectral-inverse} is positive throughout
+the Riemannian interval; this also follows directly from positive
+definiteness of the corresponding principal block.
+
+For this plane the three covectors in~\eqref{eq:etas} reduce to
+\[
+ \eta_{XX}=\eta_{YY}
+ =\left(-\frac t2u_2,-\frac B2Y\right),
+ \qquad
+ \eta_{XY}
+ =\left(-\frac B2u_2,-\frac t2Y\right).
+\]
+Moreover, the squared $g_{\gamma,A}$-area of the plane is one.  Hence
+Theorem~\ref{thm:mixed-curvature} yields
+\begin{align*}
+ \secop_{g_{\gamma,A}}(\mathsf X\wedge\mathsf Y)
+ &=\frac{\gamma^2}{4}
+   \left(B^2+t^2q_\gamma-t^2-B^2q_\gamma\right)\\
+ &=-\frac{\gamma^4(B^2-t^2)\mu^2}
+          {4(1-\gamma^2\kappa^2)}.
+\end{align*}
+Finally,
+\[
+ B^2-t^2=\frac{s^2-t^2}{2},
+ \qquad
+ \mu^2=
+ \frac{(s^2+t^2-2\rho^2)(s^2-t^2)}{2(s^2+t^2)}.
+\]
+Substitution gives~\eqref{eq:spectral-gap-curvature}.  Every factor in
+its numerator is positive when $s>t\geq\rho$, which proves the sign
+claim.
+\end{proof}
+
+\begin{corollary}[Generic isolation from nonnegative curvature]
+\label{cor:generic-isolation}
+For $m,n\geq2$, the matrices with $\sigma_1>\sigma_2$ form an open
+dense subset of
+$\operatorname{Hom}(\R^{n+1},\R^{m+1})$.  For every such $A$,
+\[
+ \left\{\gamma:
+  g_{\gamma,A}\text{ is Riemannian and }\secop_{g_{\gamma,A}}\geq0
+ \right\}=\{0\}.
+\]
+Thus the round product is isolated on every generic bilinear Hessian
+ray inside the cone of nonnegatively curved metrics.
 \end{corollary}
 
-This shows that the interesting case is when the warp functions
-depend on \emph{both} factors.
+\begin{proof}
+Having a simple largest singular value is an open dense condition on
+matrices.  At $\gamma=0$ the metric is the nonnegatively curved round
+product.  For every other Riemannian parameter,
+Theorem~\ref{thm:spectral-gap} supplies a plane of strictly negative
+sectional curvature.
+\end{proof}
 
-\subsection{Curvature of the general product seam metric}
+The spectral-gap theorem therefore leaves the repeated-top stratum as the
+only possible source of a nontrivial nonnegatively curved metric.  At its
+maximally symmetric endpoint on $\Sph^2\times\Sph^2$, the mixed
+curvature sign reverses completely: no background-mixed plane is
+negative.
 
-The full product seam metric~\eqref{eq:product-rule} includes
-gradient-tensor and Hessian terms beyond the doubly-warped form.
-To compute its curvature, we work in adapted coordinates.
-
-On each $S^2$, use geodesic polar coordinates $(\theta_k, \phi_k)$
-centred at the north pole, so that
-$h_{S^2} = d\theta_k^2 + \sin^2\!\theta_k\,d\phi_k^2$.
-For an $\OO(2) \times \OO(2)$-equivariant seam
-$s = s(\theta_1, \theta_2)$, all coefficient functions depend only
-on $(\theta_1, \theta_2)$.
-
-In these coordinates, the product seam metric restricted to the
-$(\theta_1, \theta_2)$-plane takes the form
-\begin{equation}
-\label{eq:metric-theta-block}
-g\big|_{\theta\text{-plane}} =
-\begin{pmatrix}
-  \alpha_1 + \beta_1\,s_1^2 + \gamma_1\,s_{11} & \beta_{12}\,s_1 s_2 + \gamma_{12}\,s_{12} \\
-  \beta_{12}\,s_1 s_2 + \gamma_{12}\,s_{12} & \alpha_2 + \beta_2\,s_2^2 + \gamma_2\,s_{22}
-\end{pmatrix},
+\begin{theorem}[Isotropic mixed-curvature nonnegativity]
+\label{thm:isotropic-mixed}
+Let $m=n=2$ and $A=\sigma Q$, where $\sigma>0$ and $Q\in O(3)$.
+Put $\delta=\gamma\sigma$, so the Riemannian interval is
+$|\delta|<1/2$.  Fix a point $(x,y)$ and background-unit tangent
+vectors $X\perp x$ and $Y\perp y$.  Complete them to orthonormal
+frames
+\[
+ \mathcal E=(x,X,\widehat X),\qquad
+ \mathcal F=(y,Y,\widehat Y)
+\]
+whose orientations are chosen so that
+$R=\mathcal E^{\mathsf T}Q\mathcal F\in SO(3)$.  Represent $R$ by a
+unit quaternion
+\[
+ q_0+q_1\mathbf i+q_2\mathbf j+q_3\mathbf k
+\]
+and set
+\[
+ \omega=q_0^2,\qquad \xi=q_1^2,\qquad
+ \upsilon=q_2^2,\qquad \zeta=q_3^2.
+\]
+Then $\omega+\xi+\upsilon+\zeta=1$ and
+\begin{equation}\label{eq:isotropic-curvature}
+ \secop_{g_{\gamma,A}}(X\wedge Y)
+ =\frac{2\delta^2(1-2\delta R_{00})}
+        {\det(G_{\delta,R})\,\Delta_{\delta,R}(X,Y)}
+   \mathcal S_\delta,
 \end{equation}
-where $s_k = \partial_{\theta_k} s$, $s_{kl} = \partial_{\theta_k}\partial_{\theta_l} s$,
-and all coefficients $\alpha_k, \beta_k, \gamma_k, \beta_{12}, \gamma_{12}$
-are evaluated on the invariants~\eqref{eq:invariants-product}.
-We write
+where $G_{\delta,R}$ is the matrix of $g_{\gamma,A}$ in the adapted
+tangent frame, $\Delta_{\delta,R}(X,Y)$ is the squared area of the
+plane, and
 \begin{align}
-\label{eq:eigenvalues}
-\lambda_k &= \alpha_k + \beta_k\,s_k^2 + \gamma_k\,s_{kk}, &
-\mu_k &= \alpha_k + \gamma_k\,s_k\,\cot\theta_k, \\
-\label{eq:cross-term}
-\eta &= \beta_{12}\,s_1\,s_2 + \gamma_{12}\,s_{12}
+ \mathcal S_\delta={}&
+ \xi\zeta(1-2\delta\xi)(1+2\delta\zeta)
+ +\omega\upsilon(1-2\delta\omega)(1+2\delta\upsilon)
+ \notag\\
+ &+8\delta^2\omega\xi\upsilon\zeta.       \label{eq:isotropic-sos}
 \end{align}
-for the diagonal entries (eigenvalues along $\partial_{\theta_k}$),
-the azimuthal eigenvalues (along $\partial_{\phi_k}$), and the
-off-diagonal cross term respectively.
-
-\begin{proposition}[Mixed curvature: general case]
-\label{prop:mixed-curv-general}
-Let $g$ be the product seam metric~\eqref{eq:product-rule} on
-$S^2 \times S^2$ with eigenvalue functions $\lambda_k$, $\mu_k$,
-and cross term $\eta$ as in~\eqref{eq:eigenvalues}--\eqref{eq:cross-term}.
-The sectional curvature of the mixed plane
-$\sigma = \operatorname{span}(\partial_{\theta_1}, \partial_{\theta_2})$
-equals the Gaussian curvature of the $2$-dimensional orbit metric
-$g_{\mathrm{orb}} = \bigl(\begin{smallmatrix} \lambda_1 & \eta \\
-\eta & \lambda_2 \end{smallmatrix}\bigr)$:
-\begin{equation}
-\label{eq:Kmix-general}
-K_g(\sigma) =
--\frac{1}{2\sqrt{\det g_{\mathrm{orb}}}}
-\left[
-  \partial_1\!\left(\frac{\lambda_{2,1} - \eta_{,2}}
-       {\sqrt{\det g_{\mathrm{orb}}}}\right)
-  + \partial_2\!\left(\frac{\lambda_{1,2} - \eta_{,1}}
-       {\sqrt{\det g_{\mathrm{orb}}}}\right)
-\right],
-\end{equation}
-where $\det g_{\mathrm{orb}} = \lambda_1\lambda_2 - \eta^2$ and
-subscripts after the comma denote partial derivatives with respect
-to $\theta_k$.
-
-When $\eta = 0$ (diagonal case), this reduces to the Gaussian
-curvature of the diagonal metric
-$\mathrm{d}s^2 = \lambda_1\,\mathrm{d}\theta_1^2
-  + \lambda_2\,\mathrm{d}\theta_2^2$:
-\begin{equation}
-\label{eq:Kmix-diagonal}
-K_g(\partial_{\theta_1}, \partial_{\theta_2}) =
--\frac{1}{2\sqrt{\lambda_1\lambda_2}}
-\left[
-  \partial_1\!\left(\frac{\lambda_{2,1}}{\sqrt{\lambda_1\lambda_2}}\right)
-  + \partial_2\!\left(\frac{\lambda_{1,2}}{\sqrt{\lambda_1\lambda_2}}\right)
-\right].
-\end{equation}
-\end{proposition}
-
-\begin{proof}
-With the metric in block form~\eqref{eq:metric-theta-block},
-the mixed sectional curvature $K_g(\partial_{\theta_1},
-\partial_{\theta_2})$ of the $4$-dimensional metric equals the
-Gaussian curvature of the $2 \times 2$ orbit metric
-$g_{ij} = \bigl(\begin{smallmatrix} \lambda_1 & \eta \\ \eta & \lambda_2 \end{smallmatrix}\bigr)$
-on a surface with coordinates $(\theta_1, \theta_2)$.  This
-identity holds because the $\OO(2) \times \OO(2)$-equivariance
-makes the metric block-diagonal between the $\theta_k$- and
-$\phi_k$-directions ($g_{\theta_i\phi_j} = 0$) and independent
-of both~$\phi_k$.  Consequently, every Christoffel symbol
-$\Gamma^{\phi_k}_{\theta_i\theta_j}$ and
-$\Gamma^{\theta_i}_{\theta_j\phi_k}$ vanishes, so the
-Riemann component $R_{\theta_1\theta_2\theta_1\theta_2}$
-depends only on $g_{\theta_i\theta_j}$ and its
-$\theta$-derivatives---exactly what the
-Brioschi formula computes for the $2 \times 2$ orbit metric.
-
-The Gaussian curvature of a general $2 \times 2$ metric is given by
-the Brioschi formula
+Consequently every background-mixed sectional curvature is
+nonnegative throughout the Riemannian interval.  If $\delta\neq0$,
+equality holds precisely when
 \[
-K = -\frac{1}{2\sqrt{\det g}}
-\left[
-  \partial_1\!\left(\frac{g_{22,1} - g_{12,2}}{\sqrt{\det g}}\right)
-  + \partial_2\!\left(\frac{g_{11,2} - g_{12,1}}{\sqrt{\det g}}\right)
-\right],
+ \xi\zeta=0,\qquad \omega\upsilon=0.
 \]
-which yields~\eqref{eq:Kmix-general}.  In the diagonal case
-$\eta = 0$, this gives~\eqref{eq:Kmix-diagonal} directly.
-\end{proof}
-
-\begin{remark}[The additively separable case]
-\label{rem:separable}
-For an additively separable seam $s = f(\theta_1) + g(\theta_2)$, the cross
-term $\eta = 0$ (since $s_{12} = 0$ implies $\gamma_{12}$
-contributes nothing, and $\beta_{12}\,s_1 s_2$ is present only if
-$\beta_{12} \neq 0$---but for a separable seam the coefficient
-$\beta_{12}$ evaluated on the invariants may still be nonzero).
-If additionally $\beta_{12} = 0$, then the mixed curvature is the
-Gaussian curvature of a diagonal $2$-dimensional metric
-$\mathrm{d}s^2 = \lambda_1\,\mathrm{d}\theta_1^2
-  + \lambda_2\,\mathrm{d}\theta_2^2$,
-given by~\eqref{eq:Kmix-diagonal}.  Since the resulting metric is
-$\OO(2) \times \OO(2)$-invariant, the obstruction to positive
-sectional curvature follows from the Hsiang--Kleiner
-theorem~\cite{HsiangKleiner1989} (see \S\ref{sec:discussion}).
-\end{remark}
-
-\subsection{The role of the cross-coupling}
-
-When $\eta \neq 0$, the orbit metric is no longer diagonal and its
-Gaussian curvature acquires additional contributions from the
-off-diagonal entry and its derivatives.  The following lemma
-controls the size of the cross-coupling.
-
-\begin{lemma}[Cross-coupling is controlled by the mixed Hessian]
-\label{lem:eta-bound}
-For any product seam metric on $S^2 \times S^2$, the cross term
-$\eta = \beta_{12}\,s_1 s_2 + \gamma_{12}\,s_{12}$ satisfies
-\begin{equation}
-\label{eq:eta-pointwise}
-|\eta(p)| \le |\beta_{12}(p)|\,|\nabla_1 s(p)|_{h_1}\,|\nabla_2 s(p)|_{h_2}
-             + |\gamma_{12}(p)|\,\|B(p)\|
-\end{equation}
-at every point $p \in S^2 \times S^2$.  In particular, $\eta$
-vanishes wherever both $\nabla_1 s$ and $B$ vanish.
-\end{lemma}
-
-\begin{proof}
-Immediate from the definitions~\eqref{eq:cross-term} and the
-Cauchy--Schwarz inequality.
-\end{proof}
-
-
-% ================================================================
-\section{The Obstruction Theorem}
-\label{sec:obstruction}
-% ================================================================
-
-We now state and prove the main result.  For conformal products,
-the argument uses a direct maximum-point argument on the curvature
-formula.  For the general case, we invoke the
-Hsiang--Kleiner theorem via the inherent symmetry of equivariant
-seam metrics.
-
-\subsection{A maximum-principle lemma}
-
-The following observation is the engine of the proof.
-
-\begin{lemma}[Concavity at the maximum]
-\label{lem:concavity}
-Let $F \colon S^2 \to \mathbb{R}$ be a smooth function that is
-positive everywhere (as required for $F = \lambda_k$ to give a
-Riemannian metric).  Then $\log F$ attains a maximum at some
-point $p_* \in S^2$, and at $p_*$,
-\begin{equation}
-\label{eq:log-concavity}
-\nabla^2_{h_{S^2}}(\log F)(X, X) \le 0
-\quad \text{for all } X \in T_{p_*} S^2.
-\end{equation}
-\end{lemma}
-
-\begin{proof}
-Since $S^2$ is compact and $\log F$ is smooth (and well-defined
-because $F > 0$), the function $\log F$ attains its maximum at some
-$p_* \in S^2$.  At a maximum of a smooth function on a closed
-manifold, the Hessian is negative semidefinite.
-\end{proof}
-
-\subsection{Obstruction for the conformal product}
-
-We first prove the theorem for the conformal product
-metric~\eqref{eq:conformal-product}, which captures the essential
-mechanism cleanly.
-
-\begin{proposition}[No positive mixed curvature for conformal products]
-\label{prop:conformal-obstruction}
-Let $g = e^{2u}\,h_1 + e^{2v}\,h_2$ be a conformal product metric
-on $S^2 \times S^2$, with $u, v \in C^\infty(S^2 \times S^2)$.
-Then there exists a point $(p_1, p_2) \in S^2 \times S^2$ and a
-mixed plane $\sigma$ at $(p_1, p_2)$ such that $K_g(\sigma) \le 0$.
-\end{proposition}
-
-\begin{proof}
-By Proposition~\ref{prop:mixed-curv-conformal}\ref{it:conformal-crit},
-at any point where $\nabla_1 v = 0$ and $\nabla_2 u = 0$ the
-mixed curvature reduces to
-\[
-K_g(\sigma) =
-  -\frac{\nabla_1^2 v(X_1, X_1)}{e^{2u}}
-  -\frac{\nabla_2^2 u(X_2, X_2)}{e^{2v}}.
-\]
-We construct such a point by a maximum-point argument.
-
-Fix any $p_2 \in S^2$.  Consider the function
-$\theta_1 \mapsto v(\theta_1, p_2)$ on the first $S^2$ factor.
-By Lemma~\ref{lem:concavity}, there exists $p_1^* \in S^2$ at which
-$v(\cdot, p_2)$ attains its maximum over the first factor.  At
-$p_1^*$, $\nabla_1 v = 0$ and
-$\nabla_1^2 v(X_1, X_1) \le 0$ for all $X_1$.
-
-Now fix $p_1 = p_1^*$ and consider
-$\theta_2 \mapsto u(p_1^*, \theta_2)$ on the second factor.
-Similarly, there exists $p_2^*$ at which $u(p_1^*, \cdot)$ attains
-its maximum, giving $\nabla_2 u = 0$ and
-$\nabla_2^2 u(X_2, X_2) \le 0$.
-
-At the point $(p_1^*, p_2^*)$ and for the mixed plane
-$\sigma = \operatorname{span}(\partial_{\theta_1},
-\partial_{\theta_2})$:
-\[
-K_g(\sigma) =
-  -\frac{\nabla_1^2 v(p_1^*, p_2^*)(\partial_{\theta_1}, \partial_{\theta_1})}
-        {e^{2u(p_1^*, p_2^*)}}
-  -\frac{\nabla_2^2 u(p_1^*, p_2^*)(\partial_{\theta_2}, \partial_{\theta_2})}
-        {e^{2v(p_1^*, p_2^*)}}.
-\]
-Both terms have a non-positive numerator divided by a positive
-denominator.  Hence $K_g(\sigma) \le 0$.
-
-Equality $K_g(\sigma) = 0$ holds only if both
-$\nabla_1^2 v = 0$ at $(p_1^*, p_2^*)$ and
-$\nabla_2^2 u = 0$ at $(p_1^*, p_2^*)$.
-By the maximum principle, this forces $v(\cdot, p_2^*)$
-and $u(p_1^*, \cdot)$ to be constant on their respective factors.
-If this holds for all choices, then $u$ and $v$ are constant, and
-$g$ is the flat product, which has mixed curvatures identically zero
-but still not positive.
-\end{proof}
-
-\subsection{Obstruction for the diagonal product seam}
-
-We now extend to the full diagonal case (no cross-coupling).
-
-\begin{proposition}[Obstruction for diagonal product seam metrics]
-\label{prop:diagonal-obstruction}
-Let $g = \lambda_1\,d\theta_1^2 + \mu_1\,\sin^2\!\theta_1\,d\phi_1^2
-         + \lambda_2\,d\theta_2^2 + \mu_2\,\sin^2\!\theta_2\,d\phi_2^2$
-be a diagonal product seam metric on $S^2 \times S^2$ with
-$\lambda_k, \mu_k > 0$ everywhere (functions of $(\theta_1, \theta_2)$).
-Then there exists a mixed plane with non-positive sectional curvature.
-\end{proposition}
-
-\begin{proof}
-The metric~$g$ is invariant under the action of
-$\UU(1) \times \UU(1)$ by rotations in the $\phi_1$-
-and $\phi_2$-directions, since all coefficient functions depend
-only on $(\theta_1, \theta_2)$.  In particular, $g$ admits an
-isometric circle action (e.g.\ rotation in $\phi_1$ alone).  By the
-Hsiang--Kleiner theorem~\cite{HsiangKleiner1989}, any compact
-oriented positively curved $4$-manifold with an isometric
-$S^1$-action satisfies $b_2 \le 1$.  Since
-$b_2(S^2 \times S^2) = 2$, the metric~$g$ cannot have strictly
-positive sectional curvature.
-\end{proof}
-
-\begin{remark}[The orbit-metric perspective]
-\label{rem:orbit-metric}
-By Proposition~\ref{prop:mixed-curv-general}, the mixed curvature
-$K_g(\partial_{\theta_1}, \partial_{\theta_2})$ equals the Gaussian
-curvature of the $2$-dimensional orbit metric
-$\mathrm{d}s^2 = \lambda_1\,\mathrm{d}\theta_1^2
-  + \lambda_2\,\mathrm{d}\theta_2^2$.  Expanding the Brioschi
-formula~\eqref{eq:Kmix-diagonal} yields
-\begin{equation}
-\label{eq:K-diag-expanded}
-K_g(\partial_{\theta_1}, \partial_{\theta_2}) =
-\frac{(\lambda_{1,1}\lambda_{2,1} + \lambda_{1,2}^2)\,\lambda_2
-  + (\lambda_{1,2}\lambda_{2,2} + \lambda_{2,1}^2)\,\lambda_1
-  - 2\,(\lambda_{1,22} + \lambda_{2,11})\,\lambda_1\lambda_2}
-  {4\,\lambda_1^2\,\lambda_2^2}.
-\end{equation}
-At a critical point of $\Phi = \log(\lambda_1\lambda_2)$, the
-gradient conditions $\lambda_{2,k}/\lambda_2 =
--\lambda_{1,k}/\lambda_1$ simplify this to
-\[
-K_g =
-  -\frac{\lambda_{1,22} + \lambda_{2,11}}{2\,\lambda_1\,\lambda_2}.
-\]
-The Hessian conditions $\partial_k^2 \Phi \le 0$ at the maximum
-of~$\Phi$ constrain the ``same-factor'' combinations
-$\partial_1^2\log\lambda_1 + \partial_1^2\log\lambda_2 \le 0$
-and
-$\partial_2^2\log\lambda_1 + \partial_2^2\log\lambda_2 \le 0$,
-but the curvature involves the ``cross'' combination
-$\lambda_{1,22} + \lambda_{2,11}$, which is not directly
-controlled.  Thus, an elementary maximum-principle argument on
-$\Phi$ alone does not appear to close the proof; the
-Hsiang--Kleiner theorem provides the necessary topological input.
-Extensive numerical experiments (testing $962$ random seam metrics)
-confirm that the mixed curvature always changes sign on
-$[0,\pi]^2$.
-\end{remark}
-
-\subsection{Main theorem}
-
-\begin{theorem}[Seam obstruction to positive sectional curvature]
-\label{thm:main}
-Let $h_0 = h_{S^2} \oplus h_{S^2}$ be the round product metric on
-$S^2 \times S^2$.  Let $s = s(\theta_1, \theta_2)$ be an
-$\OO(2) \times \OO(2)$-equivariant smooth function, and let
-$g$ be a Riemannian metric generated from $s$ by an
-$\OO(2) \times \OO(2)$-equivariant natural rule of order $\le 2$
-on the background $h_0$, as classified in
-Theorem~\ref{thm:product-classification}.
-
-Then there exists a two-plane $\sigma \subset T_{(x_1, x_2)}(S^2 \times S^2)$
-at some point $(x_1, x_2)$ such that $K_g(\sigma) \le 0$.
-In particular, $g$ does not have strictly positive sectional
-curvature.
 \end{theorem}
 
 \begin{proof}
-An $\OO(2) \times \OO(2)$-equivariant rule applied to an
-$\OO(2) \times \OO(2)$-equivariant seam $s = s(\theta_1, \theta_2)$
-produces a metric whose coefficients depend only on
-$(\theta_1, \theta_2)$.  This metric is therefore invariant under
-the $\UU(1) \times \UU(1)$-action by rotations in $\phi_1$ and
-$\phi_2$.  In particular, $g$ admits an isometric circle action.
+Scaling $A$ replaces $\gamma$ by $\delta$, so it is enough to work
+with $Q$.  Relative to the adapted frames, write
+\[
+ R=\begin{pmatrix}
+ s&\beta&b_\perp\\
+ \alpha&p&q\\
+ a_\perp&r&z
+ \end{pmatrix},
+ \qquad
+ C=\begin{pmatrix}p&q\\r&z\end{pmatrix},
+ \qquad \lambda=1-\delta s.
+\]
+The tangent metric has matrix
+\begin{equation}\label{eq:isotropic-G}
+ G_{\delta,R}=
+ \begin{pmatrix}\lambda I_2&\delta C\\
+                 \delta C^{\mathsf T}&\lambda I_2
+ \end{pmatrix}.
+\end{equation}
+The three covectors in Theorem~\ref{thm:mixed-curvature} are
+\[
+ \eta_{XX}=\tfrac12(-\alpha,a_\perp,-\beta,-b_\perp),\quad
+ \eta_{XY}=\tfrac12(-\beta,0,-\alpha,0),
+\]
+\[
+ \eta_{YY}=\tfrac12(-\alpha,-a_\perp,-\beta,b_\perp).
+\]
+A direct block inversion gives
+\begin{equation}\label{eq:isotropic-N-over-D}
+ G_{\delta,R}^{-1}(\eta_{XY},\eta_{XY})
+ -G_{\delta,R}^{-1}(\eta_{XX},\eta_{YY})
+ =\frac{N}{4D},
+\end{equation}
+where $D=\det(G_{\delta,R})>0$ and
+\begin{align*}
+ N={}&a_\perp^2\lambda
+       \bigl(\lambda^2-\delta^2(p^2+q^2)\bigr)
+ +b_\perp^2\lambda
+       \bigl(\lambda^2-\delta^2(p^2+r^2)\bigr)\\
+ &+2a_\perp b_\perp\delta
+       \bigl(\lambda^2z-\delta^2p(pz-qr)\bigr)\\
+ &+\lambda\delta^2(\beta^2-\alpha^2)(q^2-r^2).
+\end{align*}
 
-By the theorem of Hsiang and Kleiner~\cite{HsiangKleiner1989},
-a compact oriented $4$-manifold with positive sectional curvature
-and an isometric $S^1$-action has $b_2 \le 1$.  Since
-$b_2(S^2 \times S^2) = 2$, the metric~$g$ cannot be positively
-curved.
+Use the standard quaternion matrix
+\[
+ R=\begin{pmatrix}
+ 1-2(q_2^2+q_3^2)&2(q_1q_2-q_0q_3)&2(q_1q_3+q_0q_2)\\
+ 2(q_1q_2+q_0q_3)&1-2(q_1^2+q_3^2)&2(q_2q_3-q_0q_1)\\
+ 2(q_1q_3-q_0q_2)&2(q_2q_3+q_0q_1)&1-2(q_1^2+q_2^2)
+ \end{pmatrix}.
+\]
+Substitution into the preceding numerator, followed only by the unit
+relation $q_0^2+q_1^2+q_2^2+q_3^2=1$, gives
+\begin{equation}\label{eq:isotropic-factorization}
+ N=8(1-2\delta R_{00})\mathcal S_\delta.
+\end{equation}
+Equations~\eqref{eq:exact-mixed-curvature},
+\eqref{eq:isotropic-N-over-D}, and
+\eqref{eq:isotropic-factorization} prove
+\eqref{eq:isotropic-curvature}.
+
+It remains only to read the sign.  Since $|\delta|<1/2$ and each of
+$\omega,\xi,\upsilon,\zeta$ lies in $[0,1]$, every linear factor in
+\eqref{eq:isotropic-sos} is positive.  Also
+$1-2\delta R_{00}>0$, while $D$ and the squared area are positive by
+the Riemannian assumption.  Thus the curvature is nonnegative.  For
+$\delta\neq0$, the sum vanishes exactly when its first two products
+vanish, which is the stated equality condition.
 \end{proof}
 
-\begin{remark}[Sharpness]
-The bound $K_g(\sigma) \le 0$ is sharp: the standard product metric
-achieves $K_g(\sigma) = 0$ for all mixed planes.  The theorem says
-that seam metrics cannot do strictly better.
-\end{remark}
+The oblique obstruction propagates to arbitrary dimensions by a
+fixed-point reduction that will also underlie the flat-torus
+construction.
 
-\begin{remark}[Relation to the conformal product case]
-The conformal product obstruction
-(Proposition~\ref{prop:conformal-obstruction}) provides a direct,
-elementary proof that does not invoke Hsiang--Kleiner.  There, the
-curvature formula decomposes into terms each of which is individually
-non-positive at a suitable maximum point.  For the general diagonal
-and cross-coupled cases, the Gaussian curvature of the orbit metric
-has a more intricate structure
-(Remark~\ref{rem:orbit-metric}), and finding a self-contained
-maximum-principle proof remains an interesting open problem.
-\end{remark}
-
-
-% ================================================================
-\section{Explicit Computations for Natural Seams}
-\label{sec:examples}
-% ================================================================
-
-We illustrate the obstruction theorem with explicit computations
-for the natural seams on $S^2 \times S^2$ identified
-in~\S\ref{sec:S2S2-setup}.
-
-\subsection{The height-sum seam}
-\label{sec:height-sum}
-
-Let $s(\theta_1, \theta_2) = \cos\theta_1 + \cos\theta_2$, and
-consider the conformal product rule
-$g = e^{2\alpha s}\,h_1 + e^{2\alpha s}\,h_2$ for a constant
-$\alpha > 0$.  Here $u = v = \alpha s$, so $e^{2u} = e^{2v}
-= e^{2\alpha(\cos\theta_1 + \cos\theta_2)}$.
-
-\paragraph{Factor data.}
-\begin{align*}
-\nabla_1 s &= -\sin\theta_1\,d\theta_1, &
-|\nabla_1 s|^2 &= \sin^2\!\theta_1, \\
-\nabla_1^2 s &= -\cos\theta_1\,(d\theta_1^2 + \sin^2\!\theta_1\,d\phi_1^2)
-= -\cos\theta_1\,h_1, &
-\Delta_1 s &= -2\cos\theta_1.
-\end{align*}
-Similarly for factor~2.  In particular,
-$\nabla_1^2 v(\partial_{\theta_1}, \partial_{\theta_1})
-= -\alpha\cos\theta_1$.
-
-\paragraph{Mixed curvature.}
-By Proposition~\ref{prop:mixed-curv-conformal}\ref{it:conformal-equiv}
-(with $u = v = \alpha s$, so all gradient terms cancel):
+\begin{proposition}[Singular-subsphere reduction]
+\label{prop:singular-subsphere}
+Choose a singular frame
 \[
-K_g(\partial_{\theta_1}, \partial_{\theta_2})
-= -\frac{-\alpha\cos\theta_1}{e^{2\alpha s}}
-  -\frac{-\alpha\cos\theta_2}{e^{2\alpha s}}
-= \frac{\alpha\,s}{e^{2\alpha s}}.
+ Av_i=\sigma_i u_i,
+ \qquad A^{\mathsf T}u_i=\sigma_i v_i,
+ \qquad 1\leq i\leq q,
 \]
-
-At the north poles $\theta_1 = \theta_2 = 0$:
-$K_g = 2\alpha\,e^{-4\alpha} > 0$.
-
-At the equators $\theta_1 = \theta_2 = \pi/2$:
-$K_g = 0$.
-
-At the south poles $\theta_1 = \theta_2 = \pi$:
-$K_g = -2\alpha\,e^{4\alpha} < 0$.
-
-The mixed curvature has the same sign as the seam~$s$ itself:
-positive where $s > 0$, zero on the level set
-$\cos\theta_1 + \cos\theta_2 = 0$, and negative where $s < 0$.
-This confirms the theorem: no conformal product metric on
-$S^2 \times S^2$ has everywhere positive mixed curvature.
-
-\subsection{The height-product seam}
-\label{sec:height-product}
-
-Let $s(\theta_1, \theta_2) = \cos\theta_1\,\cos\theta_2$.  This seam
-has nonvanishing mixed Hessian, activating the cross-coupling.
-
-\paragraph{Mixed Hessian.}
-\begin{align*}
-s_{12} &= \partial_{\theta_1}\partial_{\theta_2} s
-= \sin\theta_1\,\sin\theta_2, \\
-B &= \sin\theta_1\,\sin\theta_2\;d\theta_1 \otimes d\theta_2, \\
-\|B\|^2 &= \sin^2\!\theta_1\,\sin^2\!\theta_2.
-\end{align*}
-
-For the full product seam metric with
-$\alpha_1 = \alpha_2 = 1$, $\gamma_1 = \gamma_2 = \varepsilon$,
-$\gamma_{12} = \varepsilon$, and all $\beta_k = 0$:
-\begin{align*}
-\lambda_1 &= 1 + \varepsilon\,s_{11}
-  = 1 - \varepsilon\,s, \\
-\lambda_2 &= 1 + \varepsilon\,s_{22}
-  = 1 - \varepsilon\,s, \\
-\eta &= \varepsilon\,\sin\theta_1\,\sin\theta_2.
-\end{align*}
-
-The Riemannian condition $\lambda_1\lambda_2 > \eta^2$ requires
-$(1-\varepsilon s)^2 > \varepsilon^2 \sin^2\!\theta_1\,\sin^2\!\theta_2$,
-which holds for $|\varepsilon| < 1$.
-
-Since $s = f(\theta_1)\,g(\theta_2)$ is multiplicatively separable,
-Theorem~\ref{thm:rank1-K0} gives $K = 0$ identically, confirming
-the obstruction analytically.
-
-\subsection{Spectral decomposition}
-
-The product spherical harmonic expansion provides a systematic view.
-Write $s = \sum_{l_1, l_2} a_{l_1 l_2}\,Y_{l_1}(\theta_1, \phi_1)\,
-Y_{l_2}(\theta_2, \phi_2)$.  Then:
-
-\begin{itemize}
-\item The separable part is $s_{\mathrm{sep}} = \sum_{l_1}
-  a_{l_1,0}\,Y_{l_1} + \sum_{l_2} a_{0,l_2}\,Y_{l_2}$.
-\item The mixed Hessian norm is
-  $\|B\|_{L^2}^2 = \sum_{l_1, l_2 \ge 1}
-  l_1(l_1+1)\,l_2(l_2+1)\,|a_{l_1 l_2}|^2$.
-\item The cross-coupling $\eta$ is controlled by the Fourier modes
-  with \emph{both} $l_1, l_2 \ge 1$ (the genuinely non-separable
-  part of $s$).
-\end{itemize}
-
-The function $\lambda_1\lambda_2 - \eta^2$, which measures the
-``Riemannian quality'' of the orbit metric, is largest where the
-seam drives the metric furthest from degeneracy.  Nevertheless,
-the obstruction theorem shows that the mixed curvature necessarily
-changes sign.
-
-
-% ================================================================
-\section{The K\"ahler Perspective}
-\label{sec:kahler}
-% ================================================================
-
-The manifold $S^2 \times S^2 \cong \mathbb{CP}^1 \times \mathbb{CP}^1$
-carries a natural K\"ahler structure.  In this section we show that
-the complex seam framework of~\cite{Ronnback2025complex}
-classifies the relevant K\"ahler deformations, while a classical
-topological obstruction (the Bochner technique) settles the
-curvature question.
-
-\subsection{K\"ahler seams on $\mathbb{CP}^1 \times \mathbb{CP}^1$}
-
-The Fubini--Study metric on each $\mathbb{CP}^1$ factor is
-$\omega_{\mathrm{FS}} = i\partial\bar\partial \log(1 + |z|^2)$.
-The product K\"ahler form is
-$\omega_0 = \omega_{\mathrm{FS}}^{(1)} + \omega_{\mathrm{FS}}^{(2)}$.
-Any K\"ahler metric in the same cohomology class is
-$\omega_\psi = \omega_0 + i\partial\bar\partial\psi$ for a smooth
-real function $\psi$ on $\mathbb{CP}^1 \times \mathbb{CP}^1$,
-subject to the positivity condition $\omega_\psi > 0$.
-
-In the language of~\cite{Ronnback2025complex}, the seam is
-$\varphi = \psi$ (real-valued) and the rule is the pure Levi-form
-generator.  By the universal decomposition
-of~\cite{Ronnback2025complex}, this is the \emph{unique}
-$\UU(m)$-equivariant generator (among constant-coefficient
-order-${\le}\,2$ rules) that preserves the K\"ahler condition:
-the gradient-tensor generators $\partial\varphi \wedge
-\bar\partial\bar\varphi$ etc.\ obstruct $d$-closure of the output
-$(1,1)$-form.  Thus the $i\partial\bar\partial\psi$ ansatz is not
-a special case but the exhaustive classification of complex seam
-rules on $\mathbb{CP}^1 \times \mathbb{CP}^1$.
-
-\subsection{Holomorphic bisectional curvature}
-
-The holomorphic bisectional curvature of a K\"ahler manifold
-$(M, \omega, J)$ in directions $V, W \in T^{1,0}_p M$ is
+and let $I\subset\{1,\ldots,q\}$ have cardinality $r\geq2$.  Set
 \[
-\operatorname{HBC}(V, W)
-= \frac{R_{i\bar j k\bar l}\,V^i\,\bar V^j\,W^k\,\bar W^l}
-       {|V|^2\,|W|^2},
+ N_I=
+ \bigl(\Sph^m\cap\spanop\{u_i:i\in I\}\bigr)
+ \times
+ \bigl(\Sph^n\cap\spanop\{v_i:i\in I\}\bigr).
 \]
-where $R_{i\bar j k\bar l}$ is the curvature tensor.  On a K\"ahler
-product, the holomorphic bisectional curvature of a pair
-$(V_1, V_2)$ with $V_1 \in T^{1,0}_{z_1}\mathbb{CP}^1$ and
-$V_2 \in T^{1,0}_{z_2}\mathbb{CP}^1$ controls the mixed sectional
-curvature:
-\begin{equation}
-\label{eq:HBC-mixed}
-K_\omega(V_1, \bar V_1, V_2, \bar V_2)
-= \operatorname{HBC}(V_1, V_2) + \operatorname{HBC}(V_1, \bar V_2).
-\end{equation}
-
-\begin{proposition}[K\"ahler obstruction via Bochner technique]
-\label{prop:kahler-obstruction}
-No K\"ahler metric on $\mathbb{CP}^1 \times \mathbb{CP}^1$ has
-strictly positive holomorphic bisectional curvature.
+Whenever $g_{\gamma,A}$ is Riemannian, $N_I\cong
+\Sph^{r-1}\times\Sph^{r-1}$ is totally geodesic.  Its induced metric
+is precisely the Hessian family associated to the diagonal restriction
+\[
+ A_I:\spanop\{v_i:i\in I\}\longrightarrow
+       \spanop\{u_i:i\in I\},
+ \qquad A_Iv_i=\sigma_i u_i.
+\]
+Consequently every sectional-curvature obstruction in a singular
+submodel is also an obstruction in the ambient product.
 \end{proposition}
 
 \begin{proof}
-By the Bochner technique for harmonic $(1,1)$-forms
-(Goldberg--Kobayashi~\cite{GoldbergKobayashi1967}), a compact
-K\"ahler manifold with strictly positive holomorphic bisectional
-curvature satisfies $h^{1,1} = 1$: the Weitzenb\"ock formula
-forces every primitive harmonic $(1,1)$-form to vanish.
-By the K\"unneth formula,
-$h^{1,1}(\mathbb{CP}^1 \times \mathbb{CP}^1) = 2$,
-since the classes $[\omega_{\mathrm{FS}}^{(1)}]$ and
-$[\omega_{\mathrm{FS}}^{(2)}]$ are linearly independent in
-$H^{1,1}$.  As $h^{1,1}$ depends only on the complex structure,
-no K\"ahler metric can reduce it to~$1$.
+Let $R_I$ be $+I$ on $\spanop\{u_i:i\in I\}$ and $-I$ on its
+orthogonal complement, and define $S_I$ analogously using the $v_i$.
+The singular decomposition gives
+\[
+ R_I^{\mathsf T}AS_I=A.
+\]
+Thus $(x,y)\mapsto(R_Ix,S_Iy)$ preserves $h$ and $s_A$, hence also
+$g_{\gamma,A}$.  Its fixed-point set is $N_I$, so the fixed-point
+lemma for isometries makes $N_I$ totally geodesic.  The product of
+great subspheres is also totally geodesic for $h$.  Therefore the
+restriction of $\Hess_hs_A$ is the intrinsic Hessian of
+$s_A|_{N_I}$, which is the bilinear potential determined by $A_I$.
+The final assertion follows from the Gauss equation.
 \end{proof}
 
-\begin{remark}[Relation to the real obstruction]
-The K\"ahler obstruction
-(Proposition~\ref{prop:kahler-obstruction}) and the real obstruction
-(Theorem~\ref{thm:main}) operate at different levels.  The K\"ahler
-result is \emph{strictly stronger} within its class: strictly
-positive HBC implies strictly positive sectional curvature
-(taking $V, W$ to be the same direction recovers holomorphic
-sectional curvature, and the polarisation identity recovers all
-sectional curvatures), so Proposition~\ref{prop:kahler-obstruction}
-obstructs not only mixed curvature but \emph{all} curvature
-positivity for K\"ahler metrics.  The real equivariant result,
-by contrast, applies to the broader class of
-$\OO(2) \times \OO(2)$-equivariant seam metrics (not necessarily
-K\"ahler) and identifies the mixed-plane obstruction directly.
-In both cases, the product topology of $S^2 \times S^2$ is the
-ultimate source: $h^{1,1} = 2$ for the K\"ahler argument, the
-existence of a flat torus $T^2 \hookrightarrow S^2 \times S^2$
-for the real one.
-\end{remark}
+The isotropic theorem concerns planes mixed with respect to the
+background product splitting.  The next calculation gives a negative
+oblique plane at the top singular critical point for every matrix of
+rank at least two, not only on the repeated-top stratum.
 
-
-% ================================================================
-\section{Non-Equivariant Seams: The $\ell = 1$ Structure}
-\label{sec:non-equivariant}
-% ================================================================
-
-When the seam $s$ depends on all four coordinates
-$(\theta_1, \phi_1, \theta_2, \phi_2)$, the resulting metric need
-not admit any continuous symmetry, and the Hsiang--Kleiner theorem
-does not apply.  In this section we analyse the simplest
-non-equivariant case---product spherical harmonics of degree
-$\ell = 1$---and identify a precise geometric mechanism that
-prevents the mixed sectional curvature from being strictly positive.
-
-\subsection{Product harmonic seams}
-
-A natural basis for non-equivariant seams on $S^2 \times S^2$ is
-provided by product spherical harmonics:
-\begin{equation}
-\label{eq:product-harmonic}
-s = \sum_{i,j=1}^{3} a_{ij}\,f^i(x_1)\,g^j(x_2),
+\begin{proposition}[Top-critical oblique-plane obstruction]
+\label{prop:top-critical-oblique}
+Let $m,n\geq2$, let $\gamma>0$, and abbreviate
+\[
+ x=\gamma\sigma_1,\qquad y=\gamma\sigma_2,\qquad
+ z=\gamma\sigma_3,\qquad d=1-x.
+\]
+Choose ordered singular pairs $Av_i=\sigma_i u_i$ and set
+\[
+ \lambda_i^\pm=d\pm\gamma\sigma_i,
+ \qquad \Delta_i=\lambda_i^+\lambda_i^-,
+ \qquad i=2,3.
+\]
+Throughout the Riemannian range $x+y<1$, the four vectors at
+$(u_1,v_1)$
+\[
+ E_i^+=\frac{(u_i,v_i)}{\sqrt{2\lambda_i^+}},
+ \qquad
+ E_i^-=\frac{(u_i,-v_i)}{\sqrt{2\lambda_i^-}},
+ \qquad i=2,3,
+\]
+are $g_{\gamma,A}$-orthonormal.  The plane spanned by
+\begin{equation}\label{eq:top-critical-plane}
+ U=\frac{E_2^+-E_2^-}{\sqrt2},
+ \qquad
+ V=\frac{E_3^++E_3^-}{\sqrt2}
 \end{equation}
-where $f^i$ and $g^j$ range over real spherical harmonics of degree
-$\ell$ on each factor.  For $\ell = 1$, the harmonics are
-$(x, y, z) = (\sin\theta\cos\phi,\,\sin\theta\sin\phi,\,\cos\theta)$,
-so~\eqref{eq:product-harmonic} gives
-\begin{equation}
-\label{eq:l1-seam}
-s = \hat{n}_1^T A\,\hat{n}_2,
+has unit squared area and
+\begin{equation}\label{eq:top-critical-curvature}
+ \secop_{g_{\gamma,A}}(U\wedge V)
+ =-\frac{\mathcal N(x,y,z)}{2\Delta_2\Delta_3},
 \end{equation}
-where $\hat{n}_k = (\sin\theta_k\cos\phi_k,\,
-\sin\theta_k\sin\phi_k,\,\cos\theta_k)$ is the unit position
-vector on the $k$-th sphere and $A = (a_{ij}) \in \mathbb{R}^{3 \times 3}$.
-
-\begin{lemma}[SVD reduction]
-\label{lem:SVD}
-By the singular value decomposition $A = U\,\Sigma\,V^T$ with
-$U, V \in \SO(3)$, applying the isometry
-$(R_1, R_2) = (U^T, V^T) \in \SO(3) \times \SO(3)$ to the two
-sphere factors transforms every $\ell = 1$ seam to the normal form
-\begin{equation}
-\label{eq:l1-normal-form}
-s = \sigma_1\,x_1 x_2 + \sigma_2\,y_1 y_2 + \sigma_3\,z_1 z_2,
+where
+\begin{equation}\label{eq:top-critical-numerator}
+ \mathcal N(x,y,z)
+ =d(y^2+z^2)+(2x-1)
+   \left(d^2-\sqrt{\Delta_2\Delta_3}\right).
 \end{equation}
-where $\sigma_1 \ge \sigma_2 \ge \sigma_3 \ge 0$ are the singular
-values of~$A$.  The full-rank case $\sigma_1 = \sigma_2 = \sigma_3 = 1$
-gives $s = \hat{n}_1 \cdot \hat{n}_2$, the geodesic cosine.
-\end{lemma}
+If $\sigma_2>0$, this curvature is strictly negative.  The same
+conclusion holds for $\gamma<0$ after applying the antipodal map on
+the first sphere.
 
-\begin{remark}[Symmetry classification]
-\label{rem:symmetry-classification}
-The isometry group of the seam metric depends on the singular
-value multiplicities:
-\begin{center}
-\begin{tabular}{lll}
-\hline
-Singular values & Symmetry group & Hsiang--Kleiner? \\
-\hline
-$\sigma_1 = \sigma_2 = \sigma_3$ & diagonal $\SO(3)$ & Yes \\
-$\sigma_1 = \sigma_2 > \sigma_3$ (or cyclic) & diagonal $\SO(2)$ & Yes \\
-$\sigma_1 > \sigma_2 > \sigma_3$, all distinct & discrete only & \textbf{No} \\
-\hline
-\end{tabular}
-\end{center}
-In particular, the cases $s = \hat{n}_1 \cdot \hat{n}_2$
-(diagonal $\SO(3)$) and $s = x_1 x_2 + y_1 y_2$
-(diagonal $\SO(2)$) both admit a continuous isometric circle action,
-so Hsiang--Kleiner already precludes positive curvature.  The
-genuinely symmetry-free case---where our analysis provides new
-information beyond Hsiang--Kleiner---is when all three singular
-values are distinct.
-\end{remark}
-
-\subsection{The conformal Hessian property}
-
-Consider the metric $g = h + \gamma\,\nabla^2 s$ on
-$S^2 \times S^2$, which is the pure Hessian seam metric with
-$\alpha = 1$, $\beta = 0$, and constant $\gamma$.
-
-\begin{proposition}[Conformal diagonal blocks for $\ell = 1$]
-\label{prop:conformal-hessian}
-For any $\ell = 1$ spherical harmonic $Y_1^m$ on $S^2$,
-the covariant Hessian satisfies
-\begin{equation}
-\label{eq:conformal-hessian}
-\nabla^2_{h_{S^2}} Y_1^m = -Y_1^m\,h_{S^2}.
+On the repeated-top stratum $x=y=\delta$ and $z=\tau\delta$, put
+\[
+ a=1-2\delta,
+ \qquad \Pi=(1-\delta)^2-\tau^2\delta^2.
+\]
+Then~\eqref{eq:top-critical-curvature} becomes
+\begin{equation}\label{eq:repeated-top-curvature}
+ \secop_{g_{\gamma,A}}(U\wedge V)
+ =\frac{(1-\delta)(\Pi-\delta)-a\sqrt{a\Pi}}
+        {2a\Pi}.
 \end{equation}
-Consequently, for an $\ell = 1$ product harmonic
-seam~\eqref{eq:l1-seam}, the diagonal blocks of $\nabla^2 s$
-on $S^2 \times S^2$ are conformal:
-\begin{equation}
-\label{eq:diag-conformal}
-(\nabla_1^2 s)_{ab} = -s\,\delta_{ab}, \qquad
-(\nabla_2^2 s)_{\alpha\beta} = -s\,\delta_{\alpha\beta}
+In particular, at the isotropic endpoint $\tau=1$ it is
+$-\delta^2/(2(1-2\delta)^2)$.
+\end{proposition}
+
+\begin{proof}
+Proposition~\ref{prop:singular-subsphere} reduces the computation to
+the totally geodesic top-three singular
+$\Sph^2\times\Sph^2$.  At $(u_1,v_1)$ the tangent metric splits into
+symmetric and antisymmetric modes with coefficients
+$\lambda_i^+$ and $\lambda_i^-$, proving orthonormality.
+Direct differentiation in orthographic coordinates gives unit area
+and~\eqref{eq:top-critical-curvature}--
+\eqref{eq:top-critical-numerator}.
+
+It remains to read the sign.  Put
+\[
+ S=y^2+z^2,
+ \qquad L=\sqrt{(d^2-y^2)(d^2-z^2)}.
+\]
+The Riemannian inequality gives $d>y\geq z\geq0$.  Hence
+$0<L\leq d^2$.  If $x\geq1/2$, then
+$\mathcal N\geq dS>0$.  If $x<1/2$, the elementary inequality
+\[
+ 1-\sqrt{(1-r)(1-s)}\leq r+s,
+ \qquad 0\leq r,s<1,
+\]
+applied to $r=y^2/d^2$ and $s=z^2/d^2$ gives
+$d^2-L\leq S$.  Consequently
+\[
+ \mathcal N=dS-(1-2x)(d^2-L)\geq xS>0.
+\]
+Since $S>0$ exactly when $y>0$, the strict sign follows.  The map
+$(x_0,y_0)\mapsto(-x_0,y_0)$ pulls $g_{\gamma,A}$ back to
+$g_{-\gamma,A}$, proving the negative-parameter assertion.
+Substitution of $x=y=\delta$ and $z=\tau\delta$ gives the final two
+formulas.
+\end{proof}
+
+\begin{proposition}[Rank-one zero-critical obstruction]
+\label{prop:rank-one-oblique}
+Assume $m,n\geq2$ and $A$ has rank one.  Write its only positive
+singular value as $\sigma$, choose singular pairs so that
+$\sigma_1=\sigma$ and $\sigma_2=\sigma_3=0$, and put
+$\delta=\gamma\sigma$.  At the zero critical point
+$p=(u_2,v_2)$ define
+\[
+ F_1^\pm=\frac{(u_1,\pm v_1)}{\sqrt{2(1\pm\delta)}},
+ \qquad
+ F_3^\pm=\frac{(u_3,\pm v_3)}{\sqrt2}.
+\]
+For $|\delta|<1$, the vectors
+\[
+ U=\frac{F_1^+-F_1^-}{\sqrt2},
+ \qquad
+ V=\frac{F_3^++F_3^-}{\sqrt2}=(u_3,0)
+\]
+are $g_{\gamma,A}$-orthonormal and
+\begin{equation}\label{eq:rank-one-oblique}
+ \secop_{g_{\gamma,A}}(U\wedge V)
+ =-\frac{1-\sqrt{1-\delta^2}}
+          {2\sqrt{1-\delta^2}}.
 \end{equation}
-(in orthonormal frames on each factor), where $s$ is the seam
-value at the point.  The seam metric restricted to each factor is
-therefore conformally flat:
-\begin{equation}
-\label{eq:metric-conformal}
-g\big|_{TM_k \times TM_k} = (1 - \gamma\,s)\,h_k.
+Thus this plane is strictly negative for every nonzero Riemannian
+parameter, and
+\begin{equation}\label{eq:rank-one-quadratic}
+ \secop_{g_{\gamma,A}}(U\wedge V)
+ =-\frac{\gamma^2\sigma^2}{4}+O(\gamma^4).
 \end{equation}
 \end{proposition}
 
 \begin{proof}
-On the round $S^2$ of curvature $+1$, the eigenvalue equation
-for spherical harmonics is
-$\Delta_{S^2} Y_\ell^m = -\ell(\ell+1)\,Y_\ell^m$.  For $\ell = 1$,
-$\Delta Y_1^m = -2 Y_1^m$.  Additionally, the $\ell = 1$ harmonics
-are the restrictions of linear functions on $\mathbb{R}^3$ to $S^2$;
-for such functions, the Hessian is
-$\nabla^2 f = -f\,h_{S^2}$ (the tangential component of the
-ambient $\mathbb{R}^3$ Hessian), which is consistent with
-$\Delta f = \tr(\nabla^2 f) = -2f$.
+Repeat the orthographic-coordinate calculation in
+Proposition~\ref{prop:top-critical-oblique} using the local singular
+coordinates $(0,\sigma,0)$ at the critical pair $(u_2,v_2)$.
+In the notation of~\eqref{eq:top-critical-numerator}, this means
+$x=z=0$, $y=\delta$, and $d=1$.  The squared area is one and the
+curvature is
+\[
+ -\frac{\delta^2-1+\sqrt{1-\delta^2}}
+        {2(1-\delta^2)}
+ =-\frac{1-\sqrt{1-\delta^2}}
+        {2\sqrt{1-\delta^2}},
+\]
+which is negative for $0<|\delta|<1$.  Its Taylor expansion gives
+\eqref{eq:rank-one-quadratic}.
+\end{proof}
 
-For a product harmonic $s = \sum a_{ij} f^i g^j$, the diagonal
-Hessian block on the first factor is
-$(\nabla_1^2 s)_{ab} = \sum a_{ij} (\nabla^2 f^i)_{ab}\,g^j
-= \sum a_{ij} (-f^i\,\delta_{ab})\,g^j = -s\,\delta_{ab}$.
+\begin{corollary}[Four-dimensional detection and complete isolation]
+\label{cor:complete-isolation}
+Let $m,n\geq2$.  For every nonzero
+$A:\R^{n+1}\to\R^{m+1}$, choose an ordered singular frame and set
+$N_{123}=N_{\{1,2,3\}}$.  For every nonzero Riemannian parameter,
+$N_{123}\cong\Sph^2\times\Sph^2$ contains a plane of strictly
+negative ambient sectional curvature.  Consequently,
+\[
+ \left\{\gamma:
+  g_{\gamma,A}\text{ is Riemannian and }
+  \secop_{g_{\gamma,A}}\geq0
+ \right\}=\{0\}.
+\]
+\end{corollary}
+
+\begin{proof}
+If $\sigma_2>0$, Proposition~\ref{prop:top-critical-oblique} supplies
+a negative oblique plane in $N_{123}$.  If $\sigma_2=0$, then $A$ has
+rank one and Proposition~\ref{prop:rank-one-oblique} supplies a
+negative oblique plane in the same submanifold.  At $\gamma=0$ the
+metric is the nonnegatively curved round product.
+\end{proof}
+
+\begin{corollary}[Explicit dimension-free negative margin]
+\label{cor:uniform-negative-margin}
+Fix $0<\epsilon<1/2$, and let $r_\epsilon\in(0,1)$ be the unique
+solution of
+\begin{equation}\label{eq:epsilon-root}
+ (1-r_\epsilon)^2=\epsilon r_\epsilon^3.
+\end{equation}
+Set
+\[
+ c_\epsilon=\frac{\epsilon^4r_\epsilon^3}{16}
+ >\frac{\epsilon^4}{128}.
+\]
+For every $m,n\geq2$, every nonzero $A$, and every $\gamma$ satisfying
+\[
+ \epsilon\leq |\gamma|(\sigma_1(A)+\sigma_2(A))
+ \leq1-\epsilon,
+\]
+one has
+\[
+ \min_{\Pi\in\operatorname{Gr}_2(T(\Sph^m\times\Sph^n))}
+ \secop_{g_{\gamma,A}}(\Pi)\leq-c_\epsilon.
+\]
+\end{corollary}
+
+\begin{proof}
+The antipodal isometry lets us assume $\gamma>0$.  Put
+\[
+ x=\gamma\sigma_1,\qquad y=\gamma\sigma_2,
+ \qquad z=\gamma\sigma_3,\qquad p=x+y,\qquad q=\frac yp.
+\]
+Thus $0\leq q\leq1/2$ and $\epsilon\leq p\leq1-\epsilon$.
+When $x>y$, Theorem~\ref{thm:spectral-gap}, together with
+$z\leq y$ and the fact that its last denominator is at most one,
+gives a plane $\Pi_{\mathrm{gap}}$ with
+\begin{align}
+ -\secop(\Pi_{\mathrm{gap}})
+ &\geq\frac{(x^2-y^2)^3}{16(x^2+y^2)}\notag\\
+ &\geq\frac{\epsilon^4(1-2q)^3}{16}.
+ \label{eq:quantitative-gap}
+\end{align}
+When $x=y$, define the first lower bound to be zero; only the oblique
+estimate below is then used.
+
+For the oblique plane in Proposition~\ref{prop:top-critical-oblique},
+its proof gives
+\[
+ \mathcal N(x,y,z)\geq\min\{x,1-x\}(y^2+z^2).
+\]
+Moreover $\Delta_2\Delta_3\leq(1-x)^4\leq1$,
+$x\geq p/2\geq\epsilon/2$, and
+$1-x\geq1-p\geq\epsilon$.  Therefore
+\begin{equation}\label{eq:quantitative-oblique}
+ -\secop(\Pi_{\mathrm{obl}})
+ \geq\frac{\epsilon^3q^2}{4}.
+\end{equation}
+Writing $r=1-2q$, the larger of
+\eqref{eq:quantitative-gap} and~\eqref{eq:quantitative-oblique} is at
+least
+\[
+ \frac1{16}\max\{\epsilon^4r^3,
+                         \epsilon^3(1-r)^2\}.
+\]
+The increasing and decreasing terms meet exactly at the unique root
+in~\eqref{eq:epsilon-root}; hence their maximum is at least
+$c_\epsilon$.  Finally $r_\epsilon>1/2$, because at $r=1/2$ the two
+sides of~\eqref{eq:epsilon-root} are respectively $1/4$ and
+$\epsilon/8$.  This proves the simpler displayed bound as well.
+\end{proof}
+
+The following specialization uses a different plane than the canonical
+choice in Theorem~\ref{thm:spectral-gap} and gives a particularly simple
+curvature function.
+
+\begin{corollary}[A simple zero-threshold specialization]
+\label{cor:zero-threshold}
+On $\Sph^2\times\Sph^2$, let
+\[
+ A_0=\begin{pmatrix}0&2&0\\1&0&0\\0&1&0\end{pmatrix}.
+\]
+At $p=(e_0,e_0)$ take the background-mixed plane spanned by
+\[
+ \mathsf X=((0,1,0),0),\qquad
+ \mathsf Y=(0,(0,1,0)).
+\]
+For every
+\[
+ 0<\lvert\gamma\rvert<\frac1{\sqrt5+1},
+\]
+the metric $g_{\gamma,A_0}$ is Riemannian on the whole product and
+\begin{equation}\label{eq:negative-all-small}
+ \secop_{g_{\gamma,A_0}}(\mathsf X\wedge\mathsf Y)
+ =-\frac{3\gamma^4}{4(1-\gamma^2)}<0.
+\end{equation}
+Thus no matrix-independent positive interval of mixed-curvature
+nonnegativity exists, even after normalizing by the sharp Riemannian
+endpoint.
+\end{corollary}
+
+\begin{proof}
+Since $A_0^{\mathsf T}A_0=\operatorname{diag}(1,5,0)$, the Riemannian
+interval follows
+from Proposition~\ref{prop:positive}.  At $p$ one has
+\[
+ a=(1,0),\qquad b=(2,0),\qquad
+ P_xA_0P_y=\begin{pmatrix}0&0\\1&0\end{pmatrix}.
+\]
+In the ordered tangent basis the metric and the three covectors from
+Theorem~\ref{thm:mixed-curvature} are
+\[
+ g_{\gamma,A_0}=
+ \begin{pmatrix}
+  1&0&0&0\\0&1&\gamma&0\\0&\gamma&1&0\\0&0&0&1
+ \end{pmatrix}.
+\]
+\[
+ \eta_{XX}=\eta_{YY}=(-1/2,0,-1,0),
+ \quad
+ \eta_{XY}=(-1,0,-1/2,0).
+\]
+Formula~\eqref{eq:exact-mixed-curvature} now reduces to
+\eqref{eq:negative-all-small}; the squared area is one.
+\end{proof}
+
+A different ray illustrates that an individual mixed plane can have a
+nonzero positive-to-negative crossing, even though
+Theorem~\ref{thm:spectral-gap} already supplies another plane with
+negative curvature along the punctured ray.
+
+\begin{proposition}[A plane-wise nonzero sign-change threshold]
+\label{prop:positive-threshold}
+Let
+\[
+ B=\frac1{100}
+ \begin{pmatrix}1&2&-32\\-48&-23&3\\-39&-15&-3\end{pmatrix},
+ \qquad
+ \gamma_{\mathrm R}=\frac1{\sigma_1(B)+\sigma_2(B)}.
+\]
+At $p=(e_0,e_0)$ consider the plane spanned by
+\[
+ \mathsf X=\big((0,63/100,78/100),0\big),\qquad
+ \mathsf Y=\big(0,(0,9/100,-1)\big).
+\]
+There is a unique $\gamma_*\in(0,\gamma_{\mathrm R})$ at which its
+sectional curvature changes sign, and
+\begin{equation}\label{eq:threshold-bracket}
+ \frac{4679671}{5000000}<\gamma_*
+ <\frac{9359343}{10000000},
+ \qquad
+ \gamma_*=0.935934207005572\ldots.
+\end{equation}
+The curvature is positive for $0<\gamma<\gamma_*$, zero at
+$\gamma_*$, and negative for $\gamma_*<\gamma<\gamma_{\mathrm R}$.
+\end{proposition}
+
+\begin{proof}
+Exact substitution in~\eqref{eq:exact-mixed-curvature} gives
+\begin{equation}\label{eq:threshold-rational-function}
+ \secop_{g_{\gamma,B}}(\mathsf X\wedge\mathsf Y)
+ =\frac{11\gamma^2P(\gamma)}{4Q(\gamma)L(\gamma)},
+\end{equation}
+where
+\begin{align*}
+ P(\gamma)={}&1873383134707\gamma^3
+ -187783301783700\gamma^2\\
+ &-6938955210000\gamma+169451579000000,\\
+ Q(\gamma)={}&28151192500-563023850\gamma-7287743\gamma^2,\\
+ L(\gamma)={}&489\gamma^4+6160\gamma^3-306400\gamma^2
+                    -160000\gamma+4000000.
+\end{align*}
+On the Riemannian interval, $Q$ and $L$ are positive: in fact, up to
+positive constants they are respectively the squared area of this
+plane and the determinant of $g_{\gamma,B}$ at $p$.
+
+The crossing lies strictly inside the global Riemannian interval.
+Indeed,
+\[
+ \left(\frac{47}{50}\right)^2 2\norm{B}_{\mathrm F}^2
+ =\frac{6213917}{6250000}<1,
+\]
+so $\gamma_{\mathrm R}>47/50$.  On the other hand,
+$\sigma_1(B)+\sigma_2(B)\geq\norm{Be_0}
+=\sqrt{3826}/100>1/2$, so $\gamma_{\mathrm R}<2$.
+
+On $[0,2]$ the cubic $P$ is strictly decreasing.  Indeed,
+\[
+ \begin{aligned}
+  P''(\gamma)&=11240298808242\gamma-375566603567400<0,\\
+  P'(0)&=-6938955210000<0.
+ \end{aligned}
+\]
+Finally, exact rational substitution gives
+\[
+ P(4679671/5000000)>0,\qquad
+ P(9359343/10000000)<0.
+\]
+Thus $P$ has exactly one zero in the Riemannian interval, with the
+bracket~\eqref{eq:threshold-bracket}; the sign statement follows from
+\eqref{eq:threshold-rational-function}.
 \end{proof}
 
 \begin{remark}
-This conformal property is specific to $\ell = 1$.  For $\ell \ge 2$,
-the Hessian $\nabla^2 Y_\ell^m$ has a nonzero trace-free part,
-breaking the conformal structure of the diagonal blocks and leading
-to mixed curvatures that change sign.
+Corollary~\ref{cor:zero-threshold} shows that the nonnegative
+$\gamma^2$ coefficient in~\eqref{eq:mixed-expansion} is not a uniform
+curvature barrier.  When $X$ is parallel to $a$ and $Y$ is parallel to
+$b$, that coefficient vanishes and the first nonzero term can be
+negative; in~\eqref{eq:negative-all-small} it is
+$-3\gamma^4/4+O(\gamma^6)$.
 \end{remark}
 
-\subsection{The coupling matrix and its singular values}
+\section{Flat totally geodesic tori}\label{sec:tori}
 
-The off-diagonal block of the seam metric is determined by the
-mixed Hessian $\nabla_1\nabla_2 s$.  For an $\ell = 1$ seam in
-normal form~\eqref{eq:l1-normal-form}, this is
-\begin{equation}
-\label{eq:mixed-hessian-block}
-(\nabla_1\nabla_2 s)_{a\alpha} = \nabla_a \nabla_\alpha s
-= \sum_i \sigma_i\,(\nabla_a f^i)(\nabla_\alpha g^i),
+Fix a singular value decomposition
+\begin{equation}\label{eq:svd}
+ Av_k=\sigma_k u_k,
+ \qquad 1\leq k\leq q,
 \end{equation}
-which is the Jacobian outer product $M = J_1\,\Sigma\,J_2^T$, where
-$J_k$ is the $2 \times 3$ Jacobian of the embedding map
-$\hat{n}_k \colon S^2 \to \mathbb{R}^3$.
+with orthonormal bases completed in the left and right null spaces if
+necessary.  For $i<j$, let
+\begin{equation}\label{eq:tori}
+ C_{ij}=\Sph^m\cap\spanop\{u_i,u_j\},\qquad
+ D_{ij}=\Sph^n\cap\spanop\{v_i,v_j\},\qquad
+ T_{ij}=C_{ij}\times D_{ij}.
+\end{equation}
+Each $T_{ij}$ is a smoothly embedded $2$-torus.
 
-\begin{proposition}[Coupling singular values]
-\label{prop:coupling-svd}
-For the full-rank seam $s = \hat{n}_1 \cdot \hat{n}_2$
-($\sigma_1 = \sigma_2 = \sigma_3 = 1$), the coupling matrix
-$M = J_1\,J_2^T$ in orthonormal frames on each factor has
-singular values
-\begin{equation}
-\label{eq:coupling-singular-values}
-\sigma(M) = \bigl(1,\;|\hat{n}_1 \cdot \hat{n}_2|\bigr)
-= (1, |s|).
-\end{equation}
+\begin{proposition}\label{prop:tg}
+Whenever $g_{\gamma,A}$ is Riemannian, every torus $T_{ij}$ in
+\eqref{eq:tori} is totally geodesic for $g_{\gamma,A}$.
 \end{proposition}
 
 \begin{proof}
-The Jacobian $J_k$ has $J_k^T J_k = I_3 - \hat{n}_k\hat{n}_k^T$
-(the projection onto the tangent space of $S^2$ at $\hat{n}_k$).
+This is Proposition~\ref{prop:singular-subsphere} with
+$I=\{i,j\}$.  The argument also covers the case where one of the
+paired great circles is the entire sphere.
+\end{proof}
+
+\begin{proposition}\label{prop:flat}
+The metric induced by $g_{\gamma,A}$ on every $T_{ij}$ is flat.
+\end{proposition}
+
+\begin{proof}
+Parametrize the two great circles by
+\[
+ x(u)=\cos u\,u_i+\sin u\,u_j,
+ \qquad
+ y(v)=\cos v\,v_i+\sin v\,v_j.
+\]
+The restriction of $h$ is $du^2+dv^2$.  Since $T_{ij}$ is also
+totally geodesic for $h$, the ambient Hessian restricts to the
+intrinsic Hessian of
+\begin{equation}\label{eq:phi-uv}
+ \phi(u,v)=\restr{s_A}{T_{ij}}
+ =\sigma_i\cos u\cos v+\sigma_j\sin u\sin v.
+\end{equation}
+Introduce local coordinates
+\[
+ \alpha=u+v,\qquad \beta=u-v,
+\]
+and abbreviate
+\begin{equation}\label{eq:ab}
+ a=\frac{\sigma_i+\sigma_j}{2},
+ \qquad b=\frac{\sigma_i-\sigma_j}{2}.
+\end{equation}
+The elementary product-to-sum identities give
+\[
+ \phi=b\cos\alpha+a\cos\beta,
+ \qquad
+ du^2+dv^2=\frac12(d\alpha^2+d\beta^2).
+\]
+It follows that
+\begin{equation}\label{eq:separated-metric}
+ \restr{g_{\gamma,A}}{T_{ij}}
+ =\left(\frac12-\gamma b\cos\alpha\right)d\alpha^2
+  +\left(\frac12-\gamma a\cos\beta\right)d\beta^2.
+\end{equation}
+Both coefficients are positive because the ambient metric is positive
+definite.  Each depends on only its own coordinate.  Locally making
+the changes of variables
+\[
+ \widehat\alpha=\int_0^\alpha
+ \sqrt{\frac12-\gamma b\cos t}\,dt,
+ \qquad
+ \widehat\beta=\int_0^\beta
+ \sqrt{\frac12-\gamma a\cos t}\,dt
+\]
+turns~\eqref{eq:separated-metric} into
+$d\widehat\alpha^2+d\widehat\beta^2$.  Hence its Gaussian curvature
+vanishes identically.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Proposition~\ref{prop:positive} gives the exact Riemannian range.  By
+Propositions~\ref{prop:tg} and~\ref{prop:flat}, every chosen singular
+frame supplies $\binom q2$ flat totally geodesic tori.  The Gauss
+equation for a totally geodesic surface identifies
+its intrinsic Gaussian curvature with the ambient sectional curvature
+of its tangent plane.  That curvature is therefore zero at every
+point of every $T_{ij}$, which rules out strictly positive sectional
+curvature.  When $m,n\geq2$ and $\sigma_2>0$,
+Proposition~\ref{prop:top-critical-oblique} supplies strict negative
+curvature on the totally geodesic singular
+$\Sph^2\times\Sph^2$.  In the remaining rank-one case,
+Proposition~\ref{prop:rank-one-oblique} supplies strict negative
+curvature instead.  The assertion for $A=0$ is immediate from the
+definition.
+\end{proof}
+
+\begin{remark}[Repeated and zero singular values]
+The theorem does not require $A$ to have full rank or simple singular
+values.  When a positive singular value is repeated, the choice of
+singular frame is nonunique and may produce continuous families of
+flat tori.  When some $\sigma_j=0$, the same construction still works:
+the corresponding paired great circles are fixed by the involution
+and the separated formula~\eqref{eq:separated-metric} remains valid.
+The count $\binom q2$ is therefore a guaranteed count for each chosen
+frame, not a classification of all flat tori.
+\end{remark}
+
+\section{Inherited symmetry and the full isometry group}\label{sec:symmetry}
+
+The flat-torus proof uses finite involutions, but it is useful to state
+exactly how much of the background product symmetry is preserved.  Let
+\begin{equation}\label{eq:GA}
+ G_A=\big\{(R,S)\in O(m+1)\times O(n+1):
+ R^{\mathsf T}AS=A\big\}.
+\end{equation}
+This is the stabilizer of $A$ for the natural left-right action.
+
+\begin{proposition}\label{prop:symmetry}
+For $\gamma\neq0$, the factor-preserving isometries of the round
+product which remain isometries of $g_{\gamma,A}$ are exactly $G_A$.
+If the distinct positive singular values of $A$ have multiplicities
+$d_1,\ldots,d_k$ and $r_A=\rank A$, then
+\begin{equation}\label{eq:GA-structure}
+ G_A\cong
+ \left(\prod_{\ell=1}^k O(d_\ell)_{\mathrm{diag}}\right)
+ \times O(m+1-r_A)\times O(n+1-r_A).
+\end{equation}
+Here $O(d_\ell)_{\mathrm{diag}}$ acts by the same orthogonal matrix on
+the corresponding left and right singular subspaces.
+\end{proposition}
+
+\begin{proof}
+If $(R,S)\in G_A$, then
+\[
+ s_A(Rx,Sy)=\ip{x}{R^{\mathsf T}ASy}=s_A(x,y).
+\]
+The associated product isometry therefore preserves $h$ and
+$\Hess_hs_A$, so it preserves $g_{\gamma,A}$.
+
+Conversely, suppose the product isometry associated to $(R,S)$
+preserves $g_{\gamma,A}$.  Since it already preserves $h$ and
+$\gamma\neq0$, the function
+\[
+ f=s_{R^{\mathsf T}AS}-s_A
+\]
+satisfies $\Hess_h f=0$.  On a compact connected manifold such a
+function is constant: at a maximum its gradient vanishes, while
+$\Hess f=0$ makes the gradient parallel.  Both bilinear functions have
+zero integral over the product of spheres, so the constant is zero.
+Thus $R^{\mathsf T}AS=A$.
+
+Finally, write $A$ in singular-value block form.  The relation
+$R^{\mathsf T}AS=A$ forces $R$ and $S$ to preserve the eigenspaces of
+$AA^{\mathsf T}$ and $A^{\mathsf T}A$.  On a positive singular block
+of value $\rho$, the relation is
+$R_\rho^{\mathsf T}(\rho I)S_\rho=\rho I$, hence
+$R_\rho=S_\rho$.  On the two null spaces the orthogonal actions are
+independent.  This gives~\eqref{eq:GA-structure}.
+\end{proof}
+
+\begin{corollary}[Curvature mechanisms and symmetry]
+\label{cor:curvature-symmetry}
+Assume $m,n\geq2$, $A\neq0$, and $\gamma\neq0$ is in the Riemannian
+interval.  Then one of the following holds:
+\begin{enumerate}
+ \item $\sigma_1>\sigma_2$, and $g_{\gamma,A}$ has a background-mixed
+ plane of strictly negative sectional curvature;
+ \item $\sigma_1=\sigma_2$, and $g_{\gamma,A}$ has a negative oblique
+ plane in a totally geodesic singular $\Sph^2\times\Sph^2$, while the
+ inherited factor-preserving isometry group $G_A$ contains a circle
+ subgroup.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The first alternative is Theorem~\ref{thm:spectral-gap}.  In the
+second, Proposition~\ref{prop:top-critical-oblique} gives the negative
+plane.  The top positive singular value has multiplicity at least two,
+so Proposition~\ref{prop:symmetry} also exhibits a diagonal $O(d)$
+factor with $d\geq2$.  Its identity component contains a circle.
+\end{proof}
+
+\begin{corollary}[The generic $\Sph^2\times\Sph^2$ case]
+If $A:\R^3\to\R^3$ is invertible with three distinct singular values,
+then the inherited factor-preserving group is
+\[
+ G_A\cong O(1)^3\cong(\mathbb Z/2\mathbb Z)^3.
+\]
+It contains the three involutions whose fixed sets are the tori
+$T_{12}$, $T_{13}$, and $T_{23}$, but it contains no circle subgroup.
+\end{corollary}
+
+\begin{remark}[What is not being claimed]
+Proposition~\ref{prop:symmetry} computes the intersection of
+$\Isom(M,g_{\gamma,A})$ with the factor-preserving isometry group of
+the round product.  It does not classify the full isometry group of
+$g_{\gamma,A}$.  For example, equal-dimensional factors can admit a
+factor interchange under an additional algebraic condition, and an
+exceptional parameter could in principle have isometries not inherited
+from $h$.  Accordingly, the finite group in the corollary is not
+asserted to be the full isometry group.  The curvature obstruction does
+not require such an assertion.
+\end{remark}
+
+\section{A two-jet repair criterion}\label{sec:two-jet}
+
+The exact rays above have a vanishing first-order curvature signal for
+a structural reason:
+\begin{equation}\label{eq:hessian-lie}
+ \Hess_h f=\frac12\mathcal L_{\nabla f}h.
+\end{equation}
+Thus their first metric variation is tangent to the diffeomorphism
+orbit of $h$.  The next statement separates that gauge term from the
+first curvature-relevant correction.  It applies to an arbitrary
+Riemannian product; we then specialize it to $s_A$.
+
+Let $h=h_1\oplus h_2$ on $M_1\times M_2$, let $\nabla$ be its
+connection, and let $B$ be a symmetric $2$-tensor.  For an $h$-unit
+mixed pair $X\in TM_1$, $Y\in TM_2$, define
+\begin{align}
+ \mathfrak m_B(X,Y)=\frac12\big(&
+  (\nabla^2_{X,Y}B)(X,Y)+(\nabla^2_{Y,X}B)(X,Y)\notag\\
+ &-(\nabla^2_{X,X}B)(Y,Y)
+  -(\nabla^2_{Y,Y}B)(X,X)\big).
+ \label{eq:mixed-jet-functional}
+\end{align}
+Because $R^h(X,Y)=0$, the two cross derivatives agree, but the
+symmetrized form makes the curvature linearization transparent.
+
+\begin{theorem}[Two-jet normal form and mixed repair condition]
+\label{thm:two-jet}
+Let $g_t$ be a smooth family of metrics on $M_1\times M_2$ with
+\begin{equation}\label{eq:two-jet-path}
+ g_t=h+t\Hess_h f+t^2B+O(t^3)
+\end{equation}
+in $C^2$.  Let $\Phi_t$ be the local flow of
+$-\frac12\nabla f$.  Then
+\begin{equation}\label{eq:two-jet-normal-form}
+ \Phi_t^*g_t=h+t^2\widehat B+O(t^3),
+ \qquad
+ \widehat B=B-\frac18\mathcal L_{\nabla f}^2h.
+\end{equation}
+For every $p\in M_1\times M_2$ and every $h$-unit mixed pair
+$X,Y$ at $p$,
+\begin{equation}\label{eq:two-jet-curvature}
+ \secop_{g_t}\bigl(d\Phi_t(X\wedge Y)\bigr)
+ =t^2\mathfrak m_{\widehat B}(X,Y)+O(t^3).
+\end{equation}
+Consequently, a necessary condition for $g_t$ to have nonnegative
+sectional curvature for all sufficiently small $t$ is
+\begin{equation}\label{eq:two-jet-necessary}
+ \mathfrak m_{\widehat B}(X,Y)\geq0
+ \quad\text{for every background-mixed unit pair }X,Y.
+\end{equation}
+If the inequality is strict in the opposite direction for one pair,
+$g_t$ has negative sectional curvature for every sufficiently small
+nonzero $t$.
+\end{theorem}
+
+\begin{proof}
+Put $Z=\nabla f$.  Pullback by the flow of $-Z/2$ acts to second order
+as $\exp(-\frac t2\mathcal L_Z)$.  Using
+\eqref{eq:hessian-lie} in~\eqref{eq:two-jet-path}, the coefficient of
+$t$ cancels, while the coefficient of $t^2$ is
+\[
+ B-\frac12\mathcal L_Z\Hess f
+   +\frac18\mathcal L_Z^2h
+ =B-\frac18\mathcal L_Z^2h.
+\]
+This proves~\eqref{eq:two-jet-normal-form}.
+
+Choose product $h$-normal coordinates at $p$ whose first coordinate
+directions include $X$ and $Y$.  The lower-index curvature formula for
+$h+t^2\widehat B+O(t^3)$, evaluated on $(X,Y,X,Y)$, has coefficient
+\[
+ \frac12\bigl(
+  (\nabla^2_{X,Y}\widehat B)(X,Y)
+ +(\nabla^2_{Y,X}\widehat B)(X,Y)
+ -(\nabla^2_{X,X}\widehat B)(Y,Y)
+ -(\nabla^2_{Y,Y}\widehat B)(X,X)
+ \bigr).
+\]
+All background curvature terms with both factor directions vanish,
+as do the Christoffel-quadratic terms at this order.  The squared area
+of the plane is $1+O(t^2)$, so division gives
+\eqref{eq:two-jet-curvature}.  Sectional curvature is preserved by
+pullback, and the sign conclusions follow.
+\end{proof}
+
+On a closed product the inequalities in
+\eqref{eq:two-jet-necessary} satisfy a global compatibility identity.
+The functional~\eqref{eq:mixed-jet-functional} is the classical
+mixed-plane curvature linearization
+\cite{BourguignonDeschampsSentenac1973}; tracing it gives the following
+global consequence in the present gauge-normalized setting.
+Let $e_1,\ldots,e_m$ and $f_1,\ldots,f_n$ be local product
+orthonormal frames, and write $\tr_1B$ and $\tr_2B$ for the partial
+traces of $B$.
+
+\begin{theorem}[Integrated mixed two-jet rigidity]
+\label{thm:integrated-two-jet}
+If $M_1$ and $M_2$ are closed, then every symmetric $2$-tensor $B$
+satisfies
+\begin{equation}\label{eq:integrated-two-jet}
+ \int_{M_1\times M_2}
+ \sum_{i=1}^m\sum_{\alpha=1}^n
+ \mathfrak m_B(e_i,f_\alpha)\,dV_h=0.
+\end{equation}
+Consequently, if
+$\mathfrak m_B(X,Y)\geq0$ for every background-mixed unit pair, then
+\begin{equation}\label{eq:mixed-two-jet-zero}
+ \mathfrak m_B(X,Y)=0
+ \quad\text{for every background-mixed pair }X,Y.
+\end{equation}
+In particular, any family in Theorem~\ref{thm:two-jet} which has
+nonnegative sectional curvature for all sufficiently small $t$ must
+satisfy
+\begin{equation}\label{eq:normalized-two-jet-zero}
+ \mathfrak m_{\widehat B}(X,Y)=0
+ \quad\text{for every background-mixed pair }X,Y.
+\end{equation}
+Thus every such mixed curvature is $O(t^3)$ after gauge
+normalization; none can be lifted strictly at quadratic order without
+another becoming negative.
+\end{theorem}
+
+\begin{proof}
+Tracing~\eqref{eq:mixed-jet-functional} in product normal frames gives
+\begin{align}
+ \sum_{i,\alpha}\mathfrak m_B(e_i,f_\alpha)
+ ={}&\operatorname{div}_1\operatorname{div}_2(B|_{TM_1\otimes TM_2})
+ \notag\\
+ &-\frac12\Delta_1(\tr_2B)
+  -\frac12\Delta_2(\tr_1B).
+ \label{eq:two-jet-divergence}
+\end{align}
+The two possible orders in the first term agree because the mixed
+curvature of the product connection vanishes.  Each term on the
+right-hand side is a divergence.  Its integral is zero on the closed
+product, proving~\eqref{eq:integrated-two-jet}.
+
+Now suppose every mixed value is nonnegative.  Its trace in any
+product orthonormal frame is a nonnegative function with zero
+integral, hence vanishes identically.  Every summand in that frame is
+therefore zero.  At a given point any prescribed mixed unit pair can
+be included in such frames, which proves~\eqref{eq:mixed-two-jet-zero}.
+The last assertion follows from
+Theorem~\ref{thm:two-jet}.
+\end{proof}
+
+The global test is therefore feasible, but only at equality.  Put
+$Z=\nabla f$, let $\Psi_t$ be the flow of $Z/2$, and set
+\begin{equation}\label{eq:gauge-repair}
+ B_{\mathrm{gauge}}=\frac18\mathcal L_Z^2h.
+\end{equation}
+Then
+\[
+ \Psi_t^*h
+ =h+t\Hess f+t^2B_{\mathrm{gauge}}+O(t^3),
+ \qquad \widehat B=0.
+\]
+This correction solves all the two-jet equalities, but produces only
+a family isometric to the original product.  The kernel is not purely
+gauge: tensors pulled back from the individual factors also satisfy
+\eqref{eq:mixed-two-jet-zero}, as expected from ordinary product
+variations.  Theorem~\ref{thm:full-coupled-kernel} below classifies the
+full kernel modulo these two trivial sectors.  Testing its first
+nonzero higher-order curvature is a separate problem.
+The higher-order positive mixed variations constructed in
+\cite{BourguignonDeschampsSentenac1973} show why this second step is
+not vacuous; they also illustrate that improving all mixed planes does
+not by itself produce positive sectional curvature on every plane.
+
+Condition~\eqref{eq:normalized-two-jet-zero} is necessary, not
+sufficient: when its coefficient vanishes, higher jets can decide the
+sign.  It is invariant under the remaining second-order gauge freedom.
+Indeed, replacing $\widehat B$ by
+$\widehat B+\mathcal L_Wh$ changes the linearized curvature by a Lie
+derivative of the product curvature tensor, which vanishes on a mixed
+four-tuple.
+
+For the bilinear potentials, the abstract condition gives explicit
+values which any proposed nonlinear repair must attain.
+
+\begin{corollary}[Explicit two-jet cost for bilinear Hessian paths]
+\label{cor:two-jet-cost}
+Assume $m,n\geq2$, let $A\neq0$, and consider
+\begin{equation}\label{eq:corrected-bilinear-path}
+ g_t=h+t\Hess_hs_A+t^2B+O(t^3).
+\end{equation}
+Suppose $g_t$ has nonnegative sectional curvature for all sufficiently
+small $t$.  Choose an ordered singular frame and pad the singular
+values by zeros.
+
+If $\sigma_2>0$, set
+\[
+ p=(u_1,v_1),\qquad X=(u_3,0),\qquad Y=(0,v_2).
+\]
+Then nonnegative curvature forces the exact repair identity
+\begin{equation}\label{eq:two-jet-cost-rank-two}
+ \mathfrak m_B(X,Y)=
+ \frac{\sigma_2^2+\sigma_3^2}{4}.
+\end{equation}
+If $A$ has rank one, set instead
+\[
+ p=(u_2,v_2),\qquad X=(u_3,0),\qquad Y=(0,v_1).
+\]
+Then nonnegative curvature forces
+\begin{equation}\label{eq:two-jet-cost-rank-one}
+ \mathfrak m_B(X,Y)=\frac{\sigma_1^2}{4}.
+\end{equation}
+In particular, $B=0$ violates one of these identities for every
+$A\neq0$.  Hence every nontrivial exact bilinear Hessian ray is
+already obstructed by its two-jet modulo diffeomorphisms.
+\end{corollary}
+
+\begin{proof}
+First suppose $\sigma_2>0$.  At $p=(u_1,v_1)$ the gradient of $s_A$
+vanishes, and the Hessian endomorphism has eigenvectors
+\[
+ e_i^\pm=\frac{(u_i,\pm v_i)}{\sqrt2},
+ \qquad
+ \Hess s_A(e_i^\pm)=(-\sigma_1\pm\sigma_i)e_i^\pm.
+\]
+Consequently the differential of the flow in
+Theorem~\ref{thm:two-jet}, applied to $Y=(0,v_2)$ and $X=(u_3,0)$,
+agrees to first order with the metric-normalized vectors
+in~\eqref{eq:top-critical-plane}.  More explicitly,
+\[
+ d\Phi_t(e_i^\pm)
+ =\left(1+\frac t2(\sigma_1\mp\sigma_i)\right)e_i^\pm+O(t^2)
+ =(1-t\sigma_1\pm t\sigma_i)^{-1/2}e_i^\pm+O(t^2).
+\]
+Expanding
+\eqref{eq:top-critical-curvature} with
+$(x,y,z)=t(\sigma_1,\sigma_2,\sigma_3)$ gives
+\begin{equation}\label{eq:top-critical-two-jet}
+ \secop=-\frac{t^2}{4}(\sigma_2^2+\sigma_3^2)+O(t^3).
+\end{equation}
+Theorem~\ref{thm:two-jet} therefore gives
+\[
+ \mathfrak m_{-\frac18\mathcal L_{\nabla s_A}^2h}(X,Y)
+ =-\frac{\sigma_2^2+\sigma_3^2}{4}.
+\]
 Hence
 \[
-M^T M = J_2 J_1^T J_1 J_2^T = J_2(I - \hat{n}_1\hat{n}_1^T)J_2^T
-= I_2 - (J_2\hat{n}_1)(J_2\hat{n}_1)^T,
+ \mathfrak m_{\widehat B}(X,Y)
+ =\mathfrak m_B(X,Y)-\frac{\sigma_2^2+\sigma_3^2}{4}.
 \]
-since $J_2^T J_2 = I_3 - \hat{n}_2\hat{n}_2^T$ and its action
-on a tangent vector of $S^2$ is the identity.  The vector
-$J_2\hat{n}_1 \in \mathbb{R}^2$ is the tangential projection of
-$\hat{n}_1$ onto $T_{\hat{n}_2}S^2$, whose squared length is
-$1 - (\hat{n}_1 \cdot \hat{n}_2)^2 = 1 - s^2$.  The matrix
-$I_2 - v v^T$ with $|v|^2 = 1 - s^2$ has eigenvalues $s^2$ and~$1$,
-giving singular values $(1, |s|)$ for~$M$.
+Theorem~\ref{thm:integrated-two-jet} forces this value to vanish,
+which proves~\eqref{eq:two-jet-cost-rank-two}.
+
+If $A$ has rank one, the same comparison at $(u_2,v_2)$ uses the
+vectors in Proposition~\ref{prop:rank-one-oblique}.  Equation
+\eqref{eq:rank-one-quadratic} gives
+\[
+ \mathfrak m_{-\frac18\mathcal L_{\nabla s_A}^2h}(X,Y)
+ =-\frac{\sigma_1^2}{4},
+\]
+so $\mathfrak m_{\widehat B}(X,Y)
+=\mathfrak m_B(X,Y)-\sigma_1^2/4$.  Again
+Theorem~\ref{thm:integrated-two-jet} forces this value to vanish,
+proving~\eqref{eq:two-jet-cost-rank-one}.  The right-hand side is
+positive in both cases.
 \end{proof}
 
-\subsection{Separable seams: Brioschi analysis}
+\subsection{The full coupled kernel modulo gauge and product tensors}
 
-For any separable seam $s = f(\theta_1)\,g(\theta_2)$ (with $f$
-and $g$ depending only on the polar angle on each factor), the
-Brioschi numerators vanish algebraically, regardless of the
-degree~$\ell$.
+The partial-divergence reduction below goes back to
+Bourguignon--Deschamps--Sentenac~\cite{BourguignonDeschampsSentenac1972}.
+Their analysis settles the case without Killing fields and, in the general
+case, records the coupled subspace generated by Killing one-forms.  The
+tensor-product structure of the remaining equation identifies that subspace
+as the entire kernel.
 
-\begin{theorem}[Mixed curvature vanishes for multiplicatively separable seams]
-\label{thm:rank1-K0}
-Let $s = f(\theta_1)\,g(\theta_2)$ be a multiplicatively separable
-seam where $f$ and $g$ are smooth functions of the polar angle alone.  Then for the seam metric
-$g_s = h + \gamma\,\nabla^2 s$ and all values of $\gamma$ for
-which $g_s > 0$,
+Assume throughout this subsection that $M_1$ and $M_2$ are closed and
+connected.  Let
 \[
-K_{g_s}(\partial_{\theta_1}, \partial_{\theta_2}) = 0
-\quad \text{identically.}
+ \mathcal D_i:\Omega^1(M_i)\longrightarrow
+ \Gamma(S^2T^*M_i),
+ \qquad
+ \mathcal D_i\alpha=\frac12\mathcal L_{\alpha^\sharp}h_i
 \]
+be the Killing operator, and put
+\[
+ \mathcal K_i=\ker\mathcal D_i,
+ \qquad
+ \mathcal Z_i=\ker d_i^*\subset\Omega^1(M_i).
+\]
+Thus $\mathcal K_i$ is the finite-dimensional space of Killing
+one-forms, $\mathcal Z_i$ is the space of co-closed one-forms, and
+$\mathcal K_i\subset\mathcal Z_i$.  All orthogonal complements below
+are taken in $L^2$.  For a mixed covariant tensor
+$C\in\Gamma(T^*M_1\boxtimes T^*M_2)$, let $B_C$ denote the symmetric
+tensor whose pure blocks vanish and whose mixed block is
+\begin{equation}\label{eq:general-mixed-tensor}
+ B_C((X,Y),(X',Y'))=C(X,Y')+C(X',Y).
+\end{equation}
+Finally, define
+\begin{align*}
+ \mathfrak K_h&=\{B:\mathfrak m_B(X,Y)=0
+                     \text{ for every mixed pair }X,Y\},\\
+ \mathfrak G_h&=\{\mathcal L_Wh:W\in\Gamma(TM)\},\\
+ \mathfrak P_h&=\{\pi_1^*P+\pi_2^*Q:
+       P\in\Gamma(S^2T^*M_1),\ Q\in\Gamma(S^2T^*M_2)\}.
+\end{align*}
+
+\begin{theorem}[Full coupled-kernel classification]
+\label{thm:full-coupled-kernel}
+Every element of $\mathfrak K_h$ has a decomposition
+\begin{equation}\label{eq:full-kernel-decomposition}
+ B=\mathcal L_Wh+\pi_1^*P+\pi_2^*Q+B_C,
+\end{equation}
+where
+\begin{equation}\label{eq:canonical-coupled-space}
+ C\in\mathfrak H_{12}:=
+ (\mathcal K_1\otimes\mathcal Z_2)
+ +(\mathcal Z_1\otimes\mathcal K_2).
+\end{equation}
+The tensor $B_C$ is uniquely determined by the class of $B$ modulo
+$\mathfrak G_h+\mathfrak P_h$.  Equivalently,
+\begin{equation}\label{eq:full-kernel-quotient}
+ \frac{\mathfrak K_h}{\mathfrak G_h+\mathfrak P_h}
+ \cong\mathfrak H_{12}.
+\end{equation}
+More precisely, the decomposition
+\begin{equation}\label{eq:coupled-orthogonal-splitting}
+ \mathfrak H_{12}
+ = (\mathcal K_1\otimes\mathcal K_2)
+ \oplus
+   (\mathcal K_1\otimes(\mathcal Z_2\ominus\mathcal K_2))
+ \oplus
+   ((\mathcal Z_1\ominus\mathcal K_1)\otimes\mathcal K_2)
+\end{equation}
+is $L^2$-orthogonal.  In particular, every nontrivial coupled class
+has a Killing leg on at least one factor, and no class with both legs
+orthogonal to the Killing fields survives.
 \end{theorem}
 
 \begin{proof}
-Since $s$ depends only on $\theta_1$ and $\theta_2$, all metric
-coefficients are independent of $\phi_1$ and $\phi_2$, so
-Proposition~\ref{prop:mixed-curv-general} applies and
-$K_{g_s}(\partial_{\theta_1}, \partial_{\theta_2})$ equals the
-Gaussian curvature of the orbit metric
-$g_{\mathrm{orb}} = \bigl(\begin{smallmatrix} \lambda_1 & \eta \\
-\eta & \lambda_2 \end{smallmatrix}\bigr)$ with
+Both $\mathfrak G_h$ and $\mathfrak P_h$ lie in $\mathfrak K_h$.
+For the first space this follows either from diffeomorphism invariance
+or by linearizing the product curvature tensor on a mixed four-tuple;
+for the second it follows by varying the two factor metrics separately.
+
+Write an arbitrary symmetric tensor in block form as
 \[
-\lambda_1 = 1 + \gamma f''g, \qquad
-\lambda_2 = 1 + \gamma f g'', \qquad
-\eta = \gamma f'g'.
+ B=P+B_C+Q,
 \]
-The two Brioschi numerators~\eqref{eq:Kmix-general} are
+where $P$ and $Q$ are families of pure symmetric tensors on the first
+and second factors.  Apply the usual divergence--Killing-operator
+decomposition on each factor, with the other variable as a parameter.
+After subtracting a Lie derivative, we may suppose
+\begin{equation}\label{eq:partial-divergence-gauge}
+ \delta_1^{(2)}P=0,
+ \qquad
+ \delta_2^{(2)}Q=0,
+\end{equation}
+where $\delta_i^{(2)}=\mathcal D_i^*$ is the divergence on symmetric
+$2$-tensors.  The elliptic solution can be chosen orthogonal to
+$\mathcal K_i$, so it depends smoothly on the parameter from the
+other factor.
+
+Polarizing $\mathfrak m_B(X,Y)$ separately in $X$ and $Y$ gives a
+section $\mathcal M(B)$ of
+$S^2T^*M_1\boxtimes S^2T^*M_2$.  In the block notation above,
+\begin{equation}\label{eq:mixed-operator-block-form}
+ \mathcal M(B)
+ =\mathcal D_1\mathcal D_2C
+  -\frac12\Hess_1Q-\frac12\Hess_2P.
+\end{equation}
+Here, for example,
+$(\Hess_1Q)(X,X;Y,Y)=(\nabla^2_{X,X}Q)(Y,Y)$.
+In adapted indices this is the pointwise identity
 \[
-\lambda_{2,1} - \eta_{,2}
-  = \gamma f'g'' - \gamma f'g'' = 0, \qquad
-\lambda_{1,2} - \eta_{,1}
-  = \gamma f''g' - \gamma f''g' = 0.
+ \mathcal M(B)_{ij\alpha\beta}
+ =\nabla_{(i}\nabla_{(\alpha}C_{j)\beta)}
+  -\frac12\nabla_i\nabla_jQ_{\alpha\beta}
+  -\frac12\nabla_\alpha\nabla_\beta P_{ij},
 \]
-Both vanish identically by the product rule applied to the
-separable structure of~$s$, so $K = 0$ for all
-$\theta_1, \theta_2$ and all~$\gamma$.
+where the two pairs of parentheses are symmetrized independently.
+Because product derivatives commute,
+\eqref{eq:partial-divergence-gauge} implies that $\Hess_1Q$ is in
+$\ker\delta_2^{(2)}$ in its second-factor slots.  The other two terms
+in~\eqref{eq:mixed-operator-block-form} are in
+$\operatorname{im}\mathcal D_2$: the last one is the second-factor
+Hessian of the scalar $P(X,X)$.  Orthogonality of
+$\operatorname{im}\mathcal D_2$ and $\ker\delta_2^{(2)}$ therefore
+gives $\Hess_1Q=0$.  Interchanging the factors then gives
+$\Hess_2P=0$, and hence
+\begin{equation}\label{eq:pure-mixed-killing-equation}
+ \mathcal D_1\mathcal D_2C=0.
+\end{equation}
+On a closed connected manifold a function with zero Hessian is
+constant.  Applied to the scalar coefficients of $P$ and $Q$ in the
+opposite factor, this shows that $P$ and $Q$ are pulled back from the
+individual factors.  They may therefore be absorbed into
+$\mathfrak P_h$.
+
+It remains to solve~\eqref{eq:pure-mixed-killing-equation}.  Let
+$L_i=\mathcal D_i^*\mathcal D_i$.  This is a nonnegative
+self-adjoint elliptic operator on one-forms, with kernel
+$\mathcal K_i$.  Choose smooth orthonormal eigenbases
+$\{\alpha_r\}$ and $\{\beta_s\}$, with eigenvalues $\lambda_r$ and
+$\mu_s$, and expand $C=\sum c_{rs}\alpha_r\otimes\beta_s$.
+Then
+\begin{equation}\label{eq:killing-spectral-product}
+ \norm{\mathcal D_1\mathcal D_2C}_{L^2}^2
+ =\sum_{r,s}\lambda_r\mu_s|c_{rs}|^2.
+\end{equation}
+Consequently $c_{rs}=0$ whenever both eigenvalues are positive, and
+\begin{equation}\label{eq:raw-coupled-kernel}
+ C\in(\mathcal K_1\otimes\Omega^1(M_2))
+       +(\Omega^1(M_1)\otimes\mathcal K_2).
+\end{equation}
+The smooth spectral projections onto the finite-dimensional Killing
+spaces show that the sums in~\eqref{eq:raw-coupled-kernel} may be
+taken to be finite in the Killing index.
+
+Writing $\Pi_i$ for the $L^2$ projection onto $\mathcal K_i$, choose
+the nonredundant decomposition
+$C=(\Pi_1\otimes I)C+((I-\Pi_1)\otimes\Pi_2)C$.
+Use the Hodge splittings
+$\Omega^1(M_i)=dC^\infty(M_i)\oplus\mathcal Z_i$ on the non-Killing
+coefficients.  If $\kappa\in\mathcal K_1$,
+$\lambda\in\mathcal K_2$, and $u,v$ are smooth functions, then
+\begin{equation}\label{eq:coupled-exact-gauge}
+ B_{\kappa\otimes du}=\mathcal L_{u\kappa^\sharp}h,
+ \qquad
+ B_{dv\otimes\lambda}=\mathcal L_{v\lambda^\sharp}h.
+\end{equation}
+Thus every class has a representative in~\eqref{eq:canonical-coupled-space}.
+
+Such a representative is trace-free and divergence-free: in each
+summand one leg is Killing and the other is co-closed.  Hence $B_C$
+is $L^2$-orthogonal to every Lie derivative.  It is also pointwise
+orthogonal to every pure product tensor.  Therefore no nonzero
+$B_C$ in $\mathfrak H_{12}$ belongs to
+$\mathfrak G_h+\mathfrak P_h$, proving uniqueness and
+\eqref{eq:full-kernel-quotient}.  Finally,
+$(\mathcal K_1\otimes\mathcal Z_2)\cap
+ (\mathcal Z_1\otimes\mathcal K_2)
+=\mathcal K_1\otimes\mathcal K_2$, which gives the orthogonal
+splitting~\eqref{eq:coupled-orthogonal-splitting}.
 \end{proof}
 
-\begin{remark}
-For the axisymmetric $\ell = 1$ harmonic $f(\theta) = \cos\theta$,
-the conformal Hessian
-property~\eqref{eq:conformal-hessian} gives the additional
-identity $f'' = -f$, so that $\lambda_1 = \lambda_2 = 1 - \gamma fg$
-and the orbit metric is symmetric in the two factors.  This
-stronger structure is used in the SVD analysis
-(Proposition~\ref{prop:coupling-svd}).
-For $\ell \ge 2$ separable (axisymmetric) seams, the theorem
-still gives $K(\partial_{\theta_1}, \partial_{\theta_2}) = 0$,
-but curvature in planes involving $\phi$-directions can become
-negative (cf.\ Remark~\ref{rem:l2-failure}).
-\end{remark}
-
-\subsection{Non-negative mixed curvature for $\ell = 1$}
-
-The full $\ell = 1$ seam metric in block form is
-\begin{equation}
-\label{eq:l1-metric-block}
-g =
-\begin{pmatrix}
-(1 - \gamma s)\,h_1 & \gamma\,M \\
-\gamma\,M^T & (1 - \gamma s)\,h_2
-\end{pmatrix},
-\end{equation}
-where $M = \nabla_1\nabla_2 s$ is the mixed Hessian.  Both diagonal
-blocks are positive multiples of the round metric (by
-Proposition~\ref{prop:conformal-hessian}), and the off-diagonal
-block provides the inter-factor coupling.
-
-\begin{lemma}[Linear Riemann cancellation on products;
-mixed-flat critical points for $\ell = 1$]
-\label{lem:linear-cancel}
-Let $(M_1 \times M_2, h = h_1 + h_2)$ be a Riemannian product
-and $g = h + \gamma\,\nabla^2 s$ for any smooth function~$s$.
-\begin{enumerate}[label=(\roman*)]
-\item\label{it:L-vanish}
-The linearisation of the mixed Riemann tensor vanishes
-identically:
-\begin{equation}
-\label{eq:L-vanish}
-L_{a\alpha b\beta}
-  \;=\; \tfrac{1}{2}\bigl(
-    g_{a\beta;\alpha b} + g_{\alpha b;a\beta}
-    - g_{ab;\alpha\beta} - g_{\alpha\beta;ab}
-  \bigr)
-  \;=\; 0,
-\end{equation}
-where $a,b$ are indices on~$M_1$, $\alpha,\beta$ on~$M_2$,
-and semicolons denote background covariant derivatives.
-Consequently the mixed sectional curvature is
-$O(\gamma^2)$, not~$O(\gamma)$.
-
-\item\label{it:crit-flat}
-If, additionally, $M_1 = M_2 = S^2$ and $s$ is an
-$\ell = 1$ product harmonic seam, then at every critical
-point of~$s$ (where $\nabla s = 0$) the full mixed Riemann
-tensor vanishes:
-\begin{equation}
-\label{eq:crit-flat}
-R_{a\alpha b\beta}\big|_{\nabla s = 0} = 0
-\quad\text{for all } a,\alpha,b,\beta.
-\end{equation}
-In particular, \emph{all} mixed sectional curvatures are
-zero at such points.
-
-\item\label{it:product-crit-flat}
-More generally, if $s = f(x_1)\,g(x_2)$ for smooth
-$f \in C^\infty(M_1)$, $g \in C^\infty(M_2)$ on \emph{any}
-Riemannian product, then at every simultaneous critical
-point ($\nabla_1 f(x_0) = 0$ and $\nabla_2 g(y_0) = 0$)
-the same conclusion holds:
+\begin{corollary}[The sphere-product kernel]
+\label{cor:sphere-coupled-kernel}
+Let $\mathfrak k_m\subset\Omega^1(\Sph^m)$ be the metric duals of
+the rotational fields $x\mapsto Ax$, $A\in\mathfrak{so}(m+1)$, and
+put
 \[
-R_{a\alpha b\beta}\big|_{(x_0,y_0)} = 0
-\quad\text{for all } a,\alpha,b,\beta.
+ \mathcal Z_m^{\geq2}=\ker d^*\ominus\mathfrak k_m.
 \]
-Since every smooth function on a compact manifold has
-critical points, \emph{every} product seam metric of any
-degree~$\ell$ has points where all mixed curvatures vanish.
-\end{enumerate}
+Then the coupled two-jet kernel on $\Sph^m\times\Sph^n$, modulo
+diffeomorphisms and factor tensors, is exactly
+\begin{equation}\label{eq:sphere-coupled-kernel}
+ (\mathfrak k_m\otimes\mathfrak k_n)
+ \oplus(\mathfrak k_m\otimes\mathcal Z_n^{\geq2})
+ \oplus(\mathcal Z_m^{\geq2}\otimes\mathfrak k_n).
+\end{equation}
+For $\Sph^2\times\Sph^2$, in coexact vector spherical harmonics,
+the allowed bidegrees are precisely
+\begin{equation}\label{eq:s2-harmonic-bidegrees}
+ (1,1),\qquad (1,\ell)\ (\ell\geq2),
+ \qquad (\ell,1)\ (\ell\geq2).
+\end{equation}
+With the cutoff $\ell\leq L$ on both factors, the quotient therefore
+has dimension
+\begin{equation}\label{eq:s2-kernel-cutoff-dimension}
+ 9+6\sum_{\ell=2}^{L}(2\ell+1)
+ =6(L+1)^2-15.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Every Killing field on a round sphere is rotational, and
+$\dim\mathfrak k_m=\binom{m+1}{2}$.  Thus
+Theorem~\ref{thm:full-coupled-kernel} gives
+\eqref{eq:sphere-coupled-kernel}.  On $\Sph^2$, the Hodge star writes
+every co-closed one-form as $*du$ modulo a constant potential.  Expanding
+$u$ in scalar spherical harmonics, degree $1$ gives exactly the three
+rotational Killing forms, while degree $\ell$ has multiplicity
+$2\ell+1$.  This proves~\eqref{eq:s2-harmonic-bidegrees}, and
+$\sum_{\ell=2}^{L}(2\ell+1)=(L+1)^2-4$, proving the dimension formula.
+\end{proof}
+
+Thus the full quadratic search space is infinite-dimensional, but it
+is spectrally thin: one of the two harmonic legs must be rotational.
+The rotational tensor~\eqref{eq:rotational-kernel} below lies in the
+finite $9$-dimensional $(1,1)$ block.  The next theorem tests the two
+one-sided towers $(1,\ell)$ and $(\ell,1)$, $\ell\geq2$, level by
+level and without a separability assumption.
+
+\subsection{Exact nonlinear tests in the coupled kernel}
+
+Nearby moving planes already appear in the classical higher-order analysis
+of Bourguignon--Deschamps--Sentenac
+\cite{BourguignonDeschampsSentenac1973}.  For the round sphere, the
+Killing-operator normal form and the spherical spectral gap make their sign
+explicit on every one-sided harmonic level.
+
+Identify the Killing one-forms on the first $\Sph^2$ with $\R^3$ by
+$a\mapsto\kappa_a$, where $\kappa_a$ is dual to $x\mapsto a\times x$.
+For an $\R^3$-valued one-form $E$ on the second sphere, define
+\begin{equation}\label{eq:one-sided-tensor}
+ C_E(X,Y)=\ip{x\times X}{E_y(Y)}.
+\end{equation}
+Thus $B_{C_E}$ is an arbitrary element of
+$\mathfrak k_2\otimes\Omega^1(\Sph^2)$ in the notation of
+Corollary~\ref{cor:sphere-coupled-kernel}.
+
+\begin{lemma}[The moving-plane coefficient]
+\label{lem:one-sided-moving-plane}
+Fix $y\in\Sph^2$, choose a unit vector
+$x\perp\operatorname{im}E_y$, and let $v\in x^\perp$ be unit.  Choose
+unit $X\in T_x\Sph^2$ so that $x\times X=v$.  For an oriented
+orthonormal pair $Y,Z\in T_y\Sph^2$, set
+\[
+ \theta=\ip{v}{E},\qquad f=*d\theta,
+\]
+where the star is on the second sphere.  For $c\in\R$, let
+\begin{equation}\label{eq:one-sided-moving-plane}
+ \Pi_s(c)=\spanop\{(X,scZ),(0,Y)\}.
+\end{equation}
+Then, as $s\to0$,
+\begin{equation}\label{eq:one-sided-moving-coefficient}
+ \secop_{h+sB_{C_E}}\Pi_s(c)
+ =s^2\left(c^2-c(Yf)+\frac14f^2\right)+O(s^3).
+\end{equation}
+In particular, the choice $c=(Yf)/2$ gives
+\begin{equation}\label{eq:one-sided-optimized-coefficient}
+ \secop_{h+sB_{C_E}}\Pi_s\left(\frac{Yf}{2}\right)
+ =\frac{s^2}{4}\bigl(f^2-(Yf)^2\bigr)+O(s^3).
+\end{equation}
 \end{lemma}
 
 \begin{proof}
-\ref{it:L-vanish}\enspace
-Write $g_{IJ} = h_{IJ} + \gamma\,s_{;IJ}$.  Since $h$ is a
-product metric, $h_{ab;\alpha} = 0$ and
-$h_{\alpha\beta;a} = 0$, so $g_{IJ;K} = \gamma\,s_{;IJK}$.
-Each of the four terms in~\eqref{eq:L-vanish} therefore equals
-$\gamma\,s_{;ab\alpha\beta}$: by the Ricci identity on the
-product background, cross-factor covariant derivatives commute
-because all mixed curvature components
-$R^{(h)}_{a\alpha\cdot\cdot} = 0$ vanish, while same-factor
-derivatives acting on a tensor with indices entirely on the
-\emph{other} factor also commute (the Riemann-symmetry
-contraction vanishes by type).  Hence
-$L_{a\alpha b\beta}
-= \tfrac{\gamma}{2}(1 + 1 - 1 - 1)\,s_{;ab\alpha\beta}
-= 0$.
+Use oriented product-normal coordinates at $(x,y)$ with coordinate
+vectors $X$ on the first factor and $Y,Z$ on the second.  The condition
+$x\perp\operatorname{im}E_y$ says that the first-factor curl of the
+combined Killing one-form $C_E(\,\cdot\,,Y)$ vanishes at the base
+point.  The fixed mixed-plane term is therefore
+$s^2f^2/4$: it is the squared Christoffel term in
+\eqref{eq:separated-exact-mixed}, with the same calculation applied
+linearly to the sum of Killing legs.  The round curvature of the
+second factor contributes $s^2c^2$ when $scZ$ is added to the first
+spanning vector.  Finally, the term bilinear in the metric variation
+and the plane displacement is $-s^2c(Yf)$.  Equivalently, at the
+normal-coordinate origin write
+$\theta=\theta_1\,dy^1+\theta_2\,dy^2$.  The three terms are
+\[
+ \frac{s^2}{4}(\partial_1\theta_2-\partial_2\theta_1)^2,
+ \qquad s^2c^2,
+ \qquad
+ -s^2c\,\partial_1
+   (\partial_1\theta_2-\partial_2\theta_1).
+\]
+The squared area is $1+O(s^2)$, proving
+\eqref{eq:one-sided-moving-coefficient}.  Completing the square proves
+\eqref{eq:one-sided-optimized-coefficient}.
+\end{proof}
 
-\ref{it:crit-flat}\enspace
-The full Riemann tensor splits as
-$R_{a\alpha b\beta} = L_{a\alpha b\beta} + Q(\Gamma)$,
-where $Q$ is quadratic in the Christoffel symbols of~$g$.
-It therefore suffices to show that every Christoffel symbol
-of~$g$ vanishes at a critical point.
+Let $\mathcal Z_\ell\subset\Omega^1(\Sph^2)$ denote the coexact
+one-form spherical harmonics of degree $\ell$.
 
-Choose geodesic normal coordinates $(u^a)$ on the first
-$S^2$ centred at the base point~$x_0$, and $(v^\alpha)$ on
-the second centred at~$y_0$, where $(x_0,y_0)$ is the
-critical point.  The embedding coordinates
-$x_i(u)$ are \emph{odd} functions of~$u$
-(indeed $x_i = u^i\operatorname{sinc}|u|$ for $i = 1,2$
-and $x_3 = \cos|u|$ is even), and similarly for $y_j(v)$.
-Since $s = \sum \sigma_k x_k y_k$, each summand
-$\sigma_k x_k(u)\,y_k(v)$ has definite parity: odd $\times$
-odd (even total degree) or even $\times$ even (even total
-degree).  Hence $s(u,v)$ is an \emph{even} function of
-$(u,v)$, and all its odd-order partial derivatives vanish
-at the origin---in particular, all third derivatives are
-zero.
+\begin{theorem}[Every fixed one-sided level has a quadratic oblique obstruction]
+\label{thm:one-sided-towers}
+For every $\ell\geq2$ and every nonzero
+\[
+ C\in\mathfrak k_2\otimes\mathcal Z_\ell,
+\]
+there are a point, a mixed plane at that point, a family of nearby planes
+$\Pi_s$, and a constant $\delta_C>0$ such that
+\begin{equation}\label{eq:one-sided-negative}
+ \secop_{h+sB_C}(\Pi_s)=-\delta_Cs^2+O(s^3).
+\end{equation}
+Consequently $h+sB_C$ has negative sectional curvature for every
+sufficiently small nonzero $s$.  The same conclusion holds for every
+nonzero $C\in\mathcal Z_\ell\otimes\mathfrak k_2$.
+\end{theorem}
 
+\begin{proof}
+Write $C=C_E$ as in~\eqref{eq:one-sided-tensor}, with each component
+of $E$ in $\mathcal Z_\ell$, and put
+\[
+ F=*dE:\Sph^2\longrightarrow\R^3.
+\]
+The function $F$ is a nonzero vector-valued spherical harmonic of
+degree $\ell$.  With $\lambda_\ell=\ell(\ell+1)$,
+\begin{equation}\label{eq:vector-harmonic-energy}
+ \int_{\Sph^2}|dF|^2
+ =\lambda_\ell\int_{\Sph^2}|F|^2.
+\end{equation}
+If $|dF_y|_{\mathrm{op}}\leq|F(y)|$ at every point, then
+$|dF|^2\leq2|F|^2$ pointwise, contradicting
+\eqref{eq:vector-harmonic-energy} because
+$\lambda_\ell\geq6>2$.  Hence there are $y$ and a unit $Y$ such that
+\begin{equation}\label{eq:vector-harmonic-gap-point}
+ |dF_y(Y)|>|F(y)|.
+\end{equation}
+
+Set $v=dF_y(Y)/|dF_y(Y)|$.  Componentwise Hodge theory gives
+$E=\pm\lambda_\ell^{-1}*dF$, so
+$\operatorname{im}E_y=\operatorname{im}dF_y$.  Choose a unit
+$x\perp\operatorname{im}E_y$ and $X$ with $x\times X=v$.  For
+$\theta=\ip{v}{E}$ and $f=*d\theta$, one has
+\[
+ f(y)=\ip{v}{F(y)},
+ \qquad
+ Yf=\ip{v}{dF_y(Y)}=|dF_y(Y)|.
+\]
+Thus~\eqref{eq:vector-harmonic-gap-point} implies $|Yf|>|f|$.
+Lemma~\ref{lem:one-sided-moving-plane}, with $c=(Yf)/2$, gives
+\eqref{eq:one-sided-negative} with
+\[
+ \delta_C=\frac14\bigl((Yf)^2-f^2\bigr)>0.
+\]
+Interchanging the two sphere factors proves the final assertion.
+\end{proof}
+
+\begin{lemma}[The two-curl moving-plane coefficient]
+\label{lem:two-curl-moving-plane}
+Let $C$ represent an element of the coupled mixed two-jet kernel on
+$\Sph^2\times\Sph^2$.  Fix oriented orthonormal ambient frames
+\[
+ (x,X,\bar X),\qquad (y,Y,\bar Y),
+ \qquad
+ \bar X=x\times X,\quad \bar Y=y\times Y.
+\]
+For the two scalar one-forms obtained by freezing one argument of $C$,
+put
+\begin{equation}\label{eq:two-factor-curls}
+ \alpha=*_{1}d_1\bigl(C(\,\cdot\,,Y)\bigr),
+ \qquad
+ \beta=*_{2}d_2\bigl(C(X,\,\cdot\,)\bigr).
+\end{equation}
+For $a,b\in\R$, let
+\begin{equation}\label{eq:two-parameter-moving-plane}
+ \Pi_s(a,b)=
+ \spanop\{(X,sa\bar Y),(sb\bar X,Y)\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:two-curl-coefficient}
+ \secop_{h+sB_C}\Pi_s(a,b)
+ =s^2\left(
+ a^2+b^2-a(Y\beta)-b(X\alpha)
+ +\frac14(\alpha^2+\beta^2)\right)+O(s^3).
+\end{equation}
+In particular, $a=(Y\beta)/2$ and $b=(X\alpha)/2$ give
+\begin{equation}\label{eq:two-curl-optimized}
+ \secop_{h+sB_C}\Pi_s
+ =-\frac{s^2}{4}\mathcal D_C+O(s^3),
+ \qquad
+ \mathcal D_C:=(X\alpha)^2+(Y\beta)^2-\alpha^2-\beta^2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Use product-normal coordinates adapted to the two displayed frames.
+Since $C$ is in the mixed two-jet kernel, the
+term linear in $s$ on the fixed mixed plane vanishes.  The round
+curvatures of the two factors contribute $s^2a^2$ and $s^2b^2$.
+The terms bilinear in the metric variation and the two plane
+displacements are respectively
+\[
+ -s^2a(Y\beta),\qquad -s^2b(X\alpha).
+\]
+Finally, the first variation of the Christoffel symbol on the fixed
+mixed plane has orthogonal factor components $\alpha/2$ and
+$\beta/2$.  Its squared norm contributes
+$s^2(\alpha^2+\beta^2)/4$.  The squared area is $1+O(s)$, so it does
+not change the quadratic coefficient.  This proves
+\eqref{eq:two-curl-coefficient}; minimizing its two independent
+squares proves~\eqref{eq:two-curl-optimized}.
+\end{proof}
+
+\begin{theorem}[The full coupled kernel has a quadratic oblique obstruction]
+\label{thm:full-kernel-obstruction}
+Let $0\neq C\in\mathfrak H_{12}$ on
+$\Sph^2\times\Sph^2$, where $\mathfrak H_{12}$ is the full coupled
+kernel in~\eqref{eq:canonical-coupled-space}.  Then there are a point,
+a background-mixed plane at that point, a family of nearby planes
+$\Pi_s$, and a constant $\delta_C>0$ such that
+\begin{equation}\label{eq:full-kernel-negative}
+ \secop_{h+sB_C}(\Pi_s)=-\delta_Cs^2+O(s^3).
+\end{equation}
+Consequently $h+sB_C$ has negative sectional curvature for every
+sufficiently small nonzero $s$.
+\end{theorem}
+
+\begin{proof}
+The orthogonal harmonic splitting in
+\eqref{eq:coupled-orthogonal-splitting} gives a unique decomposition
+\begin{equation}\label{eq:full-harmonic-decomposition}
+ C=C_M+C_E+C_D,
+\end{equation}
+where
+\begin{align*}
+ C_M(X,Y)&=\ip{x\times X}{M(y\times Y)},\\
+ C_E(X,Y)&=\ip{x\times X}{E_y(Y)},\\
+ C_D(X,Y)&=\ip{D_x(X)}{y\times Y}.
+\end{align*}
+Here $M:\R^3\to\R^3$ is linear, while the components of the
+$\R^3$-valued coexact one-forms $E$ and $D$ are $L^2$-orthogonal to
+the degree-one harmonics.  Put
+\[
+ F=*dE:\Sph^2\to\R^3,
+ \qquad
+ G=*dD:\Sph^2\to\R^3.
+\]
+
+Average the defect $\mathcal D_C$ in
+\eqref{eq:two-curl-optimized} over the two oriented orthonormal frame
+bundles, using probability Haar measure, and write
+$\operatorname{Av}_{\Sph^2}$ for normalized area average.  The
+isotropic frame identities
+\[
+ \operatorname{Av}\ip{x}{z}^2
+ =\operatorname{Av}\ip{X}{z}^2
+ =\operatorname{Av}\ip{\bar X}{z}^2
+ =\frac13|z|^2
+\]
+and their second-factor analogues give
+\begin{align}
+ \operatorname{Av}\mathcal D_C
+ =\frac13\bigg\{&
+ \frac12\operatorname{Av}_{\Sph^2}|dF|^2
+ -\operatorname{Av}_{\Sph^2}|F|^2 \notag\\
+ &+\frac12\operatorname{Av}_{\Sph^2}|dG|^2
+ -\operatorname{Av}_{\Sph^2}|G|^2
+ \bigg\}.                                      \label{eq:full-defect-average}
+\end{align}
+For completeness, the two factorwise curls used here are
+\begin{align*}
+ \alpha={}&2\ip{x}{M\bar Y}
+            +2\ip{x}{E(Y)}+\ip{G(x)}{\bar Y},\\
+ \beta={}&2\ip{\bar X}{My}
+            +\ip{\bar X}{F(y)}+2\ip{y}{D(X)},
+\end{align*}
+and their relevant derivatives are
+\begin{align*}
+ X\alpha={}&2\ip{X}{M\bar Y}
+              +2\ip{X}{E(Y)}+\ip{dG_x(X)}{\bar Y},\\
+ Y\beta={}&2\ip{\bar X}{MY}
+              +\ip{\bar X}{dF_y(Y)}+2\ip{Y}{D(X)}.
+\end{align*}
+These formulas also verify~\eqref{eq:full-defect-average} directly.
+The $M$-square has zero average.  Cross terms between different
+summands vanish: the higher coexact one-forms are orthogonal to the
+Killing one-forms, and their curls contain no degree-one scalar
+harmonics.  The remaining pure $E$ and $D$ terms are exactly the two
+lines on the right-hand side of~\eqref{eq:full-defect-average}.
+
+Every component of $F$ and $G$ is a sum of scalar spherical harmonics
+of degrees at least two.  Hence the spherical spectral gap gives
+\[
+ \int|dF|^2\geq6\int|F|^2,
+ \qquad
+ \int|dG|^2\geq6\int|G|^2.
+\]
+Thus~\eqref{eq:full-defect-average} is strictly positive whenever
+$E\neq0$ or $D\neq0$.  Some pair of frames then has
+$\mathcal D_C>0$, and Lemma~\ref{lem:two-curl-moving-plane} gives
+\eqref{eq:full-kernel-negative}.
+
+It remains to treat $E=D=0$ and $M\neq0$.  Choose oriented signed
+singular frames with $Mv_i=\tau_i u_i$ and $\tau_1\neq0$, and set
+\[
+ (x,X,\bar X)=(u_2,u_1,-u_3),
+ \qquad
+ (y,Y,\bar Y)=(v_2,v_3,v_1).
+\]
+Then $\alpha=\beta=0$, while
+\[
+ X\alpha=2\tau_1,
+ \qquad
+ Y\beta=-2\tau_3.
+\]
 Consequently
-$\partial_K g_{IJ}\big|_{(u,v)=0}
-= -\gamma(\partial_K s)\,h_{IJ}
-  + \gamma\,\partial_K s_{;IJ} = 0$,
-because $\partial_K s = 0$ (critical point) and
-$\partial_K s_{;IJ} = 0$ (no cubic terms; the background
-Christoffel symbols also vanish in normal coordinates, so
-the coordinate Hessian equals the covariant Hessian there).
-Vanishing first derivatives of $g$ at the base point in
-normal coordinates implies $\Gamma^I_{JK} = 0$, so
-$R_{a\alpha b\beta} = L_{a\alpha b\beta} + 0 = 0$.
-
-\ref{it:product-crit-flat}\enspace
-Choose geodesic normal coordinates at $(x_0,y_0)$.  For
-$s = fg$, the product rule gives
-$s_{,IJK} = \sum (\partial^{|S|}f/\partial u^S)
-  (\partial^{|T|}g/\partial v^T)$ summed over ways to
-distribute the three indices among $f$ and~$g$.  Whenever
-the indices span \emph{both} factors (i.e.\ at least one
-$a$-type and one $\alpha$-type), every term in the product
-rule carries either a factor $f_{,a}(x_0) = 0$ or
-$g_{,\alpha}(y_0) = 0$.  Only the purely same-factor
-combinations survive:
-$s_{,abc} = f_{,abc}\,g(y_0)$ and
-$s_{,\alpha\beta\gamma} = f(x_0)\,g_{,\alpha\beta\gamma}$.
-
-Since $g_{IJ,K} = \gamma\,s_{,IJK}$ in normal coordinates,
-this has three consequences:
-\begin{enumerate}[label=(\alph*)]
-\item all cross-type Christoffel symbols $\Gamma^M_{a\alpha}$
-vanish (the relevant $s_{,IJK}$ always mixes factors);
-\item upper-cross Christoffels $\Gamma^\gamma_{ab}$ and
-$\Gamma^c_{\alpha\beta}$ vanish (e.g.\
-$\Gamma^c_{\alpha\beta} \propto s_{,c\alpha\beta}
-= f_{,c}(x_0)\,g_{,\alpha\beta} = 0$);
-\item the metric is block-diagonal at $(x_0,y_0)$:
-$g_{a\alpha} = \gamma\,f_{;a}g_{;\alpha} = 0$.
-\end{enumerate}
-By~\ref{it:L-vanish}, $L_{a\alpha b\beta} = 0$.  The
-Christoffel quadratic
-$Q = g_{MN}(\Gamma^M_{\alpha b}\Gamma^N_{a\beta}
-  - \Gamma^M_{\alpha\beta}\Gamma^N_{ab})$
-vanishes because:
-the first product is zero by~(a); and in the second, the
-only surviving Christoffels are
-$\Gamma^\gamma_{\alpha\beta}$ and $\Gamma^c_{ab}$ (all
-same-factor), contracted through $g_{\gamma c} = 0$
-by~(c).
+$\mathcal D_{C_M}=4(\tau_1^2+\tau_3^2)>0$, and the same lemma finishes
+the proof.
 \end{proof}
 
-\begin{lemma}[Leading-order mixed curvature for $\ell = 1$]
-\label{lem:riemann-expansion}
-For an $\ell = 1$ seam metric $g = h + \gamma\,\nabla^2 s$
-with $|\gamma|$ sufficiently small that $g > 0$, the mixed
-sectional curvature of a plane
-$\sigma = \operatorname{span}(X,Y)$ with $h$-unit vectors
-$X \in TM_1$, $Y \in TM_2$ is
-\begin{equation}
-\label{eq:R-expansion}
-K_g(X,Y)
-= \frac{\gamma^2}{4}\!\Bigl(
-    |\nabla_1 s|^2 - (\nabla_1 s \cdot X)^2
-  + |\nabla_2 s|^2 - (\nabla_2 s \cdot Y)^2
-  \Bigr) + O(\gamma^3),
+\begin{corollary}[Every coupled kernel ray fails quartically]
+\label{cor:coupled-kernel-repair}
+Let $0\neq C\in\mathfrak H_{12}$, let
+$\varphi\in C^\infty(\Sph^2\times\Sph^2)$, put $W=\nabla\varphi$,
+and let $\Psi_t$ be the flow of $W/2$.  Then
+\begin{equation}\label{eq:coupled-kernel-corrected-path}
+ g_t=\Psi_t^*(h+t^2B_C)
+ =h+t\Hess\varphi+t^2
+   \left(\frac18\mathcal L_W^2h+B_C\right)+O(t^3)
 \end{equation}
-where norms and inner products are with respect to the
-background metric~$h$.  Since
-$|\nabla_k s|^2 \ge (\nabla_k s \cdot V)^2$ by
-Cauchy--Schwarz, the $O(\gamma^2)$ coefficient is a sum of
-squares, non-negative everywhere, and vanishes exactly when
-$X \parallel \nabla_1 s$ and $Y \parallel \nabla_2 s$.
-\end{lemma}
+passes every quadratic mixed repair identity, but contains planes with
+\begin{equation}\label{eq:coupled-kernel-quartic-obstruction}
+ \secop_{g_t}=-\delta_Ct^4+O(t^6)<0
+\end{equation}
+for all sufficiently small nonzero $t$.
+\end{corollary}
 
 \begin{proof}
-By Lemma~\ref{lem:linear-cancel}\ref{it:L-vanish}, the
-derivative term in the Riemann tensor contributes zero to
-mixed components, so the leading-order Riemann tensor is
-entirely quadratic in the Christoffel perturbations
-$\delta\Gamma$:
-\begin{equation}
-\label{eq:R2-christoffel}
-R^{(2)}_{XYXY}
-= \sum_{K}\bigl(
-  \delta\Gamma^K{}_{XY}\,\delta\Gamma_{K,XY}
-  - \delta\Gamma^K{}_{XX}\,\delta\Gamma_{K,YY}
-\bigr),
-\end{equation}
-where the sum runs over an orthonormal basis for
-$TM_1 \oplus TM_2$ and the index is raised with $h^{KM}$
-(absorbing the $g^{KM}$ correction into $O(\gamma^3)$).
-
-Since $g_{IJ}$ is \emph{exactly} linear in $\gamma$, all
-background covariant derivatives $g_{IJ;K}$ are exactly
-$O(\gamma)$, making each $\delta\Gamma$ exactly $O(\gamma)$
-with no higher-order terms.  A direct computation using
-$g_{ab;K} = -\gamma\,s_{;K}\,h_{ab}$, the conformal Hessian
-$s_{;ab} = -s\,h_{ab}$, and the commutativity of mixed
-covariant derivatives on the product background yields the
-Christoffel symbols of the first kind ($C$ on factor~1,
-$W$ on factor~2):
-\begin{alignat*}{2}
-\delta\Gamma_{C,XY}
-  &= -\tfrac{\gamma}{2}\,s_Y\,h_{CX},
-&\qquad
-\delta\Gamma_{W,XY}
-  &= -\tfrac{\gamma}{2}\,s_X\,h_{WY},
-\\
-\delta\Gamma_{C,XX}
-  &= -\tfrac{\gamma}{2}(2s_X\,h_{CX} - s_C),
-&\qquad
-\delta\Gamma_{W,XX}
-  &= -\tfrac{\gamma}{2}\,s_W,
-\\
-\delta\Gamma_{C,YY}
-  &= -\tfrac{\gamma}{2}\,s_C,
-&\qquad
-\delta\Gamma_{W,YY}
-  &= -\tfrac{\gamma}{2}(2s_Y\,h_{WY} - s_W),
-\end{alignat*}
-where $s_X = \nabla_1 s \cdot X$,
-$s_Y = \nabla_2 s \cdot Y$, and
-$s_C$, $s_W$ are the gradient components along~$C$, $W$.
-
-Substituting into~\eqref{eq:R2-christoffel}, the factor-$1$
-sum (over orthonormal~$C$) yields
-\[
-\tfrac{\gamma^2}{4}\sum_C
-\bigl[s_Y^2\,h_{CX}^2 - (2s_X\,h_{CX} - s_C)\,s_C\bigr]
-= \tfrac{\gamma^2}{4}\bigl[
-  s_Y^2 + |\nabla_1 s|^2 - 2s_X^2
-\bigr],
-\]
-and by symmetry the factor-$2$ sum gives
-$\tfrac{\gamma^2}{4}\bigl[
-  s_X^2 + |\nabla_2 s|^2 - 2s_Y^2\bigr]$.
-Adding the two sums and dividing by the area element
-$(1 - \gamma s)^2 + O(\gamma^2) = 1 + O(\gamma)$ produces
-\eqref{eq:R-expansion}.
+The expansion is the same pullback calculation as in
+\eqref{eq:gauge-repair}.  The normalized second-order tensor is $B_C$,
+which belongs to the mixed two-jet kernel.  Pullback preserves sectional
+curvature; substitute $s=t^2$ in~\eqref{eq:full-kernel-negative}.
 \end{proof}
 
-Since every $\ell = 1$ seam $s = x^T\Sigma\,y$ attains its
-extrema on $S^2 \times S^2$ (compactness), critical points
-always exist; explicitly, $(x_0, y_0)$ can be taken as any pair
-of corresponding left and right singular vectors of~$\Sigma$.
-Lemma~\ref{lem:linear-cancel}\ref{it:crit-flat} therefore
-provides a \emph{purely analytic} obstruction to strictly
-positive sectional curvature for all $\ell = 1$ seams, including
-those with distinct singular values that admit no continuous
-isometry group.
-
-\begin{theorem}[Analytic obstruction for $\ell = 1$ seams]
-\label{thm:l1-K0}
-For any $\ell = 1$ product harmonic seam on $S^2 \times S^2$
-with the Hessian metric $g = h + \gamma\,\nabla^2 s$ and
-$|\gamma|$ sufficiently small that $g > 0$:
-\begin{enumerate}[label=$(\roman*)$]
-\item At every critical point of~$s$, all mixed sectional
-  curvatures vanish.
-\item The metric admits at least three totally geodesic flat tori
-  (products of equators), on each of which $K \equiv 0$.
-\item For the isotropic case ($\sigma_1 = \sigma_2 = \sigma_3$),
-  every point of $S^2 \times S^2$ admits at least one mixed plane
-  with $K = 0$.
-\end{enumerate}
-In particular, no $\ell = 1$ seam metric has strictly positive
-mixed sectional curvature.
-\end{theorem}
-
-\begin{proof}
-By Lemma~\ref{lem:SVD}, any $\ell = 1$ seam is isometric to the
-normal form~\eqref{eq:l1-normal-form}.
-
-\smallskip\noindent\emph{Step 0: Analytic obstruction for all
-singular-value types.}
-By Lemma~\ref{lem:linear-cancel}\ref{it:crit-flat}, every mixed
-sectional curvature vanishes at each critical point of~$s$.
-Critical points always exist (compactness of $S^2 \times S^2$),
-so $K_{\min} \le 0$ globally for every $\ell = 1$ seam,
-regardless of the singular-value structure.
-Moreover, Lemma~\ref{lem:riemann-expansion} shows that the
-leading-order mixed curvature is a sum of squares at
-$O(\gamma^2)$, explaining the non-negativity at
-leading order and identifying the $K = 0$ direction
-as the gradient-parallel plane
-$X \parallel \nabla_1 s$, $Y \parallel \nabla_2 s$.
-
-\smallskip\noindent\emph{Step 1: Totally geodesic flat tori
-(analytic obstruction for all singular-value types).}
-We begin with the general $\ell = 1$ normal form
-$s = \sigma_1 x_1 x_2 + \sigma_2 y_1 y_2 + \sigma_3 z_1 z_2$
-and arbitrary distinct $\sigma_k$.
-Let $\iota$ be the coordinate reflection
-$(x,y,z) \mapsto (x,y,-z)$ on each~$S^2$.  Then
-\[
-s(\iota x_1,\,\iota x_2)
-= \sigma_1 x_1 x_2 + \sigma_2 y_1 y_2 + \sigma_3(-z_1)(-z_2)
-= s(x_1,x_2),
-\]
-so the product involution $\Phi = \iota \times \iota$ is an
-isometry of $(S^2 \times S^2, g)$.  Its fixed-point set is the
-product of equators
-\(
-N \;=\; \{z_1 = 0\} \times \{z_2 = 0\} \;\cong\; T^2,
-\)
-which is a \emph{totally geodesic} submanifold (as the
-fixed-point set of an isometry).  Parametrising by azimuthal
-angles $\phi_1, \phi_2$, the seam restricts to
-\(
-s|_N = \sigma_1 \cos\phi_1 \cos\phi_2
-     + \sigma_2 \sin\phi_1 \sin\phi_2,
-\)
-which satisfies $s_{11} = -s$ and $s_{22} = -s$ (the conformal
-Hessian property of $\cos$ and $\sin$).  Differentiating
-$\lambda_k = 1 - \gamma s$ gives $\lambda_{k,j} = -\gamma s_j$,
-while the mixed derivative of $\eta = \gamma s_{12}$ is
-$\eta_{,k} = \gamma s_{12k} = -\gamma s_k$
-(since $s_{kkj} = -(s_j)$ by differentiating $s_{kk} = -s$).
-Hence both Brioschi numerators vanish and
-$K_g(T_{(x,y)} N) = 0$ for all $(x,y) \in N$.
-The same argument applies to the reflections
-$(x,y,z) \mapsto (-x,y,z)$ and $(x,-y,z)$, producing three
-totally geodesic tori for \emph{every} $\ell = 1$ seam.
-
-For the isotropic archetype
-$s = x \cdot y$ ($\sigma_1 = \sigma_2 = \sigma_3$), a
-\emph{continuous} family of such tori exists.  Let
-$P \subset \mathbb{R}^3$ be any plane through the origin and
-$R_P$ the reflection across~$P$.  Since $R_P$ is orthogonal,
-$s(R_P x, R_P y) = s(x,y)$, giving an isometry
-$R_P \times R_P$ whose fixed-point set
-\[
-N_P \;=\; (S^2 \cap P) \times (S^2 \cap P) \;\cong\; T^2
-\]
-is a totally geodesic flat torus with the same Brioschi
-cancellation.
-
-\smallskip\noindent\emph{Step 2: Coverage (isotropic case).}
-For any generic point $(x, y) \in S^2 \times S^2$ with
-$x \neq \pm y$, take $P = \operatorname{span}(x, y)$.  Then
-$(x,y) \in N_P$, and the tangent plane $T_{(x,y)} N_P$ is a
-mixed plane (spanned by one tangent vector from each factor).
-Hence every generic point admits a mixed plane with $K = 0$;
-at the non-generic points $x = \pm y$, part~(i) applies.
-
-For the rank-$1$ case, $K = 0$ holds for \emph{all} mixed planes
-analytically (Theorem~\ref{thm:rank1-K0}).
-
-\end{proof}
-
-\begin{conjecture}[Non-negative mixed curvature for $\ell = 1$ seams]
-\label{conj:l1-nonneg}
-For any $\ell = 1$ product harmonic seam on $S^2 \times S^2$
-with $|\gamma|$ sufficiently small, the mixed sectional
-curvature is non-negative:
-\begin{equation}
-\label{eq:l1-nonneg}
-K_g(\sigma) \ge 0 \quad \text{for all mixed planes } \sigma.
+Theorem~\ref{thm:full-kernel-obstruction} includes cross-degree
+superpositions, simultaneous mixtures of both one-sided towers, and
+arbitrary additions from the full $(1,1)$ block.  For comparison,
+separated Killing variations already
+occur in the classical variation theory
+\cite{BourguignonDeschampsSentenac1973}.  We now record their exact
+fixed-mixed curvature formula and then pass to the canonical transverse
+sum in the $(1,1)$ block.  For one-forms $\xi$ on $M_1$ and $\eta$ on
+$M_2$, define
+the pure mixed symmetric tensor $B_{\xi,\eta}$ by
+\begin{equation}\label{eq:separated-kernel-tensor}
+ B_{\xi,\eta}((X,Y),(X',Y'))
+ =\xi(X)\eta(Y')+\xi(X')\eta(Y).
 \end{equation}
-Combined with Theorem~\ref{thm:l1-K0}, this would give
-$K_{\min} = 0$ at every point, for at least one mixed plane.
-\end{conjecture}
 
-\begin{remark}[Numerical evidence for Conjecture~\ref{conj:l1-nonneg}]
-\label{rem:l1-numerical}
-Lemma~\ref{lem:riemann-expansion} establishes $K \ge 0$
-at $O(\gamma^2)$ analytically, but the perturbative
-bound degrades at the gradient-parallel plane where the
-$O(\gamma^2)$ coefficient vanishes.
-That $K_g(\sigma) \ge 0$ for all mixed planes is verified by
-extensive numerical computation (companion scripts
-\texttt{test\_local\_fine.py}, \texttt{test\_fine\_scan.py}).
-At each of~$1296$ sample points on $S^2 \times S^2$, all mixed
-sectional curvatures are computed via finite differences with
-step size $h = 10^{-4}$, achieving precision~$\sim\!10^{-9}$.
-The minimum is $|K_{\min}| < 10^{-8}$ at every point, consistent
-with $K_{\min} = 0$ exactly.  Convergence under mesh refinement
-($h = 10^{-2}$ through $10^{-5}$) confirms that the negative
-values are finite-difference artefacts.
-\end{remark}
+\begin{proposition}[Separated coupled kernel]
+\label{prop:separated-kernel}
+For every background-mixed unit pair $X,Y$,
+\begin{equation}\label{eq:separated-kernel-factorization}
+ \mathfrak m_{B_{\xi,\eta}}(X,Y)
+ =(\nabla_X\xi)(X)(\nabla_Y\eta)(Y).
+\end{equation}
+Consequently $B_{\xi,\eta}$ lies in the mixed two-jet kernel if and
+only if at least one of $\xi$ and $\eta$ is a Killing one-form.
+If $\xi$ is Killing and $\eta=du$, then
+\begin{equation}\label{eq:exact-separated-gauge}
+ B_{\xi,du}=\mathcal L_{u\xi^\sharp}h,
+\end{equation}
+so the exact part of the second one-form is gauge.
 
-\subsection{The $K = 0$ locus}
-
-The zero set of the minimum mixed curvature has a clean geometric
-description:
-
-\begin{proposition}[$K = 0$ locus for $\hat{n}_1 \cdot \hat{n}_2$]
-\label{prop:K0-locus}
-For the full-rank seam $s = \hat{n}_1 \cdot \hat{n}_2$, the mixed
-plane $\sigma_0$ achieving $K_g(\sigma_0) = 0$ at each point
-$(p_1, p_2) \in S^2 \times S^2$ is determined by the weak singular
-direction of the coupling matrix~$M$:
-\begin{enumerate}[label=(\alph*)]
-\item At generic $s \in (-1, 1) \setminus \{0\}$: both singular
-  values of~$M$ are positive (namely $1$ and $|s|$), but the
-  direction corresponding to the smaller singular value $|s|$
-  defines a mixed plane with $K = 0$.
-\item At $s = 0$ ($\hat{n}_1 \perp \hat{n}_2$, a codimension-$1$
-  locus): one singular value vanishes, so the coupling matrix has
-  rank~$1$.  The decoupled direction gives $K = 0$ transparently.
-\item At $s = \pm 1$ ($\hat{n}_1 = \pm\hat{n}_2$, a
-  codimension-$2$ locus): both coupling singular values are nonzero,
-  but the conformal factor $1 - \gamma s$ makes the metric a product
-  of rescaled spheres, and all mixed curvatures vanish.
-\end{enumerate}
-In all cases, $K_{\max} > 0$ for the ``strongly coupled'' plane
-wherever $s \neq \pm 1$.
+Suppose $\xi$ is Killing and $h+sB_{\xi,\eta}$ is Riemannian.  Put
+\begin{equation}\label{eq:separated-CXY}
+ \mathcal C_{XY}
+ =\frac12\bigl(\eta(Y)d\xi(X,\cdot),
+                 \xi(X)d\eta(Y,\cdot)\bigr).
+\end{equation}
+Then every background-mixed plane satisfies the exact identity
+\begin{equation}\label{eq:separated-exact-mixed}
+ \secop_{h+sB_{\xi,\eta}}(X\wedge Y)
+ =\frac{s^2}{\Delta_s(X,Y)}
+  (h+sB_{\xi,\eta})^{-1}(\mathcal C_{XY},\mathcal C_{XY})
+ \geq0.
+\end{equation}
+If $M_1=\Sph^2$, $\xi\neq0$, and $\dim M_2\geq2$, every such ray
+nevertheless has a background-mixed zero-curvature plane.
 \end{proposition}
 
 \begin{proof}
-The singular value structure $(1, |s|)$ was established in
-Proposition~\ref{prop:coupling-svd}.  The reflection argument
-in the proof of Theorem~\ref{thm:l1-K0} identifies the
-$K = 0$ plane at each generic point $(x, y)$ as the tangent plane
-to the totally geodesic surface
-$N_P = (S^2 \cap P) \times (S^2 \cap P)$ where
-$P = \operatorname{span}(x,y)$.
+Use product-normal extensions of $X$ and $Y$.  The two pure blocks of
+$B_{\xi,\eta}$ vanish, while differentiating its mixed block twice
+gives~\eqref{eq:separated-kernel-factorization}.  A one-form $\xi$ is
+Killing exactly when $(\nabla_X\xi)(X)=0$ for every $X$.  Since the
+two factors in~\eqref{eq:separated-kernel-factorization} depend on
+independent variables, their product vanishes identically exactly when
+one of the one-forms is Killing.  Formula
+\eqref{eq:exact-separated-gauge} follows directly from the Killing
+equation.
 
-It remains to show that this tangent plane is precisely the weak
-singular direction of the coupling matrix~$M$.  Let
-$n = (x \times y)/|x \times y|$ be the unit normal to~$P$.
-The in-plane tangent vectors at~$x$ and~$y$ are
-$e_1 = n \times x \in T_x S^2$ and
-$f_1 = n \times y \in T_y S^2$, while the out-of-plane tangents
-are $e_2 = n$ (projected to $T_x S^2$, which equals~$n$ since
-$n \perp x$) and $f_2 = n$ (similarly).  By the vector identity
-$(a \times b) \cdot (c \times d) = (a \cdot c)(b \cdot d) - (a \cdot d)(b \cdot c)$:
+Let $\mathcal C$ be the first variation of the Christoffel symbol of
+the first kind.  The Killing equation gives
 \[
-M(e_1, f_1) = e_1 \cdot f_1 = (n \times x) \cdot (n \times y)
-= (n \cdot n)(x \cdot y) - (n \cdot y)(n \cdot x) = s,
+ \mathcal C_{XX}=0,
+ \qquad
+ \mathcal C_{XY}
+ =\frac12\bigl(\eta(Y)d\xi(X,\cdot),
+                 \xi(X)d\eta(Y,\cdot)\bigr).
 \]
-since $n \perp x$ and $n \perp y$.  Similarly, $M(e_2, f_2) = n \cdot n = 1$
-and $M(e_1, f_2) = M(e_2, f_1) = 0$.  Thus $M$ is diagonal in the
-basis $(e_1, e_2) \times (f_1, f_2)$ with entries $(s, 1)$, confirming
-that the $K = 0$ plane corresponds to the weak singular value
-$|s| \le 1$.
-Equivalently, the in-plane tangents $e_1, f_1$ are precisely
-the factor-gradient directions $\nabla_1 s/|\nabla_1 s|$ and
-$\nabla_2 s/|\nabla_2 s|$, so the $K = 0$ plane is the
-gradient-parallel plane identified by
-Lemma~\ref{lem:riemann-expansion}.
+The second-derivative part of the lower-index mixed curvature is
+linear in $s$ and vanishes by
+\eqref{eq:separated-kernel-factorization}.  The exact remaining term
+is therefore
+\[
+ s^2(h+sB_{\xi,\eta})^{-1}(\mathcal C_{XY},\mathcal C_{XY}),
+\]
+because the term pairing $\mathcal C_{XX}$ with
+$\mathcal C_{YY}$ is zero.  Division by the squared area proves
+\eqref{eq:separated-exact-mixed}.
 
-The three cases (a)--(c) follow: at generic $s$, the weak singular
-value $|s|$ is positive but gives $K = 0$; at $s = 0$, it vanishes
-(rank-$1$ coupling); at $s = \pm 1$, the metric becomes a product
-and all mixed curvatures vanish.  That $K_{\max} > 0$ along
-the strong singular direction follows analytically from
-Lemma~\ref{lem:riemann-expansion}: for the plane
-$X \perp \nabla_1 s$, $Y \perp \nabla_2 s$, the
-$O(\gamma^2)$ coefficient in~\eqref{eq:R-expansion}
-reduces to
-$\tfrac{\gamma^2}{4}(|\nabla_1 s|^2 + |\nabla_2 s|^2) > 0$
-whenever $\nabla s \neq 0$, which holds on the generic set
-$s \neq \pm 1$.
+A nonzero Killing field on the round $2$-sphere is rotational and has
+a zero $x$.  At $(x,y)$ choose a nonzero $Y\in\ker\eta_y$, which is
+possible when $\dim M_2\geq2$.  Then~\eqref{eq:separated-CXY} vanishes
+for every $X$, giving the final assertion.
 \end{proof}
 
-\begin{remark}[Obstruction to strict positivity]
-\label{rem:l1-obstruction}
-By Theorem~\ref{thm:l1-K0}, every $\ell = 1$ seam metric admits
-a mixed plane with $K = 0$ at critical points, and at every point
-in the isotropic case.  If Conjecture~\ref{conj:l1-nonneg} holds,
-then $K_{\min} = 0$ pointwise, and the $\ell = 1$ metric---combined
-with the within-factor curvature
-$K_k \approx 1/(1 - \gamma s)^2 > 0$---would have non-negative
-sectional curvature, as close to positive as a seam metric can get,
-but the persistent $K = 0$ plane prevents strict positivity.
-\end{remark}
+The exact parts in~\eqref{eq:exact-separated-gauge} disappear in the
+quotient by diffeomorphisms.  On a sphere the Hodge decomposition
+therefore leaves the co-closed part of the other one-form as the first
+genuinely coupled separated sector.  The following finite sum is the
+most symmetric such tensor on $\Sph^2\times\Sph^2$.
 
-\begin{remark}[Failure for $\ell \ge 2$]
-\label{rem:l2-failure}
-For $\ell \ge 2$ product harmonics, the Hessian
-$\nabla^2 Y_\ell^m$ has a nonzero trace-free component in addition
-to the conformal part, which breaks the simple conformal structure
-of the diagonal blocks.  Numerical experiments confirm that the
-mixed curvature changes sign for $\ell \ge 2$: out of $15$ tested
-pure $\ell = 2$ seams, $14$ have $K_{\mathrm{mix}} < 0$ at some
-points, and all $15$ tested mixed $\ell = 1 + \ell = 2$ seams have
-sign-changing $K_{\mathrm{mix}}$.  The conjectured non-negativity
-(Conjecture~\ref{conj:l1-nonneg}) is thus specific to the conformal
-Hessian structure of $\ell = 1$.
+Identify the two ambient Euclidean spaces with $\R^3$.  For
+$a\in\R^3$, let $K_a(x)=a\times x$ and $L_a(y)=a\times y$, and denote
+their metric-dual one-forms by $\kappa_a$ and $\lambda_a$.  For an
+orthonormal basis $a_0,a_1,a_2$ of $\R^3$, set
+\begin{equation}\label{eq:rotational-kernel}
+ B_{\mathrm{rot}}=\sum_{r=0}^2B_{\kappa_{a_r},\lambda_{a_r}}.
+\end{equation}
+Equivalently, its only nonzero block is
+\begin{equation}\label{eq:rotational-kernel-intrinsic}
+ B_{\mathrm{rot}}((X,0),(0,Y))
+ =\ip{x\times X}{y\times Y}.
+\end{equation}
 
-Note that $L_{a\alpha b\beta} = 0$ for all~$\ell$ by
-Lemma~\ref{lem:linear-cancel}\ref{it:L-vanish} (which holds
-for any~$s$), so $K_{\mathrm{mix}} = O(\gamma^2)$ regardless
-of~$\ell$.  What changes at $\ell \ge 2$ is the $O(\gamma^2)$
-Christoffel-product structure: the non-conformal diagonal blocks
-produce a sign-indefinite quadratic form, in contrast to the
-sum-of-squares of Lemma~\ref{lem:riemann-expansion}.
-Nevertheless,
-Lemma~\ref{lem:linear-cancel}\ref{it:product-crit-flat} provides
-an analytic obstruction for \emph{any} product seam: at
-simultaneous critical points of the two factors, all mixed
-curvatures vanish identically, so no product seam metric of any
-degree achieves strictly positive sectional curvature.
-Moreover, the coordinate-reflection torus argument of
-Step~1 in Theorem~\ref{thm:l1-K0} extends
-directly: any product harmonic seam
-$s = Y_\ell^m(x_1)\,Y_\ell^m(x_2)$ is invariant
-under $(x,y,z) \mapsto (x,y,-z)$ on both factors
-(and similarly for the other two coordinate reflections),
-so each provides a totally geodesic torus on which the
-seam restricts to a separable function and
-$K \equiv 0$ by the Brioschi cancellation
-(Theorem~\ref{thm:rank1-K0}).
-\end{remark}
+\begin{theorem}[A nongauge kernel ray with an oblique obstruction]
+\label{thm:rotational-kernel}
+The tensor $B_{\mathrm{rot}}$ is trace-free and divergence-free.  It is
+nonzero and $L^2$-orthogonal to all Lie derivatives and to all tensors
+pulled back from the individual factors.  In particular, it represents
+a genuinely coupled, nongauge element of the mixed two-jet kernel.
 
+The metric
+\[
+ k_s=h+sB_{\mathrm{rot}}
+\]
+has the sharp Riemannian range
+\[
+ k_s>0\quad\Longleftrightarrow\quad |s|<1.
+\]
+Throughout this interval every
+background-mixed sectional curvature is nonnegative.  At each diagonal
+point $(x,x)$ every background-mixed sectional curvature is zero.
+Nevertheless, fix an orthonormal basis $(e_0,e_1,e_2)$ of $\R^3$ and
+put $p=(e_0,e_0)$.  For $i=1,2$, define
+\[
+ E_i^+=\frac{(e_i,e_i)}{\sqrt{2(1+s)}},
+ \qquad
+ E_i^-=\frac{(e_i,-e_i)}{\sqrt{2(1-s)}}.
+\]
+The $k_s$-orthonormal plane spanned by
+\begin{equation}\label{eq:rotational-oblique-plane}
+ U=\frac{E_1^+-E_1^-}{\sqrt2},
+ \qquad
+ V=\frac{E_2^++E_2^-}{\sqrt2}
+\end{equation}
+has
+\begin{equation}\label{eq:rotational-oblique-curvature}
+ \secop_{k_s}(U\wedge V)
+ =-\frac{3s^2}{2(1-s)^2(1+s)}<0
+ \qquad(0<|s|<1).
+\end{equation}
+Thus this first transverse coupled kernel ray leaves the
+nonnegative-curvature cone immediately, despite improving no fixed
+mixed plane in the negative direction.
+\end{theorem}
 
-% ================================================================
-\section{Discussion}
-\label{sec:discussion}
-% ================================================================
+\begin{proof}
+Each $\kappa_{a_r}$ and $\lambda_{a_r}$ is Killing, so
+Proposition~\ref{prop:separated-kernel} and linearity give
+$\mathfrak m_{B_{\mathrm{rot}}}=0$.  The tensor is pure mixed, hence
+trace-free.  Its divergence vanishes because every Killing one-form is
+co-closed.  Integration by parts makes a divergence-free symmetric
+tensor $L^2$-orthogonal to every Lie derivative; pointwise block
+orthogonality gives the assertion for product tensors.
 
-\subsection{Relation to Hsiang--Kleiner}
-\label{subsec:hsiang-kleiner}
+The maps $X\mapsto x\times X$ and $Y\mapsto y\times Y$ are isometries
+on their tangent planes.  Hence
+\[
+ |B_{\mathrm{rot}}((X,0),(0,Y))|
+ \leq\norm{X}\norm{Y}.
+\]
+It follows that $k_s>0$ for $|s|<1$.  Equality is attained in this
+estimate when $x=y$ and $X=Y$, so a symmetric or antisymmetric vector
+becomes null at $s=-1$ or $s=1$, respectively; outside the closed
+interval the metric is indefinite.  This proves the sharp range.
 
-The Hsiang--Kleiner theorem~\cite{HsiangKleiner1989} shows that
-positive sectional curvature with an isometric $S^1$-action forces
-$b_2 \le 1$.  For an $\OO(2) \times \OO(2)$-equivariant seam
-$s = s(\theta_1, \theta_2)$, the product seam metric is invariant
-under $\UU(1) \times \UU(1)$-rotations in $(\phi_1, \phi_2)$, and
-hence admits an isometric circle action.  Since
-$b_2(S^2 \times S^2) = 2$, the Hsiang--Kleiner theorem immediately
-implies that $g$ cannot be positively curved.  In this sense,
-Theorem~\ref{thm:main} for equivariant seams is a special case
-of the Hsiang--Kleiner result.
+The proof of~\eqref{eq:separated-exact-mixed} applies unchanged to a
+sum whose first one-forms are Killing, proving mixed nonnegativity.
+For a rotational Killing form,
+\[
+ d\kappa_a(X,Z)=2\ip{a}{X\times Z}.
+\]
+At a diagonal point the two components of the summed covector
+$\mathcal C_{XY}$ contain scalar products between a tangent vector of
+the form $x\times Y$ and a normal vector of the form $X\times Z$;
+they vanish.  Hence all background-mixed curvatures there are zero.
 
-The value of the seam perspective is fourfold:
-\begin{enumerate}[label=(\roman*)]
-\item \emph{Constructive curvature analysis.}
-  Proposition~\ref{prop:conformal-obstruction} provides a direct,
-  elementary proof for conformal product metrics that identifies the
-  precise point and plane where $K \le 0$, rather than invoking
-  topological machinery.
-\item \emph{Curvature mechanism.}  The orbit-metric interpretation
-  (Remark~\ref{rem:orbit-metric}) identifies the Gaussian curvature
-  of the $2$-dimensional orbit metric as the obstruction mechanism,
-  and the explicit formula~\eqref{eq:K-diag-expanded} reveals its
-  structure.
-\item \emph{Non-equivariant $\ell = 1$ seams.}  The analysis of
-  \S\ref{sec:non-equivariant} applies to seams depending on all
-  four coordinates.  When the singular values of the coefficient
-  matrix $A$ are all distinct
-  (Remark~\ref{rem:symmetry-classification}), the resulting metric
-  has no continuous symmetry and Hsiang--Kleiner does not apply.
-  The discrete-involution torus argument
-  (Step~1 of Theorem~\ref{thm:l1-K0}) provides an
-  \emph{analytic} obstruction even in this genuinely
-  non-equivariant case: coordinate-plane reflections produce
-  totally geodesic flat tori on which $K \equiv 0$.
-  If Conjecture~\ref{conj:l1-nonneg} holds, then together with
-  the coupling SVD (Proposition~\ref{prop:coupling-svd}), this
-  gives $K_{\mathrm{mix}} \ge 0$ with equality at every point.
-\item \emph{Universality pathway.}  The combination of equivariant
-  (Theorem~\ref{thm:main}) and non-equivariant
-  (Theorem~\ref{thm:l1-K0}) results, together with the
-  sign-changing mixed curvature for $\ell \ge 2$
-  (Remark~\ref{rem:l2-failure}), suggests a picture where the
-  $\ell = 1$ seam metrics are the ``most positively curved'' seam
-  metrics, yet still fail to achieve strict positivity.
-\end{enumerate}
+Finally use orthographic coordinates
+\[
+ x=(\sqrt{1-|u|^2},u_1,u_2),
+ \qquad
+ y=(\sqrt{1-|v|^2},v_1,v_2)
+\]
+centered at $p$.  The mixed block is
+\[
+ (B_{\mathrm{rot}})_{i\alpha}
+ =\ip{x\times\partial_{u_i}x}
+       {y\times\partial_{v_\alpha}y}.
+\]
+Substitution into the lower-index curvature formula for the vectors
+in~\eqref{eq:rotational-oblique-plane} gives unit squared area and
+\eqref{eq:rotational-oblique-curvature}.
+\end{proof}
 
-\subsection{Toward universality}
+\begin{corollary}[The first nongauge repair fails quartically]
+\label{cor:rotational-repair}
+Let $f\in C^\infty(\Sph^2\times\Sph^2)$, put $Z=\nabla f$, and let
+$\Psi_t$ be the flow of $Z/2$.  Then
+\begin{equation}\label{eq:rotational-corrected-path}
+ g_t=\Psi_t^*(h+t^2B_{\mathrm{rot}})
+ =h+t\Hess f+t^2
+  \left(\frac18\mathcal L_Z^2h+B_{\mathrm{rot}}\right)+O(t^3).
+\end{equation}
+This path satisfies every quadratic mixed repair identity in
+Theorem~\ref{thm:integrated-two-jet}.  Nevertheless, for every
+$0<|t|<1$ it contains a plane of curvature
+\begin{equation}\label{eq:rotational-quartic-obstruction}
+ -\frac{3t^4}{2(1-t^2)^2(1+t^2)}<0.
+\end{equation}
+\end{corollary}
 
-The gap between our results and the full Hopf conjecture
-has two layers:
-the \emph{equivariance assumption} (restricting to
-$\OO(2) \times \OO(2)$-equivariant seams) and the
-\emph{universality question} (whether every Riemannian metric is
-a seam metric).  The $\ell = 1$ analysis of
-\S\ref{sec:non-equivariant} partially bridges the first gap,
-providing the obstruction $K_{\mathrm{mix}} \not> 0$ for a class
-of non-equivariant metrics.
+\begin{proof}
+The expansion follows from pullback by the flow.  Its normalized
+second-order tensor is $B_{\mathrm{rot}}$, which lies in the mixed
+two-jet kernel.  Pullback preserves sectional curvature, so substitute
+$s=t^2$ in~\eqref{eq:rotational-oblique-curvature}.
+\end{proof}
 
-Three approaches to closing these gaps fully suggest themselves:
+\section{Consequences, context, and scope}\label{sec:scope}
 
-\begin{enumerate}[label=(\roman*)]
-\item \emph{Higher-$\ell$ seams.}  For $\ell \ge 2$ product
-  harmonics, the Hessian has a nonzero trace-free part that
-  breaks the conformal structure underlying
-  Proposition~\ref{prop:conformal-hessian}, and the mixed
-  curvature changes sign
-  (Remark~\ref{rem:l2-failure}).  Unlike the $\ell = 1$ case
-  where $K_{\mathrm{mix}} \ge 0$, these seams produce genuinely
-  negative mixed curvatures.  A general proof for arbitrary
-  $\ell$ remains open, though the numerical evidence is strong.
-\item \emph{General non-product seams.}  The restriction to
-  product harmonics~\eqref{eq:product-harmonic} is a modelling
-  assumption.  Extending to sums $s = \sum_\ell s_\ell$ mixing
-  different degrees, or to non-harmonic seams, requires new
-  analysis.  Since $\ell = 1$ gives $K_{\mathrm{mix}} \ge 0$ and
-  $\ell \ge 2$ gives sign-changing $K_{\mathrm{mix}}$, any mixed
-  seam inherits the sign-changing behaviour from its higher-degree
-  components.  A partial exception: any seam of the form
-  $s = F(s_1)$ for an arbitrary smooth $F$ and an $\ell = 1$
-  harmonic $s_1$ inherits the coordinate-plane reflection
-  symmetries of~$s_1$, so the totally geodesic torus obstruction
-  of Theorem~\ref{thm:l1-K0} applies to this
-  (non-harmonic, mixed-degree) class.
-\item \emph{Density of seam metrics.}  A single seam metric
-  $g_s$ depends on one scalar function $s$ of four variables
-  (plus finitely many rule coefficients), whereas a generic
-  Riemannian metric on a $4$-manifold has $10$ independent
-  functional degrees of freedom.  The Nash Embedding
-  Theorem~\cite{Nash1956} bridges this gap: every Riemannian
-  metric can be realised as the pullback of the Euclidean metric
-  via an isometric embedding into $\mathbb{R}^N$, i.e.\
-  $g = \sum_{k=1}^{N} ds_k \otimes ds_k$ for coordinate
-  functions $s_1, \dots, s_N$.  In the language of seam geometry,
-  every metric is therefore a \emph{multi-seam metric} generated
-  by $N$ scalar fields under the flat sum rule.  This
-  motivates studying the single-seam case as the fundamental
-  building block: if the mixed-curvature obstruction persists for
-  each constituent seam, it constrains the full metric.  Whether
-  the single-seam obstruction extends to $N$-seam rules, and
-  whether the seam map is $C^2$-dense in the space of metrics
-  (up to diffeomorphism), is the universality problem
-  of~\cite{Ronnback2025jet}.
-\end{enumerate}
+\subsection{The four-dimensional Hopf case}
 
-\subsection{The torus as a unifying obstruction}
+On $\Sph^2\times\Sph^2$, every bilinear product of degree-one
+spherical harmonics has the form $s_A$.  Orthogonal changes of
+coordinates in the two factors reduce $A$ to singular-value form, so
+Theorem~\ref{thm:main} is a classification-free result for the whole
+nine-dimensional space of such potentials.  On the open dense stratum
+$\sigma_1>\sigma_2$, Theorem~\ref{thm:spectral-gap} detects the
+negative curvature on an explicit background-mixed plane.  On the
+exceptional stratum $\sigma_1=\sigma_2$, the flat-torus theorem
+supplies three embedded zero-curvature loci, while
+Proposition~\ref{prop:top-critical-oblique} detects strict negative
+curvature on an explicit oblique plane.
+At the isotropic endpoint $\sigma_1=\sigma_2=\sigma_3$,
+Theorem~\ref{thm:isotropic-mixed} goes further and proves that every
+background-mixed curvature is nonnegative on the full Riemannian
+interval.  Thus the isotropic endpoint makes the distinction between
+background-mixed and oblique planes unavoidable.  Specializing
+Corollary~\ref{cor:complete-isolation} shows that every nontrivial ray
+in the whole nine-dimensional family leaves the
+nonnegative-curvature cone immediately.  The top-critical oblique
+mechanism works throughout rank at least two, the zero-critical
+oblique mechanism handles rank one, and the simple-top stratum
+additionally admits the background-mixed spectral-gap mechanism.
+Corollary~\ref{cor:two-jet-cost} strengthens the local conclusion:
+after the infinitesimal diffeomorphism has been removed, every
+nonzero ray already has a negative quadratic mixed-curvature
+coefficient.  Thus the quartic spectral-gap plane is a special
+background-mixed phenomenon, not the first obstruction among all
+planes.
 
-A striking pattern emerges across all the results of this paper:
-every obstruction to positive sectional curvature ultimately
-manifests on a $2$-torus $T^2 \hookrightarrow S^2 \times S^2$.
-For equivariant seams, the Hsiang--Kleiner proof uses the
-fixed-point set of the circle action---a torus.  For conformal
-products, the maximum-principle argument locates a non-positive
-curvature on a mixed plane tangent to a product of great circles
-(the Gauss--Bonnet interpretation is implicit: the maximum point
-lies on a flat torus $S^1 \times S^1$, on which curvature must
-change sign).
-For $\ell = 1$ non-equivariant seams, the discrete-involution torus
-provides the obstruction directly.  In each case, the mechanism is
-the same: the Gauss--Bonnet theorem forces
-$\int_{T^2} K\,dA = 2\pi\chi(T^2) = 0$, so if
-$T^2$ is totally geodesic (or even minimal with controlled second
-fundamental form), the sectional curvature cannot be everywhere
-positive on it.
+This conclusion is independent of the Hsiang--Kleiner theorem.  In the
+generic full-rank case the inherited background symmetry is finite, so
+one cannot obtain the conclusion merely by pointing to an inherited
+circle action; Theorem~\ref{thm:spectral-gap} in fact gives strict
+negative curvature there.  Conversely,
+Corollary~\ref{cor:curvature-symmetry} records that the repeated-top
+case does retain an inherited circle action, but the explicit oblique
+calculation already proves negative curvature there.  We emphasize
+again that this does not prove the full isometry group is finite in the
+generic case; it shows only that the direct curvature and flat-torus
+arguments do not need continuous inherited symmetry there.
 
-This suggests a conjectural route to the full Hopf conjecture:
-\emph{every} Riemannian metric on $S^2 \times S^2$ should admit a
-totally geodesic or minimal torus.  This idea is classical:
-by the Gauss equation, a totally geodesic $T^2$ in a positively
-curved $4$-manifold would have $K_{T^2} = K_M(TT^2) > 0$
-everywhere, contradicting $\chi(T^2) = 0$ via Gauss--Bonnet.
-More generally, for a minimal (not necessarily totally geodesic)
-surface $N^2 \hookrightarrow M^4$ with second fundamental
-form~$A$, the Gauss equation gives
-$K_N = K_M(TN) + \det(A_\nu)$ for each normal direction~$\nu$.
-The Lawson--Simons theorem~\cite{LawsonSimons1973}
-shows that in a positively curved ambient manifold, no stable
-minimal submanifold of certain dimensions can exist.  A proof that
-every metric on $S^2 \times S^2$ admits a stable minimal
-torus---or a totally geodesic one---would therefore settle the
-conjecture.
+\subsection{Relation to deformations of product metrics}
 
-The seam analysis provides evidence for this picture: across all
-seam metrics studied, the torus obstruction appears universally,
-whether furnished by continuous symmetry, discrete involution,
-or the algebraic structure of the seam itself.
+Bourguignon's work placed deformations of product metrics into the
+broader study of Hopf's conjecture
+\cite{Bourguignon1975,BourguignonDeschampsSentenac1973}.  The family
+considered here is a particular exact Hessian deformation through the
+round product.  Its special feature is not a general stability theorem
+for product metrics, but an algebraic compatibility between singular
+two-planes and fixed-point geometry.  That compatibility persists for
+the entire interval~\eqref{eq:pd-range}, including parameters far from
+the infinitesimal regime.
 
-\subsection{Other product manifolds}
+The mixed-curvature calculation adds a complementary point.  On each
+fixed background-mixed plane its second-order term is nonnegative,
+which is compatible with the classical infinitesimal analysis of
+product variations \cite{BourguignonDeschampsSentenac1973}.
+Theorem~\ref{thm:spectral-gap} shows that when this coefficient
+vanishes, the first negative term on a distinguished background-mixed
+plane can be quartic.  Theorem~\ref{thm:two-jet} explains why this does
+not make the full metric deformation second-order nonnegative: after
+gauge normalization, a moving oblique plane becomes a fixed mixed
+plane, and Corollary~\ref{cor:two-jet-cost} gives its negative
+quadratic coefficient.  A nonlinear continuation can therefore
+survive the two-jet test only if its correction tensor $B$ cancels the
+quadratic mixed-curvature functional everywhere.  The integrated
+identity~\eqref{eq:integrated-two-jet} forces equality, and the
+singular planes give the explicit costs
+\eqref{eq:two-jet-cost-rank-two} and
+\eqref{eq:two-jet-cost-rank-one}.  The canonical gauge correction
+\eqref{eq:gauge-repair} shows that this system is consistent, but by
+itself produces no new geometry.
+Theorem~\ref{thm:full-coupled-kernel} identifies the entire quadratic
+kernel modulo gauge and product tensors; on $\Sph^2\times\Sph^2$ it
+leaves only the bidegrees $(1,\ell)$ and $(\ell,1)$.
+Theorem~\ref{thm:full-kernel-obstruction} tests every nonzero element
+of that quotient at once: a moving plane has negative curvature at
+order $s^2$, even for cross-degree superpositions, simultaneous
+two-tower mixtures, and arbitrary $(1,1)$ components.  The
+corresponding canonical corrected Hessian path fails at order $t^4$.
+Proposition~\ref{prop:separated-kernel} gives the exact nonlinear
+mixed-curvature formula for its separated elements.  The rotational
+tensor in Theorem~\ref{thm:rotational-kernel} is transverse to the
+diffeomorphism orbit and makes every fixed background-mixed curvature
+nonnegative.  Its explicit oblique curvature is nevertheless negative
+at order $s^2$, or order $t^4$ in the corrected Hessian path of
+Corollary~\ref{cor:rotational-repair}.  Thus passing the complete
+quadratic mixed test and the ensuing fixed-mixed quartic test is still
+not enough to control nearby oblique planes.
 
-The seam framework and Hsiang--Kleiner argument extend to other
-products $S^{n_1} \times S^{n_2}$: any $\OO(n_1) \times
-\OO(n_2)$-equivariant seam metric on such a product inherits a
-continuous symmetry, and the topological constraints on positively
-curved manifolds with symmetry apply.  The conformal product
-obstruction (Proposition~\ref{prop:conformal-obstruction}) and the
-orbit-metric curvature analysis generalise naturally.  Products
-$S^2 \times S^{2k}$ for $k \ge 1$ and
-$\mathbb{CP}^m \times \mathbb{CP}^n$ are natural targets for
-extension.
+Symmetry-based obstructions remain among the strongest general results
+related to Hopf's question.  Hsiang and Kleiner proved that a positively
+curved oriented four-manifold with an isometric circle action has
+$b_2\leq1$ \cite{HsiangKleiner1989}; Amann and Kennard established
+higher-dimensional product obstructions under quantitative torus
+symmetry assumptions \cite{AmannKennard2017}.  Other authors have
+treated special metric forms, including conformal and doubly warped
+products \cite{SeckNiangMasiello2022}.  Our result is complementary:
+the metrics generally have mixed Hessian blocks and need not be
+conformal or warped, while their obstruction is an explicit flat
+submanifold rather than a conclusion drawn from an effective torus
+action.
 
+\subsection{Higher-dimensional content and limitations}
 
-% ================================================================
-% References
-% ================================================================
+The construction and the curvature isolation theorem are
+dimension-independent.  For
+$q=\min\{m+1,n+1\}$ it yields at least $\binom q2$ tori for each
+singular frame, so the number of certified zero-curvature loci grows
+quadratically with the smaller ambient dimension.  This gives a
+family-level obstruction on every product of positive-dimensional
+spheres.  When both spheres have dimension at least two, the
+singular-subsphere reduction promotes the four-dimensional
+top-critical calculation to every ambient dimension.  Combined with
+the rank-one zero-critical calculation, it shows that every
+nontrivial bilinear Hessian ray leaves the nonnegative-curvature cone
+immediately, with the failure always detected inside the top-three singular
+$\Sph^2\times\Sph^2$.  Corollary~\ref{cor:uniform-negative-margin}
+upgrades this qualitative statement to an explicit dimension-free
+negative bound on every normalized annulus away from the product
+metric and the Riemannian boundary.
 
-\backmatter
+The result should not be read as a curvature classification of
+$g_{\gamma,A}$.  We give an exact formula for every background-mixed
+plane and determine a distinguished collection of zero sectional
+curvatures.  Proposition~\ref{prop:top-critical-oblique} determines
+one distinguished oblique plane for every matrix of rank at least two,
+which is enough, together with the rank-one zero-critical plane, for
+complete ray isolation in all dimensions at least two.  We do not
+classify all planes whose spanning vectors both have components in
+both factors.
+Nor do Hessian deformations $h+\gamma\Hess s_A$ exhaust all metrics on
+a product of spheres.  The two-jet theorem constrains arbitrary
+nonlinear paths sharing the same Hessian first variation, and the
+integrated theorem shows that a nonnegative path must cancel every
+quadratic mixed-curvature coefficient.  This cancellation is feasible:
+the gauge correction does it identically, and product variations lie
+in the kernel as well.  Theorem~\ref{thm:full-coupled-kernel}
+classifies the full quotient and shows that one harmonic leg must be
+Killing.  Proposition~\ref{prop:separated-kernel} gives the exact
+background-mixed curvature of separated representatives, and
+Theorem~\ref{thm:full-kernel-obstruction} obstructs every nonzero
+coupled kernel ray, including arbitrary mixtures of all allowed
+harmonic sectors.
+Theorem~\ref{thm:rotational-kernel} settles the canonical $(1,1)$ sum
+by an exact formula.  What remains open is not a sector of the
+quadratic kernel, but the higher-jet problem: arbitrary third- and
+higher-order corrections can enter before or at the quartic
+obstruction of a canonical corrected path.  A broader obstruction
+would require compatibility conditions on those higher jets, a
+substantially larger class of first variations, or a full curvature
+analysis.  The present kernel-ray results are sharp in their stated
+class.
 
-\bmhead{Acknowledgements}
+\subsection{Verification}
 
-Not applicable.
+The arguments combine the Hessian identity~\eqref{eq:hessian}, the
+two-frame singular-value principle, the exact mixed-curvature
+identity, and the fixed-point lemma for isometries.  As an independent
+check against coordinate or sign errors,
+the source distribution includes the script
+\path{verify_hessian_tori.py}.  It constructs the induced torus
+metric from~\eqref{eq:phi-uv}, computes its Levi-Civita connection and
+Riemann tensor directly, and verifies symbolically that its Gaussian
+curvature is zero.  It also checks the separated normal form and the
+sharp endpoint degeneracies.  The companion script
+\path{verify_mixed_curvature_counterexample.py} differentiates
+the full orthographic-coordinate metric symbolically and checks the
+mixed-curvature identity, the spectral-gap formula, the simple
+zero-threshold specialization, the plane-wise nonzero threshold, and
+the isotropic quaternion factorization, the uniform top-critical
+oblique-plane curvature, its two-jet coefficient, and the rank-one
+zero-critical specialization using exact arithmetic.  The separate
+script \path{verify_killing_kernel.py} checks the diagonal rotational
+kernel metric, its sharp Riemannian boundary, its flat diagonal mixed
+plane, and its exact negative oblique curvature.  The script
+\path{verify_coupled_kernel_classification.py} checks the factorization
+through the two Killing operators, the tensor-product nullity formula,
+and the gauge/co-closed normal form in an exact finite-mode model.  Finally,
+\path{verify_coupled_kernel_obstruction.py} differentiates the exact
+orthographic-coordinate metric, recovers the general two-parameter
+moving-plane coefficient, tests a nonseparated degree-two vector
+harmonic, and verifies the signed-SVD obstruction for an arbitrary
+$(1,1)$ block.
 
-\section*{Declarations}
+\section*{Acknowledgments}
 
-\bmhead{Funding}
+The author used large-language-model assistance during the process of
+symbolic checking, editorial restructuring, and code preparation.  All
+mathematical claims and proofs remain the responsibility of the author.
 
-Not applicable.
+\begin{thebibliography}{10}
 
-\bmhead{Competing interests}
+\bibitem{Amann2021}
+M.~Amann,
+\emph{Bounds on sectional curvature and interactions with topology},
+Jahresber. Dtsch. Math.-Ver. \textbf{123} (2021), 27--55,
+\href{https://doi.org/10.1365/s13291-020-00225-x}{doi:10.1365/s13291-020-00225-x}.
 
-The author declares no competing interests.
+\bibitem{AmannKennard2017}
+M.~Amann and L.~Kennard,
+\emph{On a generalized conjecture of Hopf with symmetry},
+Compos. Math. \textbf{153} (2017), no.~2, 313--322,
+\href{https://doi.org/10.1112/S0010437X16008150}{doi:10.1112/S0010437X16008150}.
 
-\bmhead{Use of large language models (LLMs)}
+\bibitem{BourguignonDeschampsSentenac1972}
+J.-P.~Bourguignon, A.~Deschamps, and P.~Sentenac,
+\emph{Conjecture de H.~Hopf sur les produits de vari\'et\'es},
+Ann. Sci. \'{E}cole Norm. Sup. (4) \textbf{5} (1972), 277--302,
+\href{https://doi.org/10.24033/asens.1229}{doi:10.24033/asens.1229}.
 
-During preparation of this manuscript, the author used large language
-models to assist with drafting and editing text and with exploring
-alternative expositions.  The author reviewed and edited the
-resulting content and takes full responsibility for the manuscript.
+\bibitem{BourguignonDeschampsSentenac1973}
+J.-P.~Bourguignon, A.~Deschamps, and P.~Sentenac,
+\emph{Quelques variations particuli\`eres d'un produit de m\'etriques},
+Ann. Sci. \'{E}cole Norm. Sup. (4) \textbf{6} (1973), 1--16,
+\href{https://doi.org/10.24033/asens.1240}{doi:10.24033/asens.1240}.
 
-\bmhead{Data availability}
+\bibitem{Bourguignon1975}
+J.-P.~Bourguignon,
+\emph{Some constructions related to H.~Hopf's conjecture on product manifolds},
+in \emph{Differential Geometry}, Proc. Sympos. Pure Math., vol.~27,
+part~1, Amer. Math. Soc., Providence, RI, 1975, pp.~33--37,
+\href{https://doi.org/10.1090/pspum/027.1/9936}{doi:10.1090/pspum/027.1/9936}.
 
-Not applicable.
-
-\bmhead{Code availability}
-
-Not applicable.
-
-\bmhead{Author contribution}
-
-The author wrote the manuscript.
-
-\begin{thebibliography}{99}
-
-\bibitem{Ronnback2025jet}
-L.~R\"onnb\"ack,
-``Seam Geometry: A Jet-Theoretic Framework for the Scalar Generation
-of Geometric Structures,''
-preprint, 2025.
-
-\bibitem{Ronnback2025complex}
-L.~R\"onnb\"ack,
-``Complex Seam Geometry: A Jet-Theoretic Framework for the Hermitian
-Generation of Geometric Structures,''
-preprint, 2025.
+\bibitem{Bhatia1997}
+R.~Bhatia,
+\emph{Matrix Analysis}, Graduate Texts in Mathematics, vol.~169,
+Springer, New York, 1997.
 
 \bibitem{HsiangKleiner1989}
 W.-Y.~Hsiang and B.~Kleiner,
-``On the topology of positively curved 4-manifolds with symmetry,''
-\textit{J.\ Differential Geom.} \textbf{29} (1989), no.~3, 615--621.
+\emph{On the topology of positively curved $4$-manifolds with symmetry},
+J. Differential Geom. \textbf{29} (1989), no.~3, 615--621,
+\href{https://doi.org/10.4310/jdg/1214443064}{doi:10.4310/jdg/1214443064}.
 
-
-
-\bibitem{Nash1956}
-J.~Nash,
-``The imbedding problem for Riemannian manifolds,''
-\textit{Ann.\ of Math.} \textbf{63} (1956), no.~1, 20--63.
-
-\bibitem{LawsonSimons1973}
-H.~B.~Lawson and J.~Simons,
-``On stable currents and their application to global problems in
-real and complex geometry,''
-\textit{Ann.\ of Math.} \textbf{98} (1973), no.~3, 427--450.
-
-\bibitem{GoldbergKobayashi1967}
-S.~I.~Goldberg and S.~Kobayashi,
-``Holomorphic bisectional curvature,''
-\textit{J.\ Differential Geom.} \textbf{1} (1967), 225--233.
+\bibitem{SeckNiangMasiello2022}
+T.~Seck, A.~Niang, and A.~Masiello,
+\emph{Conformal metrics to a product or doubly warped product on
+$S^2\times S^2$ and the Hopf conjecture},
+J. Math. \textbf{2022} (2022), Article ID 6268017,
+\href{https://doi.org/10.1155/2022/6268017}{doi:10.1155/2022/6268017}.
 
 \end{thebibliography}
 

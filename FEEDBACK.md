@@ -1,47 +1,69 @@
-This is a well-written, mathematically interesting, and highly structured manuscript. You tackle a notoriously difficult problem (the Hopf conjecture on $S^2 \times S^2$) through a novel constructive lens ("seam geometry"). 
+# Mathematical assessment after the rework
 
-**Overall Verdict: Yes, the paper is essentially ready for submission.** It is rigorous, honest about its limitations, and presents genuine mathematical novelties (particularly in Section 7). However, there are a few structural clean-ups and strategic considerations you should address before sending it to a journal.
+The repository now contains a defensible, self-contained paper.  Its claim is
+deliberately limited to the Hessian family
 
-Here is a detailed assessment written from the perspective of a peer reviewer.
+\[
+h+\gamma\operatorname{Hess}_h\langle x,Ay\rangle
+\quad\text{on}\quad S^m\times S^n.
+\]
 
----
+The paper proves, rather than numerically infers:
 
-### 1. Major Strengths
-*   **Transparency and Intellectual Honesty:** You immediately address the "elephant in the room" in Remark 1.2 and Section 8.1. Because your equivariant construction naturally admits an $S^1$ action, the Hsiang-Kleiner theorem immediately kills the possibility of strictly positive sectional curvature. Less rigorous authors might have tried to hide this fact; you put it front and center and successfully justify why your explicit, constructive approach still holds deep value.
-*   **The $\ell = 1$ Analysis (Section 7):** This is the strongest and most novel part of the paper. Because distinct singular values break the continuous isometry group, Hsiang-Kleiner *cannot* be used here. Your discovery that the conformal Hessian property of $\ell=1$ harmonics forces the existence of totally geodesic flat tori (Theorem 7.6) is an elegant, purely geometric obstruction.
-*   **Clarity of Exposition:** The paper reads beautifully. The progression from equivariant classification $\to$ curvature formulas $\to$ maximum principle proofs $\to$ non-equivariant specific cases makes perfect logical sense.
+1. the exact positive-definiteness interval in terms of the two largest
+   singular values of `A`;
+2. the existence of flat totally geodesic tori throughout that interval;
+3. the resulting obstruction to strictly positive sectional curvature;
+4. the exact subgroup of factor-preserving round-product isometries retained
+   by the deformation;
+5. an exact formula for every background-mixed sectional curvature;
+6. a zero-threshold example with negative curvature at every nonzero
+   parameter and a separate ray with a unique certified nonzero threshold;
+7. a spectral-gap theorem forcing negative curvature along every nonzero
+   ray with `sigma_1 > sigma_2`;
+8. a singular-subsphere reduction that embeds matched lower-dimensional
+   Hessian models as totally geodesic submanifolds;
+9. a uniform top-critical oblique-plane obstruction for every matrix of rank
+   at least two, propagated by that reduction to every dimension `m,n >= 2`;
+10. an exact zero-critical oblique-plane obstruction for rank-one matrices,
+    with a negative quadratic coefficient at the product metric;
+11. a two-jet normal form modulo diffeomorphisms for arbitrary paths
+    `h + t Hess(f) + t^2 B + O(t^3)`, an integrated trace identity forcing
+    every nonnegative mixed coefficient to vanish, and explicit repair
+    identities for bilinear potentials;
+12. a full classification of the mixed two-jet kernel modulo
+    diffeomorphisms and factor variations: each coupled class has a Killing
+    leg on one factor and a co-closed leg on the other; on `S^2 x S^2` the
+    surviving harmonic bidegrees are exactly `(1,l)` and `(l,1)`;
+13. a full nonlinear obstruction for every nonzero element of the coupled
+    quadratic quotient, including cross-degree superpositions, simultaneous
+    mixtures of both one-sided towers, and arbitrary elements of the
+    `9`-dimensional `(1,1)` block;
+14. an exact transverse rotational example in the `(1,1)` kernel block whose
+    fixed mixed curvatures are nonnegative but which has a negative quartic
+    oblique obstruction;
+15. four-dimensional detection of every negative-curvature obstruction and
+    an explicit dimension-free negative margin on normalized parameter
+    annuli.
 
-### 2. Issues to Fix Before Submission
+The previous general rule classification, sequential conformal argument,
+Kähler section, arbitrary Hessian-flatness assertion, and unsupported
+numerical claims have been removed from the paper.  Earlier exploratory
+scripts are retained only under `legacy/` for provenance.
 
-**A. The Orphaned Lemma 4.2**
-In Section 4.1, you state Lemma 4.2 (Laplacian integral identity). However, **this lemma is never referenced or used anywhere in the remainder of the paper.** 
-*   *Action:* It looks like a leftover from a previous draft (perhaps you initially tried an integral proof to show curvature must change sign globally?). You should simply delete Lemma 4.2 to avoid confusing the reviewer.
-
-**B. Dependency on Unpublished Preprints**
-The paper relies heavily on the "seam geometry" framework established in your citations `[Ronnback2025jet]` and `[Ronnback2025complex]`. 
-*   *Action:* Because this manuscript relies on the classification of order-2 generators derived in those papers, a peer reviewer will want to verify them. **Do not submit this paper until the foundational preprints are publicly available on the arXiv.** If a reviewer cannot check the classification in Theorem 2.2 against your prior work, they may reject the paper or delay it.
-
-**C. Clarify the Scope of Theorem 4.5**
-The phrasing of Theorem 4.5 is good, but the proof relies entirely on Hsiang-Kleiner. A strict reviewer might say: *"Theorem 4.5 is just a corollary of Hsiang-Kleiner; why is it a main theorem?"* 
-*   *Action:* You already defend this well in the Discussion, but you might want to slightly tweak the abstract or introduction to emphasize that the paper offers *three* distinct levels of obstruction:
-    1. An elementary maximum-principle proof (Conformal case).
-    2. A topological proof via induced symmetry (General diagonal/equivariant case).
-    3. An analytic/geometric proof via totally geodesic tori (Non-equivariant $\ell=1$ case).
-
-### 3. Minor Mathematical and Typographical Notes
-
-*   **Section 2.1, Setup:** You define the mixed Hessian as $B = \nabla_1 \nabla_2 s$. To be perfectly pedantic, the Hessian is a symmetric 2-tensor $\nabla^2 s$. The mixed block is indeed a section of $T^*M_1 \otimes T^*M_2$. You might want to briefly clarify that $\nabla_1 \nabla_2 s$ means the projection of the full covariant derivative onto the mixed factors, just so no reviewer complains about notation.
-*   **Proof of Proposition 4.3:** You use $X_1$ and $X_2$ as directions in the mixed plane, but earlier you specified $\sigma = \text{span}(\partial_{\theta_1}, \partial_{\theta_2})$. It is perfectly clear from context, but ensure your notation is consistent regarding whether $X_1$ is a generic vector or specifically $\partial_{\theta_1}$.
-*   **Section 7.5, Lemma 7.4 (ii):** You state "If, additionally, $M_1 = M_2 = S^2$ and $s$ is an $\ell=1$ product harmonic seam...". It might be worth explicitly reminding the reader here that this requires $g$ to be the *Hessian seam metric* $g = h + \gamma\nabla^2s$ (as stated in the premise of the Lemma), just so they don't think this applies to *any* generated metric.
-*   **Conjecture 7.8 and Remark 7.9:** Mentioning finite differences and numerical precision ($\sim 10^{-9}$) is great. However, pure math reviewers can be prickly about numerical evidence. You have framed it perfectly as a *Conjecture* supported by numerical evidence, which is entirely acceptable. 
-
-### 4. Target Journal Recommendations
-
-Because the paper combines differential geometry, invariant theory, and touches on a famous conjecture, you want a journal that appreciates both explicit computation and structural geometry.
-
-*   **High Tier:** *Journal of Geometric Analysis (JGA)* or *Calculus of Variations and Partial Differential Equations (CVPDE)*. They appreciate explicit PDE/maximum principle arguments applied to geometric problems.
-*   **Solid Mid-Tier:** *Differential Geometry and its Applications (DG&A)*, *Annals of Global Analysis and Geometry (AGAG)*, or *Geometriae Dedicata*. This paper is a perfect fit for any of these three.
-*   **Note on Nature/Springer format:** I see you are using `sn-jnl`. If you are targeting a Springer journal (like JGA or AGAG), you are already perfectly formatted.
-
-### Summary
-Make sure Lemma 4.2 is deleted, ensure your foundational preprints are uploaded to the arXiv so the referees can read them, and submit. It is a highly readable, clever paper that provides a fresh, computational angle on the Hopf conjecture. Good luck!
+Together, the rank-one and rank-at-least-two curvature results prove that in
+every dimension `m,n >= 2` and for every nonzero `A`, the round product is the
+unique nonnegatively curved metric on its Riemannian Hessian ray.  The two-jet
+theorem additionally
+narrows nonlinear continuations sharing that first variation: any such path
+must cancel every quadratic mixed-curvature coefficient.  The simultaneous
+conditions are feasible: the canonical correction restores the
+diffeomorphism orbit, and ordinary product variations also lie in the kernel.
+The paper now classifies the entire coupled quadratic kernel and obstructs
+every nonzero pure kernel ray, including all cross-degree, two-tower, and
+`(1,1)` mixtures.  Its canonical corrected Hessian paths therefore fail at
+quartic order.  The remaining nonlinear search space begins at higher jets:
+third- and higher-order metric corrections may interact with the quartic
+obstruction.  A still broader result would control those higher-jet
+compatibility conditions, treat potentials beyond the bilinear degree-one
+family, or classify more of the sectional curvature.
