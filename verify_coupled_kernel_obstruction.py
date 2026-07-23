@@ -8,6 +8,28 @@ import sympy as sp
 from verify_killing_kernel import curvature_at_origin
 
 
+def sphere_average(polynomial: sp.Expr, variables: tuple[sp.Symbol, ...]) -> sp.Expr:
+    """Integrate a polynomial over the unit two-sphere with probability area."""
+    expanded = sp.Poly(sp.expand(polynomial), *variables)
+    result = 0
+    for powers, coefficient in expanded.terms():
+        if any(power % 2 for power in powers):
+            continue
+        half_powers = tuple(power // 2 for power in powers)
+        numerator = sp.prod(sp.factorial2(2 * power - 1) for power in half_powers)
+        denominator = sp.factorial2(2 * sum(half_powers) + 1)
+        result += coefficient * numerator / denominator
+    return sp.factor(result)
+
+
+def tangential_gradient(
+    polynomial: sp.Expr, variables: tuple[sp.Symbol, ...]
+) -> sp.Matrix:
+    ambient_gradient = sp.Matrix([sp.diff(polynomial, variable) for variable in variables])
+    radial = sp.Matrix(variables)
+    return sp.simplify(ambient_gradient - radial * ambient_gradient.dot(radial))
+
+
 def verify_general_coupled_moving_plane_coefficient() -> None:
     """Check the two-parameter moving-plane formula for a general kernel jet."""
     p, q, r, t, parameter, shift_second, shift_first = sp.symbols(
@@ -230,6 +252,51 @@ def verify_full_one_one_block() -> None:
     assert sp.factor(coefficient + tau_1**2 + tau_3**2) == 0
 
 
+def verify_cross_degree_frame_average() -> None:
+    """Check the positive averaged defect for an exact degree-two/three sum."""
+    y_0, y_1, y_2 = sp.symbols("y_0 y_1 y_2", real=True)
+    amplitude_2, amplitude_3 = sp.symbols("amplitude_2 amplitude_3", real=True)
+    variables = (y_0, y_1, y_2)
+    harmonic_2 = y_0 * y_1
+    harmonic_3 = y_0 * y_1 * y_2
+    mixed_harmonic = amplitude_2 * harmonic_2 + amplitude_3 * harmonic_3
+    gradient = tangential_gradient(mixed_harmonic, variables)
+    norm = sphere_average(mixed_harmonic**2, variables)
+    energy = sphere_average(gradient.dot(gradient), variables)
+    assert sp.factor(norm - amplitude_2**2 / 15 - amplitude_3**2 / 105) == 0
+    assert (
+        sp.factor(energy - 6 * amplitude_2**2 / 15 - 12 * amplitude_3**2 / 105)
+        == 0
+    )
+    averaged_defect = sp.factor((energy / 2 - norm) / 3)
+    assert (
+        sp.factor(averaged_defect - 2 * amplitude_2**2 / 45 - amplitude_3**2 / 63)
+        == 0
+    )
+
+    # Degree-one (the matrix block) has zero cross average against the
+    # higher modes, so it cannot cancel the strictly positive defect.
+    linear_coefficients = sp.symbols("m_0 m_1 m_2", real=True)
+    linear_harmonic = sum(
+        coefficient * variable
+        for coefficient, variable in zip(linear_coefficients, variables)
+    )
+    linear_gradient = tangential_gradient(linear_harmonic, variables)
+    assert (
+        sp.factor(sphere_average(linear_harmonic * mixed_harmonic, variables))
+        == 0
+    )
+    assert (
+        sp.factor(sphere_average(linear_gradient.dot(gradient), variables))
+        == 0
+    )
+    spectral_cross = sphere_average(
+        linear_gradient.dot(gradient) / 2 - linear_harmonic * mixed_harmonic,
+        variables,
+    )
+    assert sp.factor(spectral_cross) == 0
+
+
 def verify_spectral_gap() -> None:
     degree = sp.symbols("ell", integer=True, positive=True)
     eigenvalue = degree * (degree + 1)
@@ -243,11 +310,13 @@ def main() -> None:
     verify_generic_moving_plane_coefficient()
     verify_nonseparated_degree_two_mode()
     verify_full_one_one_block()
+    verify_cross_degree_frame_average()
     verify_spectral_gap()
     print("PASS coupled kernel: general two-parameter moving-plane coefficient")
     print("PASS one-sided towers: generic moving-plane coefficient")
     print("PASS one-sided towers: nonseparated degree-two mode")
     print("PASS coupled kernel: arbitrary (1,1) signed-SVD block")
+    print("PASS coupled kernel: exact cross-degree average and tower orthogonality")
     print("PASS one-sided towers: spherical spectral gap lambda_l > 2")
 
 

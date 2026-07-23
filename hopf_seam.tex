@@ -1852,9 +1852,11 @@ level and without a separability assumption.
 
 Nearby moving planes already appear in the classical higher-order analysis
 of Bourguignon--Deschamps--Sentenac
-\cite{BourguignonDeschampsSentenac1973}.  For the round sphere, the
-Killing-operator normal form and the spherical spectral gap make their sign
-explicit on every one-sided harmonic level.
+\cite[Props.~5.7 and~5.9]{BourguignonDeschampsSentenac1973}, where
+separated Killing variations and a related field-valued class are
+obstructed.  Here the coupled-kernel classification, a two-curl coefficient,
+and the spherical spectral gap make the sign explicit for arbitrary sums in
+the full quotient.
 
 Identify the Killing one-forms on the first $\Sph^2$ with $\R^3$ by
 $a\mapsto\kappa_a$, where $\kappa_a$ is dual to $x\mapsto a\times x$.
@@ -2025,8 +2027,9 @@ displacements are respectively
 Finally, the first variation of the Christoffel symbol on the fixed
 mixed plane has orthogonal factor components $\alpha/2$ and
 $\beta/2$.  Its squared norm contributes
-$s^2(\alpha^2+\beta^2)/4$.  The squared area is $1+O(s)$, so it does
-not change the quadratic coefficient.  This proves
+$s^2(\alpha^2+\beta^2)/4$; the two pure Christoffel vectors lie in
+opposite factors, so their pairing vanishes.  The squared area is
+$1+O(s^2)$, so it does not change the quadratic coefficient.  This proves
 \eqref{eq:two-curl-coefficient}; minimizing its two independent
 squares proves~\eqref{eq:two-curl-optimized}.
 \end{proof}
@@ -2115,6 +2118,8 @@ of degrees at least two.  Hence the spherical spectral gap gives
  \qquad
  \int|dG|^2\geq6\int|G|^2.
 \]
+Since $\Sph^2$ has no harmonic one-forms, $F=0$ exactly when $E=0$,
+and similarly for $G$ and $D$.
 Thus~\eqref{eq:full-defect-average} is strictly positive whenever
 $E\neq0$ or $D\neq0$.  Some pair of frames then has
 $\mathcal D_C>0$, and Lemma~\ref{lem:two-curl-moving-plane} gives
@@ -2302,7 +2307,7 @@ has
  =-\frac{3s^2}{2(1-s)^2(1+s)}<0
  \qquad(0<|s|<1).
 \end{equation}
-Thus this first transverse coupled kernel ray leaves the
+Thus this canonical transverse coupled kernel ray leaves the
 nonnegative-curvature cone immediately, despite improving no fixed
 mixed plane in the negative direction.
 \end{theorem}
@@ -2355,7 +2360,7 @@ in~\eqref{eq:rotational-oblique-plane} gives unit squared area and
 \eqref{eq:rotational-oblique-curvature}.
 \end{proof}
 
-\begin{corollary}[The first nongauge repair fails quartically]
+\begin{corollary}[The diagonal rotational repair fails quartically]
 \label{cor:rotational-repair}
 Let $f\in C^\infty(\Sph^2\times\Sph^2)$, put $Z=\nabla f$, and let
 $\Psi_t$ be the flow of $Z/2$.  Then
@@ -2565,8 +2570,8 @@ and the gauge/co-closed normal form in an exact finite-mode model.  Finally,
 \path{verify_coupled_kernel_obstruction.py} differentiates the exact
 orthographic-coordinate metric, recovers the general two-parameter
 moving-plane coefficient, tests a nonseparated degree-two vector
-harmonic, and verifies the signed-SVD obstruction for an arbitrary
-$(1,1)$ block.
+harmonic and an exact cross-degree frame average, and verifies the
+signed-SVD obstruction for an arbitrary $(1,1)$ block.
 
 \section*{Acknowledgments}
 

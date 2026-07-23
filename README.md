@@ -102,8 +102,8 @@ The resulting paper is `output/pdf/hopf_seam.pdf`.
   the gauge/co-closed quotient normal form
 - `verify_coupled_kernel_obstruction.py` — exact verification of the optimized
   two-parameter moving-plane coefficient, a nonseparated degree-two test,
-  the spherical spectral-gap inequality, and the signed-SVD obstruction for
-  the full `(1,1)` block
+  an exact cross-degree frame average, the spherical spectral-gap inequality,
+  and the signed-SVD obstruction for the full `(1,1)` block
 - `requirements.txt` — Python dependencies used by the verifier
 - `legacy/` — superseded exploratory material retained for provenance; it is
   not evidence for the paper and includes scripts with obsolete sign
